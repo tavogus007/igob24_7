@@ -169,7 +169,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 	$scope.servicioCatastral = {
 		seleccionado : null,
 		municipal:{
-			titulo : "ACTUALIZACIÓN DE DATOS TÉCNICOS MEDIANTE SERVICIO MUNICIPAL DE CATASTRO",
+			titulo : "ACTUALIZACIÓN DE DATOS TÉCNICOS DEL CERTIFICADO DE REGISTRO CATASTRAL MEDIANTE SERVICIO MUNICIPAL DE CATASTRO (PRESENCIAL)",
 			codigo :"municipal",
 			vistas:{
 				seleccionado:null,
@@ -180,7 +180,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 			}
 		},
 		externo:{
-			titulo : "ACTUALIZACIÓN DE DATOS TÉCNICOS MEDIANTE PROFESIONAL EXTERNO HABILITADO",
+			titulo : "ACTUALIZACIÓN DE DATOS TÉCNICOS DEL CERTIFICADO DE REGISTRO CATASTRAL MEDIANTE EL SERVICIO DE UN PROFESIONAL EXTERNO HABILITADO (EN LINEA)",
 			codigo :"externo",
 			vistas:{
 				seleccionado:null,
@@ -220,7 +220,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 			codigo :"inicio",
 		},
 		datosLegales:{
-			titulo : "ACTUALIZACIONES INMEDIATAS EN PLATAFORMA",
+			titulo : "ACTUALIZACIONES INMEDIATAS DEL CERTIFICADO DE REGISTRO CATASTRAL (PRESENCIAL)",
 			codigo :"datoslegales",
 		},
 		datosTecnicos:{
@@ -391,7 +391,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 
 				$scope.profesinalExterno.encontrado = null;
 				$scope.solicitud.msgReqLevantamiento= null;
-
+        $scope.solicitud.idTramiteIGOB = null;
 			},
 			listarExterno:function () {
 				$scope.solicitud.listaExterno = [];
@@ -537,6 +537,18 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 			establecerTipoTramite:function (idCatastroTipoTramite) {
 				$scope.solicitud.idCatastroTipoTramite=idCatastroTipoTramite;
 			},
+			validarProfesionalyPropietario:function () {
+				console.log($scope.solicitud.solicitante.trim().toUpperCase() , $scope.solicitud.profesionalNombre.trim().toUpperCase());
+				if($scope.solicitud.solicitante.trim().toUpperCase() == $scope.solicitud.profesionalNombre.trim().toUpperCase()){
+					//Ver alerta
+					$('#modalValidacionEnvio').modal({ backdrop: 'static', keyboard: false })
+					$('#modalValidacionEnvio').modal('show');
+				}
+				else{
+					$('#modalConfirmacionEnvio').modal({ backdrop: 'static', keyboard: false })
+					$('#modalConfirmacionEnvio').modal('show');
+				}
+			},
 			guardarEnviar: function () {
 				$.blockUI();
 				//console.log("entro");
@@ -633,7 +645,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 							if(resApi.success.dataSql[0].d)
 							{
 								//enviar correo al arquitecto
-								$scope.solicitud.acciones.delegarProfesional(resApi.success.dataSql[0].d,$scope.solicitud.profesionalNombre);
+								$scope.solicitud.acciones.delegarProfesional(resApi.success.dataSql[0].d,$scope.solicitud.profesionalNombre,$scope.solicitud.idTramiteIGOB);
 							}
 							else
 							{
@@ -643,13 +655,14 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 						}
 						else
 						{
+							swal('', resApi.error.message, 'error');
 							$.unblockUI();
 							console.log("Error al guardar",resApi.error.message,resApi.error.code);
 						}
 					});
 
 			},
-			delegarProfesional:function (param, profesional) {
+			delegarProfesional:function (param, profesional,idTramiteIGOB) {
 				var p = {q: param};
 				$.blockUI();
 				$http({
@@ -667,7 +680,8 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 						$scope.solicitud.acciones.reset();
 						$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
 						$.unblockUI();
-						$scope.solicitud.acciones.registrarIGOB(param);
+						console.log("idTramiteIGOB",idTramiteIGOB);
+						$scope.solicitud.acciones.registrarIGOB(param,idTramiteIGOB);
 					}
 					else
 					{
@@ -687,7 +701,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 					$.unblockUI();
 				});
 			},
-			registrarIGOB:function (param) {
+			registrarIGOB:function (param,idTramiteIGOB) {
 				var p = {q: param};
 				$.blockUI();
 				$http({
@@ -718,89 +732,127 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 						}).success(function (dataCre, status, headers, config) {
 							$.unblockUI();
 							console.log("Credentials igob", dataCre);
-							/// igob reg
-							$http({
-								method: 'POST',
-								url: data.igobServCreacionURL,
-								data: Object.toparams(data.data),
-								headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
-							}).success(function (dataRegIgob, status, headers, config) {
-								$.unblockUI();
-								console.log("Crear en igob", dataRegIgob);
-								if(dataRegIgob.success){
-									if(dataRegIgob.success.length>0){
-										var id_form_tra = dataRegIgob.success[0].id_form_tra;
-										console.log("id_form_tra",id_form_tra);
-										//Actualizar idtramite en sitv2online
-										var dataSit= {
-											"q": param,
-											"idTramite": id_form_tra
-										}
-										$http({
-											method: 'POST',
-											url: CONFIG.SERVICE_SITOLextgen + 'Catastro/RegistrarIGOBActualizarIDtramite',
-											data: Object.toparams(dataSit),
-											headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-										}).success(function (dataActTram, status, headers, config) {
-											$.unblockUI();
-											console.log("Actualizar tramite en sitol", dataActTram);
-											if(dataActTram.res == "OK")
-											{
-												//Enviar notificacion
-												var msj = data.igobServNotificacionMsj.replace('{0}', data.idCatastroTramiteOL);
-												msj = msj.replace('{1}', data.profesional);
-												var dataSit= {
-													"idtramite":id_form_tra,
-													"notificacion":msj,
-													"sistema":data.igobServNotificacionSistema,
-													"usuario":"CIUDADANO",
-													"url_adjunto":""
-												}
-												$http({
-													method: 'POST',
-													url: data.igobServNotificacionURL,
-													data: Object.toparams(dataSit),
-													headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
-												}).success(function (dataNotifIgob, status, headers, config) {
-													$.unblockUI();
-													console.log("Enviar notificacion", dataNotifIgob);
-													if(dataNotifIgob.success){
-
-													}
-													else{
-														swal('', 'No se pudo enviar la notificacion. '  + JSON.stringify(dataNotifIgob), 'error');
-														$.unblockUI();
-													}
-
-												}).error(function (data, status, headers, config) {
-													console.log("error email conexion",data, status, headers, config);
-													swal('', 'Error al registrar trámite en IGOB', 'error');
-													$.unblockUI();
-												});
-
-												//
-											}
-											else
-											{
-
-											}
-										}).error(function (data, status, headers, config) {
-											console.log("error email conexion",data, status, headers, config);
-											swal('', 'Error al registrar trámite en IGOB', 'error');
-											$.unblockUI();
-										});
-									}
-								}
-								else{
-									swal('', 'Error al registrar trámite en IGOB' + JSON.stringify(dataRegIgob), 'error');
+							if(idTramiteIGOB == null){
+								/// igob reg
+								$http({
+									method: 'POST',
+									url: data.igobServCreacionURL,
+									data: Object.toparams(data.data),
+									headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
+								}).success(function (dataRegIgob, status, headers, config) {
 									$.unblockUI();
+									console.log("Crear en igob", dataRegIgob);
+									if(dataRegIgob.success){
+										if(dataRegIgob.success.length>0){
+											var id_form_tra = dataRegIgob.success[0].id_form_tra;
+											console.log("id_form_tra",id_form_tra);
+											//Actualizar idtramite en sitv2online
+											var dataSit= {
+												"q": param,
+												"idTramite": id_form_tra
+											}
+											$http({
+												method: 'POST',
+												url: CONFIG.SERVICE_SITOLextgen + 'Catastro/RegistrarIGOBActualizarIDtramite',
+												data: Object.toparams(dataSit),
+												headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+											}).success(function (dataActTram, status, headers, config) {
+												$.unblockUI();
+												console.log("Actualizar tramite en sitol", dataActTram);
+												if(dataActTram.res == "OK")
+												{
+													//Enviar notificacion
+													var msj = data.igobServNotificacionMsj.replace('{0}', data.idCatastroTramiteOL);
+													msj = msj.replace('{1}', data.profesional);
+													var dataSit= {
+														"idtramite":id_form_tra,
+														"notificacion":msj,
+														"sistema":data.igobServNotificacionSistema,
+														"usuario":"CIUDADANO",
+														"url_adjunto":""
+													}
+													$http({
+														method: 'POST',
+														url: data.igobServNotificacionURL,
+														data: Object.toparams(dataSit),
+														headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
+													}).success(function (dataNotifIgob, status, headers, config) {
+														$.unblockUI();
+														console.log("Enviar notificacion", dataNotifIgob);
+														if(dataNotifIgob.success){
+
+														}
+														else{
+															swal('', 'No se pudo enviar la notificacion. '  + JSON.stringify(dataNotifIgob), 'error');
+															$.unblockUI();
+														}
+
+													}).error(function (data, status, headers, config) {
+														console.log("error email conexion",data, status, headers, config);
+														swal('', 'Error al registrar trámite en IGOB', 'error');
+														$.unblockUI();
+													});
+
+													//
+												}
+												else
+												{
+
+												}
+											}).error(function (data, status, headers, config) {
+												console.log("error email conexion",data, status, headers, config);
+												swal('', 'Error al registrar trámite en IGOB', 'error');
+												$.unblockUI();
+											});
+										}
+									}
+									else{
+										swal('', 'Error al registrar trámite en IGOB' + JSON.stringify(dataRegIgob), 'error');
+										$.unblockUI();
+									}
+								}).error(function (data, status, headers, config) {
+									console.log("error email conexion",data, status, headers, config);
+									swal('', 'Error al registrar trámite en IGOB', 'error');
+									$.unblockUI();
+								});
+								/// igob reg
+							}
+							else{
+								//Enviar notificacion
+								var msj = data.igobServNotificacionMsj.replace('{0}', data.idCatastroTramiteOL);
+								msj = msj.replace('{1}', data.profesional);
+								var dataSit= {
+									"idtramite":idTramiteIGOB,
+									"notificacion":msj,
+									"sistema":data.igobServNotificacionSistema,
+									"usuario":"CIUDADANO",
+									"url_adjunto":""
 								}
-							}).error(function (data, status, headers, config) {
-								console.log("error email conexion",data, status, headers, config);
-								swal('', 'Error al registrar trámite en IGOB', 'error');
-								$.unblockUI();
-							});
-							/// igob reg
+								$http({
+									method: 'POST',
+									url: data.igobServNotificacionURL,
+									data: Object.toparams(dataSit),
+									headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization':'Bearer ' + dataCre.token }
+								}).success(function (dataNotifIgob, status, headers, config) {
+									$.unblockUI();
+									console.log("Enviar notificacion", dataNotifIgob);
+									if(dataNotifIgob.success){
+
+									}
+									else{
+										swal('', 'No se pudo enviar la notificacion. '  + JSON.stringify(dataNotifIgob), 'error');
+										$.unblockUI();
+									}
+
+								}).error(function (data, status, headers, config) {
+									console.log("error email conexion",data, status, headers, config);
+									swal('', 'Error al registrar trámite en IGOB', 'error');
+									$.unblockUI();
+								});
+
+								//
+							}
+
 						}).error(function (data, status, headers, config) {
 							console.log("error credentials coneccion",data, status, headers, config);
 							swal('', 'Error al enviar credenciales al IGOB', 'error');
@@ -813,121 +865,53 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 					$.unblockUI();
 				});
 			},
-			//Obsoleto
-			seguimientoFlujo : function (sol) {
-				$.blockUI();
-				if(sol.piif)
-				{
-					var p = {q: sol.piif};
-					$http({
-						method: 'POST',
-						url: CONFIG.SERVICE_SITOLextgen + 'ApiMotorFlujo/FlujoSeguimientoTarea',
-						data: Object.toparams(p),
-						headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-					}).success(function (data, status, headers, config) {
-						if(data.res)
-						{
-							swal('', 'Error al consultar seguimiento de trámite', 'error');
-						}
-						else{
-							$('#seguimientoNroSolicitud').val(sol.idCatastroTramiteOL);
-							//$('#seguimientoTipoTramite').val($scope.config.tipoTramite.descripcion);
-							$scope.listaSeguimientoTareas = data;
-							$('#divPopupSeguimiento').modal('show');
-						}
-						$.unblockUI();
-					}).error(function (data, status, headers, config) {
-						swal('', 'Error al consultar seguimiento de trámite', 'error');
-						$.unblockUI();
-					});
-				}
-				else
-				{
-					swal('', 'Error al consultar seguimiento de trámite', 'error');
-					console.log("No se puede ver el seguimiento, parámetro no valido");
-				}
+			anularConfirm:function (idTramite, idTramiteEnc) {
+				console.log("sol", idTramiteEnc);
+				$scope.idTramiteAnular = idTramite;
+				$scope.idTramiteAnularEnc = idTramiteEnc;
+				$('#modalConfirmarAnular').modal('show');
 			},
-			seguimientoSitram : function (nro, pwd) {
-				console.log(nro, pwd);
-				$scope.tmpSitram = nro;
-				$scope.tmpSitramPwd = pwd;
+			anular:function (idTramiteEnc) {
+				console.log("anular" + idTramiteEnc);
+				var p = {q: idTramiteEnc};
 				$.blockUI();
-				var p = {
-					"nroTramite":nro,
-					"clave": pwd
-				};
 				$http({
 					method: 'POST',
-					//url: 'http://serviciosrs.lapaz.bo/wsSTTF/visualizarTramitesSITRAM',
-					url:'https://gamlpmotores.lapaz.bo/gamlp/wsSTTF/visualizarTramitesSITRAM',
+					url: CONFIG.SERVICE_SITOLextgen + 'Catastro/AnularSolicitud',
 					data: Object.toparams(p),
 					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 				}).success(function (data, status, headers, config) {
-					console.log("aaa", data);
 					$.unblockUI();
-					if(data.success)
+					if(data.res == "OK")
 					{
-						$scope.listaSeguimientoSitram = data.success.data;
-						//$('#seguimientoNroSolicitud').val(sol.idCatastroTramiteOL);
-						$('#divPopupSeguimiento').modal('show');
+						$scope.solicitud.acciones.listarExterno();
+						swal('', 'La solicitud fua anulada correctamente.', 'success');
+						$scope.solicitud.acciones.reset();
+						$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
+						$.unblockUI();
 
+						$scope.idTramiteAnular = null;
+						$scope.idTramiteAnularEnc = null;
 					}
-					else{
-						swal('', 'Error al consultar seguimiento de trámite', 'error');
+					else
+					{
+						console.log("error email",data);
+						$scope.solicitud.acciones.reset();
+						$scope.solicitud.acciones.listarExterno();
+						$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
+						swal('', 'Error al anular solicitud. ' + JSON.stringify(data), 'error');
+						$.unblockUI();
 					}
-
 				}).error(function (data, status, headers, config) {
-					swal('', 'Error al consultar seguimiento de trámite', 'error');
+					console.log("error anular solicitud conexion",data, status, headers, config);
+					$scope.solicitud.acciones.reset();
+					$scope.solicitud.acciones.listarExterno();
+					$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
+					swal('', 'Error al anular solicitud', 'error');
 					$.unblockUI();
 				});
 			},
-			descargar:function (piif) {
-				var params = Object();
-				params.idoc = $scope.configParametros.documentoSolicitud.idTipoDocIfile;//195;
-				params.q = piif;
-				//return $http.post("DocumentoFlujo", JSON.stringify(params), { responseType: 'arraybuffer', headers: {} });
-
-				var promise = $http.post(CONFIG.SERVICE_SITOLextgen + 'Catastro/DocumentoFlujo', JSON.stringify(params), { responseType: 'arraybuffer', headers: {} });
-				promise.success(function (response) {
-					//console.log("response", response);
-					var formato = "pdf";
-					var nombreArchivo = "Solicitud.pdf";
-					var contentType = "";
-					if (formato == 'pdf') {
-						contentType = "application/pdf";
-					}
-					else if (formato == "dwg") {
-						contentType = "image/vnd.dwg";
-					}
-					var file = new Blob([response], { type: formato });
-					//console.log("file", file);
-					var isChrome = !!window.chrome && !!window.chrome.csi;//!!window.chrome.webstore;
-					var isIE = /*cc_on!*/false || !!document.documentMode;
-					var isEdge = !isIE && !!window.StyleMedia;
-					if (isChrome) {
-						var url = window.URL || window.webkitURL;
-
-						var downloadLink = angular.element('<a></a>');
-						downloadLink.attr('href', url.createObjectURL(file));
-						downloadLink.attr('target', '_self');
-						downloadLink.attr('download', nombreArchivo);
-						downloadLink[0].click();
-					}
-					else if (isEdge || isIE) {
-						window.navigator.msSaveOrOpenBlob(file, nombreArchivo);
-
-					}
-					else {
-						var fileURL = URL.createObjectURL(file);
-						window.open(fileURL);
-					}
-				})
-					.error(function (error) {
-						console.log("error", error);
-						$rootScope.notificacionError("Error al descargar archivo");
-					});
-			},
-			obtener:function (idCatastroTramiteOL, accion) {
+  obtener:function (idCatastroTramiteOL, accion) {
 				$.blockUI();
 				var solicitud = new dataSITOL();
 				solicitud.catObtenerSolicitud(
@@ -1001,6 +985,8 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 							$scope.solicitud.idInsFlujoAnterior = data.idInsFlujoAnterior;
 							$scope.solicitud.riesgo = data.riesgo;
 
+							$scope.solicitud.idTramiteIGOB = data.idTramiteIGOB;
+
 							if(accion == "delegar"){
 								//$scope.solicitud.idCatastroTipoTramite = data.idCatastroTipoTramite;
 								//$scope.solicitud.idCatastroTipoServicio = data.idCatastroTipoServicio;
@@ -1019,6 +1005,122 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 					});
 
 			},
+			//Obsoleto
+			seguimientoFlujo : function (sol) {
+				$.blockUI();
+				if(sol.piif)
+				{
+					var p = {q: sol.piif};
+					$http({
+						method: 'POST',
+						url: CONFIG.SERVICE_SITOLextgen + 'ApiMotorFlujo/FlujoSeguimientoTarea',
+						data: Object.toparams(p),
+						headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+					}).success(function (data, status, headers, config) {
+						if(data.res)
+						{
+							swal('', 'Error al consultar seguimiento de trámite', 'error');
+						}
+						else{
+							$('#seguimientoNroSolicitud').val(sol.idCatastroTramiteOL);
+							//$('#seguimientoTipoTramite').val($scope.config.tipoTramite.descripcion);
+							$scope.listaSeguimientoTareas = data;
+							$('#divPopupSeguimiento').modal('show');
+						}
+						$.unblockUI();
+					}).error(function (data, status, headers, config) {
+						swal('', 'Error al consultar seguimiento de trámite', 'error');
+						$.unblockUI();
+					});
+				}
+				else
+				{
+					swal('', 'Error al consultar seguimiento de trámite', 'error');
+					console.log("No se puede ver el seguimiento, parámetro no valido");
+				}
+			},
+			seguimientoSitram : function (nro, pwd) {
+				console.log(nro, pwd);
+				$scope.tmpSitram = nro;
+				$scope.tmpSitramPwd = pwd;
+				$.blockUI();
+				var p = {
+					"nroTramite":nro,
+					"clave": pwd
+				};
+				$http({
+					method: 'POST',
+					//url: 'http://serviciosrs.lapaz.bo/wsSTTF/visualizarTramitesSITRAM',
+					//url:'https://gamlpmotores.lapaz.bo/gamlp/wsSTTF/visualizarTramitesSITRAM',
+					url:  CONFIG.CONEXION_API_PG_IF_OFICIAL + 'wsSTTF/visualizarTramitesSITRAM',
+					data: Object.toparams(p),
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				}).success(function (data, status, headers, config) {
+					console.log("aaa", data);
+					$.unblockUI();
+					if(data.success)
+					{
+						$scope.listaSeguimientoSitram = data.success.data;
+						//$('#seguimientoNroSolicitud').val(sol.idCatastroTramiteOL);
+						$('#divPopupSeguimiento').modal('show');
+
+					}
+					else{
+						swal('', 'Error al consultar seguimiento de trámite', 'error');
+					}
+
+				}).error(function (data, status, headers, config) {
+					swal('', 'Error al consultar seguimiento de trámite', 'error');
+					$.unblockUI();
+				});
+			},
+			descargar:function (piif) {
+				var params = Object();
+				params.idoc = $scope.configParametros.documentoSolicitud.idTipoDocIfile;//195;
+				params.q = piif;
+				//return $http.post("DocumentoFlujo", JSON.stringify(params), { responseType: 'arraybuffer', headers: {} });
+
+				var promise = $http.post(CONFIG.SERVICE_SITOLextgen + 'Catastro/DocumentoFlujo', JSON.stringify(params), { responseType: 'arraybuffer', headers: {} });
+				promise.success(function (response) {
+					//console.log("response", response);
+					var formato = "pdf";
+					var nombreArchivo = "Solicitud.pdf";
+					var contentType = "";
+					if (formato == 'pdf') {
+						contentType = "application/pdf";
+					}
+					else if (formato == "dwg") {
+						contentType = "image/vnd.dwg";
+					}
+					var file = new Blob([response], { type: formato });
+					//console.log("file", file);
+					var isChrome = !!window.chrome && !!window.chrome.csi;//!!window.chrome.webstore;
+					var isIE = /*cc_on!*/false || !!document.documentMode;
+					var isEdge = !isIE && !!window.StyleMedia;
+					if (isChrome) {
+						var url = window.URL || window.webkitURL;
+
+						var downloadLink = angular.element('<a></a>');
+						downloadLink.attr('href', url.createObjectURL(file));
+						downloadLink.attr('target', '_self');
+						downloadLink.attr('download', nombreArchivo);
+						downloadLink[0].click();
+					}
+					else if (isEdge || isIE) {
+						window.navigator.msSaveOrOpenBlob(file, nombreArchivo);
+
+					}
+					else {
+						var fileURL = URL.createObjectURL(file);
+						window.open(fileURL);
+					}
+				})
+					.error(function (error) {
+						console.log("error", error);
+						$rootScope.notificacionError("Error al descargar archivo");
+					});
+			},
+			
 		}
 	}
 

@@ -14,10 +14,11 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   $scope.conreg = 0;
   var valPlaca = 0;
   $scope.fechaAct = new Date();
+  $scope.idRenovacion = 78;
+  $scope.idRegistro = 79;
+  $scope.oidCiu = sessionService.get('IDSOLICITANTE');
 
   $scope.inicio = function () {
-    swal("Aviso Importante!", "Le comunicamos que sus solicitudes de renovación de la Tarjeta Municipal de Operación Vehicular (TMOV) y Tarjeta de Identificación del Conductor (TIC), deben ser cargadas en el igob 24/7 a partir del martes 15 hasta el viernes 18 de diciembre del presente, caso contrario, se dará de baja a vehículos y conductores que no se encuentren con sus requisitos al día.");
-
     $scope.seleccionarTramite();
     $scope.getComboMarcaMovilidad();
     $scope.macrodistritos();
@@ -78,8 +79,6 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       act.actualiza_veh_cond(function(results){
         console.log(results)
       });*/
-     
-      
       $scope.operador = ope;
       $scope.registro = true;
       $scope.datosOfiR = ope.oficinas; 
@@ -1021,6 +1020,17 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     },300);      
   }
 
+  $scope.actualizaTramiteIgob = function(id_tramite,nroTramite){
+    idUsuario = 4; 
+    var tramiteIgob = new datosFormularios();
+    tramiteIgob.frm_idTramite = id_tramite;
+    tramiteIgob.frm_tra_enviado = 'SI';
+    tramiteIgob.frm_tra_if_codigo = nroTramite;
+    tramiteIgob.frm_tra_id_usuario = idUsuario;
+    tramiteIgob.validarFormProcesos(function(resultado){
+      console.log("resultado",resultado);
+    });
+  }
   //Renovacion de TIC Y TMOV
   $scope.renovacionTmov = function(veh){
     $.blockUI({ css: { 
@@ -1033,49 +1043,88 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       color: '#fff' 
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
-      var detalle = [];
-      if(veh.veh_ope_detalle_renov==null){
-        detalle = [{"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a}];
-      }else{
-        detalle = veh.veh_ope_detalle_renov;
-        detalle.push({"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a});
-      }
-      detalle = JSON.stringify(detalle);
-      $scope.datos.REN_ID_VEH = veh.veh_id;
-      $scope.datos.REN_TIPO = "VEH";
-      $scope.datos.REN_VEH_PLACA = veh.veh_placa;
-      var f = new Date();  
-      $scope.datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-      data_form = JSON.stringify($scope.datos);
-      var tramite = new crearTramiteMovilidad();
-      tramite.usr_id = 1;    
-      tramite.datos = data_form;
-      tramite.procodigo = 'REN';
-      tramite.tramite_linea(function(results){
-        results = JSON.parse(results);
-        if (results !=null) {
-          var nrot = results.success.data[0].crea_tramite_linea;
-          var renov = new renovacionVehTmov();
-          renov.id_veh = veh.veh_ope_id;
-          renov.detalle_ren = detalle;
-          renov.renovacionTmov(function(results){
-            results = JSON.parse(results).success.data;
-            if(results.length >0){
-              $scope.listaVeh();
-              swal({
-                title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-                text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
-                html: true,
-                type: 'success',
-                //timer: 5000,
-              });
-            }
-          })
+      swal({
+        title: "¿Esta seguro/a que quiere iniciar el proceso de renovación de TMOV?",
+        text: "Tenga en cuenta que una vez iniciada la solicitud se debe llevar el vehiculo a que pase la inspección vehicular en el lapso de 10 días calendario.",
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Iniciar Tramite de Renovación",
+        closeOnConfirm: false 
+      },
+      function(){
+        var detalle = [];
+        if(veh.veh_ope_detalle_renov==null){
+          detalle = [{"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a}];
         }else{
-          console.log('No se envio el tramite');
+          detalle = veh.veh_ope_detalle_renov;
+          detalle.push({"fecha_d":veh.veh_ope_vigencia_d,"fecha_a":veh.veh_ope_vigencia_a});
         }
-        $.unblockUI();
-      }) 
+        try {
+          detalle = JSON.stringify(detalle);
+          $scope.datos.REN_ID_VEH = veh.veh_id;
+          $scope.datos.REN_TIPO = "VEH";
+          $scope.datos.REN_VEH_PLACA = veh.veh_placa;
+          var fecha = new Date();  
+          $scope.datos.g_fecha = fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" +fecha.getFullYear()
+          var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+          var crea = new adicionaTramitesFormulario();
+          crea.frm_tra_fecha = fechactual;
+          crea.frm_tra_enviado = "NO";
+          crea.frm_tra_registrado = fechactual;
+          crea.frm_tra_modificado = fechactual;
+          crea.id_servicio = $scope.idRenovacion;
+          crea.data_json = JSON.stringify($scope.datos);;
+          crea.oid_ciudadano = $scope.oidCiu;
+          crea.id_usuario = 3;
+          crea.adiciona_Tramites_Formulario(function(res){
+            x = JSON.parse(res);
+            response = x.success;
+            if(response.length  > 0){
+              var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
+              $scope.datos.id_tramite = nro_tramite;
+              data_form = JSON.stringify($scope.datos);
+              var tramite = new crearTramiteMovilidad();
+              tramite.usr_id = 1;    
+              tramite.datos = data_form;
+              tramite.procodigo = 'REN';
+              tramite.tramite_linea(function(results){
+                results = JSON.parse(results);
+                if (results !=null) {
+                  var nrot = results.success.data[0].crea_tramite_linea;
+                  var renov = new renovacionVehTmov();
+                  renov.id_veh = veh.veh_ope_id;
+                  renov.detalle_ren = detalle+'<'+nrot;
+                  renov.renovacionTmov(function(results){
+                    results = JSON.parse(results).success.data;
+                    if(results.length >0){
+                      $scope.listaVeh();
+                      $scope.actualizaTramiteIgob(nro_tramite,nrot);
+                      swal({
+                        title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
+                        text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
+                        html: true,
+                        type: 'success',
+                        //timer: 5000,
+                      });
+                    }
+                  })
+                }else{
+                  swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
+                }
+                $.unblockUI();
+              }) 
+            }
+            else{
+              swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
+              $.unblockUI();
+            }
+          });
+        } catch (error) {
+          swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
+        }
+      });
       $.unblockUI();
     },300); 
   }
@@ -1091,50 +1140,88 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       color: '#fff' 
     },message: "Espere un momento por favor ..." }); 
     setTimeout(function(){
-      var detalle = [];
-      if(cond.cond_ofi_detalle_renov==null){
-        detalle = [{"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a}];
-      }else{
-        detalle = cond.cond_ofi_detalle_renov;
-        detalle.push({"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a});
-      }
-      detalle = JSON.stringify(detalle);
-      $scope.datos.REN_ID_COND = cond.cond_ofi_id;
-      $scope.datos.REN_TIPO = "COND";
-      $scope.datos.REN_COND_CI = cond.cond_ci;
-      var f = new Date();  
-      $scope.datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-      data_form = JSON.stringify($scope.datos);
-      var tramite = new crearTramiteMovilidad();
-      tramite.usr_id = 1;    
-      tramite.datos = data_form;
-      tramite.procodigo = 'REN';
-      tramite.tramite_linea(function(results){
-        results = JSON.parse(results);
-        if (results !=null) {
-          var nrot = results.success.data[0].crea_tramite_linea;
-          var renov = new renovacionCondTic();
-          renov.id_cond = cond.cond_ofi_id;
-          renov.detalle_ren = detalle;
-          renov.renovacionTic(function(results){
-            results = JSON.parse(results).success.data;
-            if(results.length > 0){
-              $scope.listaCond ();
-              swal({
-                title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-                text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
-                html: true,
-                type: 'success',
-                //timer: 5000,
-              });
-            }
-          })
+      swal({
+        title: "¿Esta seguro/a que quiere iniciar el proceso de renovación de TIC?",
+        text: "Tenga en cuenta que una vez iniciada la solicitud el conductor se debe presentar su documentación en el lapso de 10 días calendario.",
+        type: "warning",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Iniciar Tramite de Renovación",
+        closeOnConfirm: false 
+      },
+      function(){
+        var detalle = [];
+        if(cond.cond_ofi_detalle_renov==null){
+          detalle = [{"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a}];
         }else{
-          console.log('No se envio el tramite');
+          detalle = cond.cond_ofi_detalle_renov;
+          detalle.push({"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a});
+        }
+        try {
+          detalle = JSON.stringify(detalle);
+          $scope.datos.REN_ID_COND = cond.cond_ofi_id;
+          $scope.datos.REN_TIPO = "COND";
+          $scope.datos.REN_COND_CI = cond.cond_ci;
+          var fecha = new Date();  
+          $scope.datos.g_fecha = fecha.getDate() + "/" + (fecha.getMonth() +1) + "/" +fecha.getFullYear()
+          var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+          var crea = new adicionaTramitesFormulario();
+          crea.frm_tra_fecha = fechactual;
+          crea.frm_tra_enviado = "NO";
+          crea.frm_tra_registrado = fechactual;
+          crea.frm_tra_modificado = fechactual;
+          crea.id_servicio = $scope.idRenovacion;
+          crea.data_json = JSON.stringify($scope.datos);;
+          crea.oid_ciudadano = $scope.oidCiu;
+          crea.id_usuario = 3;
+          crea.adiciona_Tramites_Formulario(function(res){
+            x = JSON.parse(res);
+            response = x.success;
+            if(response.length  > 0){
+              var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
+              $scope.datos.id_tramite = nro_tramite;
+              data_form = JSON.stringify($scope.datos);
+              var tramite = new crearTramiteMovilidad();
+              tramite.usr_id = 1;    
+              tramite.datos = data_form;
+              tramite.procodigo = 'REN';
+              tramite.tramite_linea(function(results){
+                results = JSON.parse(results);
+                if (results !=null) {
+                  var nrot = results.success.data[0].crea_tramite_linea;
+                  var renov = new renovacionCondTic();
+                  renov.id_cond = cond.cond_ofi_id;
+                  renov.detalle_ren = detalle+'<'+nrot;
+                  renov.renovacionTic(function(results){
+                    results = JSON.parse(results).success.data;
+                    if(results.length > 0){
+                      $scope.listaCond ();
+                      $scope.actualizaTramiteIgob(nro_tramite,nrot);
+                      swal({
+                        title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
+                        text: 'Su número de Trámite es:<h2></strong> ' + nrot + '</strong></h2>\n Se registro exitosamente debe apersonarse durante 10 dias habiles a Alto Obrajes para realizar su Inspección.',
+                        html: true,
+                        type: 'success',
+                      });
+                    }
+                  })
+                }else{
+                  swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
+                }
+                $.unblockUI();
+              }) 
+            }
+            else{
+              swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
+              $.unblockUI();
+            }
+          });
+        } catch (error) {
+          swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
         }
         $.unblockUI();
-      }) 
-      $.unblockUI();
+      });
     },500);
   }
 }

@@ -1130,27 +1130,27 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   }
 
   $scope.renovacionTic = function(cond){ 
-    $.blockUI({ css: { 
-      border: 'none', 
-      padding: '10px', 
-      backgroundColor: '#000', 
-      '-webkit-border-radius': '10px', 
-      '-moz-border-radius': '10px', 
-      opacity: .5, 
-      color: '#fff' 
-    },message: "Espere un momento por favor ..." }); 
-    setTimeout(function(){
-      swal({
-        title: "¿Esta seguro/a que quiere iniciar el proceso de renovación de TIC?",
-        text: "Tenga en cuenta que una vez iniciada la solicitud el conductor se debe presentar su documentación en el lapso de 10 días calendario.",
-        type: "warning",
-        showCancelButton: true,
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Iniciar Tramite de Renovación",
-        closeOnConfirm: false 
-      },
-      function(){
+    swal({
+      title: "¿Esta seguro/a que quiere iniciar el proceso de renovación de TIC?",
+      text: "Tenga en cuenta que una vez iniciada la solicitud el conductor se debe presentar su documentación en el lapso de 10 días calendario.",
+      type: "warning",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Iniciar Tramite de Renovación",
+      closeOnConfirm: false 
+    },
+    function(){
+      $.blockUI({ css: { 
+        border: 'none', 
+        padding: '10px', 
+        backgroundColor: '#000', 
+        '-webkit-border-radius': '10px', 
+        '-moz-border-radius': '10px', 
+        opacity: .5, 
+        color: '#fff' 
+      },message: "Espere un momento por favor ..." }); 
+      setTimeout(function(){
         var detalle = [];
         if(cond.cond_ofi_detalle_renov==null){
           detalle = [{"fecha_d":cond.cond_ofi_vigencia_d,"fecha_a":cond.cond_ofi_vigencia_a}];
@@ -1220,8 +1220,8 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
         } catch (error) {
           swal("Error!", "Ocurrio un error, vuelva intentar por favor.", "error");
         }
-        $.unblockUI();
-      });
-    },500);
+      },500);
+      $.unblockUI();
+    });
   }
 }

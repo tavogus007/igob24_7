@@ -24,7 +24,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     $scope.vectorMensaje = ['Nro. de Proforma:','Nombres:','Apellidos:','Correo Electrónico:','Ciudad:','País:','Especialidad:','Precio (Bs):'];
     if(jsonURLS){
         var urlFum = CONFIG.CONEXION_ODM;
-        var urlPagoTarjetaX = CONFIG.CONEXION_PAGOS + 'registrarTrx';
+        var urlPagoTarjetaX = CONFIG.CONEXION_PAGOS + 'api/registrarTrx';
         var urlPagoClick = CONFIG.CONEXION_PAGOS + 'envioPagoClickGamlp';
         var urlPagoQR = CONFIG.CONEXION_PAGOS + 'generarQrBcpGamlp';
         var urlCorreo = CONFIG.CONEXION_CORREOS;

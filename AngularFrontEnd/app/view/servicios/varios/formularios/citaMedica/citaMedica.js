@@ -1175,6 +1175,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     };
 
     $scope.asignarFicha = function(datos){
+        $scope.datosFact = {};
         if($scope.institucional){
             $scope.mostrarPrecio = true;
             $scope.precioM = $scope.precioConsulta;
@@ -1406,7 +1407,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
         }
         else{
             var det = '[{"odm_item_recaudador": "' + $scope.datosIntermedio.vitm_cod_item + '","odm_pre_unitario": "' + $scope.datosIntermedio.vitm_monto + '","odm_cantidad": "'+ 1 +'","odm_sub_total": "' + $scope.datosIntermedio.vitm_monto + '"}]';
-			var formData = '{"Tipo": "generarOdm","razon_social": "GOBIERNO AUTONOMO MUNICIPAL DE LA PAZ","ci_nit": "1029241022","unidad_recaudadora": "' + $scope.datosIntermedio.vitm_cod_ur + '","sucursal": "' + $scope.datosIntermedio.vitm_sucursal + '","monto_total": "' + $scope.datosIntermedio.vitm_monto + '","detalles": '+ det +',"data": {"gestion ": ' + $scope.datosIntermedio.vanio + ',"fecha_recaudacion": "' + $scope.datosIntermedio.vfecha_actual + '","idUsuario": "' + $scope.datosIntermedio.vsucrl_idusuario + '","nameUsuario": "' + $scope.datosIntermedio.vnombre + '","ID_CIUDADANO": "' + sessionService.get("IDCIUDADANO") + '","tipo_actividad": "' + $scope.datosIntermedio.vactividad + '"}}';
+			var formData = '{"Tipo": "generarOdm","razon_social": "'+$scope.razon_social+'","ci_nit": "'+$scope.nit+'","unidad_recaudadora": "' + $scope.datosIntermedio.vitm_cod_ur + '","sucursal": "' + $scope.datosIntermedio.vitm_sucursal + '","monto_total": "' + $scope.datosIntermedio.vitm_monto + '","detalles": '+ det +',"data": {"gestion ": ' + $scope.datosIntermedio.vanio + ',"fecha_recaudacion": "' + $scope.datosIntermedio.vfecha_actual + '","idUsuario": "' + $scope.datosIntermedio.vsucrl_idusuario + '","nameUsuario": "' + $scope.datosIntermedio.vnombre + '","ID_CIUDADANO": "' + sessionService.get("IDCIUDADANO") + '","tipo_actividad": "' + $scope.datosIntermedio.vactividad + '"}}';
             $.ajax({
                 type        : 'POST',
                 url         : urlFum,
@@ -1426,8 +1427,9 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
                             var resultado = x.success.data;
                             if (resultado[0].sp_dinamico != null)
                             {
-                              var response = resultado[0].sp_dinamico;
-                              $scope.codigoFactura = response[0].sp_insertar_controlador_pruebas;
+                              
+                                var response = resultado[0].sp_dinamico;
+                                $scope.codigoFactura = response[0].sp_insertar_controlador_pruebas;
                                 var formDataPago = '{"odm":"'+odm+'","total":"'+$scope.datosIntermedio.vitm_monto+'","nombres":"'+$scope.datosPaciente.dtspsl_nombres+'","apellidos":"'+$scope.datosPaciente.dtspsl_paterno+' '+$scope.datosPaciente.dtspsl_materno+'","direccion":"'+$scope.datosPaciente.dtspsl_direccion+'","email":"'+$scope.email+'","celular":"'+$scope.datosPaciente.dtspsl_movil+'","sistema":"IGOB","ci_nit":"'+$scope.nit+'","oid_ciudadano":"'+$scope.datosPaciente._id+'","sucursal_facturacion":'+$scope.datosIntermedio.vitm_sucursal+',"id_usuario_facturacion":0, "reprogramacion":"NO", "servicio":"HOSPITAL_IGOB","usuario_fac":"'+$scope.datosHospital.vhsp_usuario+'","clave_fac":"'+$scope.datosHospital.vhsp_contrasenia+'", "nit_factura":"'+$scope.nit+'","nombre_factura":"'+$scope.razon_social+'","data_opcional":[{"vidpaciente":'+$scope.datosPacienteSalud[0].idpersona+',"vidservicio":'+$scope.idServicio+',"vfechaatencion":"'+$scope.fechaDisponible+'","vnumeroficha":'+$scope.numero_ficha+',"vhospitalid":'+$scope.idHospital+',"vmedicoid":'+$scope.idDoctorUsuario+',"vturnoid":'+$scope.idTurnoFicha+',"vcodigoficha":"'+ficha[1]+'","vhorainicioficha":"'+$scope.hora_inicio+'","vhorafinficha":"'+$scope.hora_fin+'","vtipoconsulta":"C","vorigen_atencion":"IGOB WEB","vnroodm":"'+odm+'","vhistoria_sice":"'+$scope.historia_clinica+'","codigo_generado":"'+$scope.codigoFactura+'","tipoPago":"TARJETA"}],"items":[{"concepto":"CONSULTA EXTERNA '+$scope.especialidad_nombre+' ","cantidad":1,"monto":"'+$scope.datosIntermedio.vitm_monto+'","item_recaudador":'+$scope.datosIntermedio.vitm_cod_item+',"unidad_recaudadora":'+$scope.datosIntermedio.vitm_cod_ur+'}]}'
                                 $.ajax({
                                     type        : 'POST',
@@ -1716,7 +1718,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
           }
           else{
                 var det = '[{"odm_item_recaudador": "' + dato.vitm_cod_item + '","odm_pre_unitario": "' + dato.vitm_monto + '","odm_cantidad": "'+ 1 +'","odm_sub_total": "' + dato.vitm_monto + '"}]';
-                var formData = '{"Tipo": "generarOdm","razon_social": "GOBIERNO AUTONOMO MUNICIPAL DE LA PAZ","ci_nit": "1029241022","unidad_recaudadora": "' +dato.vitm_cod_ur+ '","sucursal": "' +dato.vitm_sucursal+ '","monto_total": "' +dato.vitm_monto+ '","detalles": '+ det +',"data": {"gestion ": ' + dato.vanio + ',"fecha_recaudacion": "' + dato.vfecha + '","idUsuario": "' + dato.vsucrl_idusuario + '","nameUsuario": "' + dato.vnombre_supervisor + '","ID_CIUDADANO": "' + sessionService.get("IDCIUDADANO") + '","tipo_actividad": "' + dato.vactividad + '"}}';
+                var formData = '{"Tipo": "generarOdm","razon_social": "'+dato2.razon_social2+'","ci_nit": "'+dato2.nit2+'","unidad_recaudadora": "' +dato.vitm_cod_ur+ '","sucursal": "' +dato.vitm_sucursal+ '","monto_total": "' +dato.vitm_monto+ '","detalles": '+ det +',"data": {"gestion ": ' + dato.vanio + ',"fecha_recaudacion": "' + dato.vfecha + '","idUsuario": "' + dato.vsucrl_idusuario + '","nameUsuario": "' + dato.vnombre_supervisor + '","ID_CIUDADANO": "' + sessionService.get("IDCIUDADANO") + '","tipo_actividad": "' + dato.vactividad + '"}}';
               $.ajax({
                   type        : 'POST',
                   url         : urlFum,

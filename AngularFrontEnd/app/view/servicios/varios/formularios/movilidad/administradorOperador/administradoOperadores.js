@@ -14,8 +14,8 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   $scope.conreg = 0;
   var valPlaca = 0;
   $scope.fechaAct = new Date();
-  $scope.idRenovacion = 78;
-  $scope.idRegistro = 79;
+  $scope.idRenovacion = 38;
+  $scope.idRegistro = 37;
   $scope.nroTramite = '';
   $scope.oidCiu = sessionService.get('IDSOLICITANTE');
 

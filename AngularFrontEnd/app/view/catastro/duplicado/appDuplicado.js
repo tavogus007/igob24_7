@@ -815,8 +815,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		return sol.idEstado == 1 & sol.idTipoPago == 1;
 	};
 	$scope.VerificarDespliegueEpago = function (sol) {
+		
 		return sol.idEstado == 1 & sol.idTipoPago == 2;
-		//return true;
 	};
 	$scope.VerificarDespliegueCC = function (sol) {
 		return sol.idEstado == 2 || sol.idEstado == 3;
@@ -1016,17 +1016,19 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			
 			}else{
 				$.unblockUI();
-				$scope.datosServicioOnline = "";//datosServicio;  
+				swal("Estimad@ Ciudadan@.","Los servicios de pagos en línea quedan suspendidos hasta un nuevo aviso. Agradecemos su compresión","info");
+				//Pagos en linea baja temporal
+				/*$scope.datosServicioOnline = "";//datosServicio;  
 				$scope.razonSocialFac = sessionService.get('US_PATERNO');
-				$scope.nitCiFac       = sessionService.get('CICIUDADANO');
-				/*  $scope.loginPagoEnLinea();
-					$scope.genProformaPagoOL(); */
-				$('#divPopupPagoTarjeta').modal('show');
+				$scope.nitCiFac       = sessionService.get('CICIUDADANO');				
+				$('#divPopupPagoTarjeta').modal('show');*/
 			}
 		}
 
 	}
-
+	$scope.mensajeTemporal = function(){
+		swal("Estimad@ Ciudadan@.","Los servicios de pagos en línea quedan suspendidos hasta un nuevo aviso. Agradecemos su compresión","info");
+	}
 	$scope.registrarIGOB = function (param) {
 		console.log("param",param);
 		var p = {q: param};
@@ -1656,8 +1658,9 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		});
 	};
 	$scope.continuarPagoOL = function(dataFUMGEN){
-		
-		var importantStuff1 = window.open('../../../loading.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');	
+		$scope.mensajeTemporal();
+		//Pagos en linea baja temporal
+		/*var importantStuff1 = window.open('../../../loading.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');	
 		sessionService.set('IDFUM', dataFUMGEN.FUM);
 		var idtoken =   sessionService.get('TOKEN');
 		var stoquen =  'Bearer ' + idtoken;		
@@ -1727,7 +1730,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 				$.unblockUI();
 				alert("Error Intente de nuevo !!");
 			}
-		});		
+		});	*/	
 	};
 
 	function MouseWheelHandler(e) {

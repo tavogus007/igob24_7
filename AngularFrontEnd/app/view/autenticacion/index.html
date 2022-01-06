@@ -283,10 +283,11 @@
                                                 class="fa arrow blanco"></span>
                                         </a>
                                         <ul class="nav nav-second-level">
-                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexLotus.html">Correspondencia Ciudadana<div style="color: #ff0000;">(Nuevo)</div></a></li>
+
+                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexLotus.html">Correspondencia Ciudadana</a></li>
 
 
-                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexTransparencia.html">Denuncias Transparencia<div style="color: #ff0000;">(Nuevo)</div></a></li>
+                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexTransparencia.html">Denuncias Transparencia</a></li>
                                             <!--li ng-show="stiporol == '5' && sservicios  == 'SI'">
                                                 <a ng-click=""
                                                     href="#registro_ciudadano|servicios|index343.html">{{translateTitulos.lbl_04_04}}
@@ -331,10 +332,11 @@
                                                 </ul>
                                             </li>
 
-                                            <li ng-show="stiporol == '4' || stiporol == '5'">
-												
+                                            <li ng-show="stiporol == '4' || stiporol == '5'">												
 												<a ><i class="fa fa-caret-right blanco"></i>{{translateTitulos.lbl_04_05}}<span
-													class="fa arrow blanco"></span></a>
+                                                    class="fa arrow blanco"></span>
+                                                    <div style="color: #ff0000;font-size:9px;">(Servicio no disponible)</div>
+                                                </a>
 													<!--
 													<a onclick="window.location.href.endsWith('general')==false?window.location='#catastro|general':'';"><i
 													class="fa fa-caret-right blanco"></i>{{translateTitulos.lbl_04_05}}<span
@@ -349,15 +351,19 @@
 													-->														
                                             </li>                                            
                                             <li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                <a><i class="fa fa-caret-right blanco"></i>Territorio<span
-                                                        class="fa arrow"></span></a>
+                                                <a ng-click="mensajeCatastro()"><i class="fa fa-caret-right blanco"></i>Territorio<span
+                                                        class="fa arrow"></span>
+                                                        <div style="color: #ff0000;font-size:9px;">(Servicio no disponible)</div>
+                                                </a>
+                                                <!--
                                                 <ul class="nav nav-third-level">
                                                     <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click="" href="#territorio|PC">Permisos de Construcción 3D</a></li>
-                                                    <!--<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|AsbuiltFracCercat">Planos As Built, Fraccionamiento PH y Certificación Catastral</a></li>-->
-                                        			<!--<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|FracCercat">Fraccionamiento PH y Certificación Catastral</a></li>-->
-                                        			<!--<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|Asbuilt">Planos As Built</a></li>-->
+                                                    //<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|AsbuiltFracCercat">Planos As Built, Fraccionamiento PH y Certificación Catastral</a></li>
+                                        			//<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|FracCercat">Fraccionamiento PH y Certificación Catastral</a></li>
+                                        			//<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|Asbuilt">Planos As Built</a></li>
                                         			<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|autorizacionesMenores">Autorizaciones Menores</a></li>
                                                 </ul>
+                                                -->
                                             </li>
                                             <li ng-show="stiporol == '5' && sservicios  == 'SI'">
                                                 <a><i class="fa fa-caret-right blanco"></i>Movilidad<span
@@ -388,7 +394,7 @@
                                                         href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudDelevery/solicitudDelevery.html'">Registro Transitorio Delivery</a>
                                                     </li>
                                                     <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación<div style="color: #ff0000;">(Nuevo)</div></a>
+                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación</a>
                                                     </li>
                                                     <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
                                                         href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/permisosExcepcionales/permisosExcepcionales.html'">Permisos Excepcionales</a>
@@ -401,7 +407,7 @@
                                                         class="fa arrow"></span></a>
                                                 <ul class="nav nav-third-level">
                                                     <li ng-show="stiporol == '4' && sservicios  == 'SI'"><a ng-click=""
-                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación<div style="color: #ff0000;">(Nuevo)</div></a>
+                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación</a>
                                                     </li>
                                                 </ul>
                                             </li>                                            

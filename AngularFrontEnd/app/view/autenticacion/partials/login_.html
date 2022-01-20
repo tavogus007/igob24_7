@@ -1056,66 +1056,55 @@
         objPassword.resetPass(function(resultado)
         {
             response = JSON.parse(resultado);
-            if (!response.error) 
-            {
+            if (!response.error) {
               var aRespuesta    =   new Array();
               var sNroRegistros =   0;
               aRespuesta.push(response);
               sNroRegistros     =   Object.keys(aRespuesta[0]).length;
-              if(sNroRegistros > 0)
-              {
+              if(sNroRegistros > 0) {
                 var sError  = ((typeof(aRespuesta[0].error) == 'undefined' || aRespuesta[0].error == null) ? ""   : aRespuesta[0].error);
-                  if(sError && sError != "") 
-                  {
-                      sweetAlert("", "Error en usuario y/o e-mail vuelva a intentarlo por favor", "warning");
-                  }
-                  else 
-                  {
-                      var sJson = aRespuesta[0];
-                      if(aRespuesta[0].success != "") 
-                      {
-                        var scorreo = document.getElementById("prsCorreo").value;
-                        document.getElementById("prsCI").value="";
-                        document.getElementById("prsCorreo").value="";
-                        var npin=aRespuesta[0].success.PIN;
-                        sweetAlert("RESTAURACIÓN EXITOSA", "Estimado Ciudadano, revise la bandeja de su correo electrónico.  " + scorreo, "success");
-                        var ciudadano="";
-                        var mensajeCorreo = "_Estimado_Ciudadano_su_Nuevo_PIN_es_:_<b>_" + npin + "_</b>";
-                        var vAsunto ="Restauración_de_PIN_24/7";
-                        var vMensaje = "";
-                        var email=sEmail;
-                        var sMensajeValidacion = mensajeCorreo.replace(/ /g, "_");
-                        var parametros = {
-                            "cuerpo" : sMensajeValidacion,
-                            "asunto" : vAsunto,
-                            "para" : email,
-                            "ciudadano" : ciudadano,
-                            "mensaje": vMensaje
-                        }
-                        $.ajax({ 
-                            data: parametros, 
-                            url: enviocorreo,//'http://200.105.139.183:9090/smsemail/email/mail.php',
-                            type: 'get', 
-                            beforeSend: function (){}, 
-                            success: function (response){}
-                        });
-                      } 
-                      else 
-                      {
-                          var sMensaje    = "por primera y única vez,";
-                          sweetAlert('', "Estimado usuario. Active su cuenta aproximándose " + sMensaje +" a la plataforma más cercana, donde validarán sus datos y activarán su cuenta. Otorgándole acceso a los servicios en línea del GAMLP.", 'warning');
+                if(sError && sError != "") {
+                    sweetAlert("", "Error en usuario y/o e-mail vuelva a intentarlo por favor", "warning");
+                } else {
+                    var sJson = aRespuesta[0];
+                    if(aRespuesta[0].success != "") {
+                      var scorreo = document.getElementById("prsCorreo").value;
+                      document.getElementById("prsCI").value="";
+                      document.getElementById("prsCorreo").value="";
+                      sweetAlert("RESTAURACIÓN EXITOSA", "Estimado Ciudadano, revise la bandeja de su correo electrónico.  " + scorreo, "success");
+                      /*
+                      var npin=aRespuesta[0].success.PIN;
+                      var ciudadano="";
+                      var mensajeCorreo = "_Estimado_Ciudadano_su_Nuevo_PIN_es_:_<b>_" + npin + "_</b>";
+                      var vAsunto ="Restauración_de_PIN_24/7";
+                      var vMensaje = "";
+                      var email=sEmail;
+                      var sMensajeValidacion = mensajeCorreo.replace(/ /g, "_");
+                      var parametros = {
+                          "cuerpo" : sMensajeValidacion,
+                          "asunto" : vAsunto,
+                          "para" : email,
+                          "ciudadano" : ciudadano,
+                          "mensaje": vMensaje
                       }
-                  }
-              }
-              else 
-              {
+                      $.ajax({ 
+                          data: parametros, 
+                          url: enviocorreo,//'http://200.105.139.183:9090/smsemail/email/mail.php',
+                          type: 'get', 
+                          beforeSend: function (){}, 
+                          success: function (response){}
+                      });
+                      */
+                    } else {
+                        var sMensaje    = "por primera y única vez,";
+                        sweetAlert('', "Estimado usuario. Active su cuenta aproximándose " + sMensaje +" a la plataforma más cercana, donde validarán sus datos y activarán su cuenta. Otorgándole acceso a los servicios en línea del GAMLP.", 'warning');
+                    }
+                }
+              } else {
                 sweetAlert("", "Error en usuario y/o contraseña vuelva a intentarlo por favor", "warning");
               }
-            } 
-            else 
-            {
-                if(response.error.code == 603)
-                {
+            } else {
+                if(response.error.code == 603){
                     sweetAlert("", "Error en usuario y/o email vuelva a intentarlo por favor", "warning");
                 }
             }

@@ -95,7 +95,7 @@ function password() {
 };
 
 password.prototype.resetPass = function (functionResp) {
-    urlComLogin = "/recuperarPIN";
+    urlComLogin = "/recuperarPINV2";
     typeCallLogin = "post";
     dataParamsLogin = {
         "usuario":this.usuario,

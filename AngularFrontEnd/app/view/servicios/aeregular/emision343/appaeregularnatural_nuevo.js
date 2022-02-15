@@ -2792,20 +2792,10 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 stringFormulario40  =   stringFormulario40.replace("#f01_piso_act#", datos.f01_piso_act);
                 stringFormulario40  =   stringFormulario40.replace("#f01_dpto_of_loc#", datos.f01_dpto_of_loc);
                 stringFormulario40  =   stringFormulario40.replace("#f01_tel_act1#", datos.f01_tel_act1);
-                stringFormulario40  =   stringFormulario40.replace("#f01_idCodigoZona#", datos.f01_idCodigoZona);
                 if (datos.f01_num_act == 'NINGUNO') {
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act_n);
                 } else{
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act);
-                };
-                if (datos.chkzonasegura == '' || datos.chkzonasegura == 'undefined' || datos.chkzonasegura == undefined) {
-                    stringFormulario40 = stringFormulario40.replace("#zonaSegura#", '');
-                } else {
-                    if (datos.chkzonasegura == 'ZONASEGURA') {
-                        stringFormulario40 = stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> SI');
-                    } else {
-                        stringFormulario40 = stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> NO');
-                    };
                 };
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
                 stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);
@@ -3242,7 +3232,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_tel_act1']=paramForm.f01_tel_act1;
             datosNeXO['f01_casilla']=paramForm.f01_casilla;
             datosNeXO['f01_cod_luz']=paramForm.f01_cod_luz;
-            datosNeXO['f01_idCodigoZona']=paramForm.f01_idCodigoZona;;
+            datosNeXO['f01_idCodigoZona']="";
             datosNeXO['f04_res_solicitud_upaee']="";
             datosNeXO['f08_hojas_recibidas']="0";
             datosNeXO['f08_observaciones_i']="0";

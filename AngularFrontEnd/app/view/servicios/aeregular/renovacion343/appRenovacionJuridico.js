@@ -312,11 +312,15 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
         dato.get_Homologacion(function(res){
             x = JSON.parse(res);
             var resp = x.success.dataSql;
-            $scope.datos.f01_categoria_agrupada = resp[0].idCategoria;
-            $scope.datos.f01_categoria_agrupada_descrip = resp[0].descripcion;
-            $scope.datos.f01_tipo_lic = resp[0].idTipoLicencia;//response[0].TipoLicencia;
-            $scope.datos.f01_tipo_lic_descrip = resp[0].TipoLicenciaDescripcion;
-            $scope.datosactividadDes = resp;
+
+			if(resp.length > 0){
+				$scope.datos.f01_categoria_agrupada = resp[0].idCategoria;
+				$scope.datos.f01_categoria_agrupada_descrip = resp[0].descripcion;
+				$scope.datos.f01_tipo_lic = resp[0].idTipoLicencia;//response[0].TipoLicencia;
+				$scope.datos.f01_tipo_lic_descrip = resp[0].TipoLicenciaDescripcion;
+				$scope.datosactividadDes = resp;
+			}
+			
         })
     }
 

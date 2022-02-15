@@ -2551,20 +2551,10 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                 stringFormulario40  =   stringFormulario40.replace("#f01_piso_act#", datos.f01_piso_act);
                 stringFormulario40  =   stringFormulario40.replace("#f01_dpto_of_loc#", datos.f01_dpto_of_loc);
                 stringFormulario40  =   stringFormulario40.replace("#f01_tel_act1#", datos.f01_tel_act1);
-                stringFormulario40  =   stringFormulario40.replace("#f01_idCodigoZona#", datos.f01_idCodigoZona);
                 if (datos.f01_num_act == 'NINGUNO') {
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act_n);
                 } else{
                     stringFormulario40  =   stringFormulario40.replace("#f01_num_act#", datos.f01_num_act);
-                };
-                if (datos.chkzonasegura == '' || datos.chkzonasegura == 'undefined' || datos.chkzonasegura == undefined) {
-                    stringFormulario40 = stringFormulario40.replace("#zonaSegura#", '');
-                } else {
-                    if (datos.chkzonasegura == 'ZONASEGURA') {
-                        stringFormulario40 = stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> SI');
-                    } else {
-                        stringFormulario40 = stringFormulario40.replace("#zonaSegura#", '<label>Zona Segura:</label> NO');
-                    };
                 };
                 stringFormulario40  =   stringFormulario40.replace("#fecha_sist#", fechaActualS);
                 stringFormulario40  =   stringFormulario40.replace("#hora_sist#", sHora);

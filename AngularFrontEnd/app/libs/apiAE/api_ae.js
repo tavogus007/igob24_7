@@ -14,6 +14,7 @@ var typeCall;
 var urlGENESIS  = "";
 var urlIf2      = "";
 var urlMotorSierra = "";
+var stokenae = "";
 
 if(jsonURLS){
     try{
@@ -25,11 +26,15 @@ if(jsonURLS){
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
 function ejecutarAjaxIF2(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+	stokenae = sessionStorage.getItem('TOKEN_API');
     $.ajax({
       type: vTypeCall,
       url: urlIf2 + vUrlComp,
       data: vDataCall,
       async: false,
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},		  
       success: function(response) {
         dataResp = JSON.stringify(response);
         vFunctionResp(dataResp);
@@ -43,6 +48,7 @@ function ejecutarAjaxIF2(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
 };
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
 function ejecutarAjaxAE(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+	stokenae = sessionStorage.getItem('TOKEN_API');
     $.ajax({
       type: vTypeCall,
       url: urlGENESIS + vUrlComp,
@@ -50,6 +56,9 @@ function ejecutarAjaxAE(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
       //dataType: "json",
       async: false,
       //processData: true,
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},	  
       success: function(response) {
         //console.log(response);
         dataRespAe = JSON.stringify(response);

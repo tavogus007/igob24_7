@@ -2,7 +2,7 @@
 //var urlSITOL = "http://192.168.5.141:9098/wsSITOL";
 //var urlSITOL = "http://localhost:9091/wsSITOL";
 //var urlSITOL = "http://gmlppc06408:9091/wsSITOL";
-
+//var urlSITOL = "http://localhost:9091/wsSITOL";
 var wsMethodSITOL;
 var dataResp;
 var dataParams;
@@ -781,4 +781,56 @@ dataSITOL.prototype.catSolicitudReg = function (idCatastroTramiteOL,wkt,idTipoRe
         "msgReqLevantamiento":msgReqLevantamiento
     };
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+
 };
+/* REGULARIZACION DE EDIFICACIONES */
+
+
+dataSITOL.prototype.regSolicitudReg = function (idTramiteOL, solicitante, idTipoDocumento, numDocumento, idExpedido, telefonoSolicitante, emailSolicitante, tipoPersona, profesionalNombre, profesionalEmail, profesionalTelefono, profesionalCab,direccion,zona,nroPuerta,oid,solicitanteNombre,solicitantePaterno, solicitanteMaterno,functionResp)
+{
+    wsMethodSITOL = "/regSolicitudReg";
+    typeCall = "post";
+    dataParams = {
+
+        "idTramiteOL" : idTramiteOL,
+        "solicitante" : solicitante,
+        "idTipoDocumento" : idTipoDocumento,
+        "numDocumento" : numDocumento,
+        "idExpedido" : idExpedido,
+        "telefonoSolicitante" : telefonoSolicitante,
+        "emailSolicitante" : emailSolicitante,
+        "tipoPersona" : tipoPersona,
+        "profesionalNombre" : profesionalNombre,
+        "profesionalEmail" : profesionalEmail,
+        "profesionalTelefono" : profesionalTelefono,
+        "profesionalCab" : profesionalCab,
+        "direccion" : direccion,
+        "zona" : zona,
+        "nroPuerta" : nroPuerta,
+        "oid":oid,
+        "solicitanteNombre" : solicitanteNombre,
+        "solicitantePaterno" : solicitantePaterno,
+        "solicitanteMaterno" : solicitanteMaterno
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+dataSITOL.prototype.regListaSolicitudes = function (numDocumento,functionResp)
+{
+    wsMethodSITOL = "/regListaSolicitudes";
+    typeCall = "post";
+    dataParams = {
+        "numDocumento" : numDocumento
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.regObtenerSolicitud = function (idTramiteOL,functionResp)
+{
+    wsMethodSITOL = "/regObtenerSolicitud";
+    typeCall = "post";
+    dataParams = {
+        "idTramiteOL" : idTramiteOL
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+

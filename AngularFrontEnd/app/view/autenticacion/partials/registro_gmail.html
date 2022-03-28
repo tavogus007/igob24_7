@@ -669,7 +669,7 @@
               $scope.cedulaCond = response.cedula;
               $scope.cedula = response.cedula;
               var lonCi = response.cedula.length;
-              if(lonCi >= 6){
+              if(lonCi >= 5){
                 $scope.verificarCiudadano(response);
                 $("#mensaje23").hide();
                 $("#mensaje30").hide();
@@ -697,7 +697,7 @@
                   response.cedula = $scope.ciCompl;
                   $scope.cedulaCond = $scope.ciCompl;
                   $scope.cedula = response.cedula;
-                  if(lonCi >= 6){
+                  if(lonCi >= 5){
                     $scope.verificarCiudadano(response);
                     $scope.cedulaCond = $scope.ciCompl;
                     response.cedula = aux;
@@ -723,7 +723,7 @@
               var aux = response.cedula;
                 $scope.ciExt = 'E'+'-'+response.cedula;
                 var lonCi = response.cedula.length;
-                if(lonCi >= 6){
+                if(lonCi >= 5){
                   response.cedula = $scope.ciExt;
                   $scope.cedulaCond = response.cedula;
                   $scope.cedula = response.cedula;
@@ -748,7 +748,7 @@
             if($scope.tipoDoc == 'pasaporte'){
               var aux = response.cedula;
               var lonCi = aux.length;
-              if(lonCi >= 6){
+              if(lonCi >= 5){
                 $scope.cedulaCond = response.cedula;
                 $scope.cedula = response.cedula;
                 response.cedula2 = aux;

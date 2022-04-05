@@ -7,18 +7,23 @@ var wsMethodSIT;
 var dataResp;
 var dataParams;
 var typeCall;
+var stokensit = "";
 
 if(jsonURLS){
     var urlSIT = jsonURLS.CONEXION_API_PG_IF_OFICIAL +"wsSIT";
 }
 
 function ejecutarAjaxSIT(vwsMethodSIT, vTypeCall, vDataCall, vFunctionResp) {
+	stokensit = sessionStorage.getItem('TOKEN_API');
     $.ajax({
         type: vTypeCall,
         url: urlSIT + vwsMethodSIT,
         data: vDataCall,
         //dataType: "json",
         async: false,
+		headers: {
+			'Authorization': 'Bearer ' + stokensit
+		},
         //processData: true,
         success: function(response) {
             dataResp = JSON.stringify(response);

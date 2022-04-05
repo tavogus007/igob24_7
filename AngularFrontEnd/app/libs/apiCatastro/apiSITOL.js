@@ -7,18 +7,23 @@ var wsMethodSITOL;
 var dataResp;
 var dataParams;
 var typeCall;
+var stokensitol = "";
 
 if(jsonURLS){
     var urlSITOL = jsonURLS.CONEXION_API_PG_IF_OFICIAL +"wsSITOL";
 }
 
 function ejecutarAjaxSITOL(vwsMethodSITOL, vTypeCall, vDataCall, vFunctionResp) {
+	stokensitol = sessionStorage.getItem('TOKEN_API');
     $.ajax({
         type: vTypeCall,
         url: urlSITOL + vwsMethodSITOL,
         data: vDataCall,
         //dataType: "json",
         async: false,
+		headers: {
+			'Authorization': 'Bearer ' + stokensitol
+		},
         //processData: true,
         success: function(response) {
             dataResp = JSON.stringify(response);

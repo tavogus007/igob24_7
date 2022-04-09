@@ -103,11 +103,11 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
     if (datos.dtspsl_materno == '' || datos.dtspsl_materno == ' ') {
       datosfaltantes.push(' APELLIDO MATERNO');
     }
-    if (datos.dtspsl_movil == '' || datos.dtspsl_movil == ' ') {
-      datosfaltantes.push(' CELULAR');
-    }
     if ((datos.dtspsl_correo == '') || (datos.dtspsl_correo == ' ')) {
       datosfaltantes.push(' CORREO');
+    }
+    /*if (datos.dtspsl_movil == '' || datos.dtspsl_movil == ' ') {
+      datosfaltantes.push(' CELULAR');
     }
     if (datos.dtspsl_departamento == '' || datos.dtspsl_departamento == ' ') {
       datosfaltantes.push(' DEPARTAMENTO');
@@ -117,7 +117,7 @@ $scope.recuperandoDatosInicialesCiudadano = function () {
     }
     if ((datos.dtspsl_macrodistrito == '' || datos.dtspsl_macrodistrito_desc == '')) {
       datosfaltantes.push(' MACRODISTRITO');
-    }
+    }*/
     $scope.datosfalt = datosfaltantes;
   }
   $("#mensaje1").hide();

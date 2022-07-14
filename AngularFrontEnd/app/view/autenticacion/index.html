@@ -402,11 +402,11 @@
                                                 </ul>
                                             </li>
 
-                                            <li ng-show="stiporol == '4' && sservicios  == 'SI'">
+                                            <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'">
                                                 <a><i class="fa fa-caret-right blanco"></i>Movilidad<span
                                                         class="fa arrow"></span></a>
                                                 <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '4' && sservicios  == 'SI'"><a ng-click=""
+                                                    <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a ng-click=""
                                                         href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación</a>
                                                     </li>
                                                 </ul>
@@ -415,7 +415,7 @@
                                             <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click=""
                                                     href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/solicitudViajes/index.html'">{{translateTitulos.lbl_04_09}}</a>
                                             </li>
-                                            <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a
+                                            <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a
                                                     href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/citaMedica/citaMedica.html'">
                                                     {{translateTitulos.lbl_04_10}} </a>
                                             </li>

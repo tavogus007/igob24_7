@@ -5,9 +5,9 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
   $scope.tiposTramite = [
     { detalle: 'Impugnación de Infracciones', id:43 ,tipo:$scope.tipo_persona}, 
     { detalle: 'Conmutación de Infracciones', id:45 ,tipo:$scope.tipo_persona},
-    { detalle: 'Devoluciòn de Placas y Luminarias', id:49 ,tipo:$scope.tipo_persona}
+    { detalle: 'Devoluciòn de Placas y Luminarias', id:49 ,tipo:$scope.tipo_persona},
+    { detalle: 'Denuncia Operador de Radio Taxi', id:52 ,tipo:'NATURAL'} 
   ];
-
   $scope.datos = {};
   $scope.tablaTramites        =   {};
   $scope.tramitesUsuario      =   [];
@@ -15,12 +15,14 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
   [ { name: 'template0.html', url: '../../../app/index.html'},
     { name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/impugnacion/impugnacion.html'},
     { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/conmutacion/conmutacion.html'},
-    { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/devolucionPlacas/devolucionPlacas.html'}
+    { name: 'template2.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/devolucionPlacas/devolucionPlacas.html'},
+    { name: 'template4.html', url: '../../../app/view/servicios/varios/formularios/movilidad/infracciones/denunciaOperadorRadioTaxi/denunciaOperadorRadioTaxi.html'}
   ];
 
   $scope.impugnacion = 43;
   $scope.conmutacion = 45;
   $scope.devolucion  = 49;
+  $scope.denunciaOperadorRadioTaxi  = 52;
   $scope.template =   "";
 
   $scope.inicio = function(){
@@ -188,6 +190,7 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
             buscarRepresentante.ci = $scope.datos.INF_CI_J;
             buscarRepresentante.buscarPersona(function(res){
               var x = JSON.parse(res);
+              console.log('111sss',x);
               if (x.error) {
                 $.unblockUI();
               }else {
@@ -198,6 +201,7 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
                   $scope.datos.INF_MATERNO_J = x[0].dtspsl_materno;
                   $scope.datos.INF_CELULAR_J = x[0].dtspsl_movil;
                   $scope.datos.INF_EXPEDIDO_J = x[0].dtspsl_expedido;
+                  console.log($scope.datos,"datos ciudadano");   
                 }
               }
             })
@@ -243,6 +247,7 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
             }
           }
         }
+        console.log("datos ciudadano",$scope.datos);
       }else{
         console.log("NO EXISTE DATOS");
       }
@@ -260,6 +265,7 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
     tramites.busquedaMovilidadInfracciones(function(results){
       results = JSON.parse(results).success;
       $scope.tramites = results;
+      console.log($scope.tramites,'777');
       $scope.tramitesUsuario = results;
       $scope.tablaTramites.reload();
     })
@@ -289,6 +295,7 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
   $scope.crear_tramite = function()
   {
     $.blockUI();
+    console.log($scope.tramiteId);
     if($scope.tramiteId != undefined || $scope.tramiteId != null){
       if ($scope.datosCiudadano.dtspsl_activaciond == 'SI' && $scope.datosCiudadano.dtspsl_activacionf == 'SI') 
       {
@@ -378,5 +385,6 @@ function infraccionesController($scope, $rootScope, $routeParams, $location, $ht
       $rootScope.$broadcast('inicializarVista', tramite.form_contenido);
     },500);
     $scope.$apply();
+    console.log("template",$scope.template);
   };
 }

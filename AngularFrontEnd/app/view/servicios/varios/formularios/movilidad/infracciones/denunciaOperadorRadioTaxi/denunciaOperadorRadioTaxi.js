@@ -1,28 +1,17 @@
-function denunciaAlConductorController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
+function denunciaOperadorRadioTaxiFuncion($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
     var sIdCiudadano= sessionService.get('IDSOLICITANTE');
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
-    console.log("$sope_datos",$scope.datos);
     $scope.datos = {};
     $scope.ocultaTipo = false;
     $scope.desabilitado = false;
-    $scope.aMacrodistritos = {};
-    $scope.div_otros = false;
-    $scope.div_ruta = false;
-    $scope.div_nom_conductor = false;
-    $scope.aListadoOperadorTaxi = {};
+  
     $scope.inicio = function(){
     }
   
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
       $scope.datos = JSON.parse(data);
-      console.log($scope.datos,"$scope.datos llllllllllllllllll");
-      $scope.dinamicoTipoVehiculo($scope.datos.INF_TIPO_VEHICULO);
       $scope.enviado = sessionService.get('ESTADO');
-      $scope.macrodistritos();
-      $scope.operadorRadiotaxis();
-      $scope.listaZona($scope.datos.INF_ORT_MACRO);
-      $scope.dinamicoTipoServicio($scope.datos.INF_TIPO_SERVICIO);
       if($scope.enviado == 'SI'){
         $scope.desabilitado = true;
       }else{
@@ -37,20 +26,6 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
   
     //////////////////////////GUARDA TRAMITE//////////////////////
     $scope.guardar_tramite = function(datos){ 
-      for(var i = 0 ; i < $scope.aDistritoZona.length ; i++){
-        if(datos.INF_O_RT_ZONA == $scope.aDistritoZona[i].dist_nombre){
-          $scope.datos.INF_ORT_ID_MACRO = $scope.aDistritoZona[i].dist_macro_id;
-          $scope.datos.INF_O_RT_ZONA_ID = $scope.aDistritoZona[i].dist_id;
-        }
-      }
-      if($scope.datos.INF_TIPO_SERVICIO == 'Servicio de Radio Taxi'){
-        for(var i = 0 ; i < $scope.aListadoOperadorTaxi.length ; i++){
-          if(datos.INF_O_RT_NOMBRE_O_RT == $scope.aListadoOperadorTaxi[i].ope_denominacion){
-            $scope.datos.INF_O_RT_NOMBRE_O_RT_ID = $scope.aListadoOperadorTaxi[i].ope_id;
-            $scope.datos.INF_O_RT_NOMBRE_O_RT_CIU_RESPONSABLE = $scope.aListadoOperadorTaxi[i].repr_uidciudadano;
-          }
-        }
-      }
       datos.Tipo_tramite_creado = "WEB";
       try {
         var datosSerializados   =  JSON.stringify(datos);
@@ -82,13 +57,9 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
       }
     }
     ///////////////////////// VALIDADOR PREVIO A GUARDAR ///////////////////
-    $scope.validarTramiteGuardar = function(datos){
-        if($scope.datos.INF_TIPO_SERVICIO == undefined){
-        $scope.mensajeError("Porfavor seleccione el tipo de servicio a cual denunciara");
-        }else if($scope.datos.INF_ORT_MACRO == undefined){
-         $scope.mensajeError("Porfavor seleccione el macro distrito");
-        }else if($scope.datos.INF_TIPO_VEHICULO == undefined){
-            $scope.mensajeError("Porfavor ingrese el tipo de vehiculo");
+    $scope.validarTramiteGuardar = function(datos){ 
+        if($scope.datos.INF_TIPO_SOLICITANTE == undefined){
+            $scope.mensajeError("Porfavor ingrese el tipo de denuncia");
         }else if($scope.datos.INF_O_RT_LUGAR == undefined){
             $scope.mensajeError("Porfavor ingrese el lugar");
         }else if($scope.datos.INF_O_RT_ZONA == undefined){
@@ -97,20 +68,15 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
             $scope.mensajeError("Porfavor ingrese la fecha");
         }else if($scope.datos.INF_O_RT_HORA == undefined){
             $scope.mensajeError("Porfavor ingrese la hora");
-        }else if($scope.datos.INF_PLACA_CIRCULACION == undefined){
-            $scope.mensajeError("Porfavor ingrese la placa del vehiculo");
-        }else if($scope.datos.INF_TIPO_VEHICULO == 'Otro' && $scope.datos.INF_DES_OTROS_VEHICULOS == undefined){
-            $scope.mensajeError("Porfavor especifique la descripción de otro tipo de vehículo");
+        }else if($scope.datos.INF_O_RT_NOMBRE_O_RT == undefined){
+            $scope.mensajeError("Porfavor ingrese el nombre del Operador de Radio Taxi");
         }else if($scope.datos.INF_O_RT_BREVE_DESC_O_RT == undefined){
             $scope.mensajeError("Porfavor ingrese una breve descripción");
-        }else if($scope.datos.INF_TIPO_SERVICIO == 'Servicio de Transporte Público' && $scope.datos.INF_RUTA_VEHICULO == undefined){
-            $scope.mensajeError("Porfavor ingrese la Ruta del transporte público");
-        }else if($scope.datos.INF_TIPO_SERVICIO == 'Servicio de Radio Taxi' && $scope.datos.INF_O_RT_NOMBRE_O_RT == undefined){
-            $scope.mensajeError("Porfavor ingrese Operador de Radio Taxi");
         }else{
             $scope.guardar_tramite(datos);
         }
       }
+
     ///////////////////////////ENVIO//////////////////////////////
     $scope.mensajeError = function(sms){
         swal({
@@ -118,7 +84,7 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
           text: sms,
           type: 'warning',
           cancelButtonText: 'ACEPTAR',
-  
+
         });
       };
     //////////////////////////////////////////////
@@ -154,14 +120,14 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
         $.blockUI();
         var f = new Date();  
         datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
-        datos.g_tipo_tramite = 'MOV_DEN_CON';
+        datos.g_tipo_tramite = 'INF_O_RT';
         datos.vtra_id = sessionService.get('IDTRAMITE');
         console.log($scope.datos,'datossss');
         data_form = JSON.stringify(datos);
         var tramite = new crearTramiteMovilidad();
         tramite.usr_id = 1;    
         tramite.datos = data_form;
-        tramite.procodigo = 'DEN_CON';
+        tramite.procodigo = 'INF_O_RT';
         tramite.tramite_linea(function(results){ 
           results = JSON.parse(results);
           if (results !=null) {
@@ -211,78 +177,6 @@ function denunciaAlConductorController($scope, $rootScope, $routeParams, $locati
       }else{
         $scope.ocultaTipo = false;
       }
-    }
-  
-    $scope.macrodistritos = function(){
-      var datosP = new macrodistritoLst();
-      datosP.obtmacro(function(resultado){
-        data = JSON.parse(resultado);
-        if(data.success.length > 0){
-          $scope.aMacrodistritos = data.success;
-          console.log("macro", $scope.aMacrodistritos);
-        }else{
-            $scope.msg = "Error !!";
-        }
-      });
-    }
-  
-    $scope.listaZona = function(idMacroJ){ 
-      var idMacro = "";
-      if($scope.aMacrodistritos){
-        angular.forEach($scope.aMacrodistritos, function(value, key) {
-          if(value.mcdstt_macrodistrito == idMacroJ){
-            idMacro = value.mcdstt_id;
-          }
-        });
-      }        
-      $scope.datos.idMacro = idMacro;
-      $scope.aDistritoZona = {};
-      try{
-        if(idMacroJ.length != 0){
-          var parametros = new distritoZona();
-          parametros.idMacro = idMacro;
-          parametros.obtdist(function(resultado){
-            data = JSON.parse(resultado);
-            if(data.success.length > 0){
-              $scope.aDistritoZona = data.success;
-              console.log("zonassss",$scope.aDistritoZona);
-            }else{
-              $scope.msg = "Error !!";
-            } 
-          });
-        }
-      }catch(error){
-        console.log('error',error);
-      }
-    }
-
-    $scope.dinamicoTipoVehiculo = function(data){
-        if(data == 'Otro'){
-            $scope.div_otros = true;
-        }else{
-            $scope.div_otros = false;
-        }
-    }
-    $scope.dinamicoTipoServicio = function(data){
-      if(data == 'Servicio de Transporte Público'){
-        $scope.div_ruta = true;
-        $scope.div_nom_conductor =false;
-      }else if(data == 'Servicio de Radio Taxi'){
-        $scope.div_ruta = false;
-        $scope.div_nom_conductor =true;
-      }else{
-        $scope.div_ruta = false;
-        $scope.div_nom_conductor =false;
-      }
-    }
-    $scope.operadorRadiotaxis = function(){
-      var datosP = new buscaOperadorRadioTaxi();
-      datosP.listaOperadorRadioTaxi(function(resultado){
-        data = JSON.parse(resultado);
-        console.log("operadorRadiotaxis",data);
-        $scope.aListadoOperadorTaxi = data.success;
-        $scope.aListadoOperadorTaxi = $scope.aListadoOperadorTaxi.data;
-      });
     }
   
   }

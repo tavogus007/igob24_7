@@ -10,6 +10,19 @@
     <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
     <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css" id="toggleCSS" />
+    <!-- librerias del exportar excel-->
+    <script src="../../libs/js/ng-table-export.src.js"></script>
+    <script src="../../libs/js/ng-csv.js"></script>
+    <script src="../../libs/js/ng-csv.min.js"></script>
+    <script src="../../libs/js/angular-sanitize.min.js"></script>
+    <script src="../../libs/js/xlsx.core.min.js"></script>
+    <script src="../../libs/js/jquery.stickytableheaders.js"></script>
+    <!-- end excel-->
+    
+    <!-- Librerias para generar PDF de un HTML-->
+    <script src="../../libs/js/html2canvas.js"></script>
+    <script src="../../libs/js/FileSaver.js"></script>
+        <!-- end HTML a PDF -->
   </head>
 <style>
   #caja {
@@ -186,27 +199,39 @@
                     </div>
                   </div>
                   <div class="col-md-12">&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                  <div class="col-md-12">&nbsp;&nbsp;&nbsp;&nbsp;</div>
                   <div class="col-md-12">
                     <legend class="ng-binding">Vehiculos Registrados: </legend>
                   </div><br>
-                  <div align="right">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#vehiculo" ng-click="crear(1);limpiar();"><i class="fa fa-taxi" style="font-size:20px;color:white;"></i>&nbsp;Nuevo Vehiculo&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                  </div><br> 
+                  <form name="formularioBuscar" readOnly="true" novalidate>
+                    <div class="row" >
+                      <div class="col-md-4">
+                        <div excel-export export-data="exportData" file-name="{{nombreArchivo}}" ></div><br>
+                      </div>
+                      <div class="col-md-4">
+                        <div align="right">
+                          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#vehiculo" ng-click="crear(1);limpiar();"><i class="fa fa-taxi" style="font-size:20px;color:white;"></i>&nbsp;Nuevo Vehiculo&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                   <div class="table-responsive">                                     
-                    <table ng-table="tablaVehiculo" show-filter="true" class="table tableE table-striped table-bordered">
-                      <tr ng-repeat="veh in $data" ng-style="veh.resultado=='vencido' && {'background-color':'#F9B1A7'} || veh.veh_ope_estado_veh =='RECHAZADO' && {'background-color':'#F9B1A7'} ">
+                    <table ng-table="tablaVehiculo" show-filter="true"  id="datatable" class="table tableE table-striped table-bordered">
+                      <tr ng-repeat="veh in $data | filter : searchdata" ng-style="
+                      veh.resultado =='mes' && {'background-color':'#f7f58a'} 
+                      || veh.resultado =='renovar' && {'background-color':'#ffd000'}
+                      || veh.resultado =='vencido' && {'background-color':'#F9B1A7'}
+                      || veh.veh_ope_estado_veh =='RECHAZADO' && {'background-color':'#F9B1A7'} ">
                         <td align="center"  data-title="'Opciones'" style="width:8%">
                           <a  class="btn btn-success btn-circle"  ng-click="registrarObservacion(veh.veh_ope_id,'V');" title="Registrar Observación" ng-show="veh.veh_ope_estado_veh =='APROBADO'"><i class="fa fa-pencil-square-o" style="color:white"></i></a>
-                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(veh.veh_ope_id,'V');" title="Lista Observaciones Vehiculo" ng-show="veh.veh_ope_estado_veh =='APROBADO' && veh.veh_obs>0"><i class="fa fa-list-ol" style="color:white"></i></a>
+                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(veh.veh_ope_id,'V');" title="Lista Observaciones Vehiculo" ng-show="veh.veh_ope_estado_veh =='APROBADO' && veh.veh_obs > 0 "><i class="fa fa-list-ol" style="color:white"></i></a>
                           <a  class="btn btn-danger btn-circle"  ng-click="eliVehiculo(veh.veh_ope_id);" title="Eliminar Vehiculo" ng-show="veh.veh_ope_estado_veh =='APROBADO' || veh.veh_ope_estado_veh =='RECHAZADO'" ><i class="fa fa-trash-o" style="color:white"></i></a>
-                          <a  class="btn btn-warning btn-circle"  ng-click="renovacionTmov(veh)" title="Renovación de TMOV" ng-show="veh.resultado=='vencido' || veh.veh_ope_estado_veh =='RECHAZADO' "><i class="fa fa-refresh" style="color:white" ></i></a>
+                          <a  class="btn btn-warning btn-circle"  ng-click="renovacionTmov(veh)" title="Renovación de TMOV" ng-show="veh.resultado =='renovar' || veh.resultado =='vencido' || veh.veh_ope_estado_veh =='RECHAZADO' "><i class="fa fa-refresh" style="color:white" ></i></a>
                         </td>
-                        <td align="center" data-title="'#'" style="width:2%">{{$index+1}} {{}}</td>
+                        <td align="center" data-title="'#'" style="width:2%">{{veh.ynro}}</td>
                         <td class="text-center" style="width:12%" data-title="'Oficina'" sortable="'RO_NOM_SUC'" ng-show ="datos.RO_MOD_VALUE==1">
                           {{veh.veh_datos.RO_NOM_SUC}}
                         </td> 
-                        <td class="text-center" style="width:10%" data-title="'Placa'" sortable="'veh_placa'" filter="{'veh_placa':'text'}">
+                        <td class="text-center" style="width:10%" data-title="'Placa'" sortable="'veh_placa'" filter="{'veh_placa':'text'}" >
                           {{veh.veh_placa}}
                         </td>                      
                         <td class="text-center" style="width:5%" data-title="'Modelo'" sortable="'RO_MOD_V'" >
@@ -221,7 +246,7 @@
                         <td class="text-center" style="width:8%" data-title="'Color'" sortable="'RO_COLOR_V'" >
                           {{veh.veh_datos.RO_COLOR_V}}
                         </td>
-                        <td class="text-center" style="width:8%" data-title="'Estado'" sortable="'veh_ope_estado_veh'" filter="{'veh_ope_estado_veh':'text'}">
+                        <td class="text-center" style="width:8%" data-title="'Estado'" sortable="'veh_ope_estado_veh'" filter="{'veh_ope_estado_veh':'text'}" >
                           {{veh.veh_ope_estado_veh}}
                         </td>
                         <td class="text-center" style="width:10%" data-title="'Fecha de Vencimiento TMOV'">
@@ -675,6 +700,7 @@
                       </div>
                     </div>
                   </div>
+
                   <div class="modal fade" id="registraObservaciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
@@ -683,7 +709,7 @@
                           <h2 class="modal-title" id="myModalLabel"><strong>Registrar Observación</strong></h2>
                         </div>
                         <div class="modal-body">
-                            <label control-label">Observación:</label>
+                            <label control-label>Observación:</label>
                             <textarea id="obs" name="obs" ng-model="datosObs.obs" class="form-control"></textarea>
                         </div>
                         <div class="modal-footer">
@@ -692,41 +718,119 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="modal fade" id="CambioVehiculoconductor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                          <h2 class="modal-title" id="myModalLabel"><strong>Cambio de Vehiculo del Conductor</strong></h2>
+                        </div>
+                        <div class="modal-body">
+                          
+                          <div class="controls">
+                            <div class="col-md-12">
+                              <h3><label for="url" >Datos Personales</label></h3>
+                            </div> 
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label class="control-label">Nombre:</label>
+                                <div class="controls">
+                                  <input id="RO_NOM_C" name="RO_NOM_C" type="text"  class="form-control" placeholder="Nombre" ng-disabled="true" ng-model="datosd.RO_NOM_C"  onkeyup="validaLetras(this);"   />
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label class="control-label">Primer Apellido:</label>
+                                <div class="controls">
+                                  <input id="RO_PAT_C" name="RO_PAT_C" type="text"  class="form-control" placeholder="Primer Apellido" ng-disabled="true" ng-model="datosd.RO_PAT_C"   onkeyup="validaLetras(this);" />
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                <label class="control-label">Segundo Apellido:</label>
+                                <div class="controls">
+                                  <input id="RO_MAT_C" name="RO_MAT_C" type="text"  class="form-control" placeholder="Segundo Apellido" ng-disabled="true" ng-model="datosd.RO_MAT_C"  onkeyup="validaLetras(this);" />
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label class="control-label">Placa de vehículo:</label>
+                                <select 
+                                    ng-options="vehic_vi.veh_placa as vehic_vi.veh_placa for vehic_vi in objVehiculos | orderBy:'veh_placa':asc | filter:vehic_vi.veh_ope_estado_veh='!RECHAZADO'| filter:vehic_vi.nro_placa_asig='no'"
+                                    ng-model="datosd.PLACA"
+                                    id="PLACA"
+                                    name="PLACA"
+                                    ng-change=""
+                                    required>
+                                    <option value="">Seleccionar</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button ng-click="cambiar_placa(datosd);" type="button" class="btn btn-primary"><i class="fa fa-save"></i>Guardar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="col-md-12">
                     <legend class="ng-binding">Conductores Registrados: </legend>
                   </div>
-                  <div align="right">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalConductor" ng-click="crearCond(1);"><i class="fa fa-male" style="font-size:20px;color:white;"></i>&nbsp;Nuevo Conductor&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
-                  </div><br>
+                  <form name="formularioBuscar" readOnly="true" novalidate>
+                    <div class="row" >
+                      <div class="col-md-4">
+                        <div excel-export export-data="exportDataConductores" file-name="{{nombreConductores}}"></div><br>
+                      </div>
+                      <div class="col-md-4">
+                        <div align="right">
+                          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalConductor" ng-click="crearCond(1);"><i class="fa fa-male" style="font-size:20px;color:white;"></i>&nbsp;Nuevo Conductor&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                   <div class="table-responsive">
                     <table ng-table="tablaConductor" show-filter="true" class="table tableE table-striped table-bordered">
-                      <tr ng-repeat="cond in $data" ng-style="cond.resultado=='vencido' && {'background-color':'#F9B1A7'} || cond.cond_ofi_estado_doc=='RECHAZADO' && {'background-color':'#F9B1A7'}">
+                      <tr ng-repeat="cond in $data | filter : search" ng-style="
+                      cond.resultado =='mes' && {'background-color':'#f7f58a'} 
+                      || cond.resultado =='renovar' && {'background-color':'#ffd000'}
+                      || cond.resultado =='vencido' && {'background-color':'#F9B1A7'}
+                      || cond.cond_ofi_estado_doc=='RECHAZADO' && {'background-color':'#F9B1A7'}">
                         <td align="center"  data-title="'Opciones'" style="width:10%">
                           <a  class="btn btn-success btn-circle"  ng-click="registrarObservacion(cond.cond_ofi_id,'C');" title="Registrar Observación" ng-show="cond.cond_ofi_estado_doc=='APROBADO'"><i class="fa fa-pencil-square-o" style="color:white"></i></a>
-                          <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(cond.cond_ofi_id,'C');" title="Lista Observaciones Conductor" ng-show="cond.cond_ofi_estado_doc=='APROBADO' && cond.cond_obs >0"><i class="fa fa-list-ol" style="color:white"></i></a>
+                          <div ng-show="cond.cond_obs >0">
+                            <a  class="btn btn-primary btn-circle"  ng-click="listaObservaciones(cond.cond_ofi_id,'C');" title="Lista Observaciones Conductor" ng-show="(cond.cond_ofi_estado_doc=='APROBADO'|| cond.cond_ofi_estado_doc=='RECHAZADO'|| cond.cond_ofi_estado_doc=='EN PROCESO') "><i class="fa fa-list-ol" style="color:white"></i></a>
+                          </div>
                           <a class="btn btn-danger btn-circle"  ng-click="eliminarCond(cond.cond_ofi_id)" title="Elimina Conductor" ng-show="cond.cond_ofi_estado_doc=='APROBADO' || cond.cond_ofi_estado_doc=='RECHAZADO'"><i class="fa fa-trash-o" style="color:white"></i></a> 
-                          <a  class="btn btn-warning btn-circle"  ng-click="renovacionTic(cond)" title="Renovación de TIC" ng-show="cond.resultado=='vencido' || cond.cond_ofi_estado_doc=='RECHAZADO' "><i class="fa fa-refresh" style="color:white" ></i></a>
+                          <a  class="btn btn-warning btn-circle"  ng-click="renovacionTic(cond)" title="Renovación de TIC" ng-show="cond.resultado =='renovar' || cond.resultado =='vencido' || cond.cond_ofi_estado_doc=='RECHAZADO' "><i class="fa fa-refresh" style="color:white" ></i></a>
+                          <a  class="btn btn-success btn-circle"  ng-click="cambiarVehiculo(cond)" title="Cabiar Vehiculo" ><i class="fa fa-car" style="color:white"></i></a>
                         </td>
-                        <td align="center" data-title="'#'" style="width:2%">{{$index+1}}</td>
+                        <td align="center" data-title="'#'" style="width:2%">{{cond.ynro}}</td>
                         <td class="text-center" style="width:12%" data-title="'Oficina-Macro'" sortable="'RO_NOM_SUC'"  ng-show="datos.RO_MOD_VALUE == 1">
                           {{cond.cond_datos.RO_NOM_SUC}}
                         </td> 
-                        <td class="text-center" style="width:8%" data-title="'CI'" sortable="'cond_ci'" filter="{'cond_ci':'text'}">
+                        <td class="text-center" style="width:8%" data-title="'CI'" sortable="'cond_ci'" filter="{'cond_ci':'text'}" >
                           {{cond.cond_ci}}
                         </td>                      
-                        <td class="text-center" style="width:8%" data-title="'Placa'" sortable="'PLACA'">
-                          {{cond.cond_datos.PLACA}}
+                        <td class="text-center" style="width:8%" data-title="'Placa'" sortable="'placa'" filter="{'placa':'text'}" >
+                          {{cond.placa}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Nombre'" sortable="'RO_NOM_C'">
-                          {{cond.cond_datos.RO_NOM_C}}
+                        <td class="text-center" style="width:10%" data-title="'Nombre'" sortable="'ro_nom_c'" filter="{'ro_nom_c':'text'}" >
+                          {{cond.ro_nom_c}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Paterno'" sortable="'RO_PAT_C'">
-                          {{cond.cond_datos.RO_PAT_C}}
+                        <td class="text-center" style="width:10%" data-title="'Paterno'" sortable="'ro_pat_c'"  filter="{'ro_pat_c':'text'}" >
+                          {{cond.ro_pat_c}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Materno'" sortable="'RO_MAT_C'">
-                          {{cond.cond_datos.RO_MAT_C}}
+                        <td class="text-center" style="width:10%" data-title="'Materno'" sortable="'ro_mat_c'"  filter="{'ro_mat_c':'text'}">
+                          {{cond.ro_mat_c}}
                         </td>
-                        <td class="text-center" style="width:10%" data-title="'Estado'" sortable="'cond_ofi_estado_doc'" filter="{'cond_ofi_estado_doc':'text'}">
+                        <td class="text-center" style="width:10%" data-title="'Estado'" sortable="'cond_ofi_estado_doc'" filter="{'cond_ofi_estado_doc':'text'}" >
                           {{cond.cond_ofi_estado_doc}}
                         </td>
                         <td class="text-center" style="width:11%" data-title="'Fecha de Vencimiento TIC'">
@@ -789,7 +893,7 @@
                                     <label class="control-label">Placa de vehículo:</label>
                                     <div class="controls">
                                       <select class="js-example-basic-single form-control"
-                                          ng-options="vehic_vi.veh_placa as vehic_vi.veh_placa for vehic_vi in objVehiculos"
+                                          ng-options="vehic_vi.veh_placa as vehic_vi.veh_placa for vehic_vi in objVehiculos | orderBy:'veh_placa':asc | filter:vehic_vi.veh_ope_estado_veh='!RECHAZADO'| filter:vehic_vi.nro_placa_asig='no'  "
                                           ng-model="datos.PLACA"
                                           id="PLACA"
                                           name="PLACA"

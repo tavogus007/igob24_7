@@ -2,6 +2,7 @@ function denunciaOperadorRadioTaxiFuncion($scope, $rootScope, $routeParams, $loc
   var sIdCiudadano= sessionService.get('IDSOLICITANTE');
   $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
   $scope.oidCiu = sessionService.get('IDSOLICITANTE');
+  console.log("$sope_datos",$scope.datos);
   $scope.datos = {};
   $scope.ocultaTipo = false;
   $scope.desabilitado = false;
@@ -43,6 +44,7 @@ function denunciaOperadorRadioTaxiFuncion($scope, $rootScope, $routeParams, $loc
       }
     }
     datos.Tipo_tramite_creado = "WEB";
+    console.log(datos,"99999999");
     try {
       var datosSerializados   =  JSON.stringify(datos);
       var idCiudadano         = sessionService.get('IDSOLICITANTE');
@@ -202,6 +204,7 @@ function denunciaOperadorRadioTaxiFuncion($scope, $rootScope, $routeParams, $loc
       data = JSON.parse(resultado);
       if(data.success.length > 0){
         $scope.aMacrodistritos = data.success;
+        console.log("macro", $scope.aMacrodistritos);
       }else{
           $scope.msg = "Error !!";
       }
@@ -212,6 +215,7 @@ function denunciaOperadorRadioTaxiFuncion($scope, $rootScope, $routeParams, $loc
     var datosP = new buscaOperadorRadioTaxi();
     datosP.listaOperadorRadioTaxi(function(resultado){
       data = JSON.parse(resultado);
+      console.log("operadorRadiotaxis",data);
       $scope.aListadoOperadorTaxi = data.success;
       $scope.aListadoOperadorTaxi = $scope.aListadoOperadorTaxi.data;
     });
@@ -237,6 +241,7 @@ function denunciaOperadorRadioTaxiFuncion($scope, $rootScope, $routeParams, $loc
           data = JSON.parse(resultado);
           if(data.success.length > 0){
             $scope.aDistritoZona = data.success;
+            console.log("zonassss",$scope.aDistritoZona);
           }else{
             $scope.msg = "Error !!";
           } 

@@ -291,6 +291,25 @@ verifPlaca.prototype.verificaPlaca = function (functionResp) {
   ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
 };
 
+function SamverifPlaca(){
+  this.id_operador;
+  this.id_tipo;
+  this.id_marca;
+  this.placa_mov;
+} 
+SamverifPlaca.prototype.SambuscaVehiculo = function (functionResp) {
+  urlComp = "/SambuscaVehiculo";
+  typeCall = "post";
+  dataParams = {
+    'id_operador':this.id_operador,
+    'id_tipo':this.id_tipo,
+    'id_marca':this.id_marca,
+    'placa_mov':this.placa_mov
+  };
+  ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
+};
+
+
 function claseVehiculo(){
   this.tipo;
 

@@ -12,6 +12,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function(event, data){
       $scope.datos = JSON.parse(data);
       if($scope.datos.File_Adjunto == undefined){
+        console.log($scope.datos.File_Adjunto);
         $scope.datos.File_Adjunto = [];
         $scope.datos.valPlaca = 2;
 
@@ -34,6 +35,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
   
     //////////////////////////GUARDA TRAMITE//////////////////////
     $scope.guardar_tramite = function(datos){
+      console.log("datos",datos);
       if(datos.valPlaca == 0){
         datos.Tipo_tramite_creado = "WEB";
         try {
@@ -51,6 +53,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
             results = JSON.parse(results);
             results = results.success;
             if(results.length > 0){
+              //$scope.tramitesCiudadano();
               alertify.success("Formulario almacenado");
               document.getElementById('gu').disabled=false;     
               $.unblockUI();
@@ -121,6 +124,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
         datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
         datos.g_tipo_tramite = 'DEV_PLA_';
         datos.vtra_id = sessionService.get('IDTRAMITE');
+        console.log($scope.datos,'datossss');
         data_form = JSON.stringify(datos);
         var tramite = new crearTramiteMovilidad();
         tramite.usr_id = 1;    
@@ -157,6 +161,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
             text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2>\n',
             html: true,
             type: 'success',
+            //timer: 5000,
           });
           $scope.tramitesCiudadano();
           $scope.desabilitado = true;
@@ -218,11 +223,13 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
         if(typeof(archivo) != 'undefined'){
           descDoc = 'Requisito_Devolucion_Placas'+idFiles;
           var imagenNueva = archivo.name.split('.');
+          console.log('aArchivos',imagenNueva);
           var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
           if (archivo.size > 500000 && archivo.size <= 15000000) {
             if (imagenNueva[imagenNueva.length-1] == "png" || imagenNueva[imagenNueva.length-1] == "jpg" || imagenNueva[imagenNueva.length-1] == "jpeg" || imagenNueva[imagenNueva.length-1] == "bmp" || imagenNueva[imagenNueva.length-1] == "gif" || 
               imagenNueva[imagenNueva.length-1] == "PNG" || imagenNueva[imagenNueva.length-1] == "JPG" || imagenNueva[imagenNueva.length-1] == "JPEG" || imagenNueva[imagenNueva.length-1] == "BMP" || imagenNueva[imagenNueva.length-1] == "GIF") {
               var filecompress = compressImage(archivo).then(function(respuestaFile){
+                console.log('respuestaFile',respuestaFile);
                 var imagenFile = respuestaFile.name.split('.');
                 var tipoFile = imagenFile[1];
                 var nombreNuevo = descDoc + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
@@ -251,6 +258,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
                   document.getElementById('txt_f01_upload'+idFiles[key]).value = nombreFileN;
                   $.unblockUI();
               } else{
+                console.log(imagenNueva[1]);
                 if (imagenNueva[imagenNueva.length-1] == 'pdf' ||  imagenNueva[imagenNueva.length-1] == 'docx' ||  imagenNueva[imagenNueva.length-1] == 'docxlm' ||
                   imagenNueva[imagenNueva.length-1] == 'PDF' ||  imagenNueva[imagenNueva.length-1] == 'DOCX' ||  imagenNueva[imagenNueva.length-1] == 'DOCXLM' ) {
                   fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
@@ -270,6 +278,7 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
           }
         }else{
         }
+        console.log("flavia",archivo);
       });
     };
 
@@ -294,8 +303,11 @@ function devolucionPlacasController($scope, $rootScope, $routeParams, $location,
       var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual  + '/'+ nombreFileN + "?app_name=todoangular";
       var descrip =  document.getElementById('lbl_f01_upload'+idFile).innerHTML;
       descrip = descrip.replace("\n","");
+      console.log(uploadUrl);
       var myJSON = '{ "url":"' + uploadUrl + '", "campo":"' + nombreFileN + '", "idRequisito":'+idFile+',"desc":"'+descrip+'"}';
+      console.log("uno",myJSON);
       $scope.datos.File_Adjunto[idFile] = JSON.parse(myJSON);
+      console.log($scope.datos.File_Adjunto);
     }
   
   /////////////////////////////////////////////VALIDACION PLACA/////////////////////////////

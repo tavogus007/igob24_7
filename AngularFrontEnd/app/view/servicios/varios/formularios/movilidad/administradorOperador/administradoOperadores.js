@@ -1,4 +1,5 @@
-function administracionOperadoresController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
+function administracionOperadoresController($scope, $rootScope, $routeParams, $location,$window, $http, Data, sessionService,CONFIG, LogGuardarInfo, $sce, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, $timeout, obtFechaCorrecta,$route, obtFechaActual,fileUpload1) {
+  
   var sIdCiudadano= sessionService.get('IDSOLICITANTE');
   $scope.tablaTramites        =   {};
   $scope.tramitesUsuario      =   [];
@@ -7,6 +8,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   $scope.lista = false;
   $scope.registro = false;
   $scope.datos = {};
+  $scope.datosd = {};
   $scope.objVehiculos = [];
   $scope.objConductores = [];
   $scope.desabilita = false;
@@ -24,6 +26,16 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     $scope.seleccionarTramite();
     $scope.getComboMarcaMovilidad();
     $scope.macrodistritos();
+    var fecha= new Date();
+    var mes=fecha.getMonth()+1;
+    if(mes.toString().length==1)
+        mes='0'+mes;
+    var dia=fecha.getDate();
+    if(dia.toString().length==1)
+        dia='0'+dia;
+    $scope.fechactual=fecha.getFullYear() + "-" + mes + "-" + dia ;
+    $scope.nombreArchivo = "reporteVehiculos_" + $scope.fechactual; 
+    $scope.nombreConductores = "reporteConductores_" + $scope.fechactual; 
   };
 
   $scope.seleccionarTramite = function(){
@@ -66,15 +78,15 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   });
 
   $scope.seleccionarOperador = function(ope){
-    $.blockUI({ css: { 
-      border: 'none', 
-      padding: '10px', 
-      backgroundColor: '#000', 
-      '-webkit-border-radius': '10px', 
-      '-moz-border-radius': '10px', 
-      opacity: .5, 
-      color: '#fff' 
-    },message: "Espere un momento por favor ..." }); 
+    $.blockUI({ css: {
+      border: 'none',
+      padding: '10px',
+      backgroundColor: '#000',
+      '-webkit-border-radius': '10px',
+      '-moz-border-radius': '10px',
+      opacity: .5,
+      color: '#fff'
+    },message: "Espere un momento por favor ..." });
     setTimeout(function(){
       /*var act = new actualizaEstadoVehCond();
       act.ope_id = ope.xope_id;
@@ -96,8 +108,8 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       $.unblockUI();
     },200);
   }
-
-//********************Vehiculo*****************************************
+  
+  //********************Vehiculo*****************************************
   $scope.listaVeh = function (){
     var veh = new listaVehiculo();
     veh.ope_id = $scope.datos.ope_id; 
@@ -126,6 +138,34 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       var orderedData = params.sorting() ?
       $filter('orderBy')(filteredData, params.orderBy()) :
       $scope.$scope.objVehiculos;
+      $scope.exportData = [];
+      $scope.exportData.push(["Nro", "OPERADOR", "Placa",  "Modelo", "Tipo", "Marca", "Color", "Estado", "Fecha de Vencimiento TMOV","Ultimo Tramite Enviado","Observaciones"]);
+      angular.forEach(orderedData, function(value, key) {
+        var veh_ope_vigencia_a = ''
+        if(value.veh_ope_vigencia_a==null){
+          veh_ope_vigencia_a='';
+        }else{
+          veh_ope_vigencia_a = (value.veh_ope_vigencia_a.split('T'))[0]
+        }
+        var  veh_ope_nro_tramite = ''
+        if(value.veh_ope_nro_tramite==null){
+          veh_ope_nro_tramite='';
+        }else{
+          veh_ope_nro_tramite = value.veh_ope_nro_tramite
+        }
+        $scope.exportData.push([(key+1),
+          value.veh_datos.RO_NOM_SUC,
+          value.veh_placa,
+          value.veh_datos.RO_MOD_V,
+          value.veh_datos.RO_TIP_V,
+          value.veh_datos.RO_MAR_V,
+          value.veh_datos.RO_COLOR_V,
+          value.veh_ope_estado_veh,
+          veh_ope_vigencia_a,
+          veh_ope_nro_tramite,
+          JSON.stringify(value.yobserv)
+        ]);
+      });
       params.total(orderedData.length);
       $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
     }
@@ -207,9 +247,34 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
               $scope.botonC = "ne";
               $scope.desabilitaCon = true;
             }else{
-             alertify.success('Registre los datos del vehículo');
-              $scope.botonV = "new";
-              $scope.desabilitaVeh = false;
+              var samverif = new SamverifPlaca();
+              samverif.id_operador='null';
+              samverif.id_tipo='null';
+              samverif.id_marca='null';
+              samverif.placa_mov=placa;
+              samverif.SambuscaVehiculo(function(results){
+                results = JSON.parse(results).success.data[0];
+                if(typeof results === 'undefined') {
+                  alertify.success('Registre los datos del vehículo');
+                  $scope.botonV = "new";
+                  $scope.desabilitaVeh = false;
+                }else{
+                  if(results.tiposervicio_id == 2){
+                    $scope.botonV = "455";
+                    swal({
+                      title: "",
+                      text: "La Placa "+results.placa+' ya fue registrada como TAXI en fecha '+results.yopmov_modificado.split('T')[0] +', en el operador '+results.nombre_operador,
+                      imageUrl: '../../img/error.jpg'
+                    });
+                    $('#vehiculo').modal('hide');
+                    $scope.desabilitaVeh = true;
+                  }else{
+                    alertify.success('Registre los datos del vehículo');
+                    $scope.botonV = "new";
+                    $scope.desabilitaVeh = false;
+                  }
+                }
+              }); 
             }
           })
         }
@@ -392,15 +457,15 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       && $scope.datos.RO_NRO_POO!=''&&$scope.datos.RO_NRO_POO!=undefined)
     {
       $('#vehiculo').modal('hide');
-      $.blockUI({ css: { 
-        border: 'none', 
-        padding: '10px', 
-        backgroundColor: '#000', 
-        '-webkit-border-radius': '10px', 
-        '-moz-border-radius': '10px', 
-        opacity: .5, 
-        color: '#fff' 
-        },message: "Espere un momento por favor ..." }); 
+      $.blockUI({ css: {
+        border: 'none',
+        padding: '10px',
+        backgroundColor: '#000',
+        '-webkit-border-radius': '10px',
+        '-moz-border-radius': '10px',
+        opacity: .5,
+        color: '#fff'
+      },message: "Espere un momento por favor ..." });
       setTimeout(function(){
         try {
           if($scope.datos.RO_MOD_VALUE==1){
@@ -719,7 +784,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       }
     })
   }
-
+  
   $scope.tablaConductor = new ngTableParams({
     page: 1,
     count: 10,
@@ -734,6 +799,34 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
       var orderedData = params.sorting() ?
       $filter('orderBy')(filteredData, params.orderBy()) :
       $scope.$scope.objConductores;
+      $scope.exportDataConductores = [];
+      $scope.exportDataConductores.push(["Nro", "Oficina-Macro","CI", "Placa",  "Nombre", "Paterno", "Materno", "Estado", "Fecha de Vencimiento TIC", "Ultimo Tramite Enviado","Observaciones"]);
+      angular.forEach(orderedData, function(value, key) {
+        var cond_ofi_vigencia_a = ''
+        if(value.cond_ofi_vigencia_a==null){
+          cond_ofi_vigencia_a='';
+        }else{
+          cond_ofi_vigencia_a = (value.cond_ofi_vigencia_a.split('T'))[0]
+        }
+        var  cond_ofi_nro_tramite = ''
+        if(value.cond_ofi_nro_tramite==null){
+          cond_ofi_nro_tramite='';
+        }else{
+          cond_ofi_nro_tramite = value.cond_ofi_nro_tramite
+        }
+        $scope.exportDataConductores.push([(key+1),
+          value.cond_datos.RO_NOM_SUC,
+          value.cond_ci,
+          value.cond_datos.PLACA,
+          value.cond_datos.RO_NOM_C,
+          value.cond_datos.RO_PAT_C,
+          value.cond_datos.RO_MAT_C,
+          value.cond_ofi_estado_doc,
+          cond_ofi_vigencia_a,
+          cond_ofi_nro_tramite,
+          JSON.stringify(value.yobserv)
+        ]);
+      });
       params.total(orderedData.length);
       $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
     }
@@ -978,6 +1071,38 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     $('#registraObservaciones').modal('show');
   }
 
+  $scope.cambiarVehiculo = function(vehi){
+    $scope.datosd = vehi;
+    $scope.datosd.PLACA=vehi.cond_datos.PLACA;
+    $scope.datosd.RO_NOM_C=vehi.cond_datos.RO_NOM_C;
+    $scope.datosd.RO_PAT_C=vehi.cond_datos.RO_PAT_C;
+    $scope.datosd.RO_MAT_C=vehi.cond_datos.RO_MAT_C;
+    $('#CambioVehiculoconductor').modal('show');
+  }
+
+  $scope.cambiar_placa = function(vehit){
+    $scope.datosd.cond_datos.PLACA = $scope.datosd.PLACA;
+    var datosCond = new conductor();
+    datosCond.id = $scope.datosd.xcond_id;
+    datosCond.ope_id = $scope.datosd.cond_ofi_id_ope;
+    datosCond.ci = $scope.datosd.cond_ci;
+    datosCond.datos = JSON.stringify($scope.datosd.cond_datos);
+    datosCond.usr_id = 1; 
+    datosCond.ofi_id = $scope.datosd.cond_ofi_id_oficina; 
+    datosCond.tipo_ser = 1; 
+    datosCond.opcion = 'A';
+    datosCond.conductorAbm(function(data){
+      data = JSON.parse(data).success.data[0];
+      if(data.sp_abm_operador_conductor == 'Actualizado'){
+        $('#CambioVehiculoconductor').modal('hide');
+        $scope.listaCond();
+        $scope.seleccionarOperador($scope.datosd.cond_ofi_id_ope);
+      }
+    })
+    
+  }
+
+
   $scope.eliObservacion = function(id){
     swal({
       title: "¿Esta Seguro de Eliminar el Registro?",
@@ -1126,7 +1251,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
     setTimeout(function(){
       swal({
         title: "¿Esta seguro/a que quiere iniciar el proceso de renovación de TMOV?",
-        text: "Tenga en cuenta que una vez iniciada la solicitud se debe llevar el vehiculo a que pase la inspección vehicular en el lapso de 10 días calendario.",
+        text: "Tenga en cuenta que una vez iniciada la solicitud se debe llevar el vehiculo a que pase la inspección vehicular en el lapso de 10 días hábiles.",
         type: "warning",
         showCancelButton: true,
         cancelButtonText: "Cancelar",
@@ -1213,7 +1338,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
   $scope.renovacionTic = function(cond){ 
     swal({
       title: "¿Esta seguro/a que quiere iniciar el proceso de renovación de TIC?",
-      text: "Tenga en cuenta que una vez iniciada la solicitud el conductor se debe presentar su documentación en el lapso de 10 días calendario.",
+      text: "Tenga en cuenta que una vez iniciada la solicitud el conductor se debe presentar su documentación en el lapso de 10 días hábiles.",
       type: "warning",
       showCancelButton: true,
       cancelButtonText: "Cancelar",
@@ -1278,6 +1403,7 @@ function administracionOperadoresController($scope, $rootScope, $routeParams, $l
                     results = JSON.parse(results).success.data;
                     if(results.length > 0){
                       $scope.listaCond ();
+                      $scope.listaVeh();
                       $scope.actualizaTramiteIgob(nro_tramite,nrot);
                       swal({
                         title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',

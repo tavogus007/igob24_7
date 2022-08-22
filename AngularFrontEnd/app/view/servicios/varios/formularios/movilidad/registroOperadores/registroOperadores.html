@@ -24,7 +24,6 @@
     <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
     <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script>
     <script type="text/javascript" src="../../libs/Librerias/file_saver/file_saver.js"></script>
-    
 
   </head>
 <style>
@@ -194,6 +193,7 @@ function validaLetras(campo){
 
 function validaNumero(campo){
   var num = campo.value;
+  console.log('num',num);
   numRegex = /^[0-9]+$/;
   if (numRegex.test(num)) {
   }
@@ -319,6 +319,25 @@ function validaSuperficie(sup)
         </div>
       </div>
     </div>
+    <!--div class="col-md-12" ng-show="mostrarTipo">
+      <div class="panel panel-default">
+        <div class="container"> 
+          <div class="col-md-12" >
+            <div class="form-group" >
+              <font color="#FF0000" size="4px"> * </font>     
+              <label for="url" >Tipo de Solicitud:</label>
+              <div class="controls">
+                <select id="RO_TIP_SOL" class="form-control" ng-model="datos.RO_TIP_SOL" ng-disabled="desabilita" name="RO_TIP_SOL" >
+                  <option value="">Seleccionar</option>
+                  <option value="1">Nueva Habilitación  de Operador</option>
+                  <option value="2">Modificación de Operador</option> 
+                </select>
+              </div>
+            </div>
+          </div>                   
+        </div><br>
+      </div>
+    </div-->
     <div ng-show="mostrar_form_ope == true" class="col-lg-12">
       <div  class="ibox-content" id="caja"> 
         <div  class="row">                
@@ -804,8 +823,7 @@ function validaSuperficie(sup)
                                     <select
                                     id="RO_MAC_OF"
                                     name="RO_MAC_OF"
-                                    placeholder="Macrodistrito" 
-                                    ng-model="datos.RO_MAC_OF"
+                                    placeholder="Macrodistrito" ng-model="datos.RO_MAC_OF"
                                     class="form-control"
                                     ng-disabled="desabilitadoO || desabilitado"
                                     ng-change="distritoZonas(datos.RO_MAC_OF);"
@@ -952,12 +970,9 @@ function validaSuperficie(sup)
                               <div class="col-md-4">
                                 <div class="form-group">
                                   <font color="#FF0000" size="4px"> * </font>
-                                  <label for="url" >Espacios Reales Disponibles en Garaje: </label>
+                                  <label for="url" >Espacios Reales Disponibles en Garage: </label>
                                   <div class="form-controls">
-                                    <input id="RO_ESP_DIS" type="number" ng-keyup="validaEspacios(datos.RO_ESP_DIS);" min="1" max="" name="RO_ESP_DIS" style="text-transform:uppercase;" ng-model="datos.RO_ESP_DIS" ng-disabled="desabilita" class="form-control" required>
-                                    <span style="color:red" ng-show="mensaje">
-                                      <span>Espacios deben ser mayor o igual a: {{espaciosDisponibles}}</span>
-                                  </span>
+                                    <input id="RO_ESP_DIS" type="number" onkeyup="validaNumero(this);" min="1" max="" name="RO_ESP_DIS" style="text-transform:uppercase;" ng-model="datos.RO_ESP_DIS" ng-disabled="desabilita" class="form-control" required>
                                   </div>
                                 </div>
                               </div>
@@ -1167,14 +1182,14 @@ function validaSuperficie(sup)
                             </div>
                             <div class="col-md-6">
                               <div class="form-group custom-upload">
-                                <input type="file" id="f01_upload{{data.resid}}" ng-disabled="desabilita" name="f01_upload{{data.resid}}" uploader-model="f01_upload{{data.resid}}" style="display: none;">
+                                <input type="file" id="f01_upload{{data.resid}}" ng-disabled="desabilita" name="f01_upload{{data.resid}}" accept="image/*"  style="display: none;">
                                 <div class="input-group">
                                   <input id="txt_f01_upload{{data.resid}}" ng-disabled="true" ng-model = "fileArRequisitos['f01_upload'+data.resid].campo" name="txt_f01_upload{{data.resid}}" type="text" placeholder="{{data.resvalor}}" class="form-control input-lg"  required>
                                   <span class="input-group-btn">
                                     <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
                                       <button id="btn_f01_ver{{data.resid}}" class="browse btn btn-success input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                     </a>
-                                    <button ng-disabled="desabilita" id="btn_f01_upload{{data.resid}}" ng-click="ejecutarFile('f01_upload' + data.resid)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                    <button ng-disabled="desabilita" id="btn_f01_upload{{data.resid}}" ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                   </span>
                                 </div>
                               </div>
@@ -1297,35 +1312,14 @@ function validaSuperficie(sup)
                             <div class="form-group">
                               <label class="control-label">Radicatoria:</label>
                               <div class="controls">
-                                <select id="RO_RAD_V1" name="RO_RAD_V1" ng-model="datos.RO_RAD_V1" class="form-control" ng-change="registraOtraRadicaoria(datos.RO_RAD_V1);" required ng-disabled="desabilita || desabilitaVeh">
-                                    <!--option value="">--Seleccione--</option>
+                                <select id="RO_RAD_V1" name="RO_RAD_V1" ng-model="datos.RO_RAD_V1" class="form-control"  required ng-disabled="desabilita || desabilitaVeh">
+                                    <option value="">--Seleccione--</option>
                                     <option value="LA PAZ">LA PAZ</option>
                                     <option value="EL ALTO">EL ALTO</option>
-                                    <option value="OTRO">OTRO</option-->
-
-                                    <option value="">--Seleccione--</option>
-                                      <option value="LA PAZ">LA PAZ</option>
-                                      <option value="EL ALTO">EL ALTO</option>
-                                      <option value="COCHABAMBA">COCHABAMBA</option>
-                                      <option value="SANTA CRUZ">SANTA CRUZ</option>
-                                      <option value="CHUQUISACA">CHUQUISACA</option>
-                                      <option value="TARIJA">TARIJA</option>
-                                      <option value="POTOSI">POTOSI</option>
-                                      <option value="ORURO">ORURO</option>
-                                      <option value="BENI">BENI</option>
-                                      <option value="PANDO">PANDO</option>
                                 </select>
                               </div>
                             </div>                                                    
                           </div>
-                          <!--div class="col-md-3" ng-show = "datos.RO_MOD==3 || datos.RO_MOD==4 || datos.RO_MOD==5 || datos.RO_MOD==6">
-                            <div class="form-group">
-                              <label class="control-label">Lugar de Radicatoria:</label>
-                              <div class="controls">
-                                <input type="text" id="RO_OTRA_RAD1" name="RO_OTRA_RAD1" ng-model="datos.RO_OTRA_RAD1" class="form-control" required ng-disabled="desabilita || desabilitaVeh"/>
-                              </div>
-                            </div>
-                          </div-->
                         </div> 
                         <div class="col-md-12">
                           <h3 class="col-md-12">Datos de Propietario/Poseedor</h3><br>
@@ -1377,31 +1371,31 @@ function validaSuperficie(sup)
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Nombre:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <input id="RO_NOM_P1" name="RO_NOM_P1" type="text"  class="form-control" placeholder="Nombre" ng-model="datos.RO_NOM_P1"  onkeyup="validaLetras(this);mayus(this);" required ng-disabled="desabilita || desabilitaVeh" />
                                     </div>
                                   </div>
                                 </div>
                                 <div class="col-md-3">
                                   <div class="form-group">
-                                    <label class="control-label">Primer Apellido:</label>
-                                    <div class="controls">
+                                    <label class="control-label">Paterno:</label>
+                                    <div class="input-group col-md-12">
                                       <input id="RO_PAT_P1" name="RO_PAT_P1" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_P1"  onkeyup="validaLetras(this);mayus(this);" required ng-disabled="desabilita || desabilitaVeh" />
                                     </div>
                                   </div>
                                 </div>
                                 <div class="col-md-3">
                                   <div class="form-group">
-                                    <label class="control-label">Segundo Apellido:</label>
-                                    <div class="controls">
-                                      <input id="RO_MAT_P1" name="RO_MAT_P1" type="text" class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_P1" onkeyup="validaLetras(this);mayus(this);"  ng-disabled="desabilita || desabilitaVeh"/>
+                                    <label class="control-label">Materno:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_MAT_P1" name="RO_MAT_P1" type="text" class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_P1" onkeyup="validaLetras(this);mayus(this);" required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
                                 </div>  
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Celular:</label>
-                                      <div class="controls input-group col-md-12">  
+                                      <div class="input-group col-md-12">  
                                         <input id="RO_CEL_P1" name="RO_CEL_P1" type="number"  class="form-control" placeholder="Celular" ng-model="datos.RO_CEL_P1"  required ng-disabled="desabilita || desabilitaVeh" ng-keyup="validaCelular(datos.RO_CEL_P1, 'valida21', 'RO_CEL_P1');"/><span class="input-group-addon" id="valida21" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_P1 >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
                                       </div>
                                   </div>
@@ -1409,7 +1403,7 @@ function validaSuperficie(sup)
                                 <div class="col-md-3">
                                   <div class="form-group" >
                                     <label class="control-label" for="url" >Macrodistrito:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <select id="RO_MAC_P1" 
                                               name="RO_MAC_P1"
                                               placeholder="Macrodistrito" 
@@ -1422,10 +1416,10 @@ function validaSuperficie(sup)
                                     </div>
                                   </div>
                                 </div>                                    
-                                <div class="col-md-3" ng-show="mostrarZonaProp==false">
+                                <div class="col-md-3">
                                   <div class="form-group" >
                                     <label for="url" class="control-label">Zona:</label>
-                                    <div class="controls">  
+                                    <div class="input-group col-md-12">  
                                       <select id="RO_ZONA_P1"
                                               name="RO_ZONA_P1"
                                               placeholder="Distrito - Zona"
@@ -1437,19 +1431,11 @@ function validaSuperficie(sup)
                                       </select>
                                     </div>  
                                   </div>
-                                </div> 
-                                <div class="col-md-3" ng-show="mostrarZonaProp==true">
-                                  <div class="form-group">
-                                    <label class="control-label">Zona:</label>
-                                    <div class="controls">
-                                      <input id="RO_ZONA_P1_OTRO" name="RO_ZONA_P1_OTRO" type="text"  class="form-control" placeholder="Zona" ng-model="datos.RO_ZONA_P1_OTRO"  required ng-disabled="desabilitaVeh" onkeyup="mayus(this);"/>
-                                    </div>
-                                  </div>
-                                </div>                          
+                                </div>                           
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Dirección:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <input id="RO_CALL_P1" name="RO_CALL_P1" type="text"  class="form-control" placeholder="Calle" ng-model="datos.RO_CALL_P1"  onkeyup="mayus(this);" required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
@@ -1457,7 +1443,7 @@ function validaSuperficie(sup)
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Nro:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <input id="RO_NRO_P1" name="RO_NRO_P1" type="number" class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_P1"  required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
@@ -1503,31 +1489,31 @@ function validaSuperficie(sup)
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Nombre:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <input id="RO_NOM_POO1" name="RO_NOM_POO1" type="text"  class="form-control" placeholder="Nombre" ng-model="datos.RO_NOM_POO1" onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
                                 </div>                            
                                 <div class="col-md-3">
                                   <div class="form-group">
-                                    <label class="control-label">Primer Apellido:</label>
-                                    <div class="controls">
+                                    <label class="control-label">Paterno:</label>
+                                    <div class="input-group col-md-12">
                                       <input id="RO_PAT_POO1" name="RO_PAT_POO1" type="text"  class="form-control" placeholder="Paterno" ng-model="datos.RO_PAT_POO1" onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
                                 </div>
                                 <div class="col-md-3">
                                   <div class="form-group">
-                                    <label class="control-label">Segundo Apellido:</label>
-                                    <div class="controls2">
-                                      <input id="RO_MAT_POO1" name="RO_MAT_POO1" type="text"  class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_POO1"   onkeyup="validaLetras(this);"  ng-disabled="desabilita || desabilitaVeh"/>
+                                    <label class="control-label">Materno:</label>
+                                    <div class="input-group col-md-12">
+                                      <input id="RO_MAT_POO1" name="RO_MAT_POO1" type="text"  class="form-control" placeholder="Materno" ng-model="datos.RO_MAT_POO1"   onkeyup="validaLetras(this);" required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
                                 </div>                                                                                                   
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Celular:</label>
-                                      <div class="controls input-group col-md-12">  
+                                      <div class="input-group col-md-12">  
                                         <input id="RO_CEL_POO1" name="RO_CEL_POO1" type="number"  class="form-control" placeholder="Celular" ng-model="datos.RO_CEL_POO1"  required ng-disabled="desabilita || desabilitaVeh" ng-keyup="validaCelular(datos.RO_CEL_POO1, 'valida22', 'RO_CEL_POO1');"/><span class="input-group-addon" id="valida22" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_POO1 >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
                                       </div>
                                   </div>
@@ -1535,7 +1521,7 @@ function validaSuperficie(sup)
                                 <div class="col-md-3">
                                   <div class="form-group" >
                                     <label for="url" class="control-label">Macrodistrito:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <select id="RO_MAC_POO1" 
                                               name="RO_MAC_POO1"
                                               placeholder="Macrodistrito" 
@@ -1548,10 +1534,10 @@ function validaSuperficie(sup)
                                     </div>
                                   </div>
                                 </div>                        
-                                <div class="col-md-3" ng-show="mostrarZonaPoo==false">
+                                <div class="col-md-3">
                                   <div class="form-group" >
                                     <label for="url" class="control-label">Zona:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <select id="RO_ZONA_POO1"
                                               name="RO_ZONA_POO1"
                                               placeholder="Distrito - Zona"
@@ -1563,18 +1549,10 @@ function validaSuperficie(sup)
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-md-3" ng-show="mostrarZonaPoo==true">
-                                  <div class="form-group">
-                                    <label class="control-label">Zona:</label>
-                                    <div class="input-group col-md-12">
-                                      <input id="RO_ZONA_POO1_OTRO" name="RO_ZONA_POO1_OTRO" type="text"  class="form-control" placeholder="Zona" ng-model="datos.RO_ZONA_POO1_OTRO" onkeyup="mayus(this);" required ng-disabled="desabilitaVeh"/>
-                                    </div>
-                                  </div>
-                                </div>
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Dirección:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <input id="RO_CALL_POO1" name="RO_CALL_POO1" type="text"  class="form-control" placeholder="Calle" ng-model="datos.RO_CALL_POO1"  required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
@@ -1582,7 +1560,7 @@ function validaSuperficie(sup)
                                 <div class="col-md-3">
                                   <div class="form-group">
                                     <label class="control-label">Nro:</label>
-                                    <div class="controls">
+                                    <div class="input-group col-md-12">
                                       <input id="RO_NRO_POO1" name="RO_NRO_POO1" type="number"  class="form-control" placeholder="Nro" ng-model="datos.RO_NRO_POO1"   required ng-disabled="desabilita || desabilitaVeh"/>
                                     </div>
                                   </div>
@@ -1678,31 +1656,31 @@ function validaSuperficie(sup)
                           <div class="col-md-3">
                             <div class="form-group">
                               <label class="control-label">Nombre:</label>
-                              <div class="controls">
+                              <div class="input-group col-md-12">
                                 <input id="RO_NOM_C1" name="RO_NOM_C1" type="text"  class="form-control" placeholder="Nombre" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_NOM_C1"  onkeyup="validaLetras(this); mayus(this);" required />
                               </div>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label class="control-label">Primer Apellido:</label>
-                              <div class="controls">
+                              <label class="control-label">Paterno:</label>
+                              <div class="input-group col-md-12">
                                 <input id="RO_PAT_C1" name="RO_PAT_C1" type="text"  class="form-control" placeholder="Paterno" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_PAT_C1"  onkeyup="validaLetras(this); mayus(this);" required />
                               </div>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label class="control-label">Segundo Apellido:</label>
-                              <div class="controls">
-                                <input id="RO_MAT_C1" name="RO_MAT_C1" type="text"  class="form-control" placeholder="Materno" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_MAT_C1"  onkeyup="validaLetras(this); mayus(this);"  />
+                              <label class="control-label">Materno:</label>
+                              <div class="input-group col-md-12">
+                                <input id="RO_MAT_C1" name="RO_MAT_C1" type="text"  class="form-control" placeholder="Materno" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_MAT_C1"  onkeyup="validaLetras(this); mayus(this);" required />
                               </div>
                             </div>
                           </div>   
                           <div class="col-md-3">
                             <div class="form-group">
                               <label class="control-label">Correo:</label>
-                              <div class="controls">
+                              <div class="input-group col-md-12">
                                 <input id="RO_CORR_C1" name="RO_CORR_C1" type="text"  class="form-control" ng-disabled="desabilita || desabilitaCon" placeholder="Correo" ng-model="datos.RO_CORR_C1"/>
                               </div>
                             </div>
@@ -1710,7 +1688,7 @@ function validaSuperficie(sup)
                           <div class="col-md-3">
                             <div class="form-group">
                               <label class="control-label">Teléfono:</label>
-                              <div class="controls">
+                              <div class="input-group col-md-12">
                                 <input id="RO_TEL_C1" name="RO_TEL_C1" type="number"  class="form-control" placeholder="Telefono" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_TEL_C1"  />
                               </div>
                             </div>
@@ -1718,15 +1696,15 @@ function validaSuperficie(sup)
                           <div class="col-md-3">
                             <div class="form-group">
                               <label class="control-label">Celular:</label>
-                              <div class="controls input-group col-md-12">
-                                <input id="RO_CEL_C1" name="RO_CEL_C1" type="number"  class="form-control" placeholder="Celular" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_CEL_C1" required />
+                              <div class="input-group col-md-12">
+                                <input id="RO_CEL_C1" name="RO_CEL_C1" type="number"  class="form-control" placeholder="Celular" ng-disabled="desabilita || desabilitaCon" ng-model="datos.RO_CEL_C1" ng-keyup="validaCelular(datos.RO_CEL_C1, 'valida20', 'RO_CEL_C1');" required /><span class="input-group-addon" id="valida20" style = "color:green;font-weight:bold; font-size:12px" ng-show="datos.RO_CEL_C1 >0"><img src="../../img/movilidad/greencheck.png" width="20" height="20"></span>
                               </div>
                             </div>
                           </div> 
                           <div class="col-md-3">
                             <div class="form-group" >
                               <label class="control-label" for="url" >Macrodistrito:</label>
-                              <div class="controls">
+                              <div class="input-group col-md-12">
                                 <select id="RO_MAC_C1" 
                                         name="RO_MAC_C1"
                                         placeholder="Macrodistrito" 
@@ -1740,10 +1718,10 @@ function validaSuperficie(sup)
                               </div>
                             </div>
                           </div>                                                       
-                          <div class="col-md-3" ng-show="mostrarOtraZona == false">
+                          <div class="col-md-3">
                             <div class="form-group" >
                               <label for="url" class="control-label">Zona:</label>
-                              <div class="controls">  
+                              <div class="input-group col-md-12">  
                                 <select id="RO_ZONA_C1"
                                         name="RO_ZONA_C1"
                                         placeholder="Distrito - Zona"
@@ -1758,18 +1736,10 @@ function validaSuperficie(sup)
                               </div>  
                             </div>
                           </div> 
-                          <div class="col-md-3" ng-show="mostrarOtraZona == true">
-                            <div class="form-group" >
-                              <label for="url" class="control-label">Zona:</label>
-                              <div class="controls">
-                                <input id="RO_ZONA_C1_OTRO" name="RO_ZONA_C1_OTRO" type="text"  class="form-control" ng-disabled="desabilitaCon" placeholder="Zona" ng-model="datos.RO_ZONA_C1_OTRO"  style="text-transform:uppercase;" required />
-                              </div>
-                            </div>
-                          </div>
                           <div class="col-md-3">
                             <div class="form-group">
                               <label class="control-label">Calle:</label>
-                              <div class="controls">
+                              <div class="input-group col-md-12">
                                 <input id="RO_CALL_C1" name="RO_CALL_C1" type="text"  class="form-control" ng-disabled="desabilita || desabilitaCon" placeholder="Calle" ng-model="datos.RO_CALL_C1"   required />
                               </div>
                             </div>
@@ -1777,7 +1747,7 @@ function validaSuperficie(sup)
                           <div class="col-md-3">
                             <div class="form-group">
                               <label class="control-label">Nro:</label>
-                              <div class="controls">
+                              <div class="input-group col-md-12">
                                 <input id="RO_NRO_C1" name="RO_NRO_C1" type="number"  class="form-control" ng-disabled="desabilita || desabilitaCon" placeholder="Nro" ng-model="datos.RO_NRO_C1" required />
                               </div>
                             </div>
@@ -2079,36 +2049,16 @@ function validaSuperficie(sup)
                                 <div class="form-group">
                                   <label class="control-label">Radicatoria:</label>
                                   <div class="controls">
-                                    <select id="RO_RAD_V" name="RO_RAD_V" ng-model="datos.RO_RAD_V" class="form-control" ng-change="registraOtraRadicaoria(datos.RO_RAD_V);" required ng-disabled="desabilitaVeh">
-                                        <!--option value="">--Seleccione--</option>
+                                    <select id="RO_RAD_V" name="RO_RAD_V" ng-model="datos.RO_RAD_V" class="form-control"  required ng-disabled="desabilitaVeh">
+                                        <option value="">--Seleccione--</option>
                                         <option value="LA PAZ">LA PAZ</option>
                                         <option value="EL ALTO">EL ALTO</option>
-                                        <option value="OTRO">OTRO</option-->
-
-                                      <option value="">--Seleccione--</option>
-                                      <option value="LA PAZ">LA PAZ</option>
-                                      <option value="EL ALTO">EL ALTO</option>
-                                      <option value="COCHABAMBA">COCHABAMBA</option>
-                                      <option value="SANTA CRUZ">SANTA CRUZ</option>
-                                      <option value="CHUQUISACA">CHUQUISACA</option>
-                                      <option value="TARIJA">TARIJA</option>
-                                      <option value="POTOSI">POTOSI</option>
-                                      <option value="ORURO">ORURO</option>
-                                      <option value="BENI">BENI</option>
-                                      <option value="PANDO">PANDO</option>
+                                        <option value="OTRO">OTRO</option>
                                     </select>
                                     <span id ="" style = "color:red;font-weight:bold; font-size:9px"></span>
                                   </div>
                                 </div>                                                    
                               </div>
-                              <!--div class="col-md-4" ng-show="MostrarOR">
-                                <div class="form-group">
-                                  <label class="control-label">Lugar de Radicatoria:</label>
-                                  <div class="controls">
-                                    <input type="text" id="RO_OTRA_RAD" name="RO_OTRA_RAD" ng-model="datos.RO_OTRA_RAD" class="form-control"  onkeyup="mayus(this)" required ng-disabled="desabilita || desabilitaVeh"/>
-                                  </div>
-                                </div>
-                              </div-->
                             </div> 
                             <div class="col-md-12">
                               <div class="col-sm-12">
@@ -2129,7 +2079,7 @@ function validaSuperficie(sup)
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">C.I.:</label>
                                           <div class="col-sm-9">
-                                          <input id="RO_CI_P" name="RO_CI_P" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_P"  onkeyup="mayus(this)" ng-disabled="desabilitaVeh"  /></div>
+                                          <input id="RO_CI_P" name="RO_CI_P" type="number"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_P" ng-disabled="desabilitaVeh"  /></div>
                                       </div>
                                     </div>
                                     <div class="col-sm-5">  
@@ -2255,7 +2205,7 @@ function validaSuperficie(sup)
                                     <div class="form-group">
                                       <label class="col-sm-3 control-label">C.I.:</label>
                                         <div class="col-sm-9">
-                                        <input id="RO_CI_POO" name="RO_CI_POO" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_POO" onkeyup="mayus(this)" ng-disabled="desabilitaVeh" /></div>
+                                        <input id="RO_CI_POO" name="RO_CI_POO" type="text"  class="form-control" placeholder="Carnet de Identidad" ng-model="datos.RO_CI_POO" ng-disabled="desabilitaVeh" /></div>
                                     </div>
                                   </div>
                                   <div class="col-sm-5">  

@@ -11,7 +11,9 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.chk_act_eco_dis = true;
     $scope.chk_act_eco = true;
     $scope.LIC_FUN_SHOW = false;
+    $scope.LIC_FUN_SHOW_SW = false;
     $scope.CERT_SEG_PRIV = false;
+    $scope.TMOV = false;
     $scope.des_servicio_uno = false;
     $scope.des_servicio_dos = false;
     $scope.des_servicio_tres = false;
@@ -19,28 +21,34 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.des_servicio_cinco = false;
     $scope.div_motivo = false;
     $scope.tipoactividad = {};
-    $scope.tipoactividad = JSON.parse('[{"nombre":"EPSAS","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"DELAPAZ","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"LA PAZ LIMPIA","cantidad":15, "lf": 0, "cer":1, "req_nom":1},{"nombre":"YPFB","cantidad":2, "lf": 0, "cer":1, "req_nom":1},{"nombre":"Empresas de telecomunicaciones","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Medios de comunicación","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Instituciones Públicas","cantidad":3, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Instituciones Privadas","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Entidades Bancarias","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Funerarias","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Hoteles","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Empresas de turismo","cantidad":1, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Lineas aéreas","cantidad":2, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Empresas de seguridad privada","cantidad":1, "lf": 0, "cer":0, "req_nom":0},{"nombre":"Embajadas","cantidad":1, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Empresas de radio taxis","cantidad":7, "lf": 0, "cer":1, "req_nom":0},{"nombre":"Sindicato de taxis(Constituidos como operadores)","cantidad":7, "lf": 1, "cer":1, "req_nom":0},{"nombre":"Sindicato COTRANSTUR","cantidad":20, "lf": 1, "cer":1, "req_nom":1},{"nombre":"Persona Natural","cantidad":1, "lf": 1, "cer":1, "req_nom":1}]');
+    $scope.tipoactividad = JSON.parse('[{"nombre": "EPSAS","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "DELAPAZ","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "LA PAZ LIMPIA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "YPFB","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Medios de comunicación","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Públicas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Privadas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Entidades Bancarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Funerarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Hoteles","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Turismo","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Lineas Aéreas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de seguridad privada","lf": 0,"cer": 0,"tmov": 1,"req_nom": 0},{"nombre": "Embajadas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Radio Taxis","lf": 0,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato de taxis(Constituidos como operadores)","lf": 1,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato COTRANSTUR","lf": 1,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "TERSA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Empresas Privadas de Transporte de Pasajeros (Constituidas como operadores)","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Particulares","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Empresas de delivery","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0}]');
     $scope.tipovehiculo_privado = {};
     $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"MOTOCICLETA"}]');
     $scope.div_escoger_servicio = false;
 
 
     // requisitos de documentos adjuntos al formulario ******************************************************************************
-    $scope.singular_Titulo = 'Adjunte los siguientes documentos (En formato PDF, DOC, PNG, JPEG, JPG)';
+    $scope.singular_Titulo = 'IMPORTANTE: Recuerde que la otorgación del permiso excepcional de circulación por el día del peatón y la Madre tierra está sujeto a análisis y solo se otorgarán en casos de emergencia relacionados a salud, traslado de y hacia el aeropuerto, vehículos oficiales y casos especiales debidamente justificados y respaldados. ';
     $scope.plural_Titulo = 'Adjunte los siguientes documentos para cada requisito en un solo archivo (En formato PDF o DOC)';
 
-    $scope.singular_Nota = 'Nota dirigida al Ing. Rodrigo Mollo, Secretario Municipal de Movilidad, explicando las razones de la solicitud y adjuntando respaldos que justifiquen la misma';
+    $scope.singular_Nota = 'Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez, Secretario Municipal de Movilidad, justificando las razones de la solicitud y adjuntando los respaldos correspondientes';
+    $scope.singular_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o representante legal, además adjuntar la fotocopia del conductor o los conductores en caso de que la solicitud sea para varios vehículos';
+    $scope.singular_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03, con radicatoria en el Municipio de La Paz o radicatoria en los Municipios colindantes en caso de brindar un servicio interciudad';
+    $scope.singular_tmov='Tarjeta Municipal de Operación Vehicular (T.M.O.V.) emitida al Servicio Público de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
+    $scope.singular_tic='Tarjeta de Identificación del Conductor (T.I.C.) emitida al Servicio de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
+    $scope.singular_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal vigente, para el caso entidades Bancarias, Medios de Comunicación, Líneas Aéreas, Empresas de Turismo, Hoteles, Empresas de Seguridad Privada, Funerarias y demás actividades económicas (Si corresponde)';
+    $scope.singular_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana, para el caso de empresas de seguridad (Si corresponde)';
+    $scope.singular_roseta = 'Roseta Ambiental emitida por la Secretaría Municipal de Gestión Ambiental y Energías Renovables';
 
-    $scope.singular_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03';
-    $scope.singular_CeId = 'Fotocopia de Cédula de Identidad vigente del Solicitante y del/los conductores.';
-    $scope.singular_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal';
-    $scope.singular_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana';
-
-    $scope.plural_Nota = 'Nota dirigida al Ing. Rodrigo Mollo, Secretario Municipal de Movilidad, explicando las razones de la solicitud y adjuntando respaldos que justifiquen la misma';
-    $scope.plural_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03 DE TODOS VEHÍCULOS';
-    $scope.plural_CeId = 'Fotocopia de Cédula de Identidad vigente del Solicitante y del/los conductores.';
-    $scope.plural_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal';
-    $scope.plural_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana';
+    $scope.plural_Nota = 'Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez, Secretario Municipal de Movilidad, justificando las razones de la solicitud y adjuntando los respaldos correspondientes';
+    $scope.plural_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o representante legal, además adjuntar la fotocopia del conductor o los conductores en caso de que la solicitud sea para varios vehículos';
+    $scope.plural_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03, con radicatoria en el Municipio de La Paz o radicatoria en los Municipios colindantes en caso de brindar un servicio interciudad';
+    $scope.plural_tmov='Tarjeta Municipal de Operación Vehicular (T.M.O.V.) emitida al Servicio Público de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
+    $scope.plural_tic='Tarjeta de Identificación del Conductor (T.I.C.) emitida al Servicio de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
+    $scope.plural_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal vigente, para el caso entidades Bancarias, Medios de Comunicación, Líneas Aéreas, Empresas de Turismo, Hoteles, Empresas de Seguridad Privada, Funerarias y demás actividades económicas (Si corresponde)';
+    $scope.plural_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana, para el caso de empresas de seguridad (Si corresponde)';
+    $scope.plural_roseta = 'Roseta Ambiental emitida por la Secretaría Municipal de Gestión Ambiental y Energías Renovables';
+    
     /*
     $scope.singular_Respaldo = 'ADJUNTAR RESPALDO DEL MOTIVO DE LA SOLICITUD';
     $scope.singular_Soat = 'ADJUNTE EL DOCUMENTO DEL SOAT ';
@@ -63,13 +71,20 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.tituloLicencia = $scope.singular_Licencia;
     $scope.tituloCerti = $scope.singular_Certi;
 
+    $scope.titulotmov = $scope.plural_tmov;
+    $scope.titulotic = $scope.plural_tic;
+    $scope.tituloroseta = $scope.plural_roseta;
+    
+
     // fin de documentos adjuntos ***************************************************************************************************
 
     $scope.tituloPrincipal = $scope.singular_Titulo;
     $scope.validadorPlaca = 0;
 
     $scope.inicio = function () {
+        $scope.getComboMarcaMovilidad();
     }
+
     var clsValidarBtnEnviar = $rootScope.$on('inicializarVista', function (event, data) {
         $("#valida").hide();
         $("#valida1").hide();
@@ -100,6 +115,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             $scope.des_servicio_cinco = false;
         }
         document.getElementById('gu').disabled = true;
+        
         $scope.$apply();
         setTimeout(function () {
             iniciarLoadFyle();
@@ -171,14 +187,22 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             var encabezado = [];
             var indice = 1;
             var dataInf = [];
-            encabezado[0] = { "tipo": "GRD", "campos": "Nro|tipo_vehiculo|c_placa|c_carnet|", "titulos": "Nro|Tipo de Vehículo|Placa|Carnet de Identidad", "impresiones": "true|true|true|true|true|true|true|true|true|false" };
+            encabezado[0] = { "tipo": "GRD", "campos": "Nro|tipo_vehiculo|c_placa|c_clase|c_marca|c_color|c_carnet|c_nombre|c_ape_primer|c_ape_segundo|c_cat_licencia|c_estado|", "titulos": "Nro|Tipo de Vehículo|Placa|Clase|Marca|Color|Carnet de Identidad|Nombre|Primer apellido|Segundo Apellido|Estado", "impresiones": "true|true|true|true|true|true|true|true|true|true|false" };
             for (var i = 0; i < $scope.trmAutos.length; i++) {
                 dataInf.push($scope.trmAutos[i]);
                 $scope.INF_GRILLA.push({
                     Nro: i + 1,
                     tipo_vehiculo: $scope.trmAutos[i].tipo_vehiculo,
                     c_placa: $scope.trmAutos[i].placa,
+                    c_clase: $scope.trmAutos[i].clase,
+                    c_marca: $scope.trmAutos[i].marca,
+                    c_color: $scope.trmAutos[i].color,
                     c_carnet: $scope.trmAutos[i].CI,
+                    c_nombre: $scope.trmAutos[i].nombre,
+                    c_ape_primer: $scope.trmAutos[i].ape_primer,
+                    c_ape_segundo: $scope.trmAutos[i].ape_segundo,
+                    c_cat_licencia: $scope.trmAutos[i].cat_licencia,
+                    c_estado: 0,
                 });
             }
             angular.forEach($scope.INF_GRILLA, function (value, key) {
@@ -201,6 +225,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                     results = results.success.data[0].crea_tramite_linea;
                     $scope.validarFormProcesos(results);
                     $.unblockUI();
+                    
                 } else {
                     alertify.error("Señor(a) Ciudadano(a) ocurrio un error al enviar su Tramité.",);
                     $.unblockUI();
@@ -221,10 +246,21 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             tramiteIgob.validarFormProcesos(function (resultado) {
                 swal({
                     title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-                    text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2><br>“SU SOLICITUD SERA ATENDIDA EN UN PLAZO DE 2 DÍAS HÁBILES”',
+                    text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2><br>“EN CASO DE QUE SU SOLICITUD SE APRUEBE, LE LLEGARÁ A SU BANDEJA DE NOTIFICACIONES EN IGOB EN ENLACE PARA QUE PUEDA DESCARGAR E IMPRIMIR EL PERMISO DE CIRCULACIÓN. EN CASO DE QUE SU SOLICITUD SEA RECHAZADA SE LE ENVIARÁ A SU BANDEJA DE NOTIFICACIONES EN IGOB LA RAZÓN DEL RECHAZO DE TRÁMITE. <br> SU SOLICITUD SERA ATENDIDA EN UN PLAZO DE 2 DÍAS HÁBILES”',
                     html: true,
                     type: 'success',
+                },function(isConfirm){
+                    console.log("isConfirm");
+                    console.log(isConfirm);
+                    if (isConfirm) {
+                        var currentLocation = window.location;
+                        var hrdato =  currentLocation.href
+                        const hrdatos = hrdato.split("#");
+                        var htldata = hrdatos[0]+"#servicios|varios|index.html?url=\'app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html\'";
+                        document.location.href=htldata;
+                    }
                 });
+                //document.location.href="/#dashboard";
                 $scope.tramitesCiudadano();
                 $scope.desabilitado = true;
                 $scope.botones = null;
@@ -235,16 +271,15 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         }
     };
     $scope.ejecutarFile = function (idfile) {
-
+        console.log("ejecutarFile");
+        console.log(idfile);
         setTimeout(function () {
-
             var sid = document.getElementById(idfile);
             if (sid) {
                 document.getElementById(idfile).click();
             } else {
                 alert("Error ");
             }
-
         }, 1000);
     };
     $scope.cambiarFile = function (obj, valor) {
@@ -268,28 +303,31 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             var sDirTramite = sessionService.get('IDTRAMITE');
             var uploadUrl = CONFIG.APIURL + "/files/RC_CLI/" + oidCiudadano + "/" + sDirTramite + "/";
 
-            if (nombre == 'FILE_CeId' && (typeof (obj.files[0]) != 'undefined')) {
+            if (nombre == 'FILE_Nota' && (typeof (obj.files[0]) != 'undefined')) {
                 var nomdocumento = obj.files[0].name;
                 var docextension = nomdocumento.split('.');
                 var ext_doc = docextension[docextension.length - 1].toLowerCase();
                 if (arraydoc.indexOf(ext_doc) >= 0) {
                     if (objarchivo.size <= 1000000) {
                         var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
-                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
-                        $scope.datos.FILE_CeId = nombreNuevo;
-                        $scope.FILE_CeId = objarchivo;
+                        console.log(objarchivo);
+                        console.log(uploadUrl);
+                        console.log(nombreNuevo);
+                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo); // error  yvan 
+                        $scope.datos.FILE_Nota = nombreNuevo;
+                        $scope.FILE_Nota = objarchivo;
                         document.getElementById("txt_" + nombre).value = nombreNuevo;
                         document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                        $scope.btover3 = "mostrar";
+                        $scope.btover11 = "mostrar";
                     } else if (objarchivo.size > 1000000 && objarchivo.size <= 15000000) {
                         var zipcir = new JSZip();
                         zipcir.file(nomdocumento, objarchivo);
                         zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
                             var nombreNuevo = nombre + fechaNueva + '.zip';
                             fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
-                            $scope.datos.FILE_CeId = nombreNuevo;
-                            $scope.FILE_CeId = blobcir;
-                            $scope.btover3 = "mostrar";
+                            $scope.datos.FILE_Nota = nombreNuevo;
+                            $scope.FILE_Nota = blobcir;
+                            $scope.btover11 = "mostrar";
                         });
                         $.unblockUI();
                     } else {
@@ -299,8 +337,8 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_CeId = "";
-                        $scope.FILE_CeId = "";
+                        $scope.datos.FILE_Nota = "";
+                        $scope.FILE_Nota = "";
                         $.unblockUI();
                     }
 
@@ -359,7 +397,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                     $.unblockUI();
                 }
             }
-            if (nombre == 'FILE_Nota' && (typeof (obj.files[0]) != 'undefined')) {
+            if (nombre == 'FILE_CeId' && (typeof (obj.files[0]) != 'undefined')) {
                 var nomdocumento = obj.files[0].name;
                 var docextension = nomdocumento.split('.');
                 var ext_doc = docextension[docextension.length - 1].toLowerCase();
@@ -367,20 +405,20 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                     if (objarchivo.size <= 1000000) {
                         var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
                         fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
-                        $scope.datos.FILE_Nota = nombreNuevo;
-                        $scope.FILE_Nota = objarchivo;
+                        $scope.datos.FILE_CeId = nombreNuevo;
+                        $scope.FILE_CeId = objarchivo;
                         document.getElementById("txt_" + nombre).value = nombreNuevo;
                         document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                        $scope.btover11 = "mostrar";
+                        $scope.btover3 = "mostrar";
                     } else if (objarchivo.size > 1000000 && objarchivo.size <= 15000000) {
                         var zipcir = new JSZip();
                         zipcir.file(nomdocumento, objarchivo);
                         zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
                             var nombreNuevo = nombre + fechaNueva + '.zip';
                             fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
-                            $scope.datos.FILE_Nota = nombreNuevo;
-                            $scope.FILE_Nota = blobcir;
-                            $scope.btover11 = "mostrar";
+                            $scope.datos.FILE_CeId = nombreNuevo;
+                            $scope.FILE_CeId = blobcir;
+                            $scope.btover3 = "mostrar";
                         });
                         $.unblockUI();
                     } else {
@@ -390,8 +428,100 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Nota = "";
-                        $scope.FILE_Nota = "";
+                        $scope.datos.FILE_CeId = "";
+                        $scope.FILE_CeId = "";
+                        $.unblockUI();
+                    }
+
+                } else {
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    document.getElementById("txt_" + nombre).value = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+            }
+            if (nombre == 'FILE_TMOV' && (typeof (obj.files[0]) != 'undefined')) {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if (arraydoc.indexOf(ext_doc) >= 0) {
+                    if (objarchivo.size <= 1000000) {
+                        var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                        $scope.datos.FILE_TMOV = nombreNuevo;
+                        $scope.FILE_TMOV = objarchivo;
+                        document.getElementById("txt_" + nombre).value = nombreNuevo;
+                        document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        $scope.btover5 = "mostrar";
+                    } else if (objarchivo.size > 1000000 && objarchivo.size <= 15000000) {
+                        var zipcir = new JSZip();
+                        zipcir.file(nomdocumento, objarchivo);
+                        zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                            var nombreNuevo = nombre + fechaNueva + '.zip';
+                            fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_TMOV = nombreNuevo;
+                            $scope.FILE_TMOV = blobcir;
+                            $scope.btover5 = "mostrar";
+                        });
+                        $.unblockUI();
+                    } else {
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                        document.getElementById("txt_" + nombre).value = "";
+                        document.getElementById("href_" + nombre).href = "";
+                        $scope.registroAdj.adjunto = '';
+                        $scope.adjunto = '';
+                        valor = '';
+                        $scope.datos.FILE_TMOV = "";
+                        $scope.FILE_TMOV = "";
+                        $.unblockUI();
+                    }
+
+                } else {
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    document.getElementById("txt_" + nombre).value = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+            }
+            if (nombre == 'FILE_TIC' && (typeof (obj.files[0]) != 'undefined')) {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if (arraydoc.indexOf(ext_doc) >= 0) {
+                    if (objarchivo.size <= 1000000) {
+                        var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                        $scope.datos.FILE_TIC = nombreNuevo;
+                        $scope.FILE_TIC = objarchivo;
+                        document.getElementById("txt_" + nombre).value = nombreNuevo;
+                        document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        $scope.btover9 = "mostrar";
+                    } else if (objarchivo.size > 1000000 && objarchivo.size <= 15000000) {
+                        var zipcir = new JSZip();
+                        zipcir.file(nomdocumento, objarchivo);
+                        zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                            var nombreNuevo = nombre + fechaNueva + '.zip';
+                            fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                            $scope.datos.FILE_TIC = nombreNuevo;
+                            $scope.FILE_TIC = blobcir;
+                            $scope.btover9 = "mostrar";
+                        });
+                        $.unblockUI();
+                    } else {
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                        document.getElementById("txt_" + nombre).value = "";
+                        document.getElementById("href_" + nombre).href = "";
+                        $scope.registroAdj.adjunto = '';
+                        $scope.adjunto = '';
+                        valor = '';
+                        $scope.datos.FILE_TIC = "";
+                        $scope.FILE_TIC = "";
                         $.unblockUI();
                     }
 
@@ -417,7 +547,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                         $scope.FILE_Licencia = objarchivo;
                         document.getElementById("txt_" + nombre).value = nombreNuevo;
                         document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                        $scope.btover7 = "mostrar";
+                        $scope.btover6 = "mostrar";
                     } else if (objarchivo.size > 1000000 && objarchivo.size <= 15000000) {
                         if (ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
                             var filecompress = compressImage(objarchivo).then(function (respuesta_compres) {
@@ -429,7 +559,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                                 $scope.FILE_Licencia = respuesta_compres;
                                 document.getElementById("txt_" + nombre).value = nombreNuevo;
                                 document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                                $scope.btover7 = "mostrar";
+                                $scope.btover6 = "mostrar";
                             });
                         } else {
                             var zipcir = new JSZip();
@@ -439,7 +569,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                                 fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
                                 $scope.datos.FILE_Licencia = nombreNuevo;
                                 $scope.FILE_Licencia = blobcir;
-                                $scope.btover7 = "mostrar";
+                                $scope.btover6 = "mostrar";
                             });
                             $.unblockUI();
                         }
@@ -523,7 +653,67 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                     $.unblockUI();
                 }
             }
-
+            if (nombre == 'FILE_roseta' && (typeof (obj.files[0]) != 'undefined')) {
+                var nomdocumento = obj.files[0].name;
+                var docextension = nomdocumento.split('.');
+                var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                if (arraydoc.indexOf(ext_doc) >= 0) {
+                    if (objarchivo.size <= 1000000) {
+                        var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+                        fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
+                        $scope.datos.FILE_roseta = nombreNuevo;
+                        $scope.FILE_roseta = objarchivo;
+                        document.getElementById("txt_" + nombre).value = nombreNuevo;
+                        document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                        $scope.btover8 = "mostrar";
+                    } else if (objarchivo.size > 1000000 && objarchivo.size <= 15000000) {
+                        if (ext_doc == "png" || ext_doc == "jpg" || ext_doc == "jpeg") {
+                            var filecompress = compressImage(objarchivo).then(function (respuesta_compres) {
+                                var imagenCir = respuesta_compres.name.split('.');
+                                var tipoCir = imagenCir[1];
+                                var nombreNuevo = nombre + fechaNueva + '.' + tipoCir;
+                                fileUpload1.uploadFileToUrl1(respuesta_compres, uploadUrl, nombreNuevo);
+                                $scope.datos.FILE_roseta = nombreNuevo;
+                                $scope.FILE_roseta = respuesta_compres;
+                                document.getElementById("txt_" + nombre).value = nombreNuevo;
+                                document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
+                                $scope.btover8 = "mostrar";
+                            });
+                        } else {
+                            var zipcir = new JSZip();
+                            zipcir.file(nomdocumento, objarchivo);
+                            zipcir.generateAsync({ type: "blob", compression: "DEFLATE", compressionOptions: { level: 9 } }).then(function (blobcir) {
+                                var nombreNuevo = nombre + fechaNueva + '.zip';
+                                fileUpload1.uploadFileToUrl1(blobcir, uploadUrl, nombreNuevo);
+                                $scope.datos.FILE_roseta = nombreNuevo;
+                                $scope.FILE_roseta = blobcir;
+                                $scope.btover8 = "mostrar";
+                            });
+                            $.unblockUI();
+                        }
+                    } else {
+                        swal('Advertencia', 'El tamaño de la imagen es muy grande', 'error');
+                        document.getElementById("txt_" + nombre).value = "";
+                        document.getElementById("href_" + nombre).href = "";
+                        $scope.registroAdj.adjunto = '';
+                        $scope.adjunto = '';
+                        valor = '';
+                        $scope.datos.FILE_roseta = "";
+                        $scope.FILE_roseta = "";
+                        $.unblockUI();
+                    }
+                } else {
+                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    document.getElementById("txt_" + nombre).value = "";
+                    document.getElementById("href_" + nombre).href = "";
+                    $scope.registroAdj.adjunto = '';
+                    $scope.adjunto = '';
+                    valor = '';
+                    $.unblockUI();
+                }
+            }
+            
+            /*
             if (nombre == 'FILE_imagen' && (typeof (obj.files[0]) != 'undefined')) {
                 var nomdocumento = obj.files[0].name;
                 var docextension = nomdocumento.split('.');
@@ -583,6 +773,8 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
                     $.unblockUI();
                 }
             }
+            */
+            
 
 
         }, 1000);
@@ -597,10 +789,13 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         var datoObjectFile4 = new Object();
         var datoObjectFile5 = new Object();
         var datoObjectFile6 = new Object();
+        var datoObjectFile7 = new Object();
+        var datoObjectFile8 = new Object();
+        
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano;
 
-
+            
         datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_Nota + "?app_name=todoangular";
         datoObjectFile1.campo = $scope.datos.FILE_Nota;
         datoObjectFile1.nombre = $scope.tituloNota;
@@ -613,25 +808,42 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         datoObjectFile3.campo = $scope.datos.FILE_CeId;
         datoObjectFile3.nombre = $scope.tituloCeId;
 
-        datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_Licencia + "?app_name=todoangular";
-        datoObjectFile4.campo = $scope.datos.FILE_Licencia;
-        datoObjectFile4.nombre = $scope.tituloLicencia;
+        datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_TMOV + "?app_name=todoangular";
+        datoObjectFile4.campo = $scope.datos.FILE_TMOV;
+        datoObjectFile4.nombre = $scope.titulotmov;
 
-        datoObjectFile5.url = $rootScope.decJuradaNaturalPermiso;
-        datoObjectFile5.campo = "DECLARACION JURADADA";
-        datoObjectFile5.nombre = 'DECLARACION JURADA';
+        datoObjectFile5.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_TIC + "?app_name=todoangular";
+        datoObjectFile5.campo = $scope.datos.FILE_TIC;
+        datoObjectFile5.nombre = $scope.titulotic;
 
-        datoObjectFile6.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_Certi + "?app_name=todoangular";
-        datoObjectFile6.campo = $scope.datos.FILE_Certi;
-        datoObjectFile6.nombre = $scope.tituloCerti;
+        datoObjectFile6.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_Licencia + "?app_name=todoangular";
+        datoObjectFile6.campo = $scope.datos.FILE_Licencia;
+        datoObjectFile6.nombre = $scope.tituloLicencia;
 
-        datoObjectFiles[0] = datoObjectFile1;
-        datoObjectFiles[1] = datoObjectFile2;
-        datoObjectFiles[2] = datoObjectFile3;
-        datoObjectFiles[3] = datoObjectFile4;
-        datoObjectFiles[4] = datoObjectFile5;
-        datoObjectFiles[5] = datoObjectFile6;
+        datoObjectFile7.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_Certi + "?app_name=todoangular";
+        datoObjectFile7.campo = $scope.datos.FILE_Certi;
+        datoObjectFile7.nombre = $scope.tituloCerti;
 
+        datoObjectFile8.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_roseta + "?app_name=todoangular";
+        datoObjectFile8.campo = $scope.datos.FILE_roseta;
+        datoObjectFile8.nombre = $scope.tituloroseta;
+
+        datoObjectFiles.push(datoObjectFile1); // FILE_Nota
+        datoObjectFiles.push(datoObjectFile2); //FILE_CerPropiedad
+        datoObjectFiles.push(datoObjectFile3); // FILE_CeId
+
+        if($scope.TMOV){
+            datoObjectFiles.push(datoObjectFile4); // FILE_TMOV
+            datoObjectFiles.push(datoObjectFile5); // FILE_TIC
+        }
+        if($scope.LIC_FUN_SHOW){
+            datoObjectFiles.push(datoObjectFile6); // FILE_Licencia
+        }
+        if($scope.CERT_SEG_PRIV){
+            datoObjectFiles.push(datoObjectFile7); // FILE_Certi
+        }
+        datoObjectFiles.push(datoObjectFile8); // FILE_roseta
+        
         $scope.datos.FileDocumentos = datoObjectFiles;
         $rootScope.FileAdjuntos = datoObjectFiles;
         $scope.datos.File_Adjunto = datoObjectFiles;
@@ -684,40 +896,69 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         if ($scope.datos.PER_TRA_REG_TRANS == undefined || $scope.datos.PER_TRA_REG_TRANS == 'undefined') {
             swal('', "Ingrese el tipo de solicitud", 'warning');
             $scope.validadordocs = 1;
-        } else if (($scope.datos.PER_TRA_REG_TRANS == 'OTRO' && $scope.datos.PER_CIR_MOTIVO == undefined) || ($scope.datos.PER_TRA_REG_TRANS == 'OTRO' && $scope.datos.PER_CIR_MOTIVO == 'undefined')) {
-            swal('', "Ingrese el motivo del permiso a solicitar", 'warning');
-            $scope.validadordocs = 1;
-        /*} else if (JSON.stringify($scope.trmAutos) == '[]') {
-            swal('', "Ingrese al menos un vehículo", 'warning');*/
-        } else if ($scope.trmAutos.length == 0 ) {
-            swal('', "Ingrese al menos un vehículo", 'warning');
-            $scope.validadordocs = 1;
-        } else if ($scope.datos.PER_TRA_NUM_CONTACTO == undefined || $scope.datos.PER_TRA_NUM_CONTACTO == 'undefined') {
-            swal('', "Ingrese al menos dos contactos alternativos", 'warning');
-            $scope.validadordocs = 1;
-        } else if ($scope.datos.FILE_Nota == undefined || $scope.datos.FILE_Nota == 'undefined') {
-            swal('', "Ajunte la  Nota dirigida al Ing. Rodrigo Mollo", 'warning');
-            $scope.validadordocs = 1;
-        } else if ($scope.datos.FILE_CerPropiedad == undefined || $scope.datos.FILE_CerPropiedad == 'undefined') {
-            swal('', "Ajunte la Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03", 'warning');
-            $scope.validadordocs = 1;
-        } else if ($scope.datos.FILE_CeId == undefined || $scope.datos.FILE_CeId == 'undefined') {
-            swal('', "Ajunte la Fotocopia de Cédula de Identidad vigente del solicitante o Representante Legal", 'warning');
-            $scope.validadordocs = 1;
         } else {
-            if($scope.datos.PER_TRA_REG_TRANS != 'OTRO'){
-                $scope.datos.PER_CIR_MOTIVO = $scope.datos.PER_TRA_REG_TRANS;
-            }else{
-                $scope.datos.PER_CIR_MOTIVO = $scope.datos.PER_CIR_MOTIVO.toUpperCase();
+            if (($scope.datos.PER_TRA_REG_TRANS == 'OTRO' && $scope.datos.PER_CIR_MOTIVO == undefined) || ($scope.datos.PER_TRA_REG_TRANS == 'OTRO' && $scope.datos.PER_CIR_MOTIVO == 'undefined')) {
+                swal('', "Ingrese el motivo del permiso a solicitar", 'warning');
+                $scope.validadordocs = 1;
+            } else {
+                if ($scope.trmAutos.length == 0 ) {
+                    swal('', "Ingrese al menos un vehículo", 'warning');
+                    $scope.validadordocs = 1;
+                } else {
+                    if ($scope.datos.PER_TRA_NUM_CONTACTO == undefined || $scope.datos.PER_TRA_NUM_CONTACTO == 'undefined') {
+                        swal('', "Ingrese al menos dos contactos alternativos", 'warning');
+                        $scope.validadordocs = 1;
+                    } else {
+                        if ($scope.datos.FILE_Nota == undefined || $scope.datos.FILE_Nota == 'undefined') {
+                            swal('', "Ajunte la  Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez", 'warning');
+                            $scope.validadordocs = 1;
+                        } else {
+                            if ($scope.datos.FILE_CerPropiedad == undefined || $scope.datos.FILE_CerPropiedad == 'undefined') {
+                                swal('', "Ajunte la Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03", 'warning');
+                                $scope.validadordocs = 1;
+                            } else {
+                                if ($scope.datos.FILE_roseta == undefined || $scope.datos.FILE_roseta == 'undefined') {
+                                    swal('', "Roseta Ambiental emitida por la Secretaría Municipal de Gestión Ambiental y Energías Renovables", 'warning');
+                                    $scope.validadordocs = 1;
+                                } else {
+                                    if ($scope.datos.FILE_CeId == undefined || $scope.datos.FILE_CeId == 'undefined') {
+                                        swal('', "Ajunte la Fotocopia de Cédula de Identidad vigente del solicitante o Representante Legal", 'warning');
+                                        $scope.validadordocs = 1;
+                                    } else {
+                                        if($scope.datos.PER_TRA_REG_TRANS != 'OTRO'){
+                                            $scope.datos.PER_CIR_MOTIVO = $scope.datos.PER_TRA_REG_TRANS;
+                                        }else{
+                                            $scope.datos.PER_CIR_MOTIVO = $scope.datos.PER_CIR_MOTIVO.toUpperCase();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }   
             }
         }
         if($scope.lf == 0){
-          if($scope.datos.PER_TRA_REG_TRANS != 'Instituciones Privadas'){
-            if ($scope.datos.FILE_Licencia == undefined || $scope.datos.FILE_Licencia == 'undefined') {
-                swal('', "Adjunte la Fotocopia de Licencia de Funcionamiento Municipal", 'warning');
-                $scope.validadordocs = 1;
+            var control = 0;
+            switch ($scope.datos.PER_TRA_REG_TRANS) {
+                case 'Instituciones Privadas':
+                    control = 1;
+                    break;
+                case 'Particulares':
+                    control = 1;
+                    break;
+                case 'Empresas Privadas de Transporte de Pasajeros (Constituidas como operadores)':
+                    control = 1;
+                    break;
+                default:
+                    break;
             }
-          }
+            if(control == 0){
+                if ($scope.datos.FILE_Licencia == undefined || $scope.datos.FILE_Licencia == 'undefined') {
+                    swal('', "Adjunte la Fotocopia de Licencia de Funcionamiento Municipal", 'warning');
+                    $scope.validadordocs = 1;
+                }
+            }
         }
         if($scope.cer == 0){
           if ($scope.datos.FILE_Certi == undefined || $scope.datos.FILE_Certi == 'undefined') {
@@ -730,6 +971,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         }
     }
     $scope.armarCampos = function (data) {
+        
         var contadorVehiculos = 0;
         for (var i = 0; i < $scope.trmAutos.length; i++) {
             contadorVehiculos++;
@@ -737,9 +979,12 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         data.Tipo_tramite_creado = "WEB";
         data.PER_TRA_NRO_TRAMITE = sessionService.get('IDTRAMITE');
         data.INF_ARRAY_AUTOS = JSON.stringify($scope.trmAutos);
+        console.log(data);
+        
         $scope.guardar_tramite(data);
         $scope.declaracionJurada(data);
         $("#declaracionPERTRA").modal("show");
+        
     }
     $scope.declaracionJurada = function (datos) {
         var fecha = new Date();
@@ -808,17 +1053,30 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         $("#exampleModalCenter1").modal({ backdrop: 'static', keyboard: false });
         $('#msgformularioN').html($scope.msgformularioN);
     }
+
     $scope.adicionarVehiculos = function (data) {
-         if (data == undefined) {
+        if (data == '' || data == undefined) {
             swal('', 'Agrege la informacion para adjuntar los vehículos', 'warning');
         } else if (data.tipo_vehiculo == '' || data.tipo_vehiculo == undefined) {
             swal('', 'Ingrese el Tipo de Vehículo', 'warning');
-        } else if (data.tipo_vehiculo != 'BICICLETA' && data.placa == undefined) {
+        } else if (data.placa == '' || data.placa == undefined) {
             swal('', 'Ingrese la placa del vehículo', 'warning');
-        } else if (data.CI == undefined) {
-            swal('', 'Ingrese el Licencia de Conducir del Conductor', 'warning');
-        } else if (data.CI == undefined) {
-            swal('', 'Ingrese el Carnet del Conductor', 'warning');
+        } else if (data.color == '' || data.color == undefined) {
+            swal('', 'Ingrese la color del vehículo', 'warning');
+        } else if (data.marca == '' || data.marca == undefined) {
+            swal('', 'Ingrese la marca del vehículo', 'warning');
+        } else if (data.clase == '' || data.clase == undefined) {
+            swal('', 'Ingrese la clase del vehículo', 'warning');
+        } else if (data.nombre == '' || data.nombre == undefined) {
+            swal('', 'Ingrese el Nombre', 'warning');
+        } else if (data.ape_primer == '' || data.ape_primer == undefined) {
+            swal('', 'Ingrese el Primer Apellido', 'warning');
+        //} else if (data.ape_segundo == '' || data.ape_segundo == undefined) {
+        //    swal('', 'Ingrese el Segundo Apellido', 'warning');
+        } else if (data.CI == '' || data.CI == undefined) {
+            swal('', 'Ingrese el Numero de Carnet', 'warning');
+        } else if (data.cat_licencia == '' || data.cat_licencia == undefined) {
+            swal('', 'Ingrese la Categoria de Licencia', 'warning');
         } else if ($scope.validadorPlaca != 1) {
             swal('', 'La Placa es incorrecta', 'warning');
         //} else if (data.FILE_imagen == undefined || data.FILE_imagen == 'undefined') {
@@ -826,12 +1084,6 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
         } else {
             $("#valida1").hide();
             $("#valida").hide();
-            $scope.contadormov = $scope.contadormov + 1;
-            if($scope.contadormov <= $scope.cantidadmov){
-                $scope.swcantidadmov = true;
-            }else{
-                $scope.swcantidadmov = false;
-            }
             $scope.datos.PER_TRA_CANT_VEHI_SOL = $scope.trmAutos.length;
             $scope.trmAutos.push(data);
             $scope.tblAutos.reload();
@@ -840,60 +1092,87 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             $scope.titulos($scope.trmAutos.length);
         }
     }
+    
     $scope.eliminarVehiculo = function (datavehivulo) {
-        $scope.contadormov = $scope.contadormov - 1;
-        if($scope.contadormov <= $scope.cantidadmov){
-            $scope.swcantidadmov = true;
-        }else{
-            $scope.swcantidadmov = false;
-        }
         $scope.trmAutos.splice($scope.trmAutos.indexOf(datavehivulo), 1);
         $scope.tblAutos.reload();
         $scope.datos.PER_TRA_CANT_VEHI_SOL = $scope.trmAutos.length;
         $scope.titulos($scope.trmAutos.length);
     }
+
     $scope.dinamicoFormulario = function (dataFormulario) {
-        $scope.trmAutos = [];
-        $scope.datosV = {};
-        $scope.tblAutos.reload();
-        $scope.datos.PER_TRA_CANT_VEHI_SOL = $scope.trmAutos.length;
-        var datosmov = dataFormulario.split('|');
-        $scope.cantidadmov =  datosmov[0];
-        $scope.contadormov = 1;
-        $scope.swcantidadmov = true;
-        $scope.PER_nombre_empresa = '';
-        $scope.lf = datosmov[1];
-        $scope.cer = datosmov[2];
-        $scope.req_nom = datosmov[3];
-        $scope.datos.PER_TRA_REG_TRANS = datosmov[4];
-        if($scope.req_nom == 0){
-          $scope.div_nombre_empresa = true;
+        if (dataFormulario == undefined || dataFormulario == 'undefined') {
+            swal('', "Ingrese el tipo de solicitud", 'warning');
         }else{
-          $scope.div_nombre_empresa = false;
-        }
-        if($scope.lf == 0){
-          $scope.chk_act_eco= true;
-          $scope.LIC_FUN_SHOW = true;
-          $scope.div_empresa_show = true;
-        }else{
-          $scope.chk_act_eco= false;
-          $scope.LIC_FUN_SHOW = false;
-          $scope.div_empresa_show = false;
-        }
-        if($scope.cer == 0){
-          $scope.CERT_SEG_PRIV = true;
-        }else{
-          $scope.CERT_SEG_PRIV = false;
+            $scope.trmAutos = [];
+            $scope.datosV = {};
+            $scope.tblAutos.reload();
+            $scope.datos.PER_TRA_CANT_VEHI_SOL = $scope.trmAutos.length;
+            var datosmov = dataFormulario.split('|');
+            $scope.PER_nombre_empresa = '';
+            $scope.tmov = datosmov[0];
+            $scope.lf = datosmov[1];
+            $scope.cer = datosmov[2];
+            $scope.req_nom = datosmov[3];
+            $scope.datos.PER_TRA_REG_TRANS = datosmov[4];
+            if($scope.req_nom == 0){
+            $scope.div_nombre_empresa = true;
+            }else{
+            $scope.div_nombre_empresa = false;
+            }
+            if($scope.tmov == 0){
+                $scope.TMOV = true;
+            }else{
+                $scope.TMOV = false;
+            }
+            
+            if($scope.datos.PER_TRA_REG_TRANS == 'Instituciones Privadas' || $scope.datos.PER_TRA_REG_TRANS == 'Particulares' || $scope.datos.PER_TRA_REG_TRANS == 'Empresas Privadas de Transporte de Pasajeros (Constituidas como operadores)'){
+                $scope.LIC_FUN_SHOW_SW = true;
+            }else{
+                $scope.LIC_FUN_SHOW_SW = false;
+            }
+            
+            if($scope.lf == 0){
+            $scope.chk_act_eco= true;
+            $scope.LIC_FUN_SHOW = true;
+            $scope.div_empresa_show = true;
+            }else{
+            $scope.chk_act_eco= false;
+            $scope.LIC_FUN_SHOW = false;
+            $scope.div_empresa_show = false;
+            }
+            if($scope.cer == 0){
+            $scope.CERT_SEG_PRIV = true;
+            }else{
+            $scope.CERT_SEG_PRIV = false;
+            }
+
+            if($scope.datos.PER_TRA_REG_TRANS == 'Embajadas'){
+            $("#placa").attr('maxlength','20');
+            }else{
+            $("#placa").attr('maxlength','7');
+            }
         }
 
-        if($scope.datos.PER_TRA_REG_TRANS == 'Embajadas'){
-          $("#placa").attr('maxlength','20');
-        }else{
-          $("#placa").attr('maxlength','7');
-        }
     }
+    
+    $scope.getComboMarcaMovilidad = function(){
+        var marca = new marcaVehiculo();
+        marca.combo_marca_v(function(results){
+            results= JSON.parse(results);
+            if(results!=null)
+            {
+                $scope.obtMarcaMovilidades =results.success.data;
+            }
+            else{
+                $.unblockUI();
+            }
+        });
+    };
 
     $scope.ocultadorRadios = function (data) {
+        console.log("ocultadorRadios");
+        console.log(data);
         if (data.PER_TRA_REG_TRANS == 'SALUD') {
             $scope.des_servicio_uno = false;
             $scope.des_servicio_dos = true;
@@ -966,16 +1245,22 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
             $scope.tituloPrincipal = $scope.plural_Titulo;
             */
             $scope.tituloNota = $scope.plural_Nota;
-            $scope.tituloCerPropiedad = $scope.plural_CerPropiedad;
             $scope.tituloCeId = $scope.plural_CeId;
+            $scope.tituloCerPropiedad = $scope.plural_CerPropiedad;
+            $scope.titulotmov = $scope.plural_tmov;
+            $scope.titulotic = $scope.plural_tic;
             $scope.tituloLicencia = $scope.plural_Licencia;
             $scope.tituloCerti = $scope.plural_Certi;
+            $scope.tituloroseta = $scope.plural_roseta;
         }else{
             $scope.tituloNota = $scope.singular_Nota;
-            $scope.tituloCerPropiedad = $scope.singular_CerPropiedad;
             $scope.tituloCeId = $scope.singular_CeId;
+            $scope.tituloCerPropiedad = $scope.singular_CerPropiedad;
+            $scope.titulotmov = $scope.singular_tmov;
+            $scope.titulotic = $scope.singular_tic;
             $scope.tituloLicencia = $scope.singular_Licencia;
             $scope.tituloCerti = $scope.singular_Certi;
+            $scope.tituloroseta = $scope.singular_roseta;
             /*
             $scope.tituloRespaldo =  $scope.singular_Respaldo;
             $scope.tituloSOAT =  $scope.singular_Soat;

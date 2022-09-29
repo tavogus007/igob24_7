@@ -716,10 +716,11 @@
                         new ol.layer.Group({
                                             title: 'Capas',
                                             layers: [
-                                                      zonas_tributarias_udit,
-                                                      vias_udit,
-                                                      vectorLayerZonas,
-                                                      vectorLayer
+                                                        zonas_seguras_udit,
+                                                        zonas_tributarias_udit,
+                                                        vias_udit,
+                                                        vectorLayerZonas,
+                                                        vectorLayer
                                                     ]
                                           })
                       ],

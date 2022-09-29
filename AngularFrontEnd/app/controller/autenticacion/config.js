@@ -60,7 +60,8 @@ var jsonURLS    =   {
     CONEXION_MOVILIDAD: "http://192.168.5.141:2020/",
     CONEXION_SITV3: "http://192.168.6.111/SITv3Desarrollo/",
     SIT_GEO: "http://192.168.5.84:8080",
-    UDIT_GEO:"http://192.168.6.46:8080/",
+    //UDIT_GEO:"http://192.168.6.46:8080/",
+    UDIT_GEO:"https://ssem.lapaz.bo/",//SALIDA HTTPS
     URL_SITRAM: "http://192.168.5.141",
     CONEXION_SITRAM: "http://192.168.5.141", 
     CONEXION_API_PG_PRODUCTO: "http://192.168.5.141:8010/",

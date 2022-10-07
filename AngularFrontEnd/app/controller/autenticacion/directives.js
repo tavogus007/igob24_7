@@ -47,3 +47,28 @@ app.directive('fileModel', ['$parse', function ($parse) {
         }
     };
 }]);
+
+app.directive('actualizacionClave', ['sessionService', function(sessionService){
+    var svalidacionCiudadano = sessionService.get('USUARIO');
+    return{
+        restrict: 'E',
+        templateUrl: '../../view/autenticacion/partials/cambioPinDP.html',
+        link: function ($scope, $element, $rootScope, sessionService) {
+            try {
+                var consulta = new rcNaturalJuridico();
+                consulta.oid = sessionStorage.getItem('IDUSUARIO');
+                consulta.lst_validar_data_igob(function(results){
+                    var strcDataLogin = JSON.parse(results);
+                    var stcEstadoPin = ((typeof(strcDataLogin[0].dtspsl_actualizacion_pin) == 'undefined' || strcDataLogin[0].dtspsl_actualizacion_pin == null) ? '' : strcDataLogin[0].dtspsl_actualizacion_pin);            
+                    if(stcEstadoPin == "RESET"){
+                        setTimeout(() => {
+                            $("#mdlCambioPin").modal({keyboard: false});                    
+                        }, 2000);
+                    }
+                });                                
+            } catch (error) {
+                console.log("Error al editar informacion:", error);
+            }
+		}
+    };
+}]);

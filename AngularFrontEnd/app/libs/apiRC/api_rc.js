@@ -1882,3 +1882,16 @@ rcJuridico.prototype.crearJuridico_reducido = function (functionResp)
     functionResp(dataResp);
   }
 };
+
+function rcNaturalJuridico(){ 
+  this.oid;
+};
+
+rcNaturalJuridico.prototype.lst_validar_data_igob = function (functionResp){  
+  urlComp = "/lstValidarDatos";
+  typeCall = "post";
+  dataParams = {
+    "oid":  this.oid
+  };
+  ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+}

@@ -87,12 +87,20 @@ function cambioPinController($scope, $rootScope, $routeParams, $location, $http,
                         //swal('', 'Actualizacion correcta', 'success'); 
                         registroLog.almacenarLog(4,$rootScope.vid,0, "se modifico el Pin");  
                         if(sessionService.get('US_EMAIL')==""){
+                            try {
+                                $scope.validarFormulario();
+                            } catch (error) {                                
+                            }
                             var npin = datos.prsPinN;
                             var sms = "_Estimado_Ciudadano_su_Nuevo_PIN_es_:_<b>_" + npin + "_</b>";
                             alertify.success(sms);  
                             //swal('', sms, 'success');
                         } else {
                             $scope.envioMensaje(datos.prsPinN, sessionService.get('US_EMAIL'));
+                            try {
+                                $scope.validarFormulario();
+                            } catch (error) {                                
+                            }
                         }
                         $scope.datos='';
                     } else {
@@ -134,6 +142,18 @@ function cambioPinController($scope, $rootScope, $routeParams, $location, $http,
         //swal('', "Se envió su Nuevo PIN a su correo electrónico", 'success'); 
         $scope.getCaptchasX();
     };
+    //validar formulario desde la directiva
+    $scope.validarFormulario =  function(){
+        try {
+            if($("#mdlCambioPin").length > 0){                
+                setTimeout(() => {
+                    $("#mdlCambioPin").modal('hide');    
+                }, 1000);
+            }
+        } catch (error) {
+            console.log("Hubo un error al realizar la consulta:", error.toString());
+        }       
+    };    
     $scope.$on('api:ready',function(){      
         $scope.getCaptchasX();
     });

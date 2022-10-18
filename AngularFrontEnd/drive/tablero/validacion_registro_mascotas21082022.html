@@ -1,0 +1,64 @@
+<html>
+
+<head>
+  <script   src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+
+
+
+    function ejecutarAjaxMASCOTAS(vUrlComp, vTypeCall, vDataCall, token) {
+      var headers = {};
+      $.ajax({
+        url: urlMaservicio,
+        data: vDataCall,
+        type: "POST",
+        dataType: "json",
+        //crossDomain : true,
+        headers: {
+          'authorization': token
+        },
+        success: function (response) {
+          dataResp = JSON.stringify(response);
+          console.log(dataResp);
+        },
+        error: function (response, status, error) {
+          dataResp = "{\"error\":{\"message\":\"" + response + "\",\"code\":700}}";
+          console.log("error", dataResp);
+          console.log(dataResp);
+        }
+      });
+      //return dataResp;
+    };
+    var urlMaservicio = "https://sierra247.lapaz.bo/MotorServicio/public/api/reglaNegocio/ejecutarWeb";
+    var idtoken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUsImlzcyI6Imh0dHBzOi8vc2llcnJhMjQ3LmxhcGF6LmJvL01vdG9yU2VydmljaW8vcHVibGljL2FwaS9hcGlMb2dpbiIsImlhdCI6MTY2MTA5OTE2NiwiZXhwIjoxNjY2MjgzMTY2LCJuYmYiOjE2NjEwOTkxNjYsImp0aSI6IklXUnpBd0VhU3F6d2ZsakMifQ.nbgE5bF_izH3ST1cCPN_7OQD70UvOB_7EMpJjiB3peM";
+    var stoquenM = 'Bearer ' + idtoken;
+    urlComp = urlMaservicio;
+    typeCall = "post";
+
+    dataParams = {
+      "identificador": "SISTEMA_VALLE-CM-1906",
+      "parametros": '{}'
+    };
+
+    dataParams2 = {
+      "identificador": "SISTEMA_VALLE-CM-1907",
+      "parametros": '{}'
+    };
+
+    ejecutarAjaxMASCOTAS(urlComp, typeCall, dataParams, stoquenM);
+    ejecutarAjaxMASCOTAS(urlComp, typeCall, dataParams2, stoquenM);
+
+
+
+  </script>
+</head>
+
+<body>
+
+
+</body>
+
+</html>

@@ -760,18 +760,27 @@ function RegularizacionController($scope, $rootScope, $routeParams, $location, $
 						$scope.solicitud.idExpedido = '11';
 						if (tipoPersona == 'NATURAL') {
 							$scope.solicitud.tipoPersona = 'NATURAL';
+							$scope.solicitud.solicitante='';
 							if(results[0].dtspsl_nombres){
-								$scope.solicitud.solicitante = results[0].dtspsl_nombres;
 								$scope.solicitud.solicitanteNombre = results[0].dtspsl_nombres;
 							}
+							else{
+								$scope.solicitud.solicitanteNombre ='';
+							}
 							if(results[0].dtspsl_paterno){
-								$scope.solicitud.solicitante = $scope.solicitud.solicitante + ' ' + results[0].dtspsl_paterno;
 								$scope.solicitud.solicitantePaterno = results[0].dtspsl_paterno;
 							}
+							else{
+								$scope.solicitud.solicitantePaterno ='';
+							}
 							if(results[0].dtspsl_materno){
-								$scope.solicitud.solicitante = $scope.solicitud.solicitante + ' ' + results[0].dtspsl_materno;
 								$scope.solicitud.solicitanteMaterno = results[0].dtspsl_materno;
 							}
+							else{
+								$scope.solicitud.solicitanteMaterno ='';
+							}
+							$scope.solicitud.solicitante=$scope.solicitud.solicitanteNombre.trim() + ' '+$scope.solicitud.solicitantePaterno.trim()+' '+$scope.solicitud.solicitanteMaterno.trim();
+
 							$scope.solicitud.idTipoDocumento= 1;
 							$scope.solicitud.numDocumento= results[0].dtspsl_ci;
 							switch(results[0].dtspsl_expedido) {

@@ -4,6 +4,7 @@
 <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/jquery.mustache.js"></script>
 <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/mustache.js"></script>    
 <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/funciones.js"></script>
+<!--script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/tinymce/tinymce.min.js"></script-->
 <script type="text/javascript" src="../../libs/Librerias/tinymce5.4.1/tinymce.min.js"></script>
 <script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
 <link rel="stylesheet" href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
@@ -41,7 +42,6 @@
    pointer-events: none;
   }
   </style> 
-  
 <script type="text/javascript">
     var urlHtmlComponentes =   "../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/componentes.htm";
     var jsonForms  =   jDataFormsLotus;
@@ -58,7 +58,7 @@
         document.getElementById("savedata").disabled = false;
         deshabilitado = "";
     }
-    $.Mustache.load(urlHtmlComponentes).done(function () {                
+    $.Mustache.load(urlHtmlComponentes).done(function () {
         $.each(JSON.parse(jsonForms).formularios[0].campo_descripcion, function(idx,data) {
             if(Object.keys(datos).length == 0){
                 data.valor_campo = svalorJosn[data.campo];
@@ -261,7 +261,7 @@
     <div class="col-md-4" align="right">
         <div class="row" id="botones">
             <div class="col-xs-6">   
-                   <button id="savedata" name="savedata" type="button" onclick="guardarData();" class="btn btn-success" tooltip="Guardar Formulario">
+                   <button id="savedata" name="savedata" type="button" onclick="validarFormularioRender();" class="btn btn-success" tooltip="Guardar Formulario">
                     <div class="info"><i class="fa fa-save fa-sm"></i> Guardar Formulario </div>
                 </button>
             </div>

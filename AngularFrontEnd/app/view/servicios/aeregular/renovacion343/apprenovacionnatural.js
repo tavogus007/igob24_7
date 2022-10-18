@@ -1473,8 +1473,8 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
                         }
                             //INT_TRAMITE_RENOVA
                         $scope.datos.INT_TRAMITE_RENOVA     =   tramite.IdActividad;
-
-                        if(codhojaruta.substring(0,9) == 'RE-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,9) == 'EM-LF') {
+                        console.log("codigo",codhojaruta.substring(0,8));
+                        if(codhojaruta.substring(0,6) == 'EMI-AE' || codhojaruta.substring(0,6) == 'REN-LF' || codhojaruta.substring(0,5) == 'RE-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,5) == 'EM-LF') {
                             var dataLotus = $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
                             dataLotus.then(function(respuesta){
                                 tus = respuesta.success.data[0].datos;
@@ -3753,8 +3753,8 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
             datosNeXO['f01_observaciones_i']        =  "0";
             /*DATOSDELTITULARDELALICENCIA*/
             //DATOSGENERALES
-            datosNeXO['f01_nit'] = paramForm.f01_nit;
-            datosNeXO['f01_nit_prop'] = paramForm.f01_nit;
+            datosNeXO['f01_nit'] = paramForm.f01_nit+"";
+            datosNeXO['f01_nit_prop'] = paramForm.f01_nit+"";
             datosNeXO['f01_tip_doc_prop']           =paramForm.f01_tip_doc_prop;
             datosNeXO['f01_expedido_prop']          =paramForm.f01_expedido_prop;
             datosNeXO['f01_pri_nom_prop']           =paramForm.f01_pri_nom_prop;
@@ -3893,6 +3893,8 @@ function regularRenovacionController($scope,$timeout, $q, $rootScope, $routePara
                 datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = paramForm.INT_TRAMITE_RENOVA;
             }
         }
+        datosNeXO['datosAnt'] = JSON.parse("["+JSON.stringify($scope.datosAnt)+"]");
+        datosNeXO['publicidadAntiguo'] = $scope.datos.publicidadAntiguo;
         var sMacroR         =   datosNeXO['f01_macro_des'];
         var sZonaR          =   datosNeXO['INT_AC_ID_ZONA'];
         var sMacroRDesc     =   datosNeXO['f01_macro_des'];

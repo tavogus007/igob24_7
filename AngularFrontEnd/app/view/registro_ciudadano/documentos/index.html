@@ -18,6 +18,18 @@
                 border-radius: 10px;
             }
         </style>
+        <script type="text/javascript">
+            $('.custom-upload input[type=file]').change(function(){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+            });
+            function iniciarLoadFyle(){
+                $('.custom-upload input[type=file]').change(function(){
+                $(this).next().find('input').val($(this).val());
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+                });
+            }
+        </script>
     </head>
     <div class="col-md-12" ng-controller="documentosController" ng-init="inicioDocumentos();">
         <div class="ibox float-e-margins">
@@ -94,12 +106,25 @@
                                             </a>
                                         </div>
                                         <div ng-show="documento.vtiempo=='CERCA'">
-                                            <a ng-click="ImprimirProforma(documento.vdoc_url_logica)" data-toggle="modal" data-target="#divPopup4" style="color: #E91E63">
+                                            <a ng-click="ImprimirProforma(documento.vdoc_url_logica)" data-toggle="modal" data-target="#divPopup4" style="color: #E91E63" ng-show="documento.vdoc_proceso != 'EMISION REGULAR DE LICENCIAS DE FUNCIONAMIENTO'">
                                                 <i class="fa fa-eye fa-2x flechaOscura"></i>
                                             </a>
                                             <a ng-show="adjunto.vdoc_tipo_documento=='pdf'" name="btnIImprmir" id="btnIImprmir" type="button" class="btn btn-default btn-circle"  href="{{adjunto.vdoc_url_logica}}" target="_black">
                                               <i  class="fa fa-print flechaOscura" title="Ver"></i>
                                             </a>
+                                            <div ng-show="documento.vdoc_proceso == 'EMISION REGULAR DE LICENCIAS DE FUNCIONAMIENTO'">
+                                                <a ng-show="(documento.vdoc_nombre == ' LICENCIA DE FUNCIONAMIENTO ' || documento.vdoc_nombre == ' LICENCIA DE FUNCIONAMIENTO - PRIMER EMPRENDIMIENTO') && documento.vdoc_habilitacion_licencia != null" name="btnIImprmir" id="btnIImprmir" type="button" class="btn btn-default btn-circle"  href="{{documento.vdoc_url_logica}}" target="_black">
+                                                    <i  class="fa fa-print flechaOscura" title="Ver"></i>
+                                                </a> 
+                                                <a ng-show="documento.vdoc_nombre != ' LICENCIA DE FUNCIONAMIENTO ' && documento.vdoc_nombre != ' LICENCIA DE FUNCIONAMIENTO - PRIMER EMPRENDIMIENTO'" name="btnIImprmir" id="btnIImprmir" type="button" class="btn btn-default btn-circle"  href="{{documento.vdoc_url_logica}}" target="_black">
+                                                    <i  class="fa fa-print flechaOscura" title="Ver"></i>
+                                                </a> 
+                                                <div ng-show="(documento.vdoc_nombre == ' LICENCIA DE FUNCIONAMIENTO ' || documento.vdoc_nombre == ' LICENCIA DE FUNCIONAMIENTO - PRIMER EMPRENDIMIENTO') && documento.vdoc_habilitacion_licencia == null">
+                                                    <a  ng-click="recuperaDatos(documento)" type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="#cargarFormulario" title="Adjuntar Formulario 401">
+                                                        <i class="fa fa-upload flechaOscura" ></i>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div ng-show="documento.vtiempo=='NINGUNO' || adjunto.vdoc_tiempo=='0'">
                                             <a ng-click="ImprimirProforma(documento.vdoc_url_logica)" data-toggle="modal" data-target="#divPopup4" style="color: #ffbf01">
@@ -109,7 +134,7 @@
                                               <i  class="fa fa-print flechaOscura" title="Ver"></i>
                                             </a>
                                         </div>
-                                    </td>                        
+                                    </td>                  
                                 </tr>
                             </tbody>
                         </table>
@@ -129,6 +154,51 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="cargarFormulario" class="modal fade" role="dialog">
+            <div class="modal-dialog" style="width:700px">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">ADJUNTAR FORMULARIO </h5>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="controls">
+                                <strong>SR. CIUDADANO LE INFORMAMOS:</strong><br><br>
+                                Debe imprimir el Formulario que se encuentra en su bandeja de documentos con el número de tramite  <strong>{{datosDoc.vdoc_id_codigo}}</strong>, {{datosDoc.vdoc_nombre}} luego debe firmar unicamente el titular o representante legal de la actividad económica y subir el formulario {{mensaje}} 
+                                <hr>
+                                <div  class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <label id="lbl_adjuntar_401">Adjuntar Formulario </label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group custom-upload">
+                                                <input type="file" id="f01_upload_formulario_401" name="f01_upload_formulario_401" accept=""  style="display: none;">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                    <input id="txt_f01_upload_formulario_401" name="txt_f01_upload_formulario_401"  ng-model="f01_upload_formulario_401"  type="text" placeholder="Adjuntar Formulario 401" class="form-control input-lg" disabled required>
+                                                    <span class="input-group-btn">
+                                                        <a id="href_f01_upload_formulario_401" ng-show="urlDocumento!=''" href="{{urlDocumento}}" target="_blank">
+                                                            <button id="btn_f01_upload_formulario_401" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                        </a>
+                                                        <button id="btn_f01_upload_formulario_401"  ng-click="ejecutarFile('f01_upload_formulario_401')" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"  ng-click="guardarDoc()">Guardar</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>

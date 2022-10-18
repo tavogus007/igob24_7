@@ -114,10 +114,13 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     }
     if (datos.dtspsl_provincia == '' || datos.dtspsl_provincia == ' ') {
       datosfaltantes.push(' PROVINCIA');
-    }
+    }*/
+   
+    $scope.id_macrodistrito=datos.dtspsl_macrodistrito;
+    $scope.macrodistrito = datos.dtspsl_macrodistrito_desc ; 
     if ((datos.dtspsl_macrodistrito == '' || datos.dtspsl_macrodistrito_desc == '')) {
       datosfaltantes.push(' MACRODISTRITO');
-    }*/
+    }
     $scope.datosfalt = datosfaltantes;
   }
 
@@ -223,7 +226,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   }
 
   $scope.dataMascota = {};
-  $scope.insertarDataMascota = function (data) {
+  $scope.insertarDataMascota = function (data) {  
     if ($scope.botonMod == true) {
       $scope.dataMascota.xmascota_id = data.xmascota_id;
       $scope.dataMascota.xmascota_imagen_url = $scope.IMAGEN_MASCOTA;//data.xmascota_imagen_url;
@@ -242,6 +245,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     }
     $scope.dataMascota.xmascota_usr_id = sessionService.get('CICIUDADANO');//data.xmascota_usr_id;//ci_igob
     $scope.dataMascota.xmascota_titular_ci = sessionService.get('CICIUDADANO');//data.xmascota_titular_ci;//ci_igob
+
     $scope.dataMascota.xmascota_data = "{}";
     //reg_desparasitacion
     $scope.reg_desparasitacion = {};
@@ -279,6 +283,10 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.dataMascota_data.sexo = data.reg_sexo;
     $scope.dataMascota_data.color = data.mascota_color;
     $scope.dataMascota_data.especie_id = data.mascota_especie_id;
+    $scope.dataMascota_data.sistema = 'IGOB247';        //SISTEMA
+    $scope.dataMascota_data.sistema_modificador = '';  //SISTEMA
+    $scope.dataMascota_data.mm_macrodistrito = $scope.id_macrodistrito;
+    $scope.dataMascota_data.mm_macrodistrito_id = $scope.macrodistrito;
     if ($scope.dataMascota_data.especie_id == 1) {
       $scope.dataMascota_data.especie = 'canino';
     } else {
@@ -306,6 +314,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.especie = $scope.dataMascota_data.especie;
     $scope.edad_desc = data.reg_edad_des;
     $scope.edad = data.mascota_edad;
+   
   }
 
 
@@ -351,6 +360,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       $datos_mascota1 = JSON.parse($datos_mascota);
       alertify.success('Datos de la Mascota fue Recuperada');
       if ($scope.botonMod == true) {
+        $scope.datosNoEditables = true;
         $scope.datos.mascota_nombre = $datos_mascota1.nombre_mas;
         if ($datos_mascota1.especie_id != undefined) {
           $scope.datos.mascota_especie_id = $datos_mascota1.especie_id;
@@ -393,6 +403,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.datos.reg_edad_des = $datos_mascota1.edad_desc;
         $scope.datos.mascota_peso = $datos_mascota1.peso;
         $scope.datos.reg_peso_des = $datos_mascota1.peso_desc;
+        $scope.datos.sistema = $datos_mascota1.sistema;    ///sistema
         var indices10 = [], indices11 = [];
         if ($datos_mascota1.edad != undefined) {
           for (var i2 = 0; i2 < $datos_mascota1.edad.length; i2++) {
@@ -506,6 +517,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         }
         if ($datos_mascota1.esterilizacion == 'si') {
           $scope.estrilizacion = true;
+          $scope.esterilizacionDisabled=true;
           //alert('ESTERILIZACION SI');
           $scope.datos.mascota_esterilizacion = $datos_mascota1.esterilizacion;
           $scope.datos.reg_feca = parseInt($datos_mascota1.reg_marca.fecha_aplicacion);
@@ -521,6 +533,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         } else {
           //alert('ESTERILIZACION NO');
           $scope.estrilizacion = false;
+          $scope.esterilizacionDisabled=false;
           $scope.datos.mascota_esterilizacion = $datos_mascota1.esterilizacion;
           $scope.datos.reg_feca = '';
           $scope.datos.mascota_marca = '';
@@ -619,6 +632,14 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.dataMascotaMod_data.desparasitacion = $scope.datos.mascota_desparasitacion; //DESPARASITACION   
     $scope.dataMascotaMod_data.modalidad = $scope.datos.mascota_modalidad; //MODALIDAD 
     $scope.dataMascotaMod_data.modalidad_institucion = ''; ///ESTE DATOS ESTA DEFINIDO PARA LA MODALIDAD DE COMUNITARIO DE UNA EMPRESA
+
+    $scope.dataMascotaMod_data.sistema = $scope.datos.sistema; 
+    if($scope.dataMascotaMod_data.sistema == undefined || $scope.dataMascotaMod_data.sistema == null){
+      $scope.dataMascotaMod_data.sistema = '';   
+    }
+    $scope.dataMascotaMod_data.sistema_modificador = 'IGOB247';    //SISTEMA
+    $scope.dataMascotaMod_data.mm_macrodistrito = $scope.id_macrodistrito;
+    $scope.dataMascotaMod_data.mm_macrodistrito_id = $scope.macrodistrito;
     if ($scope.dataMascotaMod_data.desparasitacion == 'no') {
       $scope.dataMascotaMod_data.reg_desparasitacion = [];
       /*$scope.reg_desparasitacion = {};
@@ -818,6 +839,8 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.estrilizacion = false;
     $scope.desparasitacion = false;
     $scope.xdeshabilitado = false;
+    $scope.datosNoEditables = false;
+    $scope.esterilizacionDisabled=false;
   }
 
   $scope.listarRaza = function (data) {

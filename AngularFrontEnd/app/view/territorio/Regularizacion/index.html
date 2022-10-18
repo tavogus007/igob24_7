@@ -286,6 +286,8 @@
     });
 </script>
 
+<link rel="stylesheet" href="../../libs/Librerias/ol-ext/ol-ext.css"/>
+<script type="text/javascript" src="../../libs/Librerias/ol-ext/ol-ext.js"></script>
 
 <div ng-controller="RegularizacionController" ng-init="inicio();">
     <div class="col-lg-12">
@@ -335,14 +337,14 @@
                                         <a class="txtSubtituloIcon">
                                             <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
                                         </a>
-                                        ¿Que es la ley Municipal de Regularización?
+                                        ¿Qué es la Ley Municipal de Regularización?
                                     </p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <p class="txtParrafo">
-                                        La Ley de Regularización tiene por objetivo regulizar aquellas edificaciones anteriores a la publiación de la presente Ley que no se hubiera adecuado a los parámetros de edificación normativa técnica territorial.
+                                        La “Ley Municipal de Regularización” tiene por objetivo regularizar a aquellas edificaciones que no se hubieran adecuado a los parámetros de edificación y a la normativa técnica territorial vigente, hasta antes de la publicación de la presente ley.
                                     </p>
                                 </div>
                             </div>
@@ -354,19 +356,18 @@
                                         <a class="txtSubtituloIcon">
                                             <span class="glyphicon glyphicon-usd txtSubtituloIcon"></span>
                                         </a>
-                                        ¿Cuánto debo pagar?
+                                        ¿Con cuánto de descuento puedo pagar?
                                     </p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <p class="txtParrafo">
-                                        
                                         <ul> 
-                                            <li>15% de Descuento pago en cuotas de hasta 12 meses</li>
-                                            <li>50% de Descuento pago al contado en 60 dias</li>
-                                            <li>40% de Descuento pago al contado en 120 dias</li>
-                                            <li>30% de Descuento pago al contado en 180 dias</li>                                            
+                                            <li>15% de descuento, pago en cuotas de hasta 12 meses.</li>
+                                            <li>50% de descuento, pago al contado en 60 días.</li>
+                                            <li>40% de descuento, pago al contado en 120 días.</li>
+                                            <li>30% de descuento, pago al contado en 180 días.</li>                                            
                                         </ul>
                                     </p>
                                 </div>
@@ -384,10 +385,10 @@
                                 </div>
                             </div>
                                 
-                            <a class="enlace" target="_self" href="../territorio/img/fm6.docx" download="fm6.docx" >Fomulario de Autorización de Inspección</a>
+                            <!-- <a class="enlace" target="_self" href="../territorio/img/fm6.docx" download="fm6.docx" >Fomulario de Autorización de Inspección</a> -->
                             <div class="row">
                                 <div class="col-sm-12"><!--<a class="enlace" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar);" >SOLICITAR TRÁMITE</a>-->
-                                    <p class="txtParrafo">Para iniciar este trámite, usted debe contratar a un profesional arquitecto para delegarle la atención de su trámite por este medio, eligiendo la opción <b ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar);" >SOLICITAR TRÁMITE</b> .</p>
+                                    <p class="txtParrafo">Para iniciar su trámite, usted debe contratar a un profesional arquitecto y delegarle la atención de su trámite por este medio, eligiendo la opción <b ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar);" >SOLICITAR TRÁMITE</b>.</p>
                                 </div>
                             </div>
                             <div class="row separador"></div>
@@ -397,7 +398,7 @@
                                         <a class="txtSubtituloIcon">
                                             <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
                                         </a>
-                                        ¿Cuales son los Requisitos?
+                                        ¿Cuáles son los requisitos?
                                     </p>
                                 </div>
                             </div>
@@ -406,117 +407,29 @@
                                 <div class="col-sm-12">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <p class="txtParrafoResaltado"><span>REQUISITOS GENERALES</span></p>
+                                            <!-- <p class="txtParrafoResaltado"><span>REQUISITOS GENERALES</span></p> -->
                                             <p class="txtParrafo">                                               
                                                 <ol class="txtParrafo">
-                                                    <li class="lia" > Fotocopia de cedula de ident del propietario, respresentante legal(si corresponde) o un tercero responsable que gestione la regularización y la cancelación de la multa, en este último caso sujeto a reglamento.</li>
+                                                    <li class="lia" > Fotocopia de cédula de identidad del propietario, representante legal (si corresponde) o un tercer responsable que gestione la regularización y la cancelación de la multa, este último caso sujeto a reglamento.</li>
                                                     <li class="lia" > Documento que acredite el derecho propietario.</li>
-                                                    <li class="lia" > Planos arquitectonicos dónde se marquen e identifiquen los metros cuadrados en infracción y/o infraciones.</li>
-                                                    <li class="lia" > Declarración jurada que establezca los siguiente: <br></li>
-                                                    <ul> 
-                                                        <li>El interesado asume la entera responsabilidad sobre daños a terceros públicos y/o privados del inmueble objeto de la regularización</li>
-                                                        <li>Desistimiento a interponer recursos ante la nulidad de los planos aprobados(Si corresponde).</li>
-                                                        <li>Metros cuadrados en infracción y/o infracciones, detalle y cuantificación de la superficie en infracción. Para los casos que la presente Ley no contemple una multa pecunaria, este sólo realizará los pagos por gastos administrativos ya establesidos(pago por trámite).</li>
-                                                        <li>Último pago de inpuestos ajustado a la superficie a regularizar dentro de los margenes de 15% de diferncia.</li>
-                                                        <li>Certificado de estabilidad y Estudio Especifico Geológico Geotécnico para edificacion iguales o mayores a 5 pisos</li>
-                                                        <li>Fotografías de todas las fechadas visbles en las que se identifique el volumen total d ela construccion, por ejemplo: fachadas, via retiros exteriores en caso que corresponde.</li>
+                                                    <li class="lia" > Planos arquitectónicos dónde se marquen e identifiquen los metros cuadrados en infracción.</li>
+                                                    <li class="lia" > Declaración jurada que establezca lo siguiente: <br></li>
+                                                      <ul>
+                                                        <li>El interesado asume la entera responsabilidad sobre daños a terceros públicos y/o privados del inmueble objeto de la regularización.</li>
+                                                        <li>Desistimiento a interponer recursos ante la nulidad de los planos aprobados (si corresponde).</li>
+                                                        <li>Detalle y cuantificación de la superficie en infracción.</li>
+                                                        <li>Para los casos que la presente ley no contemple una multa pecuniaria, sólo realizará los pagos por gastos administrativos ya establecidos (pago por el servicio).</li>
+                                                        <li>Último pago de impuestos ajustado a la superficie a regularizar dentro de los márgenes de 15% de diferencia.</li>
+                                                        <li>Certificado de estabilidad y Estudio específico geológico geotécnico para edificaciones iguales o mayores a 5 pisos.</li>
+                                                        <li>Fotografías de todas las fachadas visibles en las que se identifique el volumen total de la construcción, por ejemplo: fachadas, vías y retiros exteriores en caso que corresponda.</li>
                                                       </ul>
-                                                    <li class="lia" > Boleta de impuestos, a nombre del propietario del Bien Inmueble.</li>
-                                                    <li class="lia" > Levantamiento del bien inmueble en formato digital (Fdrc o Dwg) (Elaborado por el profesional externo contratado por el propietario).</li>
+                                                    <li class="lia" > Boleta de impuestos a nombre del propietario del bien inmueble.</li>
+                                                    <li class="lia" > Levantamiento del bien inmueble en formato digital (Fdrc o Dwg), elaborado por el profesional externo contratado por el propietario.</li>
                                                     <li class="lia" > Fotografías del bien inmueble (fachada, exteriores e interiores por bloque).</li>
                                                 </ol>
-                                            </p>                                        
-                                            
+                                            </p>                                     
                                         </div>
                                     </div>
-                                    <!--
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <p class="txtParrafoResaltado"><span>REQUISITOS GENERALES</span></p>
-                                            <p class="txtParrafo">
-                                                <b>Persona Natural:</b>
-                                                <ol class="txtParrafo">
-                                                    <li class="lia" > Testimonio de Propiedad (original).</li>
-                                                    <li class="lia" > Tarjeta de Propiedad o Folio Real (original).</li>
-                                                    <li class="lia" > Testimonio del anterior propietario o certificado treintañal o de origen (original), solo en caso que no exista Folio Real y no sea posible relacionar con los antecedentes dominiales anteriores.</li>
-                                                    <li class="lia" > Cédula de Identidad del o los propietarios (original).</li>
-                                                    <li class="lia" > Boleta de impuestos, a nombre del propietario del Bien Inmueble.</li>
-                                                    <li class="lia" > Levantamiento del bien inmueble en formato digital (Fdrc o Dwg) (Elaborado por el profesional externo contratado por el propietario).</li>
-                                                    <li class="lia" > Fotografías del bien inmueble (fachada, exteriores e interiores por bloque).</li>
-                                                </ol>
-                                            </p>
-                                            <p class="txtParrafo">
-                                                <b>Persona Jurídica:</b>
-                                                <br>
-                                                Además de los requisitos previamente requeridos, el solicitante deberá adjuntar:
-                                            <ol class="txtParrafo">
-                                                <li class="lia" > Documento de constitución de la empresa (original).</li>
-                                                <li class="lia" > Número de Identificación Tributaria NIT (original).</li>
-
-                                            </ol>
-                                            </p>
-                                            <p class="txtParrafo">
-                                                <b>En caso de ser apoderado o mandatario, además de los documentos previamente requeridos, el solicitante deberá adjuntar:</b>
-                                            <ol class="txtParrafo">
-                                                <li class="lia" > Poder de representación, sólo en caso que se actúe como apoderado o mandatario (original).</li>
-                                                <li class="lia" > Cédula de Identidad del apoderado (original).</li>
-                                            </ol>
-                                            </p>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <p class="txtParrafoResaltado"><span>REQUISITOS ESPECÍFICOS</span></p>
-                                            <ol class="txtParrafo">
-                                                <li class="lib"><b> Para bienes inmuebles de PROPIEDAD HORIZONTAL (departamento, parqueo, baulera, oficina, tienda u otros), cuya matriz NO se encuentre REGISTRADA, además de los requisitos generales, el solicitante deberá adjuntar:</b>
-                                                    <ol style="padding-top: 10px;padding-bottom: 10px;">
-                                                        <li class="lib"> Plano individual de la o las unidades fraccionadas, aprobado (original)*.</li>
-                                                        <li class="lib"> Tabla General de Fraccionamiento aprobada.</li>
-                                                        <li class="lib"> Fotografías de la o las unidades fraccionadas.</li>
-                                                    </ol>
-                                                </li>
-                                                <li class="lib"><b> Para bienes inmuebles de PROPIEDAD HORIZONTAL (departamento, parqueo, baulera, oficina, tienda u otros), cuya matriz ya se encuentre REGISTRADA, además de los Requisitos Generales, el solicitante deberá adjuntar:</b>
-                                                    <ol style="padding-top: 10px;padding-bottom: 10px;">
-                                                        <li class="lib"> Plano individual de la o las unidades fraccionadas, aprobado (original)*.</li>
-                                                        <li class="lib"> Fotografías de la o las unidades fraccionadas.</li>
-                                                    </ol>
-                                                </li>
-                                                <li class="lib"><b> Cuando el propietario no tenga registrado el testimonio de compra y venta en Derechos Reales, el solicitante deberá adjuntar:</b>
-                                                    <ol style="padding-top: 10px;padding-bottom: 10px;">
-                                                        <li class="lib"> <a class="enlace" href="https://gamlpmotores.lapaz.bo/sitol/Archivos/catastro/MODELO_DE_CARTA_NOTARIADA_CON_VALIDEZ_DE_60_DIAS_CALENDARIO_2021.docx">Carta notariada de solicitud de Certificado de Registro Catastral válido por 60 días para inscripción en Derechos Reales (que deberá ser entregada al momento de recoger el Certificado de Registro Catastral).
-                                                            <span class="glyphicon glyphicon-cloud-download"></span></n></a></li>
-                                                        <li class="lib"> Minuta de transferencia protocolizada (original)</li>
-                                                        <li class="lib"> Tarjeta de Propiedad o Folio Real del anterior propietario (original).</li>
-                                                        <li class="lib"> Testimonio del anterior propietario o certificado treintañal o de origen (original).</li>
-                                                        <li class="lib"> Cédula de Identidad del o los poseedores(original).</li>
-                                                        <li class="lib"> Boleta de impuestos, del Bien Inmueble.</li>
-                                                        <li class="lib"> Fotografías del bien inmueble (fachada, exteriores e interiores por bloque).</li>
-                                                        <li class="lib"> Levantamiento del bien inmueble en formato digital elaborado por el profesional Externo (formato Fdrc o Dwg).</li>
-                                                    </ol>
-                                                </li>
-                                                <li class="lib"><b> Cuando el registro catastral sea solicitado como resultado de un proceso de Prescripción Adquisitiva o Usucapión, División y Partición Judicial o Regularización del Derecho Propietario Vía Judicial, el solicitante deberá adjuntar:</b>
-                                                    <ol style="padding-top: 10px;padding-bottom: 10px;">
-                                                        <li class="lib"> Sentencia de Juez Ejecutoriada (fotocopia legalizada con sello original que deberá ser entregado al momento de recoger el Certificado Catastral) o Testimonio Protocolizado (original).</li>
-                                                        <li class="lib"> Plano de lote que formó parte del proceso (fotocopia legalizada con sello original) que  <span class="txtResaltado">deberá ser entregado al momento de recoger el Certificado de Registro Catastral.</span> </li>
-                                                        <li class="lib"> Cédula de Identidad del o los propietarios (original).</li>
-                                                        <li class="lib"> Boleta de impuestos del Bien Inmueble.</li>
-                                                        <li class="lib"> Fotografías del bien inmueble (fachada, exteriores e interiores por bloque).</li>
-                                                        <li class="lib"> Levantamiento del bien inmueble en formato digital elaborado por el profesional Externo (formato Fdrc o Dwg).</li>
-                                                    </ol>
-                                                </li>
-                                                <li class="lib"><b> Cuando el registro catastral se realice en un Área de Tratamiento Especial (ATE)** que no cuenta con registro de propiedad en la oficina de Derechos Reales, el solicitante deberá adjuntar:</b>
-                                                    <ol style="padding-top: 10px;padding-bottom: 10px;">
-                                                        <li class="lib"> Título ejecutorial (original) o Certificación original reconociendo la calidad del administrado como poseedor de un inmueble o predio.</li>
-                                                        <li class="lib"> Documento de Compra - Venta con Reconocimiento de Firmas o Declaratoria Judicial de Herederos (original).</li>
-                                                        <li class="lib"> Acta de Conformidad de Límites o Colindancias validada por los representantes de las Comunidades y los vecinos colindantes al inmueble o predio (original, que deberá entregada al momento de recoger el Certificado de Registro Catastral).</li>
-                                                    </ol>
-                                                </li>
-                                            </ol>
-
-                                            <span class="txtNota">*Para aprobaciones anteriores a la gestión 2003, presentar fotocopia legalizada.</span><br>
-                                            <span class="txtNota">**Área de Tratamiento Especial (ATE): Espacio territorial de área urbana con presencia de actividades urbanas que coexisten con actividades de características eminentemente rurales.</span>
-
-                                        </div>
-                                    </div>
-                                    -->
                                 </div>
                             </div>
 
@@ -534,13 +447,13 @@
                                             <td data-title="'Nro. Sitram'" >{{sol.sitramNro}}</td>
                                             <td data-title="'Nro. Solicitud'" >{{sol.idTramiteOL}}</td>
                                             <td data-title="'Código Catastral'" sortable="'codigoCatastral'">{{sol.codigoCatastral | FormatoSercat}}</td>
-                                            <td data-title="'Fecha de registro'" sortable="'fechaRegistro'" >{{sol.fechaRegistro | FormatoFecha }} </td>
-                                            <td data-title="'Profesional Externo'" sortable="'profesionalNombre'" >{{sol.profesionalNombre}}</td>
+                                            <td data-title="'Fecha de registro'" sortable="'fechaRegistro'" >{{sol.fechaRegistro | FormatoFecha }}</td> >
+                                            <!-- <td data-title="'Profesional Externo'" sortable="'profesionalNombre'" >{{sol.profesionalNombre}}</td> -->
                                             <td data-title="'Estado'" sortable="'estado'" >{{sol.estado}}</td>
                                             <td data-title="'Acciones'">
-                                                <div   >
+                                                <div>
                                                     <button class="btn btn-success" ng-show="sol.idInsFlujo != null && sol.idInsFlujo != undifined && sol.idInsFlujo != ''" ng-click="tmpSitram=sol.sitramNro;tmpSitramPwd=sol.sitramContrasena; solicitud.acciones.seguimientoSitram(tmpSitram,tmpSitramPwd)"><span class="glyphicon glyphicon-info-sign"></span> Seguimiento</button>
-                                                    <button class="btn btn-success" ng-show="sol.idEstado == 4" ng-click="solicitud.acciones.descargar(sol.piif)"><span class="glyphicon glyphicon-cloud-download"></span> Descargar Solicitud</button>
+                                                    <!-- <button class="btn btn-success" ng-show="sol.idEstado == 4" ng-click="solicitud.acciones.descargar(sol.piif)"><span class="glyphicon glyphicon-cloud-download"></span> Descargar Solicitud</button> -->
                                                     <button class="btn btn-success" ng-show="sol.idEstado == 1 || sol.idEstado == 2 " ng-click="solicitud.acciones.obtener(sol.idTramiteOL,'delegar')"><span class="glyphicon glyphicon-share-alt"></span> Delegar solicitud</button>
                                                     <button class="btn btn-danger" ng-show="sol.idEstado == 1 || sol.idEstado == 2 " ng-click="solicitud.acciones.anularConfirm(sol.idTramiteOL,sol.clave)"><span class="glyphicon glyphicon-remove"></span> Anular solicitud</button>
                                                 </div>
@@ -559,7 +472,7 @@
                             <div>
                                 <div class="panel ">
                                     <div class="col-sm-12" style="text-align: right">
-                                        <button type="button" class="btn btn-info"  data-toggle="modal" data-target="#divPopupMatrizHabilitada"><span class="glyphicon glyphicon-home"></span> Fomulario 402-A</button>
+                                        <button type="button" class="btn btn-info" ng-click="solicitud.acciones.limpiar()" data-toggle="modal" data-target="#divPopupMatrizHabilitada"><span class="glyphicon glyphicon-home"></span> Fomulario 402-A</button>
                                         
                                     </div>       
                                     <div  ng-hide="solicitud.listaSolicitudF02.length == 0 ">
@@ -603,15 +516,21 @@
                                         <br>
                                         <div class="row">
                                             <div class="col-sm-12">
+                                                <p><strong> <font color="#ed5565">ATENCIÓN.-</font></strong> ANTES DE INICIAR UNA SOLICITUD, USTED DEBE ESTAR EN LA CUENTA DEL TITULAR DEL PREDIO, CASO CONTRARIO SU TRÁMITE SALDRÁ OBSERVADO.</p>
                                                 <p class="txtParrafo txtParrafoResaltado">Para iniciar esta solicitud, usted debe coordinar con el profesional contratado, antes de iniciar su trámite por este medio.</p>
                                             </div>
                                         </div>
 
                                         <br>
+                                        <div class="row" ng-show="solicitud.idTramiteOL!=null">
+                                            <span><h3>Solicitud: {{solicitud.idTramiteOL}}</h3></span>
+                                        </div>
+                                        <br>
                                         <div class="row">
                                             <div class="col-sm-9">
-                                                <div >
-                                                    <button type="button" class="btn btn-primary btn-circle btn-lg">1<span style="font-size: 12px;">er</span></button><strong class="txtResaltado"> PASO. Ubicación del predio.</strong> &nbsp;<span class="glyphicon glyphicon-play txtParrafoResaltado"></span> <span class="txtParrafoResaltado"> Introduzca la dirección referencial de su predio:</span>
+                                                <div>
+                                                    <button type="button" class="btn btn-primary btn-circle btn-lg">1<span style="font-size: 12px;">er</span></button><strong class="txtResaltado"> PASO. Ubicación del predio.</strong> &nbsp;<span class="glyphicon glyphicon-play txtParrafoResaltado"></span> <span class="txtParrafoResaltado"> Introduzca la dirección referencial de su predio: </span>
+                                                    
                                                 </div>
                                                 <div class="ibox-content">
                                                     <div class="row">
@@ -662,6 +581,9 @@
                                             <div class="col-sm-3">
                                                 <div class="alert alert-success">
                                                     <strong>AYUDA</strong> Antes de iniciar su trámite, usted debe solicitar al profesional contratado, su número de registro nacional de colegiado.
+                                                </div>
+                                                <div class="alert alert-danger">
+                                                    <strong> <font color="#ed5565">ATENCIÓN.-</font></strong> Antes de realizar una solicitud, debe estar en la cuenta del titular del predio, caso contrario su trámite saldrá observado.
                                                 </div>
                                             </div>
                                         </div>
@@ -749,7 +671,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12" style="padding: 12px;text-align: right;" >
-                                                <button type="button" class="btn btn-info" ng-disabled="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail =='' || solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='' || solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='' " data-toggle="modal" data-target="#modalConfirmacionEnvio" data-backdrop="static" data-keyboard="false"><span class="glyphicon glyphicon-envelope"></span> Delegar soliditud al profesional externo</button>
+                                                <button type="button" class="btn btn-info" ng-disabled="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail =='' || solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='' || solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='' " data-toggle="modal" data-target="#modalConfirmacionEnvio" data-backdrop="static" data-keyboard="false"><span class="glyphicon glyphicon-envelope"></span> Delegar solicitud al profesional externo</button>
                                                 &nbsp;
                                                 <!--<button type="button" class="btn btn-info" ng-click="servicioTerritorio.seleccionado=null;"><span class="glyphicon glyphicon-home"></span> Volver al 1 cinicio</button>-->
                                             </div>
@@ -860,11 +782,7 @@
                                                     <div id="coords_txt" style="float: right"> </div>
                                                 </div>
                                                 <div id="wmsinfo"> </div>
-                                                <!--
-                                                <div id="mapResultado" style="position: absolute; left: 0px; top:0px; width: 100px;height: 100px; ">
-
-                                                </div>
-                                                -->
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -1027,15 +945,7 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
                         </div>
-
-
-
                     </div>
 
                     <div>
@@ -1227,8 +1137,9 @@
                             <div class="alert alert-success">
                                 <strong>AYUDA</strong> Antes de iniciar su trámite, usted debe registrar el FORMULARIO 402-A.
                             </div>
-                        </div>                       
-
+                           
+                        </div>
+                         
                         <div class="col-sm-12">
                             <div class="alert alert-danger" ng-show="solicitud.numeroDocumento == false">
                                 No se encontró el inmueble, verifique el Nº CI y Numero de inmueble.
@@ -1250,6 +1161,11 @@
                                     </div>
                                     
                                 </div>
+                                <div class="col-sm-12" >
+                                    <div class="alert alert-warning">
+                                        <strong>AYUDA</strong> Seleccione la ubicación del predio.
+                                    </div>
+                                </div> 
                                 <div class="row">
                                     <div id="map_regularizacion" style="width: 100%; height: 400px; float:left;"></div>
                                 </div>
@@ -1277,6 +1193,14 @@
                                             <label>Zona</label>
                                             <div class="controls" ng-class="{'has-error': frmSolicitud.zona$error.required }">
                                                 <input  ng-model="solicitud.zona" class="form-control" type="text" name="zona" disabled required id="zona_r">
+                                            </div>
+                                           
+                                        </div>
+
+                                        <div class="form-group" style="display: none;">
+                                            <label>Zona Tributaria</label>
+                                            <div class="controls" ng-class="{'has-error': frmSolicitud.zonaTributaria$error.required }">
+                                                <input  ng-model="solicitud.zonatributaria" class="form-control" type="text" name="zonatributaria" disabled required id="zona_t">
                                             </div>
                                            
                                         </div>
@@ -1310,7 +1234,7 @@
                                         <div class="form-group"  >
                                             <label>Superficie a modificar</label>
                                             <div class="controls" ng-class="{'has-error': frmSolicitud.supmodificar.$error.required }">
-                                                <input  ng-model="solicitud.supmodificar" class="form-control" type="text" name="supmodificar" required >
+                                                <input  ng-model="solicitud.supmodificar" class="form-control" type="text" step="0.1" min="1" onkeyup="validarNumero(this)" name="supmodificar" required >
                                             </div>
                                             <span class="help-block" style="color:red" ng-if="frmSolicitud.supmodificar.$error.required">Requerido.</span>
                                         </div>
@@ -1319,16 +1243,8 @@
                                         <div class="form-group">
                                             <label>Tipo de Vivienda</label>
                                             <div class="controls" ng-class="{'has-error': frmSolicitud.tipovivienda$error.required }">
-                                                
-                                                <select id="tipovivienda" name="tipovivienda" placeholder="Tipo de Vivienda"
-                                                ng-model="solicitud.tipovivienda" class="form-control"
-                                                ng-change=""                                               
-                                                ng-disabled="desabilitado" required>
-                                                <option value="">--Seleccionar--</option>
-                                                <option value="VU">VIVIENDA UNIFAMILIAR</option>
-                                                <option value="PH">PROPIEDAD HORIZONTAL</option>
-                                                <option value="TE">TERRENO</option>
-                                              </select>
+                                              <select id="tipovivienda" name="tipovivienda" placeholder="Tipo de Vivienda"
+                                                        class="form-control" required ng-model="solicitud.tipovivienda" ng-options="obj.valor as obj.clave for obj in solicitud.listatipovivienda" value="--Seleccionar--"></select>
                                             </div>
                                             <span class="help-block" style="color:red" ng-if="frmSolicitud.tipovivienda.$error.required">Requerido.</span>
                                         </div>
@@ -1348,15 +1264,12 @@
                                                 <option value="LUJOSO">LUJOSO</option>
                                                 <option value="MARGINAL">MARGINAL</option>
                                                 <option value="MUY BUENA">MUY BUENA</option>
-                                                <option value="MUY ECONOMICA/MARGINAL">MUY ECONOMICA/MARGINAL</option>
                                               </select>                                               
                                             </div>
                                             <span class="help-block" style="color:red" ng-if="frmSolicitud.tipoconstruccion.$error.required">Requerido.</span>
                                             <span class="help-block" style="color:red" ng-if="frmSolicitud.tipoconstruccion.$invalid">Formato no valido.</span>
-
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -1368,7 +1281,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="limpiar()">Cerrar</button>
                     <button type="button" class="btn btn-success"
                     ng-disabled="solicitud.cinit==null || solicitud.cinit==undefined || solicitud.cinit=='' || solicitud.inmueble==null || solicitud.inmueble==undefined || solicitud.inmueble==''   || solicitud.macrodistrito==null || solicitud.macrodistrito==undefined || solicitud.macrodistrito=='' 
                     || solicitud.distrito==null || solicitud.distrito==undefined || solicitud.distrito=='' 
@@ -1463,6 +1376,26 @@
         </div>
     </div>
 
+    <!-- Modal confirmacion de re delegacion del tramite-->
+    <div id="modalConfirmacionReEnvio" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm" style="width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delegar solicitud a profesional externo</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="font-size: 18px;">¿Sr. Usuario está seguro de delegar nuevamente esta solicitud al profesional externo <b>{{solicitud.profesionalNombre}}</b> ?</p> 
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="solicitud.acciones.guardarEnviar()">SI</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal 6 Ayuda cod cat-->
     <div id="divPopupAyudaCC" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="true">
         <div class="modal-dialog" >
@@ -1518,15 +1451,8 @@
                         <div class="col-sm-6"><button type="button" class="btn btn-danger btn-block" data-dismiss="modal" ng-click="solicitud.acciones.anular(idTramiteAnularEnc)">SI</button></div>
                         <div class="col-sm-6"><button type="button" class="btn btn-default btn-block" data-dismiss="modal">NO</button></div>
                     </div>
-
-
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
-
-
-

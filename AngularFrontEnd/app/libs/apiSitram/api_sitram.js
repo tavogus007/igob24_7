@@ -1,6 +1,9 @@
 if(jsonURLS){
-  var urlSitram =  jsonURLS.CONEXION_API_PG_IF+"wsSitram"; //crearTramiteDigital
+  var urlSitram =  jsonURLS.CONEXION_SITRAM+":9091/wsSitram"; //crearTramiteDigital
 }
+
+var urlSitram = "https://gamlpmotores.lapaz.bo/gamlp/wsSitram";//crearTramiteDigital
+
 var urlComp;
 var dataResp;
 var dataParams;

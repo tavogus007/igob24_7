@@ -1,9 +1,16 @@
-var app = angular.module('myApp', ['ngResource','ngRoute', 'ngAnimate', 'toaster', 'ngTable','ui.bootstrap','angularMoment', 'hSweetAlert','ngCkeditor','integralui','xeditable','angularFileUpload','angularSoap','pdf']); 
+var app = angular.module('myApp', ['ngResource','ngRoute', 'ngAnimate', 'toaster', 'ngTable','ui.bootstrap','angularMoment', 'hSweetAlert','ngCkeditor','integralui','xeditable','angularFileUpload','angularSoap','pdf']); //'uiGmapgoogle-maps','ngMap' ,
+                                 //'ngResource','ngRoute', 'ngAnimate', 'toaster', 'ngTable', 'ngDreamFactory','ui.bootstrap','angularMoment', 'hSweetAlert','ngSanitize'
+                                 //.constant('DSP_URL', 'http://192.168.5.141:80').constant('DSP_API_KEY', 'todoangular').constant('DEV_ENV', 0);
+/*app.config(['$httpProvider', 'DSP_API_KEY', function($httpProvider, DSP_API_KEY) {
+    $httpProvider.defaults.headers.common['X-DreamFactory-Application-Name'] = DSP_API_KEY;
+  }]);*/
 
 app.factory("wsRgistrarPubliciadad", ['$soap',function($soap){
     var base_url = "http://srvcronos/webservicios/registrapublicidad.asmx";
+    //?op=registra_publicidadess
     return {
-        registra_publicidades: function(datos){            
+        registra_publicidades: function(datos){     //if (datos.f01_nom_edi_prop   == '') datos.f01_nom_edi_prop=" ";
+            //console.log("---****-->",datos);
             return $soap.post(base_url,"registra_publicidades", {letrero:{"idActividadEconomica":91340,
                                                                   "idContribuyente": 244605,
                                                                   "clase": "N",
@@ -30,8 +37,12 @@ app.factory("wsRgistrarPubliciadad", ['$soap',function($soap){
 
 app.factory("wsObito", ['$soap',function($soap){
     var base_url = "http://prometeo/AdministracionSatelite/Service1.asmx";
-    return {        
+    //var base_url = "http://gmlpsr0116/swGenesis/swLicencia.asmx";
+    return {
+        //RegistroSIMGEPsolicitud: function(gnombres_t, gprimer_apellido_t, gsegundo_apellido_t, gcarnet_t, gci_expedido_t, gparentesco, gmotivo, gtitular_zona, gtitular_via, gtipo_via, gtitular_nro, gtitular_fono, gtitular_correo, gnombres_f, gprimer_apellido_f, gsegundo_apellido_f, gapellido_casado_f, gfecha_def_1, gfecha_def_2, gcarnet_f, gobservaciones){
         RegistroSIMGEPsolicitud: function(datos){
+            //console.log(datos);
+            //console.log("111111",gnombres_t, gprimer_apellido_t, gsegundo_apellido_t, gcarnet_t, gci_expedido_t, gparentesco, gmotivo, gtitular_zona, gtitular_via, gtipo_via, gtitular_nro, gtitular_fono, gtitular_correo, gnombres_f, gprimer_apellido_f, gsegundo_apellido_f, gapellido_casado_f, gfecha_def_1, gfecha_def_2, gcarnet_f, gobservaciones,"222222")
             return $soap.post(base_url,"RegistroSIMGEPsolicitud", {
                 nombres_t: datos.nombres_t,
                 primer_apellido_t: datos.primer_apellido_t,
@@ -60,8 +71,9 @@ app.factory("wsObito", ['$soap',function($soap){
 }]);
 
 //Servicio actualizacion de logs
-app.service('registroLog', function(CONFIG){
-    this.almacenarLog = function(sIdUsuario, sIdCiudadano, sIdFormulario, sEvento){
+app.service('registroLog', function(CONFIG){   
+
+     this.almacenarLog = function(sIdUsuario, sIdCiudadano, sIdFormulario, sEvento){
         var fecha= new Date();
         var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
         var datos = {
@@ -88,9 +100,28 @@ app.service('registroLog', function(CONFIG){
 
             }
         });
-     }
+     }     
 });
 
+/************ s1 **************/
+/*
+app.service('registroLog', function(DreamFactory,CONFIG){
+    //$scope.almacenarLog = function(sIdUsuario, sIdCiudadano, sIdFormulario, sEvento){
+    this.almacenarLog = function(sIdUsuario, sIdCiudadano, sIdFormulario, sEvento){
+        var fecha = new Date();
+        var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        var aLog = new reglasnegocio();
+        aLog.id = 124;
+        aLog.parametros = '{"lgs_usr_id":"'+ sIdUsuario +'","lgs_dtspsl_id":"'+ sIdCiudadano +'","lgs_frm_id":"'+ sIdFormulario +'","lgs_evento":"'+ sEvento +'"}';
+        aLog.llamarregla(function(data){
+        //servicio insertar usuarios
+        data = JSON.parse(data);
+            console.log("Registro almacenado");
+        });
+     }
+});
+*/
+/***************************/
 app.service('obtFechaActual', function(CONFIG){
     this.obtenerFechaActual = function(){
         var fecha       =   new Date();
@@ -148,6 +179,63 @@ app.directive('uploaderModel', ["$parse", function ($parse) {
 }]);
 
 ///servicio para q funcione el upload
+/*app.service('fileUpload', ['$http', function ($http) {
+    this.uploadFileToUrl = function(file, uploadUrl){
+        var fd = new FormData();
+        fd.append('files', file);
+        $http.post(uploadUrl + file.name + "?app_name=todoangular", fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function(){
+        })
+        .error(function(){
+        });
+    }
+}]);
+
+app.service('fileUpload1', ['$http', function ($http) {
+    this.uploadFileToUrl1 = function(file, uploadUrl,nombre){
+        var fd = new FormData();
+        fd.append('files', file);
+        //console.log(nombre,89);
+        $http.post(uploadUrl + nombre + "?app_name=todoangular", fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function(){
+        })
+        .error(function(){
+        });
+    }
+}]);
+
+
+app.factory("fileUploadcorr", ['$http', function($http){    
+    return {
+        uploadFileToUrl1: function(file, uploadUrl,nombre){
+            $.blockUI();
+            var fd = new FormData();
+            fd.append('files', file);
+            return ($http.post(uploadUrl + nombre + "?app_name=todoangular", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).success(function(resp){
+                $.unblockUI();
+                console.log("ARCHIVO ADJUNTADO :", resp);
+                return 'resp';
+                
+            }).error(function(err){
+                $.unblockUI();
+                console.log("ERROR AL ADJUNTAR ARCHIVO :", err);
+                return 'err';                
+            }));
+        }
+    }
+}]);*/
+
+
+///servicio para q funcione el upload
 app.service('fileUpload', ['$http', '$location', function ($http,$location) {
     this.uploadFileToUrl = function(file, uploadUrl){
         var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
@@ -176,10 +264,10 @@ app.service('fileUpload', ['$http', '$location', function ($http,$location) {
         .success(function(resp){
             $.unblockUI();    
             if(resp.code == 500){
-                alert("Error al adjuntar el archivo.  ");
+                alert("Error al adjuntar el archivo. Favor d ");
                 $location.path('dashboard');
             }else{
-                console.log("ADJUNTO REGISTRADO CORRECTAMENTE");
+                console.log("ADJUNTO REGISTRADO CORRECTAMENTE Favor d");
             }                    
         })
         .error(function(){
@@ -191,6 +279,7 @@ app.service('fileUpload1', ['$http', '$location', function ($http,$location) {
     this.uploadFileToUrl1 = function(file, uploadUrl,nombre){
         var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
         var sidusuario = sessionStorage.getItem('IDUSUARIO');
+        //var sidusuario = sessionStorage.getItem('IDUSUARIO');
         var srutaf = '';
         try{
             var suploadurl = uploadUrl;
@@ -219,7 +308,7 @@ app.service('fileUpload1', ['$http', '$location', function ($http,$location) {
                 alert("Error al adjuntar el archivo.  ");
                 $location.path('dashboard');
             }else{
-                console.log("ADJUNTO REGISTRADO CORRECTAMENTE");
+                console.log("ADJUNTO REGISTRADO CORRECTAMENTE.");
             }            
         })
         .error(function(){
@@ -235,6 +324,7 @@ app.factory("fileUploadcorr", ['$http','$location', function($http,$location){
             $.blockUI();
             var surl = jsonURLS.CONEXION_API_PG_RC + 'wsRCPG/subirArchivo';
             var sidusuario = sessionStorage.getItem('IDUSUARIO');
+            //var sidusuario = sessionStorage.getItem('IDUSUARIO');
             var srutaf = '';
             try{
                 var suploadurl = uploadUrl;
@@ -258,10 +348,10 @@ app.factory("fileUploadcorr", ['$http','$location', function($http,$location){
             }).success(function(resp){
                 $.unblockUI();
                 if(resp.code == 500){
-                    alert("Error al adjuntar el archivo.  ");
+                    alert("Error al adjuntar el archivo..  ");
                     $location.path('dashboard');
                 }else{
-                    console.log("ARCHIVO ADJUNTADO :", resp);
+                    console.log("ARCHIVO ADJUNTADO.. :", resp);
                 }                
                 return 'resp';
                 
@@ -286,7 +376,10 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
                     var sgrupo = "";
                     var lstGrupos = [];
                     var lstSubGrupo = [];
-                    var j=0;                
+                    var j=0;
+                
+                    console.log("RESULTADO :", results);
+                
                     $.each(results, function(key, value){
                         var lstOpciones = [];
                         var sContenido = value["contenido"].replace("../", "");
@@ -317,9 +410,12 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
                     listarMenu = listarMenu.replace(/}","{/gi, "},{");
                     listarMenu = listarMenu.replace(/\"\]/gi, "]");
                     listarMenu = listarMenu.replace(/\\"/gi, '"');
+                    //console.log(listarMenu);
                     $scope.categories = JSON.parse(listarMenu);
+
                 }else{
                     $scope.msg = "Error en usurio y/o contraseña";
+                    //$location.path('');
                 }
         });
     }*/
@@ -330,11 +426,16 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
 
     };
 
+    //al realizar f5
     $scope.$on('api:ready',function(){
-        $scope.validarRenderizacion();      
+        $scope.validarRenderizacion();
+        //$scope.generarMenu();
     });
     $scope.inicioMenu = function () {
         $scope.validarRenderizacion();
+        //if(DreamFactory.api[CONFIG.SERVICE]){
+            //$scope.generarMenu();
+        //}
     };
 }]);
 
@@ -342,6 +443,7 @@ app.controller('NavCtrl',['$scope', '$http','$rootScope','sessionService','CONFI
 app.config(['$routeProvider',
   function ($routeProvider) {
         $default = '../autenticacion/index.html';
+        //$ruta = '../administracion/usuarios.html';
         $routeProvider.
         when('/login', {
             title: 'Login',
@@ -382,7 +484,92 @@ app.config(['$routeProvider',
              templateUrl: 'partials/nofound.html'
         });
   }])
-    .run(function ($rootScope, $location, Data, sessionService,CONFIG) {
+    .run(function ($rootScope, $location, Data, sessionService,CONFIG, $timeout, $document) {
+	
+        var TimeOutTimerValue = 1200000;                
+        var TimeOut_Thread = $timeout(function(){ LogoutByTimer() } , TimeOutTimerValue);
+        var bodyElement = angular.element($document);
+        
+        /// Keyboard Events
+        bodyElement.bind('keydown', function (e) { TimeOut_Resetter(e) });	
+        bodyElement.bind('keyup', function (e) { TimeOut_Resetter(e) });	
+        
+        /// Mouse Events	
+        bodyElement.bind('click', function (e) { TimeOut_Resetter(e) });
+        bodyElement.bind('mousemove', function (e) { TimeOut_Resetter(e) });	
+        bodyElement.bind('DOMMouseScroll', function (e) { TimeOut_Resetter(e) });
+        bodyElement.bind('mousewheel', function (e) { TimeOut_Resetter(e) });	
+        bodyElement.bind('mousedown', function (e) { TimeOut_Resetter(e) });		
+            
+        /// Touch Events
+        bodyElement.bind('touchstart', function (e) { TimeOut_Resetter(e) });		
+        bodyElement.bind('touchmove', function (e) { TimeOut_Resetter(e) });		
+        
+        /// Common Events
+        bodyElement.bind('scroll', function (e) { TimeOut_Resetter(e) });		
+        bodyElement.bind('focus', function (e) { TimeOut_Resetter(e) });	
+    
+        function runTimer(selector, start, end, interval, delay) {
+            var cntr = start;
+            $(selector).html(cntr);
+            var timer = setInterval(function() {
+                ++cntr;
+                $(selector).html(cntr);
+                console.log('cntr:', cntr);
+                if (cntr >= end) {
+                    clearInterval(timer);
+                    setTimeout(function() {
+                        runTimer(selector, 1, end, interval, delay);
+                    }, delay);
+                }
+            }, interval);
+        }
+    
+        function LogoutByTimer()
+        {
+            //Registro log, cierre de sesison usuario
+            //registroLog.almacenarLog(sessionService.get('IDUSUARIO'),0,0, "Cierre de sesión");
+            document.getElementById('dvContenidoView').style.display = 'none';
+            //Destruyendo las variables de session
+            sessionService.destroy('USER');
+            sessionService.destroy('IDUSUARIO');
+            sessionService.destroy('USUARIO');
+            sessionService.destroy('US_IDROL');
+            sessionService.destroy('US_ROL');
+            sessionService.destroy('US_NOMBRE');
+            sessionService.destroy('US_PATERNO');
+            sessionService.destroy('US_MATERNO');
+            sessionService.destroy('IDCIUDADANO');
+            sessionService.destroy('CICIUDADANO');
+            sessionService.destroy('NITCIUDADANO');
+            sessionService.destroy('IDSOLICITANTE');
+            sessionService.destroy('US_EMAIL');
+            sessionService.destroy('SERVICIOS');
+            sessionService.destroy('TIPO_PERSONA');
+            sessionService.destroy('TOKEN');
+            sessionService.destroy('TOKEN_MOTOR');
+            sessionService.destroy('TOKEN_MOTORA');            
+            sessionService.destroy('urliniciomoduloigob');            
+            document.getElementById('menuIzqui').style.display = 'none';
+            document.getElementById('menuIzqui2').style.display = 'none';
+            sessionStorage.removeItem("autenticacion");
+            sessionService.destroy("SERVICIOS_MODAL");      
+
+            window.location.href = "../autenticacion/partials/sessionexpirada.html";            
+        }
+        
+        function TimeOut_Resetter(e)
+        {
+            console.log('' + e);
+       
+            
+            /// Stop the pending timeout
+            $timeout.cancel(TimeOut_Thread);
+            
+            /// Reset the timeout
+            TimeOut_Thread = $timeout(function(){ LogoutByTimer() } , TimeOutTimerValue);
+        }      	
+	
         $rootScope.$on("$routeChangeStart", function (event, next, current) {
             var URLactual   =   window.location;
             var origenurl   =   URLactual.href;
@@ -422,7 +609,9 @@ app.config(['$routeProvider',
                 $rootScope.usMaterno = sessionService.get('US_MATERNO');
                 $rootScope.usTipoPersona = sessionService.get('TIPO_PERSONA');
                 $rootScope.stiporol = sessionService.get('US_IDROL');
+
                 $rootScope.sservicios = sessionService.get('SERVICIOS');
+                //alert("usuario:" + sessionService.get('US_IDROL'));
                 if ($rootScope.usuario) {
                     $rootScope.nombre = sessionService.get('USUARIO');
                 } else {
@@ -433,15 +622,29 @@ app.config(['$routeProvider',
                         }catch(e){}
                         $location.path("");
                     }
-                }                
+                }
+                /*if (sessionService.get('SERVICIOS')=='SI') {
+                    sessionService.set('US_IDROL', "5");
+                    $rootScope.stiporol = sessionService.get('US_IDROL');
+                } else {
+                    sessionService.set('US_IDROL', "4");
+                    $rootScope.stiporol = sessionService.get('US_IDROL');
+                }*/
             }else{
                 if(next.originalPath != "/registro"){
                     try{
                         document.getElementById('menuIzqui').style.display = 'none';
                         document.getElementById('menuIzqui2').style.display = 'none';
                     }catch(e){}
+                    //$location.path("");
+                    //alert(1);
                     window.location.href = "../autenticacion/partials/login_.html";
+                    //http://localhost:3055/app/view/autenticacion/partials/login_.html
+                    //$location.path("login");
                 }
+                //$location.path("login");
+                //window.location.href = "../../index.html";
+                //alert("no existe session storage");
             }
         });
     });

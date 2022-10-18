@@ -275,7 +275,7 @@
     var GoogleAuth;
     function onLoadFunction() {
       gapi.client.init({
-          'clientId': '816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com',
+          'clientId': '52027467967-ir59vlp1kdi501pco8gjgeh2cfoe1vds.apps.googleusercontent.com',
           'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
           'discoveryDocs': ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
       }).then(function () {
@@ -290,7 +290,7 @@
         email:""
       }
       var params = {
-        'clientid' : '816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com',
+        'clientid' : '52027467967-ir59vlp1kdi501pco8gjgeh2cfoe1vds.apps.googleusercontent.com',
         'cookiepolicy':'single_host_origin',
         'callback':function(result){  
           if(result['status']['signed_in']){
@@ -317,7 +317,7 @@
     function initClient() {
       var discoveryUrl = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
       gapi.client.init({
-        'clientId': '816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com',
+        'clientId': '52027467967-ir59vlp1kdi501pco8gjgeh2cfoe1vds.apps.googleusercontent.com',
         'discoveryDocs': [discoveryUrl],
         'scope': SCOPE
       }).then(function () {
@@ -898,15 +898,6 @@
           }
           else
           {
-            if(response.error.code == 123)
-            {
-              sessionStorage.setItem("oid_c",response.error.oid);
-              sessionStorage.setItem("ci_c",response.error.ci);
-              sessionStorage.setItem("email_c",response.error.email);
-              sessionStorage.setItem("nombre_c",response.error.nombre);
-              sessionStorage.setItem("TOKEN_API",response.error.token);
-              location.href = "../../autenticacion/partials/cambio.html";
-            }
             if(response.error.code == 703)
             {
                 sweetAlert("", response.error.message, "warning");
@@ -1046,6 +1037,7 @@
           document.getElementById("EnvRes").disabled = true;
         }
       }
+	  
       function resetPassword2()
       {
         var sUser   = $("#prsCI").val();
@@ -1110,6 +1102,7 @@
             }
         });
       }
+	  
       function obtCaptha()
       {
         var objCaptcha = new captcha();
@@ -1631,7 +1624,7 @@
 <!-- <script type="text/javascript" src="../../../libs/js_one/bootstrap.min.js"></script> -->
 <script type="text/javascript" src="../../../libs/js/sweetalert.min.js"></script>
 
-<meta name="google-signin-client_id" content="816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com">
+<meta name="google-signin-client_id" content="52027467967-ir59vlp1kdi501pco8gjgeh2cfoe1vds.apps.googleusercontent.com">
 <script async defer src="https://apis.google.com/js/api.js" onload="handleClientLoad()"
 onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
 

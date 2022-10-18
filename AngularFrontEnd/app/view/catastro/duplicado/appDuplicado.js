@@ -2209,12 +2209,14 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			$scope.objFacturaPdf.operacion = "getFacturaBase64";
 			$scope.objFacturaPdf.tokenFactura = resp.dataResp.token;
 			$scope.objFacturaPdf.idSucursal = "170";
-			$scope.tipoCodFactura = "";
-			if(datosFac.idTipoPago === 2 ){
-				$scope.tipoCodFactura = datosFac.FUM+"PO-DC";
-			}else{
-				$scope.tipoCodFactura = datosFac.FUM+"-SITDC";
-			}
+			//ajuste Angel.Laura, solo se genera con el tipo SITDC, 20220630
+			$scope.tipoCodFactura = datosFac.FUM+"-SITDC";
+			//if(datosFac.idTipoPago === 2 ){
+			//	$scope.tipoCodFactura = datosFac.FUM+"PO-DC";
+			//}else{
+			//	$scope.tipoCodFactura = datosFac.FUM+"-SITDC";
+			//}
+			//ajuste FIN Angel.Laura, solo se genera con el tipo SITDC, 20220630
 			$scope.objFacturaPdf.codigo = $scope.tipoCodFactura;
 			$scope.objFacturaPdf.dataFactura(function(respPDF){
 				respPDF = JSON.parse(JSON.parse(respPDF));

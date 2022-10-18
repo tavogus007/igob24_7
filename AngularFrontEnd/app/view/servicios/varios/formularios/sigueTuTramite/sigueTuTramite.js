@@ -1,4 +1,4 @@
-function siguetutramiteController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, sweet,registroLog,ngTableParams, $filter) {
+function siguetutramiteController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, sweet,registroLog) {
     "use strict";
     $scope.infcontenido = "SIGUE TU TRAMITE NUEVA VERSION ..CCC";
     var msjRegistroNoEncontrado = "Estimado usuario, su trámite no fue encontrado";
@@ -23,7 +23,6 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
     };
 
     $scope.volverLimpiar = function (datos) {
-       
         try {
             $scope.registro.tramite = "";
             $scope.registro.contrasenia = "";
@@ -35,15 +34,14 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         }
         else{
             $scope.frmConsulta = null;
-            $scope.grillaTramitesLineaAE = mostrar;
+            $scope.grillaTramitesLineaAE = "mostrar";
             $scope.grillaHistorialAE = null;
             $scope.grillaHistorialSITRAM = null;
             $scope.grillaHistorialSitram247 = null;
             $scope.grillaHistorialLotus = null;
             $scope.grillaHistorialNEXO = null;
             $scope.grillaHistorialTerr = null;
-            $scope.grillaTramitesSitram247 = null;
-            $scope.verResultados = null;
+
             $scope.grillaTramitesLineaSitram247 = null;
             $scope.btnVolverActivo = false;                    
             $scope.tramitesciudadano = $rootScope.tramitesciudadano; 
@@ -64,9 +62,6 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         $scope.grillaTramitesLineaSitram = null;
         $scope.grillaTramitesLineaLotus = null;
         $scope.grillaHistorialTerr = null;
-        $scope.verResultados = null;
-        $scope.grillaTramitesSitram247 = null
-
     }
 
 
@@ -75,8 +70,6 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
     $scope.grillaTramitesLineaSitram247 = null;
     $scope.grillaTramitesLineaSitram = null;
     $scope.grillaTramitesLineaLotus = null;
-    $scope.verResultados = null;
-    $scope.grillaTramitesSitram247 = null
 
     $scope.grillaHistorialAE = null;
     $scope.grillaHistorialTerr = null;
@@ -108,7 +101,7 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         var siexiste5 = nrocaso.search(miRegExa5);
         var siexiste6 = nrocaso.search(miRegExa6);
         var siexiste7 = nrocaso.search(miRegExa7);
-      var siexiste8 = nrocaso.search(miRegExa8);
+        var siexiste8 = nrocaso.search(miRegExa8);
 
         if (siexiste1 != -1 || siexiste2 != -1 || siexiste3 != -1 || siexiste4 != -1 || siexiste5 != -1 || siexiste6 != -1 || siexiste7 != -1 || siexiste8 != -1) {
             $scope.getTramiteLotus(datos);
@@ -119,7 +112,7 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
             if (pos != -1) {
                 $scope.getTramitesAe(datos);
             } else {
-                //$scope.getTramiteSitram247(datos);
+                $scope.getTramiteSitram247(datos);
             }
         }
     };
@@ -128,11 +121,10 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
     $scope.getTramiteSitram247 = function (datos) {
         $.blockUI(); 
         setTimeout(function(){
-        $scope.verResultados = null;
         try{
             var tramitessitram = new visualizarTramitesSitram();
-            tramitessitram.nroTramite = datos.tcorrelativo;
-            tramitessitram.clave = datos.toid; //revisar aqui
+            tramitessitram.nroTramite = datos.tramite;
+            tramitessitram.clave = datos.contrasenia;
             tramitessitram.visualizarTramites_Sitram(function(data){
                 var response = JSON.parse(data); 
                 var respuesta = response.success;
@@ -141,8 +133,7 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
                     swal('', 'Ingrese un número de trámite válido', 'error');                   
                 } else{            
                     if (respuesta.data.length > 0) {
-                        $scope.grillaHistorialSitram247 = mostrar;
-                        $scope.grillaTramitesSitram247 = null;
+                        $scope.grillaHistorialSitram247 = "mostrar";
                         $scope.grillaHistorialTerr = null;
                         $scope.grillaHistorialLotus = null
                         $scope.grillaHistorialAE = null;
@@ -314,14 +305,53 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         $scope.validarAutoconsulta($scope.data,0);
     };
 
-    
+    $scope.getTramiteLotus = function (datos) {
+         $.blockUI(); 
+        setTimeout(function(){
+        try{
+            var tramitesLotus = new visualizarTramitesLotus();
+            tramitesLotus.ltci = '';
+            tramitesLotus.ltcodigo = datos.tramite;
+            tramitesLotus.ltclave = datos.contrasenia;
+            tramitesLotus.visualizar_TramitesLotus(function(data){
+                var response = JSON.parse(data); 
+                if (response.success.data.length > 0) {
+                    $scope.grillaHistorialLotus = "mostrar";
+                    $scope.grillaTramitesLineaAE = null;
+                    $scope.grillaHistorialTerr = null;
+                    $scope.grillaHistorialSitram247 = null;
+                    $scope.grillaHistorialAE = null;
+                    $scope.frmConsulta = null;
+                    $scope.historialLotus = response.success.data;
+                    $scope.tasunto = datos.tasunto;
+                    $scope.tcorrelativo = datos.tcorrelativo;
+                    $scope.tfregistro = datos.tfregistro;
+                    $scope.btnVolverActivo = true;
+                    $scope.$apply();                    
+                    $.unblockUI();
+                } else {
+                    swal('Autoconsulta', msjRegistroNoEncontrado, 'error');
+                    $.unblockUI();
+                    //sweet.show('Autoconsulta', 'Sin tramites en Lotus', 'error');//msjTrmsRegistroNoEncontrado
+                }
+            });
+        }
+        catch(e)
+        {
+            console.log("error", e);
+            swal('Autoconsulta', msjError, 'error');
+            $.unblockUI();
+        }
+         },300);
+    };
+
     
 
     //TRAMITES SIMGEP AE
     //$scope.tramitesciudadano = [];
     var i = 0;
     $scope.tramitesCiudadanoSimgepAE = function (datos) { 
-    $.blockUI(); 
+ $.blockUI(); 
         setTimeout(function(){
                
            
@@ -335,6 +365,9 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
                 var response = JSON.parse(data);  
                 if (response.success.dataSql.length > 0) {
                     $scope.grillaTramitesLineaAE = "mostrar";
+                    //$scope.grillaHistorialAE = null;
+                    //$scope.grillaHistorialNEXO = null;
+                    //$scope.grillaHistorialSITRAM = null;
                     $scope.frmConsulta = null;
                     $scope.tramiteCiudadanoAE = response.success.dataSql;
                     //$scope.tramitesLinea.push($scope.tramiteCiudadanoAE);
@@ -354,9 +387,15 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
 
                     $rootScope.tramitesciudadano = $scope.tramitesciudadano; 
                     $scope.btnVolverActivo = true;
+                    //$('#content').fadeIn(1000).html($scope.tramitesciudadano);
                 } 
+                //else {
                     $scope.tramitesCiudadanoSimgepTERRITORIAL(datos);
-                });
+                    //$scope.tramitesCiudadanoSitram247(datos.cedula);
+                    //$scope.tramitesGeneradosLotus(datos.cedula);
+                    //$scope.getTramitesTerritorial(ci);
+                //}   
+            });
         }
         catch(e)
         {
@@ -430,113 +469,45 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
             tramitesSitram.clave = '';
             tramitesSitram.lstTramites_Sitram(function(data){
                 var response = JSON.parse(data);  
-                $scope.datos = response.success.data[0].sp_trs_autoconsulta.TRAMITES_PH;
-                $scope.datosPu = response.success.data[0].sp_trs_autoconsulta.TRAMITES_PU;
-                    if ($scope.datos.length > 0 || $scope.datosPu.length > 0 ) {   
-
-                       // $scope.grillaTramitesSitram247 = "mostrar";  
-                        $scope.grillaTramitesLineaAE = 'mostrar';         
+                /*var respuesta = response.success;
+                if (respuesta == undefined) {
+                    $.unblockUI();                
+                    swal('', 'Ingrese un CI válido', 'error');                   
+                } else{*/
+                    if (response.success.data.length > 0) {   
+                        $scope.grillaTramitesLineaAE = "mostrar";           
+                        //$scope.grillaTramitesLineaSitram247 = "mostrar";
+                        //$scope.grillaTramitesLinea = null;
+                        //$scope.grillaHistorialAE = null;
+                        //$scope.grillaHistorialNEXO = null;
+                        //$scope.grillaHistorialSITRAM = null;
                         $scope.frmConsulta = null;
-                        $scope.datatramites = response.success.data[0].sp_trs_autoconsulta.TRAMITES_PH.concat(response.success.data[0].sp_trs_autoconsulta.TRAMITES_PU);
-                        angular.forEach($scope.datatramites,function(celda, fila)
-                        {                 
+                        $scope.tramiteCiudadanoSITRAM247 = response.success.data;
+                        //$scope.tramitesLinea.push($scope.tramiteCiudadanoSITRAM247); 
+                        angular.forEach($scope.tramiteCiudadanoSITRAM247,function(celda, fila)
+                        {       
                             var tramites = {};
-                            tramites['tasunto'] = celda['TRAMITE_ASUNTO'];
+                            tramites['tasunto'] = celda['tasunto'];
                             tramites['ci'] = celda['toid'];
-                            tramites['tcorrelativo'] = celda['TRAMITE_CORRELATIVO'];
-                            tramites['tfregistro'] = celda['TRAMITE_REGISTRADO']; 
-                            tramites['tresultado'] = celda['COPIA_ESTADO_TRAMITE'];
-                            tramites['toid'] = celda['TRAMITE_CLAVE'];
-                            tramites['tipo_res'] = celda['TRAMITE_TIPO_RESULTADO'];
-                            tramites['sistema'] = 'SITRAM24/7';
-                            tramites['sitram'] = true;
-                            $scope.tramitesciudadano[i] = tramites;
-                            if(tramites['tipo_res'] == 'PH'){
-                               
-                                tramites['swPh'] = true;
-                            }else{
-                             
-                                tramites['swPh'] = false;
-                            }
+                            tramites['tcorrelativo'] = celda['tcorrelativo'];
+                            tramites['tfregistro'] = celda['tfregistro'];
+                            tramites['id_tramite'] = celda['toid'];
+                            //tramites['toid'] = celda['toid'];
+                            tramites['proceso'] = celda['tdata'];
+                            $scope.tramitesciudadano[i]=tramites;
                             i++;                   
                         }); 
+                        $scope.btnVolverActivo = true;
                         $rootScope.tramitesciudadano = $scope.tramitesciudadano; 
                     } 
                     $scope.tramitesGeneradosLotus(ci);
-             });
-        }
-        catch(e)
-        {
-            console.log("error", e);
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }
-    };
+                //};
+                //else {
+                    //sweet.show('Autoconsulta', msjTrmsRegistroNoEncontrado, 'error');
+                    //$scope.tramitesCiudadanoSitram(ci);
 
-    $scope.getResultados= function(datos){
+                //}
 
-        $scope.verResultados=true;
-        $scope.resultados = datos.tresultado;
-        
-        if($scope.resultados.length > 0){
-            var data = $scope.resultados;
-            $scope.obtResultados =  $scope.resultados;
-            $scope.tablaResultados = new ngTableParams({
-                page: 1,
-                count: 10,
-                filter: {}
-            }, {
-                total: $scope.obtResultados.length,
-                getData: function($defer, params) {
-                    var filteredData = params.filter() ?
-                    $filter('filter')($scope.obtResultados, params.filter()) :
-                    $scope.obtResultados;
-                    var orderedData = params.sorting() ?
-                    $filter('orderBy')(filteredData, params.orderBy()) :
-                    $scope.obtResultados;
-                    params.total(orderedData.length);
-                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                   
-                }
-              
-            });
-            $scope.tablaResultados.reload();
-        }else{
-        }        
-
-
-    }
-
-    //TRAMITES SITRAM 24/7
-
-    $scope.getTramiteLotus = function (datos) {
-         $.blockUI(); 
-        setTimeout(function(){
-        try{
-            var tramitesLotus = new visualizarTramitesLotus();
-            tramitesLotus.ltci = '';
-            tramitesLotus.ltcodigo = datos.tramite;
-            tramitesLotus.ltclave = datos.contrasenia;
-            tramitesLotus.visualizar_TramitesLotus(function(data){
-                var response = JSON.parse(data); 
-                if (response.success.data.length > 0) {
-                    $scope.grillaHistorialLotus = "mostrar";
-                    $scope.grillaTramitesLineaAE = null;
-                    $scope.grillaHistorialTerr = null;
-                    $scope.grillaHistorialSitram247 = null;
-                    $scope.grillaHistorialAE = null;
-                    $scope.frmConsulta = null;
-                    $scope.historialLotus = response.success.data;
-                    $scope.tasunto = datos.tasunto;
-                    $scope.tcorrelativo = datos.tcorrelativo;
-                    $scope.tfregistro = datos.tfregistro;
-                    $scope.btnVolverActivo = true;
-                    $scope.$apply();                    
-                    $.unblockUI();
-                } else {
-                    swal('Autoconsulta', msjRegistroNoEncontrado, 'error');
-                    $.unblockUI();
-                }
             });
         }
         catch(e)
@@ -545,9 +516,7 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
             swal('Autoconsulta', msjError, 'error');
             $.unblockUI();
         }
-         },300);
     };
-
 
     //TRAMITES SITRAM
     $scope.tramitesCiudadanoSitram = function (ci) {
@@ -559,12 +528,21 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
                 var response = JSON.parse(data);  
                 if (response.success.data.length > 0) {  
                     $scope.grillaTramitesLineaAE = "mostrar";                            
+                    //$scope.grillaTramitesLineaSitram = "mostrar";
+                    //$scope.grillaTramitesLinea = null;
+                    //$scope.grillaHistorialAE = null;
+                    //$scope.grillaHistorialNEXO = null;
+                    //$scope.grillaHistorialSITRAM = null;
                     $scope.frmConsulta = null;
                     $scope.tramiteCiudadanoSITRAM = response.success.data;
+                    //$scope.tramitesLinea.push($scope.tramiteCiudadanoSITRAM);              
                     $rootScope.tramitesciudadano = $scope.tramitesciudadano; 
                     $scope.btnVolverActivo = true;
                 } 
-                setTimeout(function(){
+                //else {
+                    //$scope.tramitesGeneradosLotus(ci);
+                //}
+               setTimeout(function(){
                     $.unblockUI();
                 }, 1000);
             });
@@ -581,13 +559,19 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
     $scope.tramitesGeneradosLotus = function (ci) {
         var tramitelotus = new lstTramitesLotus();
         tramitelotus.ltci = ci;
+        //tramitelotus.ltcodigo = '';
+        //tramitelotus.ltclave = '';
         tramitelotus.lstTramites_Lotus(function (resultado) {
             var response = JSON.parse(resultado).success.data;
             if (response.length > 0) {
                 $scope.grillaTramitesLineaAE = "mostrar";
-                $scope.grillaTramitesSitram247 = null;  
+                //$scope.grillaTramitesLineaLotus = "mostrar";
+                //$scope.grillaHistorialAE = null;
+                //$scope.grillaHistorialNEXO = null;
+                //$scope.grillaHistorialSITRAM = null;
                 $scope.frmConsulta = null;
                 $scope.tramiteCiudadanoLotus = response;
+                //$scope.tramitesLinea.push($scope.tramiteCiudadanoLotus);                
                 angular.forEach($scope.tramiteCiudadanoLotus,function(celda, fila)
                 {       
                     var tramites = {};
@@ -597,8 +581,6 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
                     tramites['tfregistro'] = celda['tfregistro'];
                     tramites['id_tramite'] = celda['tcas_id'];
                     tramites['proceso'] = celda['tdata'];
-                    tramites['sistema'] = 'CERO_PAPEL';
-                    tramites['ceropapel'] = true;
                     $scope.tramitesciudadano[i]=tramites;
                     i++;                 
                 }); 
@@ -617,8 +599,11 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
                     $.unblockUI();
                     if ($scope.tramitesciudadano.length == 0) 
                     {
+                        //$("#divMsj").removeClass("fa fa-sort-asc");
+                        //$("#divMsj").addClass("well");
                         $("#divMsj").css({'display' : 'block' });
                         $("#main1").fadeIn();
+                        //swal('','Estimado usuario, usted no cuenta con trámites hasta la fecha','warning');
                         $scope.msj = '¡ Estimado ciudadano, usted no cuenta con trámites en GAMLP a la fecha !'; 
                         $scope.$apply();
                     };
@@ -638,18 +623,12 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
     };
 
     $scope.$on('api:ready', function () {
+        //$scope.getHospitales();
     });
     $scope.inicioSigueTuTramite = function () {
-        var tipopersona = sessionService.get("TIPO_PERSONA");
-        var cinitciudadano = '';
-        if(tipopersona == 'NATURAL' || tipopersona == 'N'){
-            cinitciudadano = sessionService.get("CICIUDADANO");
-        }else{
-            cinitciudadano = sessionService.get("NITCIUDADANO");
-        }
-
+      var ciCiudano = sessionService.get("CICIUDADANO");
       $scope.ciudadano = sessionService.get('US_NOMBRE')+' '+sessionService.get('US_PATERNO')+' '+sessionService.get('US_MATERNO');
-      $scope.validarTramiteLinea2(cinitciudadano);
+      $scope.validarTramiteLinea2(ciCiudano);
       //$scope.validarAutoconsulta(ciCiudano);
     };
 

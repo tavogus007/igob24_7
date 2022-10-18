@@ -297,7 +297,7 @@
                                                 <br>
                                                 - El día de la atención médica deberá acudir a su cita al menos <b>30
                                                     minutos antes de la hora</b> programada, con el <b>carnet de
-                                                    vacunacion</b> y una prueba de <b>PCR</b> no mas de 7 dias .
+                                                    vacunacion COVID</b> y una prueba de <b>PCR</b> no mas de 7 dias .
                                                 <br>
                                                 <br>
                                                 - En caso que usted <b>no pueda asistir</b> a su cita reservada deberá
@@ -333,7 +333,7 @@
                                         admisiones al ingreso del hospital municipal.<br>
                                         <br>
                                         - El día de la atención médica deberá acudir a su cita al menos <b>30 minutos
-                                            antes de la hora</b> programada, con el <b>carnet de vacunacion</b> y una
+                                            antes de la hora</b> programada, con el <b>carnet de vacunacion COVID</b> y una
                                         prueba de <b>PCR</b> no mas de 7 dias .
                                         <br>
                                         <br>
@@ -914,29 +914,27 @@
                                                             class="btn btn-success center-block btn-lg fa fa fa-hospital-o "
                                                             data-dismiss="modal" ng-click="reservarFicha()"
                                                             ng-disabled="formulario.resultadoC.$invalid && btnCambiar"><span>
-                                                                PAGAR PRESENCIALMENTE</span></a>
+                                                                PAGAR EN EL HOSPITAL</span></a>
 
                                                         <a ng-show="institucional" type="button"
                                                             class="btn btn-success center-block btn-lg fa fa-credit-card"
                                                             data-dismiss="modal"
                                                             ng-disabled="formulario.resultadoC.$invalid || btnCambiar"
                                                             height="30" data-toggle="modal"
-                                                            data-target="#modalDatosFactura"><span> PAGAR CON
-                                                                TARJETA</span></a>
-                                                        <!--a ng-show = "institucional" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarQR()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR POR QR</span></a-->
+                                                            data-target="#modalDatosFactura"><span> PAGAR EN LINEA</span></a>
+
                                                         <a ng-show="ley" type="button"
                                                             class="btn btn-success center-block btn-lg fa fa-save "
                                                             data-dismiss="modal" ng-click="reservarFichaLey()"
                                                             ng-disabled="formulario.resultadoC.$invalid || btnCambiar"
                                                             height="30"><span> RESERVAR</span></a>
-                                                        <!--a ng-show = " mostrartarjeta" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntar1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR CON TARJETA</span></a-->
-                                                        <!--a ng-show = " mostrarclick" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarClick1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span> PAGAR POR CLICK</span></a-->
+                                                        
                                                         <a ng-show=" volverPago" ng-click="volverPagar()" type="button"
                                                             class="btn btn-success center-block btn-lg fa fa-reply"
                                                             data-dismiss="modal"
                                                             ng-disabled="formulario.resultadoC.$invalid || btnCambiar"
                                                             height="30"><span> VOLVER</span></a>
-                                                        <!--a ng-show = " mostrarqr" type="button" class="btn btn-success center-block btn-lg fa fa-credit-card" data-dismiss="modal" ng-click="pagarOnlinePreguntarQR1()" ng-disabled="formulario.resultadoC.$invalid || btnCambiar" height="30"><span>GENERAR CÓDIGO QR</span></a-->
+                                                        
                                                         <a ng-show=" mostrarqr" type="button"
                                                             class="btn btn-success center-block btn-lg fa fa-qr"
                                                             data-dismiss="modal" ng-click="cargarFichasReservadas()"
@@ -1182,29 +1180,31 @@
                             <h4 class="modal-title" id="myModalLabel">DATOS PARA LA FACTURA</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="title">Nit / C.I.</label>
-                                        <div class="controls">
-                                            <input ng-model="datosFact.nit" id="nit" name="nit" class="form-control"
-                                                type="number" placeholder="Ingrese Nit">
-                                        </div>
-                                        <label for="title">Razón Social</label>
-                                        <div class="controls">
-                                            <input onkeyup="return conMayusculas(this);"
-                                                ng-model="datosFact.razon_social" onChange="conMayusculas(this)"
-                                                id="razon_social" name="razon_social" class="form-control" type="text"
-                                                placeholder="Ingrese Razon Social">
+                            <form name="formFactura" readOnly="true" novalidate>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="title">Nit / C.I.</label>
+                                            <div class="controls">
+                                                <input ng-model="datosFact.nit" id="nit" name="nit" class="form-control"
+                                                    type="number" placeholder="Ingrese Nit" required>
+                                            </div>
+                                            <label for="title">Razón Social</label>
+                                            <div class="controls">
+                                                <input onkeyup="return conMayusculas(this);"
+                                                    ng-model="datosFact.razon_social" onChange="conMayusculas(this)"
+                                                    id="razon_social" name="razon_social" class="form-control" type="text"
+                                                    placeholder="Ingrese Razon Social" required>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row" align="center">
-                                <a type="button" class="btn btn-success center-block fa fa-credit-card"
-                                    ng-click="pagarOnlinePreguntar1(datosFact)" height="30" data-dismiss="modal"><span>
-                                        PAGAR</span></a>
-                            </div>
+                                <div class="row" align="center">
+                                    <a type="button" class="btn btn-success center-block fa fa-credit-card" ng-disabled="formFactura.nit.$invalid || formFactura.razon_social.$invalid"
+                                        ng-click="pagarOnlinePreguntar1(datosFact)" height="30" data-dismiss="modal"><span>
+                                            EFECTUAR PAGO</span></a>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <div class="row">
@@ -1228,29 +1228,31 @@
                             <h4 class="modal-title" id="myModalLabel">DATOS PARA LA FACTURA</h4>
                         </div>
                         <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="title">Nit / C.I.</label>
-                                        <div class="controls">
-                                            <input ng-model="datosFact.nit2" id="nit2" name="nit2" class="form-control"
-                                                type="number" placeholder="Ingrese Nit">
-                                        </div>
-                                        <label for="title">Razón Social</label>
-                                        <div class="controls">
-                                            <input onkeyup="return conMayusculas(this);"
-                                                ng-model="datosFact.razon_social2" onChange="conMayusculas(this)"
-                                                id="razon_social2" name="razon_social2" class="form-control" type="text"
-                                                placeholder="Ingrese Razon Social">
+                            <form name="formFactura2" readOnly="true" novalidate>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="title">Nit / C.I.</label>
+                                            <div class="controls">
+                                                <input ng-model="datosFact.nit2" id="nit2" name="nit2" class="form-control"
+                                                    type="number" placeholder="Ingrese Nit" required>
+                                            </div>
+                                            <label for="title">Razón Social</label>
+                                            <div class="controls">
+                                                <input onkeyup="return conMayusculas(this);"
+                                                    ng-model="datosFact.razon_social2" onChange="conMayusculas(this)"
+                                                    id="razon_social2" name="razon_social2" class="form-control" type="text"
+                                                    placeholder="Ingrese Razon Social" required>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row" align="center">
-                                <a type="button" class="btn btn-success center-block fa fa-credit-card"
-                                    ng-click="pagarCertificado2(datosFact);" height="30" data-dismiss="modal"><span>
-                                        PAGAR</span></a>
-                            </div>
+                                <div class="row" align="center">
+                                    <a type="button" class="btn btn-success center-block fa fa-credit-card" ng-disabled="formFactura2.nit2.$invalid || formFactura2.razon_social2.$invalid"
+                                        ng-click="pagarCertificado2(datosFact);" height="30" data-dismiss="modal"><span>
+                                            EFECTUAR PAGO</span></a>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <div class="row">

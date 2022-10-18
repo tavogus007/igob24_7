@@ -8,9 +8,6 @@ if(jsonURLS){
   var urlIf = jsonURLS.CONEXION_API_PG_IF+"wsIf";
   var urlSitram = jsonURLS.CONEXION_API_PG_IF+"wsSitram";
   var urlSigetuTramite = jsonURLS.CONEXION_API_PG_IF_OFICIAL+"wsSTTF";
-  ////////////////////////ARBOLADO//////////////////////
-  var urlIf_A = jsonURLS.CONEXION_API_PG_IF_A+"wsIf";
-  ///////////////////////////////////////////////////////////
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -36,31 +33,6 @@ function ejecutarAjaxIF(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
 
     return dataResp;
 };
-/////////////////////////////////////ARBOLADO//////////////////////////////////////////////////
-function ejecutarAjaxIF_A(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
-    $.ajax({
-      type: vTypeCall,
-      url: urlIf_A + vUrlComp,
-      data: vDataCall,
-      //dataType: "json",
-      async: false,
-      //processData: true,
-      success: function(response) {
-        //console.log(response);
-        dataResp = JSON.stringify(response);
-        vFunctionResp(dataResp);
-      },
-      error: function (response, status, error) {
-        //dataResp = response.responseText;
-        dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
-        vFunctionResp(dataResp);
-      }
-    });
-
-    return dataResp;
-};
-///////////////////////////////////////////////////////////////////////////////////////////////
-
 /*//////////////////////////////////PERSONA EXTRAVIADA //////////////////////////////////////////*/
 
 function visitas() {
@@ -136,19 +108,6 @@ gCrearCasoLinea.prototype.crearCasoLinea = function (functionResp) {
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };
-////////////////////////////ARBOLADO/////////////////////////////////////
-gCrearCaso.prototype.crearCasoEnLinea_A = function (functionResp) {
-    var dirurl = '';
-    urlCompif = "/crearCasoEnLinea";
-    typeCallif = "post";
-    dataParamsif = {
-      "usr_id" : this.usr_id,
-      "datos" : this.datos,
-      "procodigo" : this.procodigo
-    };
-    ejecutarAjaxIF_A(urlCompif, typeCallif, dataParamsif, functionResp);      
-};
-//////////////////////////////////////////////////////////////////////////
 
 function gCrearCasoSitram() {
     this.proid;
@@ -875,17 +834,14 @@ gCrearTramiteLinea.prototype.crearTramiteLinea = function (functionResp) {
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };
 //Sistema de ventas.
-function tiendaVirtual() {
+/*function tiendaVirtual() {
   this.id_ae;
   this.estado;
   this.categoria;
   this.imagen;
   this.datosAuxiliares;
   this.nombre;
-  this.descripcion;
-  this.pagina;
 }
-
 tiendaVirtual.prototype.modificarTiendaVirtual = function (functionResp) {
     urlComp = "/modificarAEDelivery";
     typeCall = "post";
@@ -895,9 +851,48 @@ tiendaVirtual.prototype.modificarTiendaVirtual = function (functionResp) {
       "categoria_m" : this.categoria,
       "url_imagen_m" : this.imagen,
       "data_m" : this.datosAuxiliares,
-      "nombretv_m" : this.nombre,
-      "descripciontv_m" : this.descripcion,
-      "nombrepagina_m" : this.pagina
+      "nombretv_m" : this.nombre
+    };
+    ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
+};*/
+
+function tiendaVirtual() {
+    this.id_ae;
+    this.estado;
+    this.categoria;
+    this.imagen;
+    this.datosAuxiliares;
+    this.nombre;
+    this.descripcion;
+    this.pagina;
+  }
+  
+  tiendaVirtual.prototype.modificarTiendaVirtual = function (functionResp) {
+      urlComp = "/modificarAEDelivery";
+      typeCall = "post";
+      dataParams = {
+        "idae_m" : this.id_ae,
+        "estadop_m" : this.estado,
+        "categoria_m" : this.categoria,
+        "url_imagen_m" : this.imagen,
+        "data_m" : this.datosAuxiliares,
+        "nombretv_m" : this.nombre,
+        "descripciontv_m" : this.descripcion,
+        "nombrepagina_m" : this.pagina
+      };
+      ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
+  };
+
+function tramiteAe() {
+    this.nombreCaso;
+    this.documento;
+};
+tramiteAe.prototype.adjuntaDeclaracion = function (functionResp) {
+    urlComp = "/adjuntaDeclaracion";
+    typeCall = "post";
+    dataParams = {
+      "nombreCaso" : this.nombreCaso,
+      "documento" : this.documento
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };

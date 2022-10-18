@@ -1,57 +1,75 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" ng-app="myApp">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>IGOB 24/7 - GAMLP</title>        
+        <link href="../../../../structureIgob/images/favicon.png" rel="icon">
+        <script src="../../libs/js/jquery-1.11.2.min.js"></script>
+        <!--IGOBXXXX-->
+        <script src="../../libs/css/js/foundation-datepicker.js"></script>
+        <link rel="stylesheet" href="../../libs/css/css/foundation-datepicker.min.css" async>
+        <script src="../../libs/css/js/locales/foundation-datepicker.es.min.js" async></script>
+        <script src="../../libs/js/aes.js"></script>		
+        <!--IGOBXXXX-->
+        <link rel="stylesheet" href="../../libs/css_one/bootstrap.min.css"/>
+        <link rel="stylesheet" href="../../libs/css_one/font-awesome.min.css"/>
+        <link rel="stylesheet" href="../../libs/css_one/toastr.min.css"/>
+        <link rel="stylesheet" href="../../libs/css_one/jquery.gritter.min.css" async/>
+        <!--<link rel="stylesheet" href="../../libs/css_one/animate.min.css" async/>-->
+        <link rel="stylesheet" href="../../libs/css_one/styleinspinia.min.css"/>
+        <link rel="stylesheet" href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/animate.min.css"/>
+        <link rel="stylesheet" href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/estilosFormularios.min.css"/>
+        <link rel="stylesheet" href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/csshake.min.css"/>
+        <link rel="stylesheet" href="../../../nuevoIgob/css/iconos_flotantes.css"/> 
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>IGOB 24/7 - GAMLP</title>
-    <link href="../../../../structureIgob/images/favicon.png" rel="icon">
-    <script src="../../libs/js/jquery-1.11.2.min.js"></script>
-    <!--IGOBXXXX-->
-    <script src="../../libs/css/js/foundation-datepicker.js"></script>
-    <link rel="stylesheet" href="../../libs/css/css/foundation-datepicker.min.css" async>
-    <script src="../../libs/css/js/locales/foundation-datepicker.es.min.js" async></script>
-    <script src="../../libs/js/aes.js"></script>
-    <!--IGOBXXXX-->
-    <link rel="stylesheet" href="../../libs/css_one/bootstrap.min.css" />
-    <link rel="stylesheet" href="../../libs/css_one/font-awesome.min.css" />
-    <link rel="stylesheet" href="../../libs/css_one/toastr.min.css" />
-    <link rel="stylesheet" href="../../libs/css_one/jquery.gritter.min.css" async />
-    <!--<link rel="stylesheet" href="../../libs/css_one/animate.min.css" async/>-->
-    <link rel="stylesheet" href="../../libs/css_one/styleinspinia.min.css" />
-    <link rel="stylesheet" href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/animate.min.css" />
-    <link rel="stylesheet"
-        href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/estilosFormularios.min.css" />
-    <link rel="stylesheet" href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/csshake.min.css" />
-    <link rel="stylesheet" href="../../../nuevoIgob/css/iconos_flotantes.css" />
 
-    <meta name="google-signin-client_id" content="816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com">
+
+
+
+
+
+        <link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css" />
+        <link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css" />
+        <script type="text/javascript" src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/proj_4/proj4.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_calles.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_lugares.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script>
+		
+ <meta name="google-signin-client_id" content="816192004370-9uk1774kues8bp41pged0gp8v613kpfj.apps.googleusercontent.com">
     <script src="https://apis.google.com/js/platform.js" async defer></script>   
+		
+		
 
-</head>
-<script type="text/javascript">
-    function finalizarMascara() {
-        //alert($("body").hasClass("body-small mini-navbar"));
-        if ($("body").hasClass("body-small mini-navbar")) {
-            $("body").removeClass("body-small mini-navbar");
-            setTimeout(function () {
+   </head>
+   <script type="text/javascript">
+        function finalizarMascara(){
+            //alert($("body").hasClass("body-small mini-navbar"));
+            if($("body").hasClass("body-small mini-navbar")){
+                $("body").removeClass("body-small mini-navbar");
+                setTimeout(function(){
+                    $("#menuIzqui").hide();
+                    $("#dvContenido").hide();
+                    $("#menuIzqui2").hide();
+                }, 500);
+            }
+            if(sessionStorage.getItem('sessionAPP')){
                 $("#menuIzqui").hide();
                 $("#dvContenido").hide();
-                $("#menuIzqui2").hide();
-            }, 500);
+                $("#menuIzqui2").hide();  
+                $(".theme-config_icon_3").hide(); 
+                $(".theme-config_icon_5").hide();
+                $("body").removeClass("mini-navbar");
+            }
+            setTimeout(function(){$.unblockUI();}, 800);
         }
-        if (sessionStorage.getItem('sessionAPP')) {
-            $("#menuIzqui").hide();
-            $("#dvContenido").hide();
-            $("#menuIzqui2").hide();
-            $(".theme-config_icon_3").hide();
-            $(".theme-config_icon_5").hide();
-            $("body").removeClass("mini-navbar");
-        }
-        setTimeout(function () { $.unblockUI(); }, 800);
-    }
-    $('a.taphover').on('touchstart', function (e) {
+         $('a.taphover').on('touchstart', function (e) {
         'use strict';
         var link = $(this);
         if (link.hasClass('hover')) {
@@ -63,635 +81,542 @@
             return false;
         }
     });
-</script>
+   </script>
 <style>
-		.div_btn {
-		position:fixed;
-		/* width:60px;
-		height:60px; */
-		top: 25%;
-		right:15px;
-		z-index: 1500;
-		}
-		.i_status{
-			margin: 5px;
-			font-size: 13px !important;
-			color: #f5f5f5;
-		}
-		.icon-btn {
-		width: 40px;
-		height: 40px;
-		border: 1px solid #cdcdcd;
-		background: #e41b25;
-		border-radius: 5px;
-		overflow: hidden;
-		position: relative;
-		transition: width 0.2s ease-in-out;
-		cursor: pointer;
-		}
-		.add-btn:hover {
-		width: 120px;
-		}
-		.add-btn::before,
-		.add-btn::after {
-		transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-		content: "";
-		position: absolute;
-		height: 2px;
-		width: 10px;
-		top: calc(60% - 1px);
-		background: #f5f5f5;
-		}
-		.add-btn::after {
-		right: 14px;
-		overflow: hidden;
-		border-top-right-radius: 2px;
-		border-bottom-right-radius: 2px;
-		}
-		.add-btn::before {
-		left: 14px;
-		border-top-left-radius: 2px;
-		border-bottom-left-radius: 2px;
-		}
+    .div_btn {
+    position:fixed;
+    /* width:60px;
+    height:60px; */
+    top: 25%;
+    right:15px;
+    z-index: 1500;
+    }
+    .i_status{
+        margin: 5px;
+        font-size: 13px !important;
+        color: #f5f5f5;
+    }
+    .icon-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #cdcdcd;
+    background: #e41b25;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+    transition: width 0.2s ease-in-out;
+    cursor: pointer;
+    }
+    .add-btn:hover {
+    width: 120px;
+    }
+    .add-btn::before,
+    .add-btn::after {
+    transition: width 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 10px;
+    top: calc(60% - 1px);
+    background: #f5f5f5;
+    }
+    .add-btn::after {
+    right: 14px;
+    overflow: hidden;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    }
+    .add-btn::before {
+    left: 14px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    }
 
-		.icon-btn:focus {
-		outline: none;
-		}
-		.btn-txt {
-		opacity: 0;
-		color: #f5f5f5;
-		font-size: 11px;
-		font-weight: 700;
-		transition: opacity 0.2s;
-		}
-		.add-btn:hover::before,
-		.add-btn:hover::after {
-		width: 4px;
-		border-radius: 2px;
-		}
-		.add-btn:hover .btn-txt {
-		opacity: 1;
-		}
-		.add-icon::after,
-		.add-icon::before {
-		transition: all 0.2s ease-in-out;
-		content: "";
-		position: absolute;
-		height: 20px;
-		width: 2px;
-		top: calc(50% - 10px);
-		background: red;
-		overflow: hidden;
-		}
-		.add-icon::before {
-		left: 22px;
-		border-top-left-radius: 2px;
-		border-bottom-left-radius: 2px;
-		}
-		.add-icon::after {
-		right: 22px;
-		border-top-right-radius: 2px;
-		border-bottom-right-radius: 2px;
-		}
-		.add-btn:hover .add-icon::before {
-		left: 15px;
-		height: 4px;
-		top: calc(50% - 2px);
-		}
-		.add-btn:hover .add-icon::after {
-		right: 15px;
-		height: 4px;
-		top: calc(50% - 2px);
-		}
+    .icon-btn:focus {
+    outline: none;
+    }
+    .btn-txt {
+    opacity: 0;
+    color: #f5f5f5;
+    font-size: 11px;
+    font-weight: 700;
+    transition: opacity 0.2s;
+    }
+    .add-btn:hover::before,
+    .add-btn:hover::after {
+    width: 4px;
+    border-radius: 2px;
+    }
+    .add-btn:hover .btn-txt {
+    opacity: 1;
+    }
+    .add-icon::after,
+    .add-icon::before {
+    transition: all 0.2s ease-in-out;
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 2px;
+    top: calc(50% - 10px);
+    background: red;
+    overflow: hidden;
+    }
+    .add-icon::before {
+    left: 22px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    }
+    .add-icon::after {
+    right: 22px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    }
+    .add-btn:hover .add-icon::before {
+    left: 15px;
+    height: 4px;
+    top: calc(50% - 2px);
+    }
+    .add-btn:hover .add-icon::after {
+    right: 15px;
+    height: 4px;
+    top: calc(50% - 2px);
+    }
 
-		.modal-header{
-			background: #e30613;
-		}
-		.modal-title {
+    
+    .modal-header{
+        background: #e30613;
+    }
+    .modal-title {
 			color: #fff;
-		}
-
-</style>
+	}
+</style>  
 <body onload="finalizarMascara();">
-    <div id="dvContenidoVacio">
-        <div class="middle-box text-center loginscreen  animated fadeInDown">
-            <h2
-                style="color: white; text-align: center;position: relative;top: 0%;-ms-transform: translateY(-50%);-webkit-transform: translateY(-50%);transform: translateY(-50%);">
-                Cargando ...</h2>
-            <script>setTimeout(function () { $.blockUI(); }, 300);</script>
+<div id="dvContenidoVacio">
+    <div class="middle-box text-center loginscreen  animated fadeInDown" >
+        <h2 style="color: white; text-align: center;position: relative;top: 0%;-ms-transform: translateY(-50%);-webkit-transform: translateY(-50%);transform: translateY(-50%);">Cargando ...</h2>
+        <script>setTimeout(function(){$.blockUI();}, 300);</script>
+    </div>
+</div>
+<div id="dvContenidoView"  style="display:none;">
+   <div id="dvContenido" ng-if='usuario && nombre' style="position: relative; display:none;">
+      <nav class="navbar navbar-inverse megamenu navbar-fixed-top megamenu" style=""><!--Menu Bar-->
+          <div class="container-fluid" >
+              <div class="navbar-header">                
+                <div style="position: relative; margin: 5px 0 5px 0;"><img class="hidden-xs img-responsive"
+                    src="../../libs/img/log.png"></div>
+              </div>
+              <div id="bs-example-navbar-collapse-1" ng-controller="NavCtrl" data-ng-init="inicioMenu()">
+                <ul class="nav navbar-nav navbar-right" style="margin: 10px 0 0 0;">
+                    <li class="dropdown" ng-controller="authCtrl">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <small><b>{{nombre}}</b></small>&nbsp;
+                            <i class="fa fa-user fa-lg blanco"></i>  <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                          <li>
+                                <a >
+                                    <i class="fa fa-user fa-fw flechaOscura" ></i>
+                                    <span class="text-muted">
+                                            <em>Nombre:</em>
+                                    </span>
+                                    {{usNombre}}
+                                </a>
+                            </li>
+                            <li>
+                                <a >
+                                    <i class="fa fa-user fa-fw flechaOscura"></i>
+                                    <span class="text-muted">
+                                            <em>Paterno:</em>
+                                    </span>
+                                    {{usPaterno}}
+                                </a>
+                            </li>
+                            <li>
+                                <a >
+                                    <i class="fa fa-user fa-fw flechaOscura"></i>
+                                    <span class="text-muted">
+                                            <em>Materno:</em>
+                                    </span>
+                                    {{usMaterno}}
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li><a onclick="signOutGoogle();signOutFacebook();" ng-click="logout();"><i class="fa fa-sign-out fa-fw flechaOscura"></i>Salir</a>
+                            </li>                            
+                        </ul>
+                    </li>
+                </ul>
+              </div>
+            </div>
+      </nav>
+   </div>
+    <!--condiciones de uso-->
+    <div ng-controller="authCtrl" data-ng-init="iniciarAUTHCTRL();" class="modal fade" id="exampleModalCenter" tabindex="-1" style="z-index:2001 !important;" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLongTitle">CONDICIONES DE USO</h2>
+                <!--<a href="https://docs.google.com/document/d/1p2cmHgsEuRh1KX_lLRq94su_LPgbmx2eSu3O_e-g-k8/edit" target="_blank">Editar condiciones de uso</a>-->
+            </div>
+            <div class="modal-body">
+                <p style="text-align: justify; font-family: 'Arial'; font-size: 14px;" id="msgcondicionesuso">{{msgcondicionesuso}}</p>
+                <div id="htmlcondicionesuso"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="btncondicionesuso_n" type="button" class="btn btn-secondary" ng-click="cancelarCondicionesUso();">No Acepto</button>
+                <button id="btncondicionesuso_a" type="button" class="btn btn-primary" ng-click="aceptarCondicionesUso();">Acepto</button>
+                <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
         </div>
     </div>
-    <div id="dvContenidoView" style="display:none;">
-        <div id="dvContenido" ng-if='usuario && nombre' style="position: relative; display:none;">
-            <nav class="navbar navbar-inverse megamenu navbar-fixed-top megamenu"
-                style="">
-                <!--Menu Bar-->
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <div style="position: relative; margin: 5px 0 5px 0;"><img class="hidden-xs img-responsive"
-                                src="../../libs/img/log.png"></div>
-                    </div>
-                    <div id="bs-example-navbar-collapse-1" ng-controller="NavCtrl" data-ng-init="inicioMenu()">
-                        <ul class="nav navbar-nav navbar-right" style="margin: 10px 0 0 0;">
-                            <li class="dropdown" ng-controller="authCtrl">
-                                <a class="dropdown-toggle" data-toggle="dropdown">
-                                    <small><b>{{nombre}}</b></small>&nbsp;
-                                    <i class="fa fa-user fa-lg blanco"></i> <i class="fa fa-caret-down"></i>
+
+	<!--APLICANDO DIRECTIVAS MODAL CAMBIO CONTRASEÑA -->
+	<div>
+		<actualizacion-clave></actualizacion-clave>
+	</div>	
+   <div id="authCtrlForm" ng-controller="authCtrl">
+      <div id="wrapper" style="position: relative;top: -15px;">
+         <div >
+            <div id="menuIzqui" style="display: none;">
+                  <nav class="navbar-default navbar-static-side" >
+                     <div class="sidebar-collapse conteMenu" >
+                       <ul class="nav" id="side-menu">
+                           <li>
+                              <a a href="#dashboard"><i class="fa fa-home blanco animated bounce" style="font-size: 18px"></i> <span class="nav-label">{{translateTitulos.lbl_04_02}}</span></a>
+                           </li>
+                            <li ng-show="stiporol == '4' || stiporol == '5'" style=" font-size:12px;">
+                                <a>
+                                  <i class="fa fa-th-large blanco animated bounce"></i><span class="nav-label">{{translateTitulos.lbl_04_03}}</span><span class="fa arrow blanco"></span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-user">
-                                    <li>
-                                        <a>
-                                            <i class="fa fa-user fa-fw flechaOscura"></i>
-                                            <span class="text-muted">
-                                                <em>Nombre:</em>
-                                            </span>
-                                            {{usNombre}}
-                                        </a>
+                                <ul class="nav nav-second-level" >
+
+                                  <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexLotus.html">Correspondencia Ciudadana</a></li>
+                                  <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexTransparencia.html">Denuncias Transparencia</a></li>
+
+                                  <!--li ng-show="stiporol == '5' && sservicios  == 'SI'">
+                                      <a ng-click = "" href="#registro_ciudadano|servicios|index343.html">{{translateTitulos.lbl_04_04}}</a>
+                                  </li-->
+                                  <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'">
+                                    <a>
+                                        <i
+                                            class="fa fa-caret-right blanco">
+                                            </i>{{translateTitulos.lbl_04_04}}
+                                            <span class="fa arrow blanco"></span>
+                                    </a>
+                                    <ul class="nav nav-third-level">
+                                        <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'">
+                                            <a ng-click="" href="#registro_ciudadano|servicios|index343.html">Solicitud de Licencia.
+                                            </a>
+                                            <!--a ng-click="" href="#registro_ciudadano|servicios|indexSierra.html">Solicitud de Licencia
+                                            </a-->                                            
+                                            <!--a ng-click="" ng-show="vid == '57798df82f59181eb2856b8f'  || vid == '57798e4f2f59181eb2873397' || vid == '57798e542f59181eb2875afa' " href="#registro_ciudadano|servicios|indexSierra.html">Solicitud de Licencia
+                                            </a>
+					    <a>Solicitud de Licencia <div style="color:#FF0000;">(En Mantenimiento)</div>
+                                            </a-->
+                                        </li>                                                                           
+                                    </ul>
+                                  </li>
+
+                                  <!--li ng-show="stiporol == '5' && sservicios  == 'SI'">
+                                    <a>
+                                        <i
+                                            class="fa fa-caret-right blanco">
+                                            </i>Caserit@ Virtual
+                                            <span class="fa arrow blanco"></span>
+                                    </a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a ng-click="" href="#registro_ciudadano|servicios|indexTiendaVirtual.html">Mis Tiendas Virtuales
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/misTransacciones/misTransacciones.html'">Mis Transacciones</a>
+                                        </li>
+                                    </ul>
+                                </li-->                                  
+
+                                  <li ng-show="stiporol == '4' || stiporol == '5'">
+									
+									<!--a ><i class="fa fa-caret-right blanco"></i>{{translateTitulos.lbl_04_05}}<span
+										class="fa arrow blanco"></span>
+										<div style="color: #ff0000;font-size:9px;">(Servicio no disponible)</div>
+										</a-->
+										
+										<a onclick="window.location.href.endsWith('general')==false?window.location='#catastro|general':'';"><i
+										class="fa fa-caret-right blanco"></i>{{translateTitulos.lbl_04_05}}<span
+										class="fa arrow blanco"></span></a>
+										<ul class="nav nav-third-level">
+										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#catastro|registro">Registro Catastral</a></li>
+										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#catastro|registroAct">Actualización de Registro Catastral</a></li>
+										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click=""
+											href="#catastro|duplicado">{{translateTitulos.lbl_04_06}}</a>
+										</li>
+										</ul>
+																	
+                                </li>
+
+                                  <li ng-show="stiporol == '4' || stiporol == '5'">
+                                      <!--a><i class="fa fa-caret-right blanco"></i>Territorio<span class="fa arrow"></span>
+									  <div style="color: #ff0000;font-size:9px;">(Servicio no disponible)</div>
+									  </a-->
+									  <a><i class="fa fa-caret-right blanco"></i>Territorio<span class="fa arrow"></span></a>
+                                      <ul class="nav nav-third-level">
+                                        <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|PC">Permisos de Construcción 3D</a></li>
+                                        <!--li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|AsbuiltFracCercat">Planos As Built, Fraccionamiento PH y Certificación Catastral</a></li>
+                                        <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|FracCercat">Fraccionamiento PH y Certificación Catastral</a></li>
+                                        <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|Asbuilt">Planos As Built</a></li-->
+                                        <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|autorizacionesMenores">Autorizaciones Menores</a></li>
+										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|Regularizacion">Ley 467-Regularización de Edificaciones Fuera de Norma<div style="color: #ff0000;font-size:9px;">(Nuevo)</div></a></li>
+                                      </ul>
+                                  </li>
+
+
+
+                                  <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'">
+                                    <a><i class="fa fa-caret-right blanco"></i>Movilidad<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                      <!--li ng-show="stiporol == '4' && sservicios  == 'SI'"><a ng-click=""
+                                          href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/socilicitudCirculacion/socilicitudCirculacion.html'">Permisos Municipales Transitorios para la Cuarentena<div style="color: #ff0000;">(Nuevo)</div></a>
+                                      </li-->                                          
+                                      <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/administradorOperador/administradoOperadores.html'">Administraci&oacute;n de Operadores</a></li>
+                                      <!--li ng-show="stiporol == '4' && sservicios  == 'SI'">
+                                          <a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudDelevery/solicitudDelevery.html'">Registro Transitorio Delivery <div style="color:#FF0000;">(Nuevo)</div></a>
+                                      </li-->
+									  
+										<!--li ng-if="vid == '57798df82f59181eb2856b8f' || vid == '6304f91855fb4a7a3f0002ad' || vid == '63120985ff9bd2d3ee00009f'"><a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación<div style="color: #ff0000;">(Nuevo)</div></a>
+										</li-->									  
+                                    </ul>
+                                </li>
+
+                                                                 
+
+                                  <!--li ng-show="stiporol == '4' && sservicios  == 'SI'">
+                                      <a><i class="fa fa-caret-right blanco"></i>Movilidad<span class="fa arrow"></span></a>
+                                      <ul class="nav nav-third-level">
+                                        <li ng-show="stiporol == '4' && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/RO/index.html'">Registro de Operadores</a></li>
+                                        <li ng-show="stiporol == '4' && sservicios  == 'SI'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/AO/index.html'">Administracion de Operadores</a></li>
+                                      </ul>
+                                  </li-->
+
+                                  <!--li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/solicitudViajes/index.html'">{{translateTitulos.lbl_04_09}}</a></li-->
+                                  <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/citaMedica/citaMedica.html'"> {{translateTitulos.lbl_04_10}} </a></li>
+                                  <li ng-show="stiporol == '4' || stiporol == '5'"><a  href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/fichas/fichas.html'">{{translateTitulos.lbl_04_11}}</a></li>
+                                  <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/sigueTuTramite/sigueTuTramite.html'">{{translateTitulos.lbl_04_12}}</a></li>
+                                  <!-- RODOLFO opcion para la  visualizacion de antenas><-->
+                                  <li ng-show="mostrarMenuMascota == 'SI'">
+                                      <a><i class="fa fa-caret-right blanco"></i>Solicitud Radio Bases y/o Gabinetes<span class="fa arrow blanco"></span></a>
+                                      <ul class="nav nav-third-level">
+                                          <li ><a ng-click = "" href="#registro_ciudadano|servicios|indexAntena.html">Registro Radio Bases y/o Gabinetes</a></li>
+                                          <li ><a ng-click = "" href="#servicios|varios|formularios|solicitudAntenas|AntenasAdjuntos|antenaAdj.html">Subir Documentos</a></li>
+                                      </ul>
+                                  </li>
+                                  <!-- Fin opcion para la visualizacion de antenas RODOLFO><-->
+
+                                  <!--li ><a href="#registro_ciudadano|obito|index.html">{{translateTitulos.lbl_04_08}}</a></li-->
+
+
+
+								  <li><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/transparencia/reporte/index.html'">Transparencia</a></li>
+
+                                  <li><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'">Registro de Animales de Compañia</a></li>
+                                  
+
+
+                                    <li ng-show="mostrarMenuMascota == 'SI'">
+                                        <a><i class="fa fa-caret-right blanco"></i>Para Veterinarias<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotasJuridico/index.html'">Registro de Animales de Compañia</a></li>
+                                        </ul>
                                     </li>
-                                    <li>
-                                        <a>
-                                            <i class="fa fa-user fa-fw flechaOscura"></i>
-                                            <span class="text-muted">
-                                                <em>Paterno:</em>
-                                            </span>
-                                            {{usPaterno}}
-                                        </a>
+                                    <li ng-show="mostrarMenuMascota == 'SI'">
+                                            <a><i class="fa fa-caret-right blanco"></i>Registro de Animalistas<span class="fa arrow"></span></a>
+                                            <ul class="nav nav-third-level">
+                                                <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroOrganizaciones/index.html'">Registro de Organizaciones Protectoras de Animales</a></li>
+                                                <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroVoluntarios/index.html'">Registro de Voluntarios</a></li>
+                                            </ul>
                                     </li>
-                                    <li>
-                                        <a>
-                                            <i class="fa fa-user fa-fw flechaOscura"></i>
-                                            <span class="text-muted">
-                                                <em>Materno:</em>
-                                            </span>
-                                            {{usMaterno}}
-                                        </a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li><a ng-click="logout();"><i
-                                                class="fa fa-sign-out fa-fw flechaOscura"></i>Salir</a>
-                                    </li>
+
                                 </ul>
                             </li>
+
+                                <!--ATM -------- ATM-->
+                                <li ng-show="mostrarMenuMascota == 'SI'" style=" font-size:12px;">
+                                    <a data-toggle="ATM"><i class="fa fa-newspaper-o"></i><span class="nav-label">Trámites
+                                            Administración Tributaria Municipal</span></a>
+                                    <ul class="nav nav-second-level">
+                                        <!--li>
+                                            <div style="color: #ff0000;">Estimado Ciudadano, los módulos : <br> * Administración Tributaria Municipal - Inmuebles <br> * Administración Tributaria Municipal - Vehículos <br> Estarán en  mantenimiento hasta nuevo aviso.</div>                                            
+                                        </li-->                                        
+                                        <!--li>
+                                            <a href="#registro_ciudadano|servicios|indexAtmInmuebles.html">Administración
+                                                Tributaria Municipal - Inmuebles
+                                            </a>
+                                        </li-->
+                                        <li>
+                                            <a href="#registro_ciudadano|servicios|indexAtmVehiculos.html">Administración
+                                                Tributaria Municipal - Vehículos
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>      
+							<!--PARTICIPACION CIUDADANA-->
+							<!--li ng-show="(stiporol == '5' && sservicios  == 'SI') || vid == '5bb2773b398e617fc30015cb'" style=" font-size:12px;">
+                              <a><i class="fa fa-users blanco animated bounce"></i><span class="nav-label">{{translateTitulos.lbl_04_13}}.</span><span class="fa arrow blanco"></span></a>
+                              <ul class="nav nav-second-level">
+                                 <li ><a href="#servicios|varios|index.html?url='app/view/GestionDocumental/foro/foro.html">{{translateTitulos.lbl_04_14}}</a></li>
+                              </ul>
+                            </li-->
+                            <li ng-show="stiporol == '4' || stiporol == '5'" style=" font-size:12px;">
+                              <a><i class="fa fa-clipboard blanco animated bounce"></i><span class="nav-label">{{translateTitulos.lbl_04_15}}</span><span class="fa arrow blanco"></span></a>
+                              <ul class="nav nav-second-level">
+                                 <li >
+                                  <a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/documentos/index.html">{{translateTitulos.lbl_04_16}}</a>
+                               </li>
+                                 <li ><a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/documentosArchivados/index.html">{{translateTitulos.lbl_04_17}}</a></li>
+                              </ul>
+                            </li>
+                            <li style=" font-size:12px;">
+                              <a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/documentos_Apk/descargas.html"> <i class="fa fa-download animated bounce"></i> <span class="nav-label">{{translateTitulos.lbl_04_17_1}}APK </span></a>
+                            </li>
                         </ul>
-                    </div>
-                </div>
-            </nav>
+                     </div>
+                  </nav>
+            </div>
+         </div>
+         <div id="page-wrapper">
+            <div id="menuIzqui2" style="display: none;">
+               <div class="hola visible-xs">
+                 <a class="navbar-minimalize minimalize-styl-2 hamburguesa btn-circle" ><i class="fa fa-bars" style="font-size: 18px; color: white;"></i>
+                 </a>
+               </div>
+                  <br>
+                 <br>
+                 <br>
+                 <br>
+            </div>
+            <div class="row dashboard-header">
+               <div data-ng-view="" id="ng-view" >
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <!-- ICONOS FLOTANTES -->
+   <div>
+
+    <!--div class="div_btn">
+        <button class="icon-btn add-btn" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)">
+          
+          <i class="fa fa-edit i_status"></i>
+          <div class="btn-txt">Denuncias</div>
+        </button>
+    </div-->
+      <div class="div_btn" style="margin-top: 50px;">
+        <button class="icon-btn add-btn" tooltip = "Solicitud de Información" data-toggle="modal" data-target="#informacionModal" onclick="cerrarModales(2)">
+            <i class="fa fa-pencil-square i_status"></i>
+          <div class="btn-txt">Solicitud de Información</div>
+        </button>
+      </div>
+
+      <div class="div_btn" style="margin-top: 100px;">
+        <button class="icon-btn add-btn" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(3)">
+            <i class="fa fa-gears i_status"></i>
+          <div class="btn-txt">Soporte</div>
+        </button>
+      </div>
+    <!--div class="sticky-container">
+        <div class="social">
+            <ul>
+                <li>
+                    <a class="btn btn-success" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)"><i class="fa fa-edit"></i>
+                </li>
+                <li>
+                    <a class="btn btn-success" tooltip = "Solicitud de Información" data-toggle="modal" data-target="#informacionModal" onclick="cerrarModales(2)"><i class="fa fa-pencil-square"></i>
+                </li>
+                <li>
+                    <a class="btn btn-success" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(3)"><i class="fa fa-gears"></i>
+                </li>
+     
+            </ul>
         </div>
-        <!--condiciones de uso-->
-        <div ng-controller="authCtrl" data-ng-init="iniciarAUTHCTRL();" class="modal fade" id="exampleModalCenter"
-            tabindex="-1" style="z-index:2001 !important;" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="exampleModalLongTitle">CONDICIONES DE USO</h2>
-                        <!--<a href="https://docs.google.com/document/d/1p2cmHgsEuRh1KX_lLRq94su_LPgbmx2eSu3O_e-g-k8/edit" target="_blank">Editar condiciones de uso</a>-->
+    </div-->
+    <div class="modal fade" id="denunciaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <article class="part card-details">
+                    <h1>
+                        Recepción de Denuncias
+                    </h1>
+                </article>                
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <!--h4 class="modal-title">Recepción de Denuncias</h4-->
+            </div>
+            <div class="modal-body back_modal">
+                <form name="formularioHistorico" readOnly="true" novalidate>
+                    <div>
+                        <iframe width="100%" height="450px" id="denuncias"
+                            src="../../../app/view/servicios/transparencia/denuncias/index2.html"></iframe>
                     </div>
-                    <div class="modal-body">
-                        <p style="text-align: justify; font-family: 'Arial'; font-size: 14px;" id="msgcondicionesuso">
-                            {{msgcondicionesuso}}</p>
-                        <div id="htmlcondicionesuso"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="btncondicionesuso_n" type="button" class="btn btn-secondary"
-                            ng-click="cancelarCondicionesUso();">No Acepto</button>
-                        <button id="btncondicionesuso_a" type="button" class="btn btn-primary"
-                            ng-click="aceptarCondicionesUso();">Acepto</button>
-                        <button id="btncerrarmodal" type="button" class="btn btn-primary"
-                            ng-click="aceptarCondicionesUso();" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
-
-        <!--APLICANDO DIRECTIVAS MODAL CAMBIO CONTRASEÑA -->
-        <div>
-            <actualizacion-clave></actualizacion-clave>
-        </div>	
-        <div id="authCtrlForm" ng-controller="authCtrl">
-            <div id="wrapper" style="position: relative;top: -15px;">
-                <div>
-                    <div id="menuIzqui" style="display: none;">
-                        <nav class="navbar-default navbar-static-side">
-                            <div class="sidebar-collapse conteMenu">
-                                <ul class="nav" id="side-menu">
-                                    <li>
-                                        <a a href="#dashboard"><i class="fa fa-home blanco animated bounce"
-                                                style="font-size: 18px"></i> <span
-                                                class="nav-label">{{translateTitulos.lbl_04_02}}</span></a>
-                                    </li>
-                                    <li ng-show="stiporol == '4' || stiporol == '5'" style=" font-size:12px;">
-                                        <a>
-                                            <i class="fa fa-th-large blanco animated bounce"></i><span
-                                                class="nav-label">{{translateTitulos.lbl_04_03}}</span><span
-                                                class="fa arrow blanco"></span>
-                                        </a>
-                                        <ul class="nav nav-second-level">
-
-                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexLotus.html">Correspondencia Ciudadana</a></li>
-
-
-                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexTransparencia.html">Denuncias Transparencia</a></li>
-                                            <!--li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                <a ng-click=""
-                                                    href="#registro_ciudadano|servicios|index343.html">{{translateTitulos.lbl_04_04}}
-                                                </a>
-                                            </li-->
-                                            <li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                <a>
-                                                    <i
-                                                        class="fa fa-caret-right blanco">
-                                                        </i>{{translateTitulos.lbl_04_04}}
-                                                        <span class="fa arrow blanco"></span>
-                                                </a>
-                                                <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                        <a ng-click="" href="#registro_ciudadano|servicios|index343.html">Solicitud de Licencia
-                                                        </a>
-                                                        <!--a ng-click="" href="#registro_ciudadano|servicios|indexSierra.html">Solicitud de Licencia
-                                                        </a-->
-                                                    </li>
-                                                    <!--BAJA SEGUN SOLIITUD MOVILIDAD-->
-                                                    <!--li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                        <a ng-click="" href="#registro_ciudadano|servicios|indexTVAE.html">Registro Delivery
-                                                        </a>
-                                                    </li-->
-                                                </ul>
-                                            </li>
-                                            <li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                <a>
-                                                    <i
-                                                        class="fa fa-caret-right blanco">
-                                                        </i>Caserit@ Virtual
-                                                        <span class="fa arrow blanco"></span>
-                                                </a>
-                                                <ul class="nav nav-third-level">
-                                                    <li>
-                                                        <a ng-click="" href="#registro_ciudadano|servicios|indexTiendaVirtual.html">Mis Tiendas Virtuales
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/misTransacciones/misTransacciones.html'">Mis Transacciones</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-
-                                            <li ng-show="stiporol == '4' || stiporol == '5'">												
-												<a ><i class="fa fa-caret-right blanco"></i>{{translateTitulos.lbl_04_05}}<span
-                                                    class="fa arrow blanco"></span>
-                                                    <div style="color: #ff0000;font-size:9px;">(Servicio no disponible)</div>
-                                                </a>
-													<!--
-													<a onclick="window.location.href.endsWith('general')==false?window.location='#catastro|general':'';"><i
-													class="fa fa-caret-right blanco"></i>{{translateTitulos.lbl_04_05}}<span
-													class="fa arrow blanco"></span></a>
-													<ul class="nav nav-third-level">
-													<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#catastro|registro">Registro Catastral</a></li>
-													<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#catastro|registroAct">Actualización de Registro Catastral</a></li>
-													<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click=""
-														href="#catastro|duplicado">{{translateTitulos.lbl_04_06}}</a>
-													</li>
-													</ul>
-													-->														
-                                            </li>                                            
-                                            <li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                <a ng-click="mensajeCatastro()"><i class="fa fa-caret-right blanco"></i>Territorio<span
-                                                        class="fa arrow"></span>
-                                                        <div style="color: #ff0000;font-size:9px;">(Servicio no disponible)</div>
-                                                </a>
-                                                <!--
-                                                <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click="" href="#territorio|PC">Permisos de Construcción 3D</a></li>
-                                                    //<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|AsbuiltFracCercat">Planos As Built, Fraccionamiento PH y Certificación Catastral</a></li>
-                                        			//<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|FracCercat">Fraccionamiento PH y Certificación Catastral</a></li>
-                                        			//<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|Asbuilt">Planos As Built</a></li>
-                                        			<li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click = "" href="#territorio|autorizacionesMenores">Autorizaciones Menores</a></li>
-                                                </ul>
-                                                -->
-                                            </li>
-                                            <li ng-show="stiporol == '5' && sservicios  == 'SI'">
-                                                <a><i class="fa fa-caret-right blanco"></i>Movilidad<span
-                                                        class="fa arrow"></span></a>
-                                                <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                            href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/registroOperadores/registroOperadores.html">Registro
-                                                            de Operadores</a></li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                            href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/modificacionOperadores/modificacionOperadores.html">Modificación
-                                                            de Operadores</a></l>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                            href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/renovacionOperadores/renovacionOperadores.html">Renovación
-                                                            de Licencia de Funcionamiento Radio Taxis</a></li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                            href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/administradorOperador/administradoOperadores.html'">Administraci&oacute;n
-                                                            de Operadores</a></li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                            href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/infracciones/infracciones.html'">Infracciones</a>
-                                                    </li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/socilicitudCirculacion/socilicitudCirculacion.html'">Permisos Municipales Transitorios para la Cuarentena</a>
-                                                    </li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/denuncias/denuncias.html'">Denuncias</a>
-                                                    </li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudDelevery/solicitudDelevery.html'">Registro Transitorio Delivery</a>
-                                                    </li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación</a>
-                                                    </li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a ng-click=""
-                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/permisosExcepcionales/permisosExcepcionales.html'">Permisos Excepcionales</a>
-                                                    </li>          
-                                                </ul>
-                                            </li>
-
-                                            <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'">
-                                                <a><i class="fa fa-caret-right blanco"></i>Movilidad<span
-                                                        class="fa arrow"></span></a>
-                                                <ul class="nav nav-third-level">
-                                                    <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a ng-click=""
-                                                        href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación</a>
-                                                    </li>
-                                                </ul>
-                                            </li>                                            
-
-                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click=""
-                                                    href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/solicitudViajes/index.html'">{{translateTitulos.lbl_04_09}}</a>
-                                            </li>
-                                            <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a
-                                                    href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/citaMedica/citaMedica.html'">
-                                                    {{translateTitulos.lbl_04_10}} </a>
-                                            </li>
-                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a
-                                                    href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/fichas/fichas.html'">{{translateTitulos.lbl_04_11}}</a>
-                                            </li>
-                                            <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click=""
-                                                    href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/sigueTuTramite/sigueTuTramite.html'">{{translateTitulos.lbl_04_12}}</a>
-                                            </li>
-                                            <!--li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click=""
-                                                href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/validarCiudadano/validarCiudadano.html'">Validar Ciudadano</a>
-                                            </li-->
-                                            <!-- RODOLFO opcion para la  visualizacion de antenas><-->
-                                            <li ng-show="mostrarMenuMascota == 'SI'">
-                                                <a><i class="fa fa-caret-right blanco"></i>Solicitud Radio Bases y/o
-                                                    Gabinetes<span class="fa arrow blanco"></span></a>
-                                                <ul class="nav nav-third-level">
-                                                    <li><a ng-click=""
-                                                            href="#registro_ciudadano|servicios|indexAntena.html">Registro
-                                                            Radio Bases y/o Gabinetes</a></li>
-                                                    <li><a ng-click=""
-                                                            href="#servicios|varios|formularios|solicitudAntenas|AntenasAdjuntos|antenaAdj.html">Subir
-                                                            Documentos</a></li>
-                                                </ul>
-                                            </li>
-                                            <!-- Fin opcion para la visualizacion de antenas RODOLFO><-->
-
-                                            <!--li><a
-                                                    href="#registro_ciudadano|obito|index.html">{{translateTitulos.lbl_04_08}}</a>
-                                            </li-->
-
-                                            <li> 
-                                               <a
-                                                    href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'">Registro
-                                                    de Animales de Compañia</a>
-                                            </li>
-                                            <li ng-show="mostrarMenuMascotaNatural == 'SI'"><a
-                                                href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroVoluntariosIndependientes/index.html'">Registro
-                                                de Animalistas</a></li>
-
-                                            <li ng-show="mostrarMenuMascota == 'SI'">
-                                                <a><i class="fa fa-caret-right blanco"></i>Para Veterinarias<span
-                                                        class="fa arrow"></span></a>
-                                                <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a
-                                                            href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotasJuridico/index.html'">Registro
-                                                            de Mascotas</a></li>
-                                                </ul>
-                                            </li>
-
-                                            <!--li><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/arbolado/index.html'">Arbolado Urbano</a></!--li-->
-
-                                            <li ng-show="mostrarMenuMascota == 'SI'">
-                                                <a><i class="fa fa-caret-right blanco"></i>Registro de Animalistas<span
-                                                        class="fa arrow"></span></a>
-                                                <ul class="nav nav-third-level">
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a
-                                                            href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroOrganizaciones/index.html'">Registro
-                                                            de Organizaciones Protectoras de Animales</a></li>
-                                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a
-                                                            href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroVoluntarios/index.html'">Registro
-                                                            de Voluntarios</a></li>
-                                                </ul>
-                                            </li>
-
-                                            <!--li ng-show="mostrarMenuMascota == 'NO'">                                    
-                                        <a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'">Registro de Mascotas</a>
-                                    </li-->
-                                            <li
-                                                ng-show="(stiporol == '4' || stiporol == '5') && vid == '5bb2773b398e617fc30015cb'">
-                                                <a ng-click=""
-                                                    href="#servicios|varios|index.html?url='app/view/servicios/transparencia/reporte/index.html'">Transparencia</a>
-                                            </li>
-
-                                             <!--li><a ng-click = "" href="#registro_ciudadano|servicios|indexTVAE.html">Registro Delivery</a>
-                                            </li-->
-
-                                        </ul>
-                                    </li>
-                                    <!--ATM -------- mostrarMenuMascota verifica si la persona es juridica-->
-                                    <li ng-show="mostrarMenuMascota == 'SI'" style=" font-size:12px;">
-                                        <a data-toggle="ATM"><i class="fa fa-newspaper-o"></i><span class="nav-label">Trámites
-                                                Administración Tributaria Municipal</span></a>
-                                        <ul class="nav nav-second-level">
-                                            <!--li>
-                                                <div style="color: #ff0000;">Estimado Ciudadano, los módulos : <br> * Administración Tributaria Municipal - Inmuebles <br> * Administración Tributaria Municipal - Vehículos <br> Estarán en  mantenimiento hasta nuevo aviso.</div>                                            
-                                            </li-->                                        
-                                            <!--li>
-                                                <a href="#registro_ciudadano|servicios|indexAtmInmuebles.html">Administración
-                                                    Tributaria Municipal - Inmuebles
-                                                </a>
-                                            </li-->
-                                            <li>
-                                                <a href="#registro_ciudadano|servicios|indexAtmVehiculos.html">Administración
-                                                    Tributaria Municipal - Vehículos
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>  
-                                    <!--ATM-->
-                                    <li ng-show="(stiporol == '5' && sservicios  == 'SI') || vid == '5bb2773b398e617fc30015cb'"
-                                        style=" font-size:12px;">
-                                        <a><i class="fa fa-users blanco animated bounce"></i><span
-                                                class="nav-label">{{translateTitulos.lbl_04_13}}</span><span
-                                                class="fa arrow blanco"></span></a>
-                                        <ul class="nav nav-second-level">
-                                            <li><a
-                                                    href="#servicios|varios|index.html?url='app/view/GestionDocumental/foro/foro.html">{{translateTitulos.lbl_04_14}}</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li ng-show="stiporol == '5' && sservicios  == 'SI'" style=" font-size:12px;">
-                                        <a><i class="fa fa-clipboard blanco animated bounce"></i><span
-                                                class="nav-label">{{translateTitulos.lbl_04_15}}</span><span
-                                                class="fa arrow blanco"></span></a>
-                                        <ul class="nav nav-second-level">
-                                            <li>
-                                                <a
-                                                    href="#servicios|varios|index.html?url='app/view/registro_ciudadano/documentos/index.html">{{translateTitulos.lbl_04_16}}</a>
-                                            </li>
-                                            <li><a
-                                                    href="#servicios|varios|index.html?url='app/view/registro_ciudadano/documentosArchivados/index.html">{{translateTitulos.lbl_04_17}}</a>
-                                            </li>
-                                            <!--li><a
-                                                    href="#servicios|varios|index.html?url='app/view/registro_ciudadano/productos/index.html"> Mis productos</a>
-                                            </li-->
-                                        </ul>
-                                    </li>
-                                    <li style=" font-size:12px;">
-                                        <a
-                                            href="#servicios|varios|index.html?url='app/view/registro_ciudadano/documentos_Apk/descargas.html">
-                                            <i class="fa fa-download animated bounce"></i> <span
-                                                class="nav-label">{{translateTitulos.lbl_04_17_1}}APK </span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
+        </div>
+     </div>
+     <div class="modal fade" id="informacionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background: #e30613;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="color: #f5f5f5;">SOLICITUD DE INFORMACIÓN</h4>
+            </div>            
+            <div class="modal-body">
+                <form name="formularioHistorico" readOnly="true" novalidate>
+                    <div>
+                        <iframe width="100%" height="450px" id="solicitud"
+                            src="../../../app/view/servicios/transparencia/solicitud/index2.html"></iframe>
                     </div>
-                </div>
-                <div id="page-wrapper">
-                    <div id="menuIzqui2" style="display: none;">
-                        <div class="hola visible-xs">
-                            <a class="navbar-minimalize minimalize-styl-2 hamburguesa btn-circle"><i class="fa fa-bars"
-                                    style="font-size: 18px; color: white;"></i>
-                            </a>
-                        </div>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                    </div>
-                    <div class="row dashboard-header">
-                        <div data-ng-view="" id="ng-view">
-                        </div>
-                    </div>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">                
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
+        </div>
+     </div>
+     <div class="modal fade" id="soporteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <!-- Modal content-->
 
-        <!-- ICONOS FLOTANTES -->
-        <div>
-            <!--div class="div_btn">
-                <button class="icon-btn add-btn" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)">               
-                  <i class="fa fa-edit i_status"></i>
-                  <div class="btn-txt">Denuncias</div>
-                </button>
-            </div-->
-              <div class="div_btn" style="margin-top: 50px;">
-                <button class="icon-btn add-btn" tooltip = "Solicitud de Información" data-toggle="modal" data-target="#informacionModal" onclick="cerrarModales(2)">
-                    <i class="fa fa-pencil-square i_status"></i>
-                  <div class="btn-txt">Solicitud de Información</div>
-                </button>
-              </div>
-
-              <div class="div_btn" style="margin-top: 100px;">
-                <button class="icon-btn add-btn" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(3)">
-                    <i class="fa fa-gears i_status"></i>
-                  <div class="btn-txt">Soporte</div>
-                </button>
-              </div>
-
-            <!-- <div class="sticky-container">
-                <div class="social">
-                    <ul>
-                        <li>
-                            <a class="btn btn-success" tooltip = "Recepcion de Denuncias" data-toggle="modal" data-target="#denunciaModal" onclick="cerrarModales(1)"><i class="fa fa-edit"></i></a>
-                        </li>
-                        <li>
-                            <a class="btn btn-success" tooltip = "Solicitud de Información" data-toggle="modal" data-target="#informacionModal" onclick="cerrarModales(2)"><i class="fa fa-pencil-square"></i></a>
-                        </li>
-                        <li>
-                            <a class="btn btn-success" tooltip = "Soporte" data-toggle="modal" data-target="#soporteModal" onclick="cerrarModales(3)"><i class="fa fa-gears"></i></a>
-                        </li>
-             
-                    </ul>
-                </div>
-            </div> -->
-            <div class="modal fade" id="denunciaModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <article class="part card-details">
-							<h1>
-								Recepción de Denuncias
-							</h1>
-						</article>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <!-- <h4 class="modal-title">Recepción de Denuncias</h4> -->
+        <div class="modal-content">          
+            <div class="modal-header" style="background: #e30613;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel" style="color: #f5f5f5;">SOPORTE iGOB 24/7</h4>
+            </div>            
+            <div class="modal-body back_modal">
+                <form name="formularioHistorico" readOnly="true" novalidate>
+                    <div>
+                        <iframe width="100%" height="450px" id="soporte"
+                                src="../../../app/view/servicios/soporteIgob/index2.html"></iframe>
                     </div>
-                    <div class="modal-body back_modal">
-
-                        <form name="formularioHistorico" readOnly="true" novalidate>
-                            <div>
-                                <iframe width="100%" height="450px" id="denuncias"
-                                    src="../../../app/view/servicios/transparencia/denuncias/index2.html"></iframe>
-                            </div>
-                        </form>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-                </div>
-             </div>
-             <div class="modal fade" id="informacionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header" style="background: #e30613;">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel" style="color: #f5f5f5;">SOLICITUD DE INFORMACIÓN</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form name="formularioHistorico" readOnly="true" novalidate>
-                            <div>
-                                <iframe width="100%" height="450px" id="solicitud"
-                                    src="../../../app/view/servicios/transparencia/solicitud/index2.html"></iframe>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-                </div>
-             </div>
-             <div class="modal fade" id="soporteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header" style="background: #e30613;">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel" style="color: #f5f5f5;">SOPORTE iGOB 24/7</h4>
-                        </div>
-                        <div class="modal-body back_modal">
-                            <form name="formularioHistorico" readOnly="true" novalidate>
-                                <div>
-                                    <iframe width="100%" height="450px" id="soporte"
-                                            src="../../../app/view/servicios/soporteIgob/index2.html"></iframe>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
-        </div>  
-    </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>        
+        </div>
+     </div>
+</div> 
+
+</div>
     <script type="text/javascript">
         function cerrarModales(a){
             if (a == 1)
@@ -716,15 +641,15 @@
         function conMayusculas(field) {
             field.value = field.value.toUpperCase()
         };
-        function soloNumerico(variable) {
-            Numer = parseInt(variable);
-            if (isNaN(Numer)) {
+        function soloNumerico(variable){
+            Numer=parseInt(variable);
+            if (isNaN(Numer)){
                 return "";
             }
             return Numer;
         }
-        function valNumero(Control) {
-            Control.value = soloNumerico(Control.value);
+        function valNumero(Control){
+            Control.value=soloNumerico(Control.value);
         }
     </script>
     <script src="../../libs/js/jquery.blockUI.js"></script>
@@ -732,7 +657,7 @@
     <script src="../../libs/jss/angular-locale_es-bo.min.js"></script>
     <!--angularjs-->
     <script src="../../libs/jss/angular-route.min.js"></script>
-    <script src="../../libs/jss/angular-animate.min.js"></script>
+    <script src="../../libs/jss/angular-animate.min.js" ></script>
     <script src="../../libs/bower-angular-resource-master/angular-resource.min.js"></script>
     <script src="../../libs/jss/toaster.min.js"></script>
     <script src="../../libs/js/ng-table.min.js"></script>
@@ -768,55 +693,25 @@
     <script src="../../controller/autenticacion/directives.js"></script>
     <script src="../../controller/autenticacion/authCtrl.js"></script>
     <script src="../../controller/autenticacion/sessionService.js"></script>
-    <script src="../../controller/autenticacion/config.js"></script>
-
-    <link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css" />
-    <link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css" />
-    <script type="text/javascript"
-        src="../../view/servicios/varios/formularios/movilidad/infracciones/infracciones.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/proj_4/proj4.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_calles.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_lugares.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
-    <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script>
-    <script src="../../element/map_geoserver.js" type="text/javascript"></script>
-
-    <!--IGOBXXXX-->
-    <script src="../../libs/login/login.js"></script>
-    <!--IGOBXXXX-->
+    <script src="../../controller/autenticacion/config.js"></script><!--IGOBXXXX-->
+    <script src="../../libs/login/login.js"></script><!--IGOBXXXX-->
     <!--LLAMADA APIS-->
-    <script src="../../libs/apiRC/api_rc.js"></script>
-    <!--IGOBXXXX-->
-    <script src="../../libs/apiIF/api_if.js"></script>
-    <!--IGOBXXXX-->
-    <script src="../../libs/apiSitram/api_sitram.js"></script>
-    <!--IGOBXXXX-->
-    <script src="../../libs/apiAE/api_ae.js"></script>
-    <!--IGOBXXXX-->
-    <script src="../../libs/api/apiPago.js"></script>
-    <!--IGOBXXXX-->
-    <script src="../../libs/api_Atm/api_atm.js"></script>
-    <!--IGOBXXXX-->
-    <script src="../../libs/api_mascotas/api_mascotas.js"></script>
-    <!--IGOBXXXX-->
+    <script src="../../libs/apiRC/api_rc.js"></script><!--IGOBXXXX-->
+    <script src="../../libs/apiIF/api_if.js"></script><!--IGOBXXXX-->
+    <script src="../../libs/apiSitram/api_sitram.js"></script>    
+    <script src="../../libs/apiAE/api_ae.js"></script><!--IGOBXXXX-->
+    <script src="../../libs/api/apiPago.js"></script><!--IGOBXXXX-->
+    <script src="../../libs/api_mascotas/api_mascotas.js"></script><!--IGOBXXXX-->
     <script src="../../libs/apiProducto/apiProducto.js"></script>
     <!--script src="../../libs/apiSierra/api_sierra.js"></script-->
-
-
     <!--controladores-->
     <script src="../../controller/registro_ciudadano/servicios/appServicios.js"></script>
-    <script src="../../controller/registro_ciudadano/servicios/appServicios343.js"></script>
+    <script src="../../controller/registro_ciudadano/servicios/appServicios343.js"></script>    
     <!--script src="../../controller/registro_ciudadano/servicios/appServiciosSierra.js"></script-->
-    <script src="../../controller/registro_ciudadano/servicios/appServiciosTVAE.js"></script>
+    <script src="../../controller/registro_ciudadano/servicios/appServiciosTVAE.js"></script>    
     <script src="../../controller/registro_ciudadano/servicios/appTiendaVirtual.js"></script>
-
     <script src="../../view/servicios/varios/formularios/solicitudAntenas/AntenasAdjuntos/antenaAdj.js"></script>
-    <script src="../../controller/registro_ciudadano/servicios/appServiciosArbolado.js"></script>
-
+    
 
     <script src="../../controller/registro_ciudadano/servicios/appServiciosAntena.js"></script>
     <script src="../../controller/registro_ciudadano/servicios/appServiciosLotus.js"></script>
@@ -826,8 +721,6 @@
     <script src="../../controller/servicios/varios/varios.js"></script>
     <script src="../../view/servicios/epagos/appEpagos.js"></script>
     <script src="../../controller/registro_ciudadano/servicios/appServiciosAtm.js"></script>
-    <!--ATM-->
-
     <!-- SMPD Inicio-->
     <script src="../../libs/apiCatastro/apiSIT.js"></script>
     <script src="../../libs/apiCatastro/apiSITOL.js"></script>
@@ -837,107 +730,156 @@
     <script src="../../controller/catastro/actualizaciones/jspdf.debug.js"></script>
     <script src="../../view/catastro/duplicado/appDuplicado.js?v=20211014"></script>
     <script src="../../view/catastro/actualizaciones/appAct.js"></script>
-    <script src="../../view/catastro/registro/appRegistro.js?v=20210915"></script>
-    <script src="../../view/catastro/registroAct/appRegistroAct.js?v=20210915"></script>
-    <script src="../../view/catastro/general/appCatastroGeneral.js"></script>
-    <script src="../../view/territorio/PC/appPC.js?v=20181018"></script>
+	<script src="../../view/catastro/registro/appRegistro.js?v=20210915"></script>
+    <script src="../../view/catastro/registroAct/appRegistroAct.js?v=20210915"></script>	
+    <script src="../../view/catastro/general/appCatastroGeneral.js"></script>    
+    <script src="../../view/territorio/PC/appPC.js?v=20190606"></script>
     <script src="../../view/territorio/AsbuiltFracCercat/appAsbuiltFracCercat.js"></script>
     <script src="../../view/territorio/FracCercat/appFracCercat.js"></script>
     <script src="../../view/territorio/Asbuilt/appAsbuilt.js"></script>
     <script src="../../view/territorio/autorizacionesMenores/appAutorizaciones.js"></script>
+	<script src="../../view/territorio/Regularizacion/appRegularizacion.js"></script>
+    <script type="text/javascript" src="../../view/servicios/varios/formularios/movilidad/socilicitudCirculacion/socilicitudCirculacion.js"></script>
     <!-- SMPD Fin-->
     <script src="../../libs/js_one/bootstrap.min.js"></script>
     <script src="../../libs/js_one/jquery.metisMenu.min.js"></script>
     <script src="../../libs/js_one/jquery.slimscroll.min.js"></script>
     <script src="../../libs/js_one/inspinia.min.js"></script>
     <script>
-        $(document).ready(function () {
-            if (sessionStorage.getItem("autenticacion")) {
-                inicarProyecto();
-            } else {
-                window.location.href = "../autenticacion/partials/login_.html";
-            }
-            function inicarProyecto() {
-                document.getElementById('dvContenidoView').style.display = 'none';
-            };
-            angular.element(document.getElementById("authCtrlForm")).scope().validarInicioLogin();
+        $(document).ready(function() {
+          if(sessionStorage.getItem("autenticacion")){
+              inicarProyecto();
+          }else{
+              window.location.href = "../autenticacion/partials/login_.html";
+          }
+          function inicarProyecto(){
+              document.getElementById('dvContenidoView').style.display = 'none';
+          };
+          angular.element(document.getElementById("authCtrlForm")).scope().validarInicioLogin();
         });
     </script>
     <script type="text/javascript">
-        $(function () {
-            $(".fab,.backdrop").click(function () {
-                if ($(".backdrop").is(":visible")) {
+        $(function(){
+            $(".fab,.backdrop").click(function(){
+                if($(".backdrop").is(":visible")){
                     $(".backdrop").fadeOut(125);
                     $(".fab.child")
                         .stop()
                         .animate({
-                            bottom: $("#masterfab").css("bottom"),
-                            opacity: 0
-                        }, 125, function () {
+                            bottom  : $("#masterfab").css("bottom"),
+                            opacity : 0
+                        },125,function(){
                             $(this).hide();
                         });
-                } else {
+                }else{
                     $(".backdrop").fadeIn(125);
-                    $(".fab.child").each(function () {
+                    $(".fab.child").each(function(){
                         $(this)
                             .stop()
                             .show()
                             .animate({
-                                bottom: (parseInt($("#masterfab").css("bottom")) + parseInt($("#masterfab").outerHeight()) + 70 * $(this).data("subitem") - $(".fab.child").outerHeight()) + "px",
-                                opacity: 1
-                            }, 125);
+                                bottom  : (parseInt($("#masterfab").css("bottom")) + parseInt($("#masterfab").outerHeight()) + 70 * $(this).data("subitem") - $(".fab.child").outerHeight()) + "px",
+                                opacity : 1
+                            },125);
                     });
                 }
             });
         });
     </script>
-    <script type="text/javascript">
-        $('.spin-icon_env_3').click(function () {
-            $(".theme-config-box_icon_3").toggleClass("show");
+    <script type="text/javascript" >
+        $('.spin-icon_env_3').click(function (){
+            $(".theme-config-box_icon_3").toggleClass("show");  
             var iframe = document.getElementById('denuncias');
             iframe.src = iframe.src;
         });
     </script>
     <script type="text/javascript">
-        $('.spin-icon_env_4').click(function () {
+        $('.spin-icon_env_4').click(function (){
             $(".theme-config-box_icon_4").toggleClass("show");
             var iframe = document.getElementById('solicitud');
-            iframe.src = iframe.src;
-        });
+            iframe.src = iframe.src;        
+          });
     </script>
     <script type="text/javascript">
-        $('.spin-icon_env_5').click(function () {
+        $('.spin-icon_env_5').click(function (){
             $(".theme-config-box_icon_5").toggleClass("show");
             var iframe = document.getElementById('soporte');
             iframe.src = iframe.src;
         });
-    </script>
-    <script>
-        window.onload = onLoadG;
-        function onLoadG() {
-            gapi.load('auth2', function() {
-                gapi.auth2.init();
-            });
-        }
-        
-        function signOutGoogle() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {   
-                console.log('User signed out.........ffff');    
-            }); 
-            auth2.disconnect();
-        };
-
-        window.onbeforeunload = closingCode;
-        function closingCode(){
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {   
-                console.log('User signed out.........ffff');   
-            }); 
-            auth2.disconnect();
-        }
-
     </script>    
-</body>
 
+<script>
+    window.onload = onLoadG;
+    function signOutGoogle() {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+    }
+
+    function onLoadG() {
+        gapi.load('auth2', function() {
+            gapi.auth2.init();
+        });
+    }
+
+    window.onbeforeunload = closingCode;
+    function closingCode(){
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+      signOutFacebook();
+    }
+    //////////////////////////////////////////
+    window.fbAsyncInit = function() {
+        FB.init({
+          appId           : '830534584542482',
+          autoLogAppEvents: true,
+          status          : true,
+          cookie          : true, 
+          xfbml           : true, 
+          version         : 'v2.1'
+        });
+        
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response, function() {});
+        });
+    };
+
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        //js.src = "//connect.facebook.net/en_US/sdk.js";
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    var statusChangeCallback = function(response, callback) {
+        if (response.status === 'connected') {
+            getFacebookData();
+        }else {
+            callback(false);
+        }
+    };
+
+    var signOutFacebook = function() {
+        checkLoginState(function(data) {
+            if (data.status === 'connected') {
+                FB.logout(function(response) {
+                    console.log("salio de Facebook!!!!!");
+                })
+            }
+        });
+        
+    };
+    var checkLoginState = function(callback) {
+        FB.getLoginStatus(function(response) {
+            callback(response);
+        });
+    };
+</script>
+
+</body>
 </html>

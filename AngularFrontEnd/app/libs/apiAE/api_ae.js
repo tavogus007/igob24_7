@@ -11,17 +11,11 @@ var dataResp;
 var dataParams;
 var typeCall;
 
-var urlGENESIS  = "";
-var urlIf2      = "";
-var urlMotorSierra = "";
 var stokenae = "";
 
 if(jsonURLS){
-    try{
-        urlGENESIS = jsonURLS.CONEXION_API_PG_GENESIS+"wsGENESIS";
-        urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
-        urlMotorSierra = jsonURLS.SERVICE_SIERRAM+"reglaNegocio/ejecutarWeb";
-    }catch(e){console.log("Warning:", e);}
+  var urlGENESIS = jsonURLS.CONEXION_API_PG_IF+"wsGENESIS";
+  var urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -71,31 +65,6 @@ function ejecutarAjaxAE(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
       }
     });
     return dataRespAe;
-};
-
-///////////////////////CONEXION SERVICIOS SIERRA/////////////////////////////////////////////////
-function ejecutarAjaxMotorSierra(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
-    var headers = {};
-    $.ajax({
-        url: urlMotorSierra,
-        data: vDataCall,
-        type:"POST",
-        dataType: "json",
-        //crossDomain : true,
-        headers: {
-            'authorization': token
-        },
-        success: function(response) {
-            dataResp = JSON.stringify(response);
-            vFunctionResp(dataResp);
-        },
-        error: function (response, status, error) {
-            dataResp = "{\"error\":{\"message\":\""+response+"\",\"code\":700}}";
-            console.log("error",dataResp);
-            vFunctionResp(dataResp);
-        }
-    });
-    return dataResp;
 };
 /*///////////////spsp_categoria_agrupada_licencia//////////////////////*/
 
@@ -248,35 +217,6 @@ getDatosLicencia.prototype.getDatos_Licencia = function (functionResp) {
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
 
-function getCalcularPatente343() {
-    this.gestion;
-    this.codigoZona;
-    this.factor;
-    this.idActividadDesarrollada;
-    this.superficieOcupada;
-    this.cadena;
-    this.idZona;
-    this.gestionesPrevias;
-};
-
-
-//idActividadEconomica +"\', @tipo
-getCalcularPatente343.prototype.getCalcular_Patente343 = function (functionResp) {
-    urlCompAe = "/calcularPatente343";
-    typeCallAe = "post";
-    dataParamsAe = {
-        "gestion":this.gestion,
-        "codigoZona":this.codigoZona,
-        "factor":this.factor,
-        "idActividadDesarrollada":this.idActividadDesarrollada,
-        "superficieOcupada":this.superficieOcupada,
-        "cadena":this.cadena,
-        "idZona":this.idZona,
-        "gestionesPrevias":this.gestionesPrevias
-    };
-    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
-};
-
 function getHomologacion() {
     this.idActividadDesarrollada;
 };
@@ -307,48 +247,19 @@ lstActividadEconomicaVentas.prototype.lstActividadEconomicaVentas = function (fu
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
 
-function pagoAdelaRenovacion() {
-    this.idActividadEconomica;
-    this.gestion;
-    this.codigoZona;
-    this.factor;
+function primerEmprendimiento() {
     this.idActividadDesarrollada;
-    this.superficieOcupada;
-    this.cadena;
-    this.idZona;
-    this.gestionesPrevias;
+    this.clase;
+    this.identificacion;
 };
 
-pagoAdelaRenovacion.prototype.getPagoAdelRenovacion = function (functionResp) {
-    urlCompAe = "/caculoDeudasPagoAdelantado";
+primerEmprendimiento.prototype.consultaEmprendimiento = function (functionResp) {
+    urlCompAe = "/consultaEmprendimiento";
     typeCallAe = "post";
     dataParamsAe = {
-        "idActividadEconomica": this.idActividadEconomica,
-        "gestion":this.gestion,
-        "codigoZona":this.codigoZona,
-        "factor":this.factor,
-        "idActividadDesarrollada":this.idActividadDesarrollada,
-        "superficieOcupada":this.superficieOcupada,
-        "cadena":this.cadena,
-        "idZona":this.idZona,
-        "gestionesPrevias":this.gestionesPrevias
+        "idActividadDesarrollada": this.idActividadDesarrollada,
+        "clase":this.clase,
+        "identificacion":this.identificacion
     };
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
 };
-
-/*function reglasnegocioSierra() {
-    this.identificador;
-    this.parametros;
-};
-
-reglasnegocioSierra.prototype.llamarregla_sierra = function(functionResp){
-  var idtoken =   sessionStorage.getItem('TOKEN_SIERRA');
-  var stoquen =  'Bearer ' + idtoken ;
-    urlComp = "";
-    typeCall = "post";
-    dataParams= {
-        "identificador" : this.identificador,
-        "parametros": this.parametros
-    };
-    ejecutarAjaxMotorSierra(urlComp, typeCall, dataParams, functionResp,stoquen);
-};*/

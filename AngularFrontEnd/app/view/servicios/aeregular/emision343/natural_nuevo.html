@@ -34,6 +34,10 @@
     .form-group {
         padding-left: 8px;
     }
+    input.largerCheckbox {
+        width: 30px;
+        height: 30px;
+    }
 </style>
 <script type="text/javascript">
     $('.custom-upload input[type=file]').change(function(){
@@ -445,24 +449,40 @@
                                 </div>
                             </div>
                         </div>
-                         <div class="col-md-6">
-                                <div class="form-group">
-                                    <font color="#FF0000" size="4px"> * </font>
-                                    <label for="url" >Tipo de Actividad Desarrollada:</label>
-                                    <div class="controls">
-                                        <select class="js-example-basic-single form-control"
-                                            ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividad | orderBy:['nombre','descripcion343']"
-                                            ng-model="datos.f01_categoria_descrip"
-                                            id="f01_categoria_descrip"
-                                            name="f01_categoria_descrip"
-                                            ng-disabled="desabilitado"
-                                            ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup);"
-                                            required>
-                                            <option value="">--Seleccionar--</option>
-                                        </select>
-                                    </div>
+                    </div>
+                </div>  
+                <div class="col-md-12">
+                    <div class="alert alert-success fade in ng-binding" ng-show="datos.habilitaEmpredimiento=='true'">
+                        <strong>Sr. Ciudadano le Informamos:</strong><br>
+                        El tipo de "Actividad Desarrollada" que seleccionó se encuentra beneficiada con la exención de la Pantente de Funcionamiento Anual conforme Ley Municipal Autonómica Nº 482/2022.<br>
+                    </div>
+                </div>  
+                <!--div class="col-md-12">
+                    <div class="alert alert-warning fade in ng-binding" ng-show="datos.habilitaEmpredimiento=='false'">
+                        <strong>Sr. Ciudadano le Informamos:</strong><br>
+                        El tipo de "Actividad Desarrollada" que seleccionó <strong>NO</strong> se encuentra beneficiada con la exención de la Pantente de Funcionamiento Anual conforme Ley Municipal Autonómica Nº 482/2022.<br>
+                    </div>
+                </div--> 
+                <div class="col-md-12">
+                    <div class="form-group" >   
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" >Tipo de Actividad Desarrollada:</label>
+                                <div class="controls">
+                                    <select class="js-example-basic-single form-control"
+                                        ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividad | orderBy:['nombre','descripcion343']"
+                                        ng-model="datos.f01_categoria_descrip"
+                                        id="f01_categoria_descrip"
+                                        name="f01_categoria_descrip"
+                                        ng-disabled="desabilitado"
+                                        ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup);"
+                                        required>
+                                        <option value="">--Seleccionar--</option>
+                                    </select>
                                 </div>
                             </div>
+                        </div>
                         <div class="col-md-12" ng-show="sCategoria">
                             <div class="form-group">
                                 <div class="col-md-6" ng-show="datos.f01_categoria_descrip != 907 || datos.f01_categoria_descrip != '907'">
@@ -535,10 +555,10 @@
                                             <div class="col-md-12">
                                                 <div class="panel panel-default">
                                                     <div class="panel-body">
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3"> 
                                                             <a class="btn btn-primary" ng-click="guardarLicencia(multiple);  GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myForm.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
                                                             </a>
-                                                            <a class="btn btn-primary" ng-click="modificarLicencia(multiple)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
+                                                            <a class="btn btn-primary" ng-click="modificarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
                                                                   <i class="glyphicon glyphicon-plus-sign"></i>Modificar
                                                             </a>
                                                         </div>
@@ -546,7 +566,7 @@
                                                             <tr style="cursor: pointer;" ng-repeat="lic in datos.licenciam" ng-style="lic.id==MultipleSeleccionado && {'background-color':'rgb(255, 239, 176)','font-color':'#A2D5AE'}" >
                                                                 <td align="center" data-title="'Opciones'">
                                                                     <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                                                                    <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                                    <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic);GetValueActividadesCatDesarrollada();" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
                                                                 </td>
                                                                 <td data-title="'NRO'">{{$index+1}}</td>
                                                                 <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'">{{lic.f01_tipo_licmdescrip}}</td>
@@ -985,8 +1005,8 @@
                                         <div class="col-md-12">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading"><b>Expresado en metros.</b>
-                                                    <br>
-                                                    <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular
+                                                    <!--br>
+                                                    <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular<br-->
                                                 </div>
                                                 <div class="panel-body">
                                                     <table class="table table-responsive">
@@ -1313,6 +1333,7 @@
                 <div class="col-md-12" ng-show = "validacionDireccion == true">
                     <span> <font color="#FF0000"> * {{translateTitulos.lbl_12_80}}</font> </span>
                 </div>
+
                 <br><br><br><br>
                 <div class="col-md-12" align="right" ng-show = "botones != null">
                     <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" data-toggle="modal" type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"><!--{{translateTitulos.lbl_016_29}}--></button><!--cambios-->                        

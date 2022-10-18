@@ -2281,7 +2281,6 @@ app.controller('regularController', function ($scope,$timeout, $rootScope, $rout
     };*/
 
     $scope.capturarImagen = function(){
-        console.log("Entrando a captura imagen 4....");
         $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
         var latitud = $rootScope.laaa; 
         var longitud = $rootScope.looo;

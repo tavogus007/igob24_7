@@ -1,4 +1,4 @@
-﻿app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
+app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
     $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     var fecha= new Date();
@@ -18,6 +18,7 @@
     $scope.desabilitadoact = false;
     $scope.mostrarCategoria = false;
     $scope.datosfalt = "";
+	$scope.acepta = '';
     $scope.documentosarc = ['','','','','','','','','','','','','',''];
     var stiporol = sessionService.get('US_IDROL');
     $scope.templates =
@@ -513,7 +514,7 @@
                 }
             });
         } catch(error){
-           
+            console.log("Error Interno : ", error);
         }
     };
 
@@ -687,22 +688,38 @@
     
     /*SELECCCIONAR TRAMITE CIUDADANO*/
     $scope.seleccionarTramite = function (tramite) {
-        $scope.template =   "";
-        setTimeout(function(){
-           $.blockUI(); 
-        },500);
-        $scope.seleccionarTramiteRender(tramite);      
+        var idservicio =   ((typeof(tramite.vdvser_id) == 'undefined' || tramite.vdvser_id == null) ? '' : tramite.vdvser_id);        
+        //console.log("TRAMITES :", tramite);
+        //vdvser_id
+        if(idservicio != "" && idservicio != 28 && idservicio != 29 && idservicio != 30 && idservicio != 31){
+            $scope.template =   "";
+            setTimeout(function(){
+               $.blockUI(); 
+            },500);
+            $scope.seleccionarTramiteRender(tramite);
+        }else{   
+            var estadoenviado =   ((typeof(tramite.venviado) == 'undefined' || tramite.venviado == null) ? '' : tramite.venviado);
+            if(estadoenviado != 'SI'){
+                swal("Formulario invalido", "Estimado Ciudadano, favor de crear una nueva solicitud", "warning")
+            }else{
+                swal("Formulario enviado", "Estimado Ciudadano la solicitud ya fue enviada", "warning")
+            }
+        }
+        //$scope.open_mapa_ae_update();
+        //openMapGis();        
     }
+
+    
     ///////////////////****MAPA GIS*****/////////////////////////
 
-    $scope.open_mapa_ae = function()
+    $scope.open_mapa_ae = function(latitud1, longitud1)
     {
         setTimeout(function()
         {
-            var latitud = $scope.datos.INT_AC_latitud;
-            var longitud = $scope.datos.INT_AC_longitud;
+            //console.log("ENTRANDO AL MAPA DE ACTIVIDADES ECONOMICASsssssssss");
+            var latitud =latitud1;
+            var longitud = longitud1;
             $("#map_principal").empty();
-
             $scope.map = new ol.Map
             ({
               target: 'map_principal',
@@ -716,11 +733,10 @@
                         new ol.layer.Group({
                                             title: 'Capas',
                                             layers: [
-                                                        zonas_seguras_udit,
-                                                        zonas_tributarias_udit,
-                                                        vias_udit,
-                                                        vectorLayerZonas,
-                                                        vectorLayer
+                                                      zonas_tributarias_udit,
+                                                      vias_udit,
+                                                      vectorLayerZonas,
+                                                      vectorLayer
                                                     ]
                                           })
                       ],
@@ -750,7 +766,14 @@
             {
                 datos = {};
                 vectorSource.clear();
-               
+                /*
+                if(jsonURLS)
+                {
+                    var url_sit    =   jsonURLS.SIT_GEO;
+                    console.log("URL SIT...",url_sit);
+                }
+                var url_r = url_sit+'/geoserver/wms';
+                */
 
                 var viewResolution = view.getResolution();
                
@@ -764,8 +787,63 @@
 
                 datos.latitud = latitud;
                 datos.longitud = longitud;
+
+
+              
+                //var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
+                
+                //console.log ("latitud: ",latitud);
+                //console.log ("longitud: ",longitud);
                 $scope.datos.INT_AC_latitud=latitud;
                 $scope.datos.INT_AC_longitud=longitud;
+                /*
+                setTimeout(function()
+                {
+                    $.ajax({
+                          url: url,
+                          //data: parameters,
+                          type: 'GET',
+                          dataType: 'jsonp',
+                          jsonpCallback: 'getJson',
+                          success: function (data)
+                          {
+                            //console.log('OK.....', data);
+                            if(data.features.length == 1)
+                            {                         
+                                var distrito = data.features[0].properties.distrito;
+                                var idMacrodistrito = data.features[0].properties.macro;                  
+                                var macrodistrito =  data.features[0].properties.macrodistrito;                
+                                var zona = data.features[0].properties.zona;
+                                var codigo_zona = data.features[0].properties.codigozona;
+                                datos.zona = zona;
+                                datos.cod_zona_sit = codigo_zona;
+                                datos.distrito = distrito;
+                                datos.macrodistrito = macrodistrito;
+                                
+                                var n_genesis = geo_id_genesis.length;
+                                for (var i=0;i<n_genesis;i++)
+                                {
+                                    if(geo_id_sit_servicio[i ]=== codigo_zona )
+                                    {
+                                        cod_zona_genesis = geo_id_genesis[i];
+                                        datos.cod_zona_genesis = cod_zona_genesis;
+                                    }
+                                } 
+                            }
+                            else
+                            {
+                                console.log("ningun resultado para zonas");
+                            }
+                          },
+                          error: function (data)
+                          { 
+                            console.log(data);
+                          }   
+                        });
+                },500);
+                */
+
+                ///////////////////PARA PATTY//////////////////////////////////////////////////////////////
                 
                 var feature = $scope.map.forEachFeatureAtPixel(evt.pixel, function(feature, layer) {
                   return feature;
@@ -815,7 +893,7 @@
                         var feature = data.features[0];
                         var cod = feature.properties;
                         var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                        $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
+                        //console.log("Patty zona tributaria: ",codigo_zona_tributaria);
                     });
 
                     reqwest({
@@ -825,7 +903,8 @@
                     {
                         var feature = data.features[0];
                         var cod = feature.properties;
-                      
+                        //console.log("Patty datos zonas: ",cod);
+                        /////////////////////////////////////////
                         datos.zona = cod.zonaref;
                         datos.cod_zona_sit = cod.codigozona;
                         datos.distrito = cod.distrito;
@@ -839,6 +918,7 @@
                                 datos.cod_zona_genesis = cod_zona_genesis;
                             }
                         } 
+                        /////////////////////////////////////////////
                     });
 
                     reqwest({
@@ -849,11 +929,12 @@
                         var feature = data.features[0];  
                         if(feature == undefined)
                         {
-                            
+                            //console.log("Patty...No es Zona Segura...");
                         }
                         else
                         {
                             var cod = feature.properties;
+                            //console.log("Patty datos zona seguras: ",cod);   
                         }
                         
                     });
@@ -866,17 +947,19 @@
                         var feature = data.features[0];  
                         if(feature == undefined)
                         {
-                            
+                            //console.log("Patty No hay vias...");
                         }
                         else
                         {
                             var cod = feature.properties;
-                           
+                            //console.log("Patty datos de vias: ",cod);   
                         }
                         
                     });
                  
                 }
+                
+                ///////////////////////////////////////////////////////////////////////////////////////////////////
             
                 var feature = new ol.Feature(
                       new ol.geom.Point(ol.proj.fromLonLat(centro_1))
@@ -884,6 +967,8 @@
                     
                 feature.setStyle(iconStyle);
                 vectorSource.addFeature(feature);
+
+                //console.log("JSON DATOS",datos);
                 return datos;
             });
             //////////////////////////////////////
@@ -892,6 +977,8 @@
 
     $scope.open_map_ae2 = function(latitud, longitud)
     {
+        //console.log("Entrando open_map_ae2222222");
+       
         setTimeout(function(){            
             var style = new ol.style.Style({
               image: new ol.style.Circle({
@@ -936,7 +1023,7 @@
             /////////////////////////
 
             var n_genesis = geo_id_genesis.length;
-
+            
             $scope.mapa.on('click', function (evt)
             {
                 vectorSource.clear();
@@ -947,6 +1034,7 @@
                 var latitud = centro_1[1];
                 var longitud = centro_1[0];
                 wkt = "POINT(" + centro[0] + " " + centro[1] + ")";
+                //console.log("PUNTO",centro_1);
                 $("#INT_AC_latitud").val(latitud);
                 $("#INT_AC_longitud").val(longitud);
                 $scope.datos.INT_AC_longitud = longitud;
@@ -988,11 +1076,12 @@
                   }).then(function(data)
                   {
                     var feature = data.features[0];
+                    ///////////////////////////////////////////////////////////
                     var cod = feature.properties;
                     var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
-                  
+                    //console.log("codigo zona tributaria: ",codigo_zona_tributaria);
                     $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
-                    
+                    ///////////////////////////////////////////////////////////
                   });
                   reqwest({
                     url: url_zonas,
@@ -1000,20 +1089,24 @@
                   }).then(function(data)
                   {
                     var feature = data.features[0];
+                    ///////////////////////////////////////////////////////////
                     var cod = feature.properties;
                     var zona = cod.zonaref;
                     var macrodistrito = cod.macrodistrito;
                     var cod_zona= cod.codigozona;
                     var distrito= cod.distrito;
                     
+                    /////////////////////////////////////////////
+                    //console.log("hhhhh",n_genesis);
                     for (var i=0;i<n_genesis;i++)
                     {
                       if(geo_id_sit_servicio[i]=== cod_zona )
                       {
                         cod_zona_genesis = geo_id_genesis[i];
+                        //console.log("cod zona genesis: ",cod_zona_genesis);
                       }
                     }
-                    
+                    /////////////////////////////////////////////
                     
                   });
                   reqwest({
@@ -1022,9 +1115,13 @@
                   }).then(function(data)
                   {
                     var feature = data.features[0];
+                    ///////////////////////////////////////////////////////////
                     var cod = feature.properties;
                     var nombre_via = cod.nombrevia;
                     var tipo_via = cod.tipovia;
+                    //console.log("nombre via: ",nombre_via);
+                    //console.log("tipo via: ",tipo_via);
+                    ///////////////////////////////////////////////////////////
                   });
                 }
                
@@ -1044,6 +1141,8 @@
       var f = '';
       //var nombre = document.getElementById('busqueda_p').value;
       var nombre = $('#busqueda_p').val();
+      //console.log("ZONA en appServicios343..!!! ",nombre);
+
       nombre = nombre.toUpperCase();
       var ca = "CALLE ";
       ca = ca.concat(nombre);
@@ -1055,6 +1154,7 @@
       if(nombre==='')
       {
         var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
+        console.log("Vacio :",obj);
         //map.removeLayer(vectorLayerZonas);
         vectorLayerZonas.getSource().clear();
       }
@@ -1100,12 +1200,14 @@
         if(c==0)
         {
           var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
+          console.log("Vacio :",obj);
         }
       }   
     }
 
     /////////////////////////////////////////////////////////////
     $scope.distritoZonas = function(idMacroJ){     
+     //console.log("idMacroJ: ", idMacroJ);   
         $scope.datos.f01_macro_act    =   idMacroJ;
         $scope.datos.INT_AC_MACRO_ID = idMacroJ;
         $scope.aDistritoZona = {};
@@ -1116,8 +1218,11 @@
             parametros.idMacro = idMacroJ;
             parametros.obtdist(function(resultado){
                 data = JSON.parse(resultado);
+                //console.log("data.success.length: ", data.success.length);
                 if(data.success.length > 0){
+                    //console.log("listado de zonas", $scope.aDistritoZona);
                     $scope.aDistritoZona = data.success;
+                    //console.log("aDistritoZona: ", $scope.aDistritoZona);   
                     deferred.resolve(data.success);
                     $scope.desabilitadoV=true;
                     $scope.desabilitadoNo=true;
@@ -1134,6 +1239,7 @@
     };
 
     $scope.cargarNombVia = function(tipoVia, idZona) {
+        //console.log("(tipoVia, idZona: ", tipoVia, idZona);
         try{
             var nomvia = new aelstNombreVia();
             nomvia.idzona = idZona;
@@ -1155,6 +1261,7 @@
         var idDistrito  = "";
         var idZona      = "";
         var distNombre  = $scope.datos.f01_zona_act_descrip;
+        //console.log('f01_zona_act_descrip   ',$scope.datos.f01_zona_act_descrip);
         if($scope.aDistritoZona){
             angular.forEach($scope.aDistritoZona, function(value, key) {
                 if(value.dist_nombre == distNombre){
@@ -1167,6 +1274,8 @@
         $scope.datos.INT_AC_DISTRITO    =   idDistrito;
         $scope.datos.INT_AC_ID_ZONA     =   idZona;
         $scope.datos.f01_zona_act       = idZona;
+        //console.log("$scope.datos.f01_dist_act: ", $scope.datos.f01_dist_act);
+        //console.log('f01_zona_act    ',$scope.datos.f01_zona_act);
         $scope.datos.INT_ID_ZONA        =   idZona;
         $scope.desabilitadoNo=true;
     };
@@ -1182,10 +1291,13 @@
     $scope.GetValueMacrodistrito = function (macro) {
         var e = document.getElementById("f01_macro_act");
         $scope.datos.f01_macro_act_descrip = e.options[e.selectedIndex].text;
+        //console.log("f01_macro_act_descrip:: ", $scope.datos.f01_macro_act_descrip);
     }
       
     
     $scope.seleccionarTramiteRender = function (tramite) {
+        //console.log('tramiteeeee   111111  ',tramite);
+        //openMapGis();
         $scope.open_mapa_ae();
         //$scope.getCaptchasXX();
         $scope.procesoSeleccionado   =   tramite.vdvser_id;
@@ -1325,6 +1437,7 @@
 
     $scope.bloquearBtnEnviarForm    =   function(){
         $scope.botones          =   null;
+        //console.log("$scope.botones :: ", $scope.botones );
     };
 
     $scope.serializarInformacion = function(obj){
@@ -1990,6 +2103,20 @@
         $scope.servicio = dat;
     }
 
+    $scope.validarAcpetacion = function(){
+        if($scope.datos.f01_tipo_per=='JURIDICO'){
+            $("#declaracionJ").modal("show");
+        }else{
+            $("#declaracionN").modal("show");
+        }
+        $scope.acepta = "SI";
+        //$("#aceptacionCondiciones").modal("hide");
+        console.log("entraa",$scope.datos);
+    }
+
+    $scope.cerrarModal = function(){
+        $scope.acepta = "NO";
+    }	
 
     $scope.generarDocumentoPhp = function (){
         $.blockUI();

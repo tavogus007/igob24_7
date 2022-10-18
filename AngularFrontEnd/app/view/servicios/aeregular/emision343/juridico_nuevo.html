@@ -18,7 +18,13 @@
         <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
         <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script> 
 
-    </head>   
+    </head>  
+    <style>
+        input.largerCheckbox {
+            width: 30px;
+            height: 30px;
+        }
+    </style> 
 <script type="text/javascript">
     $('.custom-upload input[type=file]').change(function(){
         $(this).next().find('input').val($(this).val());
@@ -397,7 +403,7 @@
                     <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true">
                 </div>
                 <div class="col-md-12">
-                     <div class="form-group" >
+                    <div class="form-group" >
                         <div class="col-md-12">
                             <legend> Tipo Licencia: </legend>
                         </div>
@@ -414,8 +420,24 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>  
+                <div class="col-md-12">
+                    <div class="alert alert-success fade in ng-binding" ng-show="datos.habilitaEmpredimiento=='true'">
+                        <strong>Sr. Ciudadano le Informamos:</strong><br>
+                        El tipo de "Actividad Desarrollada" que seleccionó se encuentra beneficiada con la exención de la Pantente de Funcionamiento Anual conforme Ley Municipal Autonómica Nº 482/2022.<br>
+                    </div>
+                </div>  
+                <!--div class="col-md-12">
+                    <div class="alert alert-warning fade in ng-binding" ng-show="datos.habilitaEmpredimiento=='false'">
+                        <strong>Sr. Ciudadano le Informamos:</strong><br>
+                        El tipo de "Actividad Desarrollada" que seleccionó <strong>NO</strong> se encuentra beneficiada con la exención de la Pantente de Funcionamiento Anual conforme Ley Municipal Autonómica Nº 482/2022.<br>
+                    </div>
+                </div--> 
+                <div class="col-md-12">
+                    <div class="form-group" >   
                         <div class="col-md-6">
-                            <label for="url" >Detalle de la Actividad Desarrollada: </label>
+                            <label for="url" >Tipo de Actividad Desarrollada: </label>
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> </font>
                                 <select class="js-example-basic-single form-control"
@@ -514,7 +536,7 @@
                                                     <div class="col-md-3">
                                                         <a class="btn btn-primary" ng-click="guardarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
                                                         </a>
-                                                        <a class="btn btn-primary" ng-click="modificarLicencia(multiple)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
+                                                        <a class="btn btn-primary" ng-click="modificarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
                                                             <i class="glyphicon glyphicon-plus-sign"></i>Modificar
                                                         </a>
                                                     </div>
@@ -522,7 +544,7 @@
                                                         <tr style="cursor: pointer;" ng-repeat="lic in datos.licenciam" ng-style="lic.id==MultipleSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}" ><!--cambios-->
                                                           <td align="center" data-title="'Opciones'">
                                                               <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                                                              <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                              <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic); GetValueActividadesCatDesarrollada();" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
                                                             </td>
                                                             <td data-title="'NRO'" ng-click="SeleccionaPrioridad(lic)">{{$index+1}}</td>
                                                             <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_tipo_licmdescrip}}</td>
@@ -948,8 +970,8 @@
                                         <div class="col-md-12">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading"><b>Expresado en metros.</b>
-                                                    <br>
-                                                    <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular
+                                                    <!--br>
+                                                    <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular<br-->
                                                 </div>
                                                 <div class="panel-body">
                                                     <table class="table table-responsive">

@@ -545,7 +545,7 @@
                                                         <font color="#FF0000"> * </font>
                                                         <label for="url">Nombre (Animal de compañía):</label>
                                                         <div class="controls">
-                                                            <input ng-model="datos.mascota_nombre" name="mascota_nombre" id="mascota_nombre" class="form-control" type="text" placeholder="Ingrese nombre del animal de compañía" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado" required>
+                                                            <input ng-model="datos.mascota_nombre" name="mascota_nombre" id="mascota_nombre" class="form-control" type="text" placeholder="Ingrese nombre del animal de compañía" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado || datosNoEditables" required>
                                                             <span style="color:red" ng-show="signupForm.mascota_nombre.$invalid">
                                                                 <span ng-show="signupForm.mascota_nombre.$error.required">Nombre es requerido.</span>
                                                             </span>
@@ -559,7 +559,7 @@
                                                         <font color="#FF0000"> * </font>
                                                         <label for="url">Especie : </label>
                                                         <div class="controls">
-                                                            <select id="reg_especie" name="reg_especie" ng-model="datos.mascota_especie_id" ng-change="listarRaza(datos.mascota_especie_id);" class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado" required>
+                                                            <select id="reg_especie" name="reg_especie" ng-model="datos.mascota_especie_id" ng-change="listarRaza(datos.mascota_especie_id);" class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado || datosNoEditables" required>
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="1"> Canino </option>
                                                                 <option value="2"> Felino </option>
@@ -582,7 +582,7 @@
                                                                 ng-options="dato._raza_id as dato._raza_data for dato in mascotas_razas"
                                                                 ng-model="datos.xmascota_raza_id"
                                                                 ng-change="mostrarRaza(datos.xmascota_raza_id);"
-                                                                ng-disabled="dsaraza || desabilitado" required>
+                                                                ng-disabled="dsaraza || desabilitado || datosNoEditables" required>
                                                                 <option value="">Escriba el nombre de la raza </option>
                                                             </select>
 
@@ -643,7 +643,7 @@
                                                                 ng-model="datos.reg_sexo" class="form-control"
                                                                 ng-change="mostrarSexo(datos.reg_sexo)"
                                                                 placeholder="-- Seleccione --"
-                                                                ng-disabled="desabilitado" required>
+                                                                ng-disabled="desabilitado || datosNoEditables" required>
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="hembra"> Hembra </option>
                                                                 <option value="macho"> Macho </option>
@@ -703,7 +703,7 @@
                                                                 id="reg_color" class="form-control" type="text"
                                                                 placeholder="Ingrese color" onkeyup="mayus(this);"
                                                                 onkeypress="return validar(event);"
-                                                                ng-disabled="desabilitado" required>
+                                                                ng-disabled="desabilitado || datosNoEditables" required>
                                                             <span style="color:red"
                                                                 ng-show="signupForm.reg_color.$invalid">
                                                                 <span>Es requerio color.</span>
@@ -773,7 +773,7 @@
                                                                 ng-model="datos.mascota_esterilizacion"
                                                                 onkeyup="mayus(this);" class="form-control"
                                                                 ng-change="muestra_esterilizacion(datos.mascota_esterilizacion);"
-                                                                ng-disabled="desabilitado" required>
+                                                                ng-disabled="desabilitado || esterilizacionDisabled" required>
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="si"> Si </option>
                                                                 <option value="no"> No </option>
@@ -874,7 +874,7 @@
                                                         <div class="controls">
                                                             <input ng-model="datos.reg_feca" name="reg_feca"
                                                                 id="reg_feca" class="form-control"
-                                                                ng-disabled="desabilitado" type="number" min="2010"
+                                                                ng-disabled="desabilitado || esterilizacionDisabled" type="number" min="2000"
                                                                 max={{gestion}}>
                                                             <span style="color:red"
                                                                 ng-show="signupForm.reg_feca.$invalid">
@@ -894,7 +894,7 @@
                                                             <select id="marca" name="marca"
                                                                 ng-model="datos.mascota_marca" class="form-control"
                                                                 placeholder="-- Seleccione --"
-                                                                ng-disabled="desabilitado" ng-change="cambioNrocert();">
+                                                                ng-disabled="desabilitado || esterilizacionDisabled" ng-change="cambioNrocert();">
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="ninguna"> Ninguna </option>
                                                                 <option value="certificado"> Certificado </option>
@@ -919,7 +919,7 @@
                                                                 class="form-control" type="text"
                                                                 placeholder="Ingrese Nro de certificado"
                                                                 onkeyUp="return valNumero(this);"
-                                                                ng-disabled="desabilitado">
+                                                                ng-disabled="desabilitado || esterilizacionDisabled">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -934,7 +934,7 @@
                                                                 name="reg_institucion" id="reg_institucion"
                                                                 class="form-control" type="text" onkeyup="mayus(this);"
                                                                 placeholder="Ingrese Institución"
-                                                                ng-disabled="desabilitado">
+                                                                ng-disabled="desabilitado || esterilizacionDisabled">
                                                             <span style="color:red"
                                                                 ng-show="signupForm.reg_institucion.$invalid">
                                                                 <span
@@ -953,24 +953,16 @@
                             <div class="tab-pane" id="tabDesparasitacion" ng-show="desparasitacion">
                                 <div class="panel-body" style="padding: 0;">
                                     <div class="col-md-6">
-                                        <div class="col-md-12" align="left">
-                                            <div class="form-group" class="col-md-12">
-                                                <font color="#FF0000"> * </font>
-                                                <label for="url">Año de aplicacion - Desparasitación: </label>
-                                                <div class="controls">
-                                                    <input ng-model="datos.mascota_feca_desparasitacion"
-                                                        name="mascota_feca_desparasitacion"
-                                                        id="mascota_feca_desparasitacion" class="form-control"
-                                                        type="number" min="2010" max={{gestion}}
-                                                        ng-disabled="desabilitado" required>
-                                                    <span style="color:red"
-                                                        ng-show="signupForm.mascota_feca_desparasitacion.$invalid">
-                                                        <!--span
-                                                            ng-show="signupForm.mascota_feca_desparasitacion.$error.required">
-                                                        </!--span-->
-                                                        <span> Es requerido el campo.</span>
-                                                    </span>
-                                                </div>
+                                        <div class="form-group">
+                                            <label for="url">Fecha de aplicacion - Desparasitación:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.mascota_feca_desparasitacion" id="mascota_feca_desparasitacion"
+                                                    name="mascota_feca_desparasitacion" type="date" max={{fechaHoy}}
+                                                    class="form-control" ng-disabled="desabilitado"
+                                                    placeholder="Ingrese Fecha de aplicacion">
+                                                <span style="color:red" ng-show="signupForm.mascota_feca_desparasitacion.$invalid">
+                                                    <span> Es requerido Fecha de Aplicación. </span>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -1032,7 +1024,7 @@
                                                         {{$index+1}}
                                                     </td>
                                                     <td class="text-center" style="width:15%"
-                                                        data-title="'AÑO DE APLICACIÓN'">
+                                                        data-title="'FECHA DE APLICACIÓN'">
                                                         {{lstGrillaDesparasitacion.fecha_aplicacion}}
                                                     </td>
                                                     <td class="text-center" style="width:15%"

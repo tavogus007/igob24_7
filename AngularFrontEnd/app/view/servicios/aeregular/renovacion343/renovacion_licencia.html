@@ -651,7 +651,7 @@
                                     ng-change="distritoZonas(datos.f01_macro_act);GetValueMacrodistrito(datos.f01_macro_act);"
                                     required>
                                     <option value="">--Seleccionar--</option>
-                                    <option ng-repeat="macro in aMacrodistritos | orderBy:['nombre','mcdstt_id']" value="{{macro.mcdstt_id}}">{{macro.mcdstt_macrodistrito}}</option>
+                                    <option ng-selected="{{macro.mcdstt_id == datos.f01_macro_act}}" ng-repeat="macro in aMacrodistritos | orderBy:['nombre','mcdstt_id']" value="{{macro.mcdstt_id}}">{{macro.mcdstt_macrodistrito}}</option>
                                 </select>
                             <input type="hidden" ng-model="datos.f01_idCodigoZona" id="f01_idCodigoZona" name="f01_idCodigoZona" class="form-control" required/>
                             <input type="hidden" ng-model="datos.f01_macro_act_descrip" id="f01_macro_act_descrip" name="f01_macro_act_descrip" class="form-control" style="text-transform:uppercase;"/>                     
@@ -686,7 +686,7 @@
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
                             <div class="controls">
-                                <select id="f01_tip_via_act" class="form-control" ng-model="datos.f01_tip_via_act"  name="f01_tip_via_act" ng-disabled="desabilitado" required  ng-change="cargarNombVia(datos.f01_tip_via_act, datos);">
+                                <select id="f01_tip_via_act" class="form-control" ng-model="datos.f01_tip_via_act"  name="f01_tip_via_act" ng-disabled="desabilitado" required  ng-change="cargarNombVia(datos.f01_tip_via_act, datos.f01_zona_act);">
                                     <option value="">--Seleccionar--</option>
                                     <option value="AV">AVENIDA</option>
                                     <option value="CA">CALLE</option>
@@ -911,8 +911,8 @@
                                         <div class="col-md-12">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading"><b>Expresado en metros.</b>
-                                                    <br>
-                                                    <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular
+                                                    <!--br>
+                                                    <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular<br-->
                                                 </div>
                                                 <div class="panel-body">
                                                     <table class="table table-responsive">

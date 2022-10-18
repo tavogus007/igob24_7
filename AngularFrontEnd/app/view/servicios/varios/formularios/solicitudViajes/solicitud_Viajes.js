@@ -8,8 +8,11 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
   $scope.inicioServicios = function () {
     $scope.llamar_data_ciudadano();
     $scope.tramitesCiudadano();
-    $scope.MacroZona();
+    $scope.MacroZona();    
     $.blockUI();
+    setTimeout(() => {      
+      $('#guiatramite').modal("toggle");           
+    }, 1000);    
   };
   function cargando(){
       var texto   = $("<div>", {
@@ -308,8 +311,34 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
             $scope.tramitesCiudadano();
             alertify.success('Tramite Creado');
             //swal('', 'Tramite creado correctamente', 'success');
+			$scope.selCrearTramitesCiudadano();
         });
     }
+	
+   $scope.selCrearTramitesCiudadano = function(){
+      setTimeout(() => {
+        $.blockUI();
+      }, 500);
+      sIdCiudadano= sessionService.get('IDSOLICITANTE');
+      var sparam  = new reglasnegocio();
+      sparam.identificador = "RCCIUDADANO_79";
+      sparam.parametros='{"sidciudadano":"' + sIdCiudadano + '"}';
+      sparam.llamarregla(function(results)
+      {
+          results = JSON.parse(results);
+          try {
+            var dataJson = results;     
+            if(! dataJson.error){                
+              $scope.seleccionarTramite(dataJson[0]);
+            }else{
+              console.log("No existe data.");
+            }
+            } catch (error) {  
+              console.log("Error en la seleccion..");            
+            }          
+      });
+    }	
+	
     $scope.tramitesCiudadano = function(){      
         sIdCiudadano= sessionService.get('IDSOLICITANTE');
         var sparam  = new reglasnegocio();
@@ -330,6 +359,20 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
             });
             $scope.tramitesUsuario = results;
             $scope.tablaTramites.reload();
+			/*try {
+              var dataJson = results;     
+			  //console.log("DATA INFO fin:", results[0]);	
+			  console.log("DATA INFO:", dataJson[0]);	
+              if(! dataJson.error){                
+                setTimeout(() => {
+                  $scope.seleccionarTramite(dataJson[0]);
+                }, 4000);
+              }else{
+                console.log("No existe data.");
+              }
+            } catch (error) {  
+              console.log("Error en la seleccion..");            
+            }*/
         });
     };
 
@@ -358,7 +401,7 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
       }else {
         $scope.tram = data_tramite.vcodigo;
       }
-      alertify.success('Tramite seleccionado '+ $scope.tram);
+      alertify.success('Solicitud seleccionada '+ $scope.tram);
       /*swal({
         title: "Tramite seleccionado",
         text: data_tramite.vcodigo,
@@ -375,6 +418,7 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
       $scope.mostra_form_viajes = true;
       $scope.idServicio = data_tramite.vdvser_id;
       $scope.idTramite = data_tramite.vtra_id;
+	  $scope.sIdTramiteSeleccionado = data_tramite.vtra_id;
       if (data_tramite.datos) {
         if (data_tramite.datos.length != undefined) {
           if (data_tramite.datos.length > 100) {
@@ -507,6 +551,15 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
         $scope.grid_n = [];
         $scope.grid_a = [];
       }
+	  
+      try {
+        setTimeout(() => {             
+          $scope.$apply();
+          $.unblockUI();
+        }, 1000);
+      } catch (error) {        
+      }
+	  
     }
     $scope.getProvinciasDepto = function(dep){
         var departamento = dep.split("-");
@@ -792,7 +845,7 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
                   //swal('', "Formulario no almacenado", 'error');
               } else {
                   $.unblockUI();
-                  alertify.success('Formulario almacenado');
+                  //alertify.success('Formulario almacenado');
                   $scope.gard_tra = "OK";
                   //swal('', "Formulario almacenado", 'success');
               }

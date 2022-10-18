@@ -173,13 +173,12 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
     }*/
 
     $scope.sesionTokenMas=function(){
-        //var urlTokenM = CONFIG.CONEXION_SERVICIOMASCOTAS + "/apiLogin";
-        var urlTokenM = CONFIG.CONEXION_MOTOR_SERVICIO + "api/apiLogin";
+        var urlTokenM = CONFIG.CONEXION_SERVICIOMASCOTAS + "api/apiLogin";
         $.ajax({
             dataType: "json",
             type: "POST",
             url : urlTokenM,
-            data: CONFIG.CREDENCIAL_MOTORES,
+            data: CONFIG.CREDENCIAL_MOTORESMASCOTAS,
             async: true,
             success: function(response) {
                 dataRespM = JSON.stringify(response);

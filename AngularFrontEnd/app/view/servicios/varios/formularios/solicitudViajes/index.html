@@ -130,30 +130,26 @@ var icon= 0;
       $('.js-example-basic-single').select2();
   });*/
 </script>
-
-
       <div class="page-content" ng-controller="solicitudViajesController" data-ng-init="inicioServicios();">
         <div class="col-md-12">
           <div class="ibox float-e-margins">
              <div id="mostrar" class="ibox-title">
-                <h5 class="ng-binding">{{translateIdioma.lbl_017_01}}</h5>
-                <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc" style="color: #00adb5" id="cerrar_i"></i></a>
+                <h5 class="ng-binding">{{translateIdioma.lbl_017_01}}</h5>                
              </div>
-             <div class="ibox-content" id="caja">
+             <div class="ibox-content">
                   <div class="row">
                    <div class="col-md-12">
                       <form class="form-horizontal ng-pristine ng-valid">
                             <div class="form-group">
                                <div class="col-md-6">
-                                  <div>
-                                     <a class="btn btn-redondo" tooltip="Crear Trámite" ng-click="crear_tramite();">
-                                        <div class="shake-slow"><i class="fa fa-file blanco"></i></div>
-                                     </a>
+                                  <div>                                     
+									                  <button  type="button" class="btn btn-success fa fa-file blanco" ng-click="crear_tramite();" tooltip="Crear Solicitud">&nbsp;Nueva Solicitud </button>
                                     <a data-toggle="modal" tooltip="Ayuda para crear la solicitud" data-target="#guiatramite">
-                                        <span class="btn btn-redondo">
+                                        <!--span class="btn btn-redondo">
                                           <div class="shake-slow"><i class="fa fa-question-circle blanco"></i>
                                           </div>
-                                        </span>
+                                        </span-->
+                                        <button  type="button" class="btn btn-success fa fa-question-circle" >&nbsp;Ayuda</button>                                                                                
                                      </a>
                                   </div>
                                </div>
@@ -165,12 +161,20 @@ var icon= 0;
                          </div>
                          <form class="form-horizontal ng-pristine ng-valid" action="index.html" method="post">
                            <table  ng-table="tablaTramites"  class="table table-striped table-hover">
-                             <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                               <td data-title="'Código'" ng-click="seleccionarTramite(tramite)">{{tramite.vcodigo}}</td>
-                               <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite)">{{tramite.vservicio}}</td>
+                             <tr style="cursor: pointer;text-align: center;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vtra_id==sIdTramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                              <td data-title="'Estado'" ng-click="seleccionarTramite(tramite)" align="center">
+                                <div ng-show="tramite.venviado=='SI'"> 
+                                  <h1><span class="badge badge-primary">Enviado al GAMLP</span></h1>
+                                </div> 
+                                <div ng-show="tramite.venviado=='NO'"> 
+                                  <h1><span class="badge badge-info">Creado</span></h1>
+                                </div>
+                              </td>                                 
+                              <td data-title="'Código'" filter="{'vcodigo':'text'}" ng-click="seleccionarTramite(tramite)">{{tramite.vcodigo}}</td>                            
+                               <td data-title="'Tipo de Trámite'"  filter="{'vservicio':'text'}" ng-click="seleccionarTramite(tramite)">{{tramite.vservicio}}</td>
                                <!--<td data-title="'Subtipo'" ng-click="seleccionarTramite(tramite)">{{tramite.datos.TIPO}}</td>-->
-                               <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)">{{tramite.vfecha}} </td>
-                               <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)">{{tramite.venviado}}</td>
+                               <td data-title="'Fecha'" filter="{'vfecha':'text'}" ng-click="seleccionarTramite(tramite)">{{tramite.vfecha}} </td>
+                               <td data-title="'Enviado'"  filter="{'venviado':'text'}" ng-click="seleccionarTramite(tramite)">{{tramite.venviado}}</td>
                              </tr>
                            </table>
                          </form>
@@ -421,12 +425,18 @@ var icon= 0;
                   </div>
               </div>
               <div class="row">
-                <div class="col-md-1" align="right">
-                  <br><br>
-                  <button ng-if="envia_btn=='NO'" type="button" class="btn btn-success fa fab fa-save" ng-click="guardar_tramite(datos);" tooltip="Guardar Formulario"></button>
-                  <button ng-if="gard_tra=='OK'" type="button" class="btn btn-success fa fab fa-send" ng-click="enviar_tramite(datos);" tooltip="Enviar Formulario"></button>
+                <div class="col-md-12" align="right">
+                  <div class="col-md-8" align="right">
+                  </div>
+                  <div class="col-md-2" align="right">
+                    <br><br>
+                    <button ng-if="envia_btn=='NO'" type="button" class="btn btn-success fa fa-floppy-o" ng-click="guardar_tramite(datos);" tooltip="Guardar Formulario">Guardar Formulario</button>                  
+                  </div>
+                  <div class="col-md-2" align="right">
+                    <br><br>                  
+                    <button ng-if="gard_tra=='OK'" type="button" class="btn btn-success fa fa-paper-plane" ng-click="enviar_tramite(datos);" tooltip="Enviar Formulario">Enviar Solicitud</button>
+                  </div>
                 </div>
-                <div class="col-md-11"></div>
               </div>
             </form>
   		    </div>
@@ -617,7 +627,7 @@ var icon= 0;
                           <select id="f01_NNA_TER_ZONA" name="f01_NNA_TER_ZONA" ng-model="mod.f01_NNA_TER_ZONA" class="form-control" required="">
                             <option value="">--Seleccione--</option>
                             <!--option ng-repeat="zon in zonas" value="{{zon.dist_id}}-{{zon.dist_nombre}}" ng-selected="{{zon.dist_id-zon.dist_nombre==mod.f01_NNA_TER_ZONA}}">{{zon.dist_nombre}}</option-->
-                            <option ng-repeat="zon in zonas" value="{{zon.dist_id}}" ng-selected="{{zon.dist_id==mod.f01_NNA_TER_ZONA}}">{{zon.dist_nombre}}</option>
+                            <option ng-repeat="zon in zonas | orderBy:['nombre','dist_nombre']" value="{{zon.dist_id}}" ng-selected="{{zon.dist_id==mod.f01_NNA_TER_ZONA}}">{{zon.dist_nombre}}</option>
                           </select>
                         </div>
                       </div>
@@ -1001,7 +1011,8 @@ var icon= 0;
                         <div class="col-md-9">
                           <select id="f01_ADUL_TER_ZONA" name="f01_ADUL_TER_ZONA" ng-model="mod_adultos.f01_ADUL_TER_ZONA" class="form-control ng-pristine ng-invalid ng-invalid-required" required="">
                             <option value="">--Seleccione--</option>
-                            <option ng-selected="{{zon.dist_id==mod_adultos.f01_ADUL_TER_ZONA}}" ng-repeat="zon in zonas" value="{{zon.dist_id}}">{{zon.dist_nombre}}</option>
+                            <!--option ng-selected="{{zon.dist_id==mod_adultos.f01_ADUL_TER_ZONA}}" ng-repeat="zon in zonas" value="{{zon.dist_id}}">{{zon.dist_nombre}}</option-->
+							<option ng-selected="{{zon.dist_id==mod_adultos.f01_ADUL_TER_ZONA}}" ng-repeat="zon in zonas | orderBy:['nombre','dist_nombre']" value="{{zon.dist_id}}">{{zon.dist_nombre}}</option>
                           </select>
                         </div>
                       </div>
@@ -1242,7 +1253,7 @@ var icon= 0;
               <div class="modal-content">
                   <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only ng-binding">Cerrar</span></button>
-                      <h4 class="modal-title ng-binding" id="myModalLabel">Ayuda para crear el trámite</h4>
+                      <h4 class="modal-title ng-binding" id="myModalLabel">Ayuda para crear la solicitud</h4>
                   </div>
                   <div class="modal-body" style="background: #545f63;">
                          <img class="img-responsive" src="../../libs/img/guia1.png">
@@ -1260,7 +1271,7 @@ var icon= 0;
               <div class="modal-content">
                   <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only ng-binding">Cerrar</span></button>
-                      <h4 class="modal-title ng-binding" id="myModalLabel">Ayuda para crear el trámite</h4>
+                      <h4 class="modal-title ng-binding" id="myModalLabel">Ayuda para crear la solicitud</h4>
                   </div>
                   <div ng-if="datos.TER_TIP_PERMISO=='F'" class="modal-body">
                          <img class="img-responsive" src="../catastro/img/caso1.png">

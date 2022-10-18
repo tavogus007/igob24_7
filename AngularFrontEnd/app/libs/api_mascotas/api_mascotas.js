@@ -2,11 +2,14 @@ var urlComp;
 var dataResp;
 var dataParams;
 var typeCall;
+//var urlAservicio    =    "";//"http://192.168.5.69/api/reglaNegocio/ejecutarWeb";
 
 
 if(jsonURLS){
-    //urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "api/reglaNegocio/ejecutarWeb";
-    urlMaservicio    =   jsonURLS.CONEXION_MOTOR_SERVICIO + "/api/reglaNegocio/ejecutarWeb";
+    //urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "/motorservicio_pruebas/public/api/apiLogin";
+    urlMaservicio    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "api/reglaNegocio/ejecutarWeb";
+   // urlMaservicioReglas    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "api/reglaNegocio/ejecutarWeb";
+    //urlMaservicioReglas    =   jsonURLS.CONEXION_SERVICIOMASCOTAS + "motorservicio_pruebas/public/api/reglaNegocio/ejecutarWeb";
     urlRCPG = jsonURLS.CONEXION_API_PG_RC + "wsRCPG";
     key = jsonURLS.KEY;
 

@@ -167,11 +167,13 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
                 }
             }
         }
-
         else{
             $scope.numeroref = true;
             $scope.variablem = "modal";
         }
+
+
+
         if(datos.telefonoTrabajo.length > 0){
             var res = datos.telefonoTrabajo.substring(0, 1);
             if(res == 2 || res == 3 || res == 4){
@@ -207,6 +209,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
             $scope.numerotrabajo = true;
             $scope.variablem = "modal";
         }
+
         if($scope.numerotrabajo && $scope.numeroref){
             $scope.registrarHistoriaConfirmar();
         }
@@ -255,7 +258,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     $scope.reservarFicha = function(){
         swal({
          title: " Atención !!",
-         text: "Favor tomar nota de lo siguiente: \n El día de la cita médica programada debe estar 45 minutos antes de la hora de atención reservada, para realizar el pago en el servicio de Cajas del Hospital. Para contar con la ficha en físico desde el Dispensador de Fichas, seleccione la opción Más opciones en la Reimprimir ficha pendiente,  debe ingresar su número de CI y fecha de nacimiento. \n ¿Desea continuar?",
+         text: "Favor tomar nota de lo siguiente: \n El día de la cita médica programada debe estar 30 minutos antes de la hora de atención reservada, para realizar el pago en el servicio de Cajas del Hospital. Para contar con la ficha en físico desde el Dispensador de Fichas, seleccione la opción Más opciones en la Reimprimir ficha pendiente,  debe ingresar su número de CI y fecha de nacimiento. \n ¿Desea continuar?",
          type: "warning",
          showCancelButton: true,
          confirmButtonColor: "#55DD6B",confirmButtonText: "SI",
@@ -298,7 +301,7 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
 
 
     $scope.crearHistoriaClinicaConfirm = function(idHospital){
-    cargando();
+    //cargando();
     var response = $scope.datosPaciente;
     $scope.datosPaciente.lugarTrabajo = $scope.datosGrupo.lugarTrabajo;
     $scope.datosPaciente.direccionTrabajo = $scope.datosGrupo.direccionTrabajo;
@@ -335,7 +338,8 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     $scope.registro_con_carnet(datos);
   }
 
-    $scope.registro_con_carnet = function(datos){
+    $scope.registro_con_carnet = function(datos){ 
+      console.log("SIIS", $scope.datosHospital.vdtspsl_id );
       cargando();
       var response = datos;
       $scope.usuarioCiudadano = "";
@@ -456,7 +460,10 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
         $scope.hclcodigo = responseiNSERTA[0]['codigoHistoria'];
         $scope.codcarpeta = responseiNSERTA[0].codCarpeta;
         $scope.fecha_creacion_sice =  responseiNSERTA[0].fecha_creada;
-        var historiaSIIS = new historiaClinica();
+
+        if ($scope.datosHospital.vdtspsl_id != 0) {
+            console.log("ACTUALIZACION");
+            var historiaSIIS = new historiaClinica();
             historiaSIIS.nombres = response.dtspsl_nombres;
             historiaSIIS.paterno = response.dtspsl_paterno;
             historiaSIIS.materno = response.dtspsl_materno;
@@ -472,7 +479,76 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
             historiaSIIS.usr_id = "1";
             historiaSIIS.zona = response.dtspsl_zona;
             historiaSIIS.correo = response.dtspsl_correo;
-            historiaSIIS.hospital = $scope.vhsp_id_hospital;
+            historiaSIIS.hospital = $scope.datosHospital.vhsp_id_hospital;
+            historiaSIIS.tp_id = 0;
+            historiaSIIS.codigoexp = $scope.codcarpeta;
+            historiaSIIS.lugarexpedicion = expedido;
+            historiaSIIS.dep_codigo_res = 0;
+            historiaSIIS.prov_cod_res = 0;
+            historiaSIIS.mun_codigo_res = 0;
+            historiaSIIS.estciv = estadiCivil;
+            historiaSIIS.nivelestudio = 0;
+            historiaSIIS.idioma = 0;
+            historiaSIIS.vlugtra = response.lugarTrabajo;
+            historiaSIIS.vdirtra = response.direccionTrabajo;
+            historiaSIIS.vteltra = response.telefonoTrabajo;
+            historiaSIIS.vnomfam = response.responsableFamilia;
+            historiaSIIS.vtelfam = response.telefonoRef;
+            historiaSIIS.vnompad = response.nombrePadreTutor;
+            historiaSIIS.vnommad = response.nombreMadre;
+            historiaSIIS.vcodigoseg = $scope.hclcodigo;
+            historiaSIIS.vcodigosegsocial = $scope.codcarpeta;
+            historiaSIIS.vdep_codigo_nac = 0;
+            historiaSIIS.vmun_codigo_nac = 0;
+            historiaSIIS.vembarazada = 0;
+            historiaSIIS.vtipo_atencion = "D";
+            historiaSIIS.vmacrodistrito = "0";
+            historiaSIIS.vdistrito = "0";
+            historiaSIIS.vorigen = $scope.vhsp_codigo_hospital;
+            historiaSIIS.vcelular = response.dtspsl_movil;
+            historiaSIIS.vlugarnac = lugarNacimiento;
+            historiaSIIS.fecha_creacion_sice = $scope.fecha_creacion_sice;
+            historiaSIIS.vconyuge = "";
+            historiaSIIS.votras_personas = "";
+            historiaSIIS.vpaterno_proximo = "";
+            historiaSIIS.vmaterno_proximo = "";
+            historiaSIIS.vnombre_proximo = "";
+            historiaSIIS.vciudad_proximo = "";
+            historiaSIIS.vzona_proximo = "";
+            historiaSIIS.vcalle_proximo = "";
+            historiaSIIS.vtelefono_proximo = "";
+            historiaSIIS.dtspsl_id = $scope.datosHospital.vdtspsl_id;
+            historiaSIIS.actualizarHistoriaClinicaWeb(function(res){
+                var x = JSON.parse(res);
+                var resultado = x.success.data;
+                var responseiNSERTA2 = resultado;
+                $scope.lstHospital();
+                $scope.$apply();
+                alertify.success('Felicidades !! Su historia clínica fue actualizado con éxito, ya puede utilizar nuestros servicios.');
+                
+                $.LoadingOverlay("hide");
+            });
+            $.LoadingOverlay("hide");
+        
+        } else {
+            console.log("REGISTRO");
+            var historiaSIIS = new historiaClinica();
+            historiaSIIS.nombres = response.dtspsl_nombres;
+            historiaSIIS.paterno = response.dtspsl_paterno;
+            historiaSIIS.materno = response.dtspsl_materno;
+            historiaSIIS.ci = response.dtspsl_ci;
+            historiaSIIS.complemento = "";
+            historiaSIIS.sexo = genero;
+            historiaSIIS.fechanacimiento = response.dtspsl_fec_nacimiento;
+            historiaSIIS.estcivil = estadiCivil;
+            historiaSIIS.direccion = response.dtspsl_direccion;
+            historiaSIIS.telefono = response.dtspsl_telefono;
+            historiaSIIS.expedido = expedido;
+            historiaSIIS.ocupacion = "0";
+            historiaSIIS.usr_id = "1";
+            historiaSIIS.zona = response.dtspsl_zona;
+            historiaSIIS.correo = response.dtspsl_correo;
+            historiaSIIS.hospital = $scope.datosHospital.vhsp_id_hospital;
             historiaSIIS.tp_id = 0;
             historiaSIIS.codigoexp = $scope.codcarpeta;
             historiaSIIS.lugarexpedicion = expedido;
@@ -517,15 +593,18 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
                 $scope.lstHospital();
                 $scope.$apply();
                 alertify.success('Felicidades !! Su historia clínica fue creada con éxito, ya puede utilizar nuestros servicios.');
+                
                 $.LoadingOverlay("hide");
             });
             $.LoadingOverlay("hide");
+        }
         });
         $.LoadingOverlay("hide");
-      }
+    }    
 
 
     $scope.limpiarRegistro = function(datos){
+        $scope.datosHospital = datos;
         $scope.datosRequeridos = 0;
         var genero;
           var sNumeroAleatorio = Math.round(Math.random()*100000) + $scope.datosPaciente.cedula;
@@ -1367,29 +1446,35 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
     };
 
     $scope.pagarOnlinePreguntar1 = function(datosFact){
-        $scope.nit = datosFact.nit;
-        $scope.razon_social = datosFact.razon_social;
-        swal({
-            title: "¡Atención!",
-            text: "Favor tomar nota de lo siguiente: \n El día de la atención médica usted deberá acudir a su cita al menos 45 minutos antes de la hora programada y pasar por enfermería para la toma de sus signos vitales. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
-            closeOnConfirm: false,
-            closeOnCancel: false ,
-            cancelButtonText: "green",cancelButtonText:"Cancelar"
-            },
-             function(isConfirm){
-                if (isConfirm) {
-                   swal.close();
-                   $scope.pagoOnline();
-                   //$scope.$apply();
-                } else {
-                 swal.close();
-                 $scope.$apply();
+        if (datosFact.nit != null || datosFact.nit != undefined) {
+            $scope.nit = datosFact.nit;
+            $scope.razon_social = datosFact.razon_social;
+    
+            swal({
+                title: "¡Atención!",
+                text: "Favor tomar nota de lo siguiente: \n El día de la atención médica usted deberá acudir a su cita al menos 30 minutos antes de la hora programada y pasar por enfermería para la toma de sus signos vitales. \n Debe tener activado su tarjeta de crédito o débito para el pago.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#55DD6B",confirmButtonText: "Continuar",
+                closeOnConfirm: false,
+                closeOnCancel: false ,
+                cancelButtonText: "green",cancelButtonText:"Cancelar"
+                },
+                 function(isConfirm){
+                    if (isConfirm) {
+                       swal.close();
+                       $scope.pagoOnline();
+                       //$scope.$apply();
+                    } else {
+                     swal.close();
+                     $scope.$apply();
+                    }
                 }
-            }
-        );
+            );
+            
+        } else {
+            alertify.error('Falta llenar los datos para su factura !!');
+        }
     }
 
 
@@ -1679,33 +1764,36 @@ function saludController($scope, $rootScope,$filter, $routeParams, $location, $h
 /*//////////////////////////////////////////////////////////////////////////////   PAGAR DESPUES DE RESERVAR  /////////////////////////////////////////////////////////////////////////////////*/ 
     $scope.datosparaCobrar = function(dato){
         $scope.datosFichaPaciente = dato;
-        console.log($scope.datosFichaPaciente);
     };
 
     $scope.pagarCertificado2 = function(dato){
-        swal({
-         title: "¿Está seguro de realizar el Pago?",
-         text: "Recordarle que su tarjeta debe estar habilitada para el pago en linea.",
-         type: "warning",
-         showCancelButton: true,
-         confirmButtonColor: "#55DD6B",confirmButtonText: "SI",
-         closeOnConfirm: false,
-         closeOnCancel: false ,
-         cancelButtonText: "green",cancelButtonText:"NO"
-         },
-          function(isConfirm){
-            if (isConfirm) {
-                swal.close();
-                $scope.pagoOnlineDespues($scope.datosFichaPaciente, dato);
-                $scope.$apply();
-            } else {
-                swal.close();
-            }
-        });
+        if (dato != null || dato != undefined) {
+            swal({
+                title: "¿Está seguro de realizar el Pago?",
+                text: "Recordarle que su tarjeta debe estar habilitada para el pago en linea.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#55DD6B",confirmButtonText: "SI",
+                closeOnConfirm: false,
+                closeOnCancel: false ,
+                cancelButtonText: "green",cancelButtonText:"NO"
+                },
+                 function(isConfirm){
+                   if (isConfirm) {
+                       swal.close();
+                       $scope.pagoOnlineDespues($scope.datosFichaPaciente, dato);
+                       $scope.$apply();
+                   } else {
+                       swal.close();
+                   }
+               });
+            
+        } else {
+            alertify.error('Falta llenar los datos para su factura !!');
+        }
     }
 
     $scope.pagoOnlineDespues = function(dato, dato2){
-        console.log(dato, dato2);
         procesando();
           if(dato.vdtspsl_correo == '' || dato.vdtspsl_correo == null || dato.vdtspsl_correo == undefined){
              alertify.error('Para utilizar nuestro servicio de Pago en linea necesitamos su correo electrónico.');

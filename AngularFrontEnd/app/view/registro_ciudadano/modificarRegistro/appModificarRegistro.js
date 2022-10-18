@@ -1132,6 +1132,7 @@ $scope.mostrarNatural = null;
             var parametros = new ZonaMacro();
             parametros.Zona_Macro(function(resultado){
                 data = JSON.parse(resultado);
+				console.log("data:: ", data);
                     if(data.success.length > 0){
                         $scope.aMacroZona = data.success;
                     }else{
@@ -1164,6 +1165,7 @@ $scope.mostrarNatural = null;
     };
 
     $scope.macrodistritosidM = function(zonaid){
+		console.log("zona id: ", zonaid);
         var idMacro = "";
         if(zonaid != "" && zonaid != undefined && zonaid != ' ' && zonaid != 'undefined'){
             var distNombre  = zonaid;

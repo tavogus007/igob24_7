@@ -258,6 +258,7 @@ function historiaClinica() {
     this.vcelular;
     this.vlugarnac;
     this.fecha_creacion_sice;
+    this.dtspsl_id;
 };
 
 
@@ -320,6 +321,69 @@ historiaClinica.prototype.crearHistoriaClinicaWeb = function (functionResp) {
         "vtelefono_proximo":this.vtelefono_proximo
     };
     ejecutarAjaxSalud(urlComp, typeCall, dataParams, functionResp);
+};
+
+
+historiaClinica.prototype.actualizarHistoriaClinicaWeb = function (functionResp) {
+  urlComp = "/actualizarPacienteSIIS";
+  typeCall = "post";
+  dataParams = {
+      "nombres":this.nombres,
+      "paterno":this.paterno,
+      "materno":this.materno,
+      "ci":this.ci,
+      "complemento":this.complemento,
+      "sexo":this.sexo,
+      "fechanacimiento":this.fechanacimiento,
+      "estcivil":this.estcivil,
+      "direccion":this.direccion,
+      "telefono":this.telefono,
+      "expedido":this.expedido,
+      "ocupacion":this.ocupacion,
+      "usr_id":this.usr_id,
+      "zona":this.zona,
+      "correo":this.correo,
+      "hospital":this.hospital,
+      "tp_id":this.tp_id,
+      "codigoexp":this.codigoexp,
+      "lugarexpedicion":this.lugarexpedicion,
+      "dep_codigo_res":this.dep_codigo_res,
+      "prov_cod_res":this.prov_cod_res,
+      "mun_codigo_res":this.mun_codigo_res,
+      "estciv":this.estciv,
+      "nivelestudio":this.nivelestudio,
+      "idioma":this.idioma,
+      "vlugtra":this.vlugtra,
+      "vdirtra":this.vdirtra,
+      "vteltra":this.vteltra,
+      "vnomfam":this.vnomfam,
+      "vtelfam":this.vtelfam,
+      "vnompad":this.vnompad,
+      "vnommad":this.vnommad,
+      "vcodigoseg":this.vcodigoseg,
+      "vcodigosegsocial":this.vcodigosegsocial,
+      "vdep_codigo_nac":this.vdep_codigo_nac,
+      "vmun_codigo_nac":this.vmun_codigo_nac,
+      "vembarazada":this.vembarazada,
+      "vtipo_atencion":this.vtipo_atencion,
+      "vmacrodistrito":this.vmacrodistrito,
+      "vdistrito":this.vdistrito,
+      "vorigen":this.vorigen,
+      "vcelular":this.vcelular,
+      "vlugarnac":this.vlugarnac,
+      "fecha_creacion_sice":this.fecha_creacion_sice,
+      "vconyuge":this.vconyuge,
+      "votras_personas":this.votras_personas,
+      "vpaterno_proximo":this.vpaterno_proximo,
+      "vmaterno_proximo":this.vmaterno_proximo,
+      "vnombre_proximo":this.vnombre_proximo,
+      "vciudad_proximo":this.vciudad_proximo,
+      "vzona_proximo":this.vzona_proximo,
+      "vcalle_proximo":this.vcalle_proximo,
+      "vtelefono_proximo":this.vtelefono_proximo,
+      "dtspsl_id":this.dtspsl_id
+  };
+  ejecutarAjaxSalud(urlComp, typeCall, dataParams, functionResp);
 };
 
 function centros(){

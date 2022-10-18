@@ -45,6 +45,10 @@
          font-size: 38px;
          color: #FFCB05 !important;
       }
+      
+      #modalTamanio{
+         width: 70% !important;
+      }
    </style>
    <style>
       .ejemplo3 {
@@ -86,6 +90,7 @@
       .ng-table th {
          text-align: left !important;
       }
+      
    </style>
    <script type="text/javascript">
       var icon = 0;
@@ -651,10 +656,10 @@
 
 
       <div class="modal fade" id="declaracionN" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
+         aria-hidden="true" style="overflow-y: scroll;">
          <div class="modal-dialog" role="document">
             <div class="modal-content">
-               <div class="modal-header" style="background: #ffcb05;">
+               <div class="modal-header" style="background: #00b3ba;">
                   <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA
                   </h2>
                </div>
@@ -681,10 +686,10 @@
 
       <!-- MODAL EMISION JURIDICO-->
       <div class="modal fade" id="declaracionJ" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
+         aria-hidden="true" style="overflow-y: scroll;">
          <div class="modal-dialog" role="document">
             <div class="modal-content">
-               <div class="modal-header" style="background: #ffcb05;">
+               <div class="modal-header" style="background: #00b3ba;">
                   <h2 class="modal-title " id="exampleModalLongTitle1" align="center">FORMULARIO DE DECLARACION JURADA
                   </h2>
                </div>
@@ -709,7 +714,36 @@
          </div>
       </div>
 
-
+      <div class="modal fade" id="aceptacionCondiciones" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
+         <div class="modal-dialog" role="document" id="modalTamanio">
+            <div class="modal-content">
+               <div class="modal-header" style="background: #00b3ba;">
+                  <h2 class="modal-title " id="exampleModalLongTitle1" align="center">DECLARACION JURADA
+                  </h2>
+               </div>
+               <div class="modal-body">
+                  <div class="row">
+                     <form name="formulario" readOnly="true" novalidate>
+                        <div class="row">
+                           <div class="col-md-1"></div>
+                              <div class="col-md-10" id="msgformulario">
+                                 <p class="text-justify" style="font-size: 30px;">Declaro bajo juramento que toda la información registrada y cargada en la plataforma iGob 24/7 Institucional es fidedigna, verídica,verificable y los documentos digitales adjuntos corresponden a los  originales y no tienen ningún tipo de adulteración.</p><br>
+                                 <p class="text-justify" style="font-size: 30px;">Asimismo autorizo al GAMLP a que pueda verificar la información y documentación presentada, pudiendo el GAMLP iniciar las acciones legales correspondientes en caso de evidenciarse inconsistencias en la información inserta en la presente declaración.</p>
+                              </div>
+                           <div class="col-md-1"></div>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+               <div class="modal-footer">
+                  <button id="btncondicionesuso_a" ng-model="isDisabled" type="button" class="btn btn-success"
+                  data-dismiss="modal" ng-click="validarAcpetacion();">Aceptar</button>
+                  <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarTram();"
+                     data-dismiss="modal" ng-click="cerrarModal();">Cerrar</button>
+               </div>
+            </div>
+         </div>
+      </div>
 
       <!--cambios-->
    </div>

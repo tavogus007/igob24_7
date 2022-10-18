@@ -102,23 +102,22 @@
     <div class="col-md-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title col-mb-3">
-                <h5> Mis Transacciones &nbsp; &nbsp; &nbsp;</h5>
-            </div>
-            <div class="row justify-content-md-rigth" style="margin: 5px 0 0 0;">
-                <div class="col-sm-6">
-                    <!-- <strong class="ng-binding" style="color: #0d0d0e;">
-                        <h5> Mis Transacciones &nbsp; &nbsp; &nbsp;</h5>
-                    </strong>  -->
-                    <strong class="ibox-subtitle">{{nomAEconomicas}}</strong>
-                </div>
-                <div class="col-sm-6">
-                    <!-- <span style="color:#00adb5;font-weight:bold; font-size:12px" >Actualizando Mis Transacciones {{porcentaje}}%</span> -->
-                    <div class="progress mt-9">
-                        <div class="progress-bar" role="progressbar" title="Actualizando Mis Transacciones" ng-style="{ 'width': porcentaje + '%' }"  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{porcentaje}}%</div>
+                <div class="row justify-content-md-rigth">
+                    <div class="col-sm-6">
+                        <strong class="ng-binding" style="color: #0d0d0e;">
+                            <h5> Mis Transacciones &nbsp; &nbsp; &nbsp;</h5>
+                        </strong> <strong class="ng-binding" style="color: #00adb5;">{{nomAEconomicas}}</strong>
                     </div>
+                    <div class="col-sm-6">
+                        <!-- <span style="color:#00adb5;font-weight:bold; font-size:12px" >Actualizando Mis Transacciones {{porcentaje}}%</span> -->
+                        <div class="progress mt-9">
+                            <div class="progress-bar" role="progressbar" title="Actualizando Mis Transacciones" ng-style="{ 'width': porcentaje + '%' }"  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{porcentaje}}%</div>
+                        </div>
+                    </div>
+                    <br>
                 </div>
-                <br>
             </div>
+            
             <div>
                 <form name="empForm" class="form-horizontal" role="form" novalidate>
 
@@ -511,7 +510,7 @@
                                         <div class="form-group">
                                             <label for="url">Descripción:</label>
                                             <div class="controls">
-                                                <input ng-model="dataObs.observacion" id="observacion"
+                                                <input ng-model="dataObs.observacion" id="observacion"
                                                     name="observacion" class="form-control"
                                                     type="text" placeholder="Descripción de la Obsevación"
                                                     ng-disabled="false" min="1" required>

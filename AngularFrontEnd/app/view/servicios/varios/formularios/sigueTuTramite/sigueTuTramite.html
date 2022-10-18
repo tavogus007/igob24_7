@@ -212,7 +212,7 @@
         /*color: #fff;*/
         border-radius: 10px;
     }
-
+}
 </style>
 
 <script type="text/javascript">
@@ -310,6 +310,7 @@
             </div>
         </div>
 
+
         <div ng-if="grillaTramitesLineaAE != null" class="col-md-12" class="row">
             <div class="row">
                 <div class="col-sm-12">
@@ -319,39 +320,33 @@
                 </div>
             </div>
             <div class="row" >
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                    <th scope="col">#&nbsp;</th>
-                                    <th scope="col">CODIGO TRÁMITE&nbsp;</th>
-                                    <th scope="col">ASUNTO&nbsp;</th>
-                                    <th scope="col">FECHA&nbsp;</th>
-                                    <th scope="col"><center>RESULTADOS&nbsp;</center></th>
-                                    <th scope="col">HISTÓRICO&nbsp;</th>
-                                   
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="datos in tramitesciudadano">
-                                        <td data-title="#">{{$index+1}}</td>
-                                        <td data-title="CODIGO">{{datos.tcorrelativo}}</td>
-                                        <td data-title="ASUNTO">{{datos.tasunto}}</td>
-                                        <td data-title="FECHA">{{datos.tfregistro | date : 'dd/MM/yyyy'}}</td>
-                                        <td align="center" ng-show={{datos.swPh}}><a tooltip="Ver resultados" ng-click="getResultados(datos)" data-toggle="modal" data-target="#myModal"><i class="fa fa-list-alt" style="font-size:24px;color:rgba(238, 185, 71, 0.938)"></i></a></td>
-                                        <td align="center" ng-show=!{{datos.swPh}}>{{datos.tresultado}}</td>
-                                        <td data-title="VER HISTÓRICO" ng-show="{{datos.sitram}}"<center><a tooltip="Ver histórico" ng-click="getTramiteSitram247(datos)" class="btn btn-default btn-transfer"><i class="fa fa-external-link" ></i></a></center></td>
-                                        <td data-title="VER HISTÓRICO" ng-show="{{datos.ceropapel}}"><center><a tooltip="Ver histórico" ng-click="verTramite(datos)" class="btn btn-default btn-transfer"><i class="fa fa-external-link" ></i></a></center></td>
-
-                                    </tr>
-                                </tbody> 
-                        </table>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                        <th scope="col">#&nbsp;</th>
+                                        <th scope="col">CODIGO  TRÁMITE&nbsp;</th>
+                                        <th scope="col">ASUNTO&nbsp;</th>
+                                        <th scope="col">FECHA&nbsp;</th>
+                                        <th scope="col">VER&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="datos in tramitesciudadano">
+                                            <td data-title="#">{{$index+1}}</td>
+                                            <td data-title="CODIGO">{{datos.tcorrelativo}}</td>
+                                            <td data-title="ASUNTO">{{datos.tasunto}}</td>
+                                            <td data-title="FECHA">{{datos.tfregistro | date : 'dd/MM/yyyy'}}</td>
+                                            <td data-title="VER ESTADO"><center><a tooltip="Ver tramite" ng-click="verTramite(datos)" class="btn btn-default btn-transfer" data-toggle="modal" data-target="#registro"><i class="fa fa-external-link" ></i></a></center></td>
+                                        </tr>
+                                    </tbody> 
+                            </table>
                     </div>
                 </div>
+            </div>
         </div>
-        </div>
-       
+        
         <div ng-show="grillaHistorialAE != null" class="col-md-12" class="row" align="center">
             <div class="panel-body" >
                 <br>
@@ -487,9 +482,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td data-title="#" ><center><strong><img src='../../../assets/img/logSitram.png' width='100' height='40'/> <br><h3>{{historialsitram247[0].correlativo}}</h3>  </strong></center></td>
-                                    <td data-title="TIPO TRAMITE"><center><img src="../../libs/img/iconos/tramite.png" width="50" height="50" alt="Inicio"><br><h3>{{historialsitram247[0].tptrnombre}}</h3></center></td>
-                                    <td data-title="FECHA INGRESO"><center><img src="../../libs/img/iconos/calendario.png" width="50" height="50" alt="Inicio"><br><h3>{{historialsitram247[0].tsd}}</h3></center></td>
+                                    <td data-title="#" ><center><strong> {{historialsitram247[0].correlativo}} </strong></center></td>
+                                    <td data-title="TIPO TRAMITE"><center><img src="../../libs/img/iconos/tramite.png" width="50" height="50" alt="Inicio"><br>{{historialsitram247[0].tptrnombre}}</center></td>
+                                    <td data-title="FECHA INGRESO"><center><img src="../../libs/img/iconos/calendario.png" width="50" height="50" alt="Inicio"><br>{{historialsitram247[0].tsd}}</center></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -521,61 +516,6 @@
                 </div>
             </div>
         </div>
-
-         <!-- * VISUALIZAR RESULTADOS PH - SITRAM 247 -->
-
-
-         <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-            
-              <!-- Modal content-->
-              <div class="modal-content" style ="width: 600px;height: 400px;overflow-y: scroll;">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title"><center><bold>Resultados de Unidades - Propiedad Horizontal</bold></center></h4>
-                </div>
-                <div class="modal-body">
-                    <table ng-table="tablaResultados" class="table table-striped">
-                        <tr ng-repeat="estados in $data"  class="text-left" style="cursor: pointer;" ng-style="{'background-color':'#EFF9F9'}"  >
-                            <td data-title="'Nro.'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{$index+1}}</td>
-                            <td data-title="'Descripcion Unidad'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.descripcion_unidad}}</td>
-                            <td data-title="'Ubicacion'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.ubicacion}}</td>
-                            <td data-title="'Resultado'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.resultado}} </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-
-
-         <!--div class="col-md-12" ng-show="verResultados" class="row" align="center">
-            <br>
-            <div align="center">
-                <h4> <strong>RESULTADOS DE TRAMITES DE PROPIEDAD HORIZONTAL:</strong></h4>
-            </div>
-            <hr width="100%">
-            <hr width="100%">
-            <div class="container-fluid">
-                <div class="col-sm-12">
-                    <label class="col-sm-1 control-label no-padding-right" for="url" ></label>
-                    <div class="col-sm-11" align="center">
-                        <table ng-table="tablaResultados" show-filter="true" class="table table-striped">
-                            <tr ng-repeat="estados in $data"  class="text-left" style="cursor: pointer;" ng-style="{'background-color':'#EFF9F9'}"  >
-                                <td data-title="'Nro.'" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{$index+1}}</td>
-                                <td data-title="'Descripcion Unidad'" filter="{'descripcion_unidad':'text'}" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.descripcion_unidad}}</td>
-                                <td data-title="'Ubicacion'" filter="{'ubicacion':'text'}" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.ubicacion}}</td>
-                                <td data-title="'Resultado'" filter="{'resultado':'text'}" ng-mouseover="style={'background-color':'#E1FFF9','cursor':'pointer'}" ng-mouseleave="style={}" ng-style="style">{{estados.resultado}} </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div-->
 
         <!-- * AUTOCONSULTA AL CIUDADANO - LOTUS 247 -->
         <div ng-show="grillaHistorialLotus != null" class="col-md-12" class="row" align="center">
@@ -634,7 +574,8 @@
         </div>
 
         <div class="col-md-12" class="row" align="center">
-            <hr class="hrpiepagina" width="80%">            <table class="tblpiepagina" width= "80%" align="center" cellspacing="3" cellpadding="3">
+            <hr class="hrpiepagina" width="80%">
+            <table class="tblpiepagina" width= "80%" align="center" cellspacing="3" cellpadding="3">
 
             </table>
         </div>

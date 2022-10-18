@@ -547,7 +547,7 @@ app.controller('datosCiudadanoController', function ($scope, $route,$rootScope,$
         $scope.datospersonaJuridica  =   "hide";
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
-        //$scope.datosReportePlaformista();
+        $scope.datosReportePlaformista();
         //$scope.recuperarNoticias();
         //$scope.ciVerificarArchiv();
         $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
@@ -558,7 +558,7 @@ app.controller('datosCiudadanoController', function ($scope, $route,$rootScope,$
         $scope.datospersonaJuridica  =   "hide";
         $scope.recuperarDatosRegistro();
         $scope.recuperarDatosDocumentos();
-        //$scope.datosReportePlaformista();
+        $scope.datosReportePlaformista();
         $scope.eventosCiudadano(sessionService.get('IDSOLICITANTE'));
         $scope.notificaciones();
     }; 

@@ -465,7 +465,7 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                             }
                             //INT_TRAMITE_RENOVA
                             $scope.datos.INT_TRAMITE_RENOVA     =   tramite.IdActividad;
-                            if (codhojaruta.substring(0,9) == 'REN-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,9) == 'EM-LF')
+                            if (codhojaruta.substring(0,6) == 'EMI-AE' || codhojaruta.substring(0,6) == 'REN-LF' ||codhojaruta.substring(0,5) == 'RE-LF' || codhojaruta.substring(0,6) == 'AER-EL' || codhojaruta.substring(0,7) == 'MOD_MOD' || codhojaruta.substring(0,8) == 'LICEN-AE' || codhojaruta.substring(0,5) == 'EM-LF')
                             {
                                 var dataLotus = $scope.getDatosLotus(resultadoApi.success.dataSql.datosAE[0].idActividadEconomica,codhojaruta);
                                 dataLotus.then(function(respuesta){
@@ -482,7 +482,9 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                                             if ($scope.docsAdjuntoAntiguo[i] == null || $scope.docsAdjuntoAntiguo[i] == 'undefined' || $scope.docsAdjuntoAntiguo[i] == 'undefined') {
 
                                             } else{
+                                                console.log("datos",$scope.docsAdjuntoAntiguo[i]);
                                                 var narchivo = $scope.docsAdjuntoAntiguo[i].url.split('?');
+                                                console.log("nombreee",$scope.docsAdjuntoAntiguo[i].url.split('?'));
                                                 var achinom = narchivo[0].split('/');
                                                 var dimar = achinom.length;
                                                 var datosdocant = {
@@ -491,6 +493,8 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                                                     "url": $scope.docsAdjuntoAntiguo[i].url
                                                 };
                                                 $scope.datosdocanterior[i] = datosdocant;
+                                                console.log("treeeeee");
+
                                             };
                                         };
                                     };
@@ -1899,6 +1903,8 @@ function renovacionJuridicoController($scope,$timeout, $rootScope, $routeParams,
                 datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = paramForm.INT_TRAMITE_RENOVA;
             }
         }
+		datosNeXO['datosAnt'] = JSON.parse("["+((JSON.stringify($scope.datosAnt)).replace("'","")).replace("'","")+"]");        
+        datosNeXO['publicidadAntiguo'] = $scope.datos.publicidadAntiguo;
         var sMacroR         =   datosNeXO['f01_macro_des'];
         //var sDistritoR      =   datosNeXO['INT_DISTRITO'];
         var sZonaR          =   datosNeXO['INT_ZONA'];

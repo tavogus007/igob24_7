@@ -8,7 +8,6 @@
       <script type="text/javascript" src="../../../libs/login/login.js"></script>     
       <script type="text/javascript" src="../../../libs/apiIF/api_if.js"></script>
 
-      <!--
       <link rel="stylesheet" href="../../../libs/Librerias/ol_4.6.5_dist/ol.css"/>
       <link rel="stylesheet" href="../../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css"/>
 
@@ -20,7 +19,7 @@
       <script type="text/javascript" src="../../../libs/Librerias/busqueda/nombre_calles.js"></script>
       <script type="text/javascript" src="../../../libs/Librerias/busqueda/nombre_lugares.js"></script>
       <script type="text/javascript" src="../../../libs/Librerias/busqueda/mapa.js"></script>
-      -->
+
 </head>
 <body>
 
@@ -357,7 +356,7 @@ function crearCasoLotus()
           
           $.ajax({
                   type        : 'POST',
-                  url         : 'http://192.168.5.141:8003/wsRCPG/registroriesgo', 
+                  url         : 'https://gamlpmotores.lapaz.bo/node/wsRCPG/registroriesgo', 
                   data        : '{"data_json":'+formData+'}',
                   headers: {'Content-type': 'application/json'},
                   success: function(resultado)
@@ -374,7 +373,7 @@ function crearCasoLotus()
 
           $.ajax({
                   type        : 'POST',
-                  url         : 'http://serigobv2.lapaz.bo/wsCC/registroriesgo_1', 
+                  url         : 'https://gamlpmotores.lapaz.bo/salud/wsCC/registroriesgo_1', 
                   data        : '{"data_json":'+formData+'}',
                   headers: {'Content-type': 'application/json'},
                   success: function(resultado)

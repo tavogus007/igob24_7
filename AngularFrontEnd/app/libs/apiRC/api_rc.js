@@ -534,7 +534,6 @@ rcNatural.prototype.crearNatural = function (functionResp)
           "sistema":"IGOB247",
           "sistema_creado":"IGOB247",
           "tipo_persona": "NATURAL",
-          "estado_creado": "NUEVO",
           "usr_id": this.usr_id,
           "activacionf": "NO",
           "activaciond": "NO",
@@ -1881,6 +1880,18 @@ rcJuridico.prototype.crearJuridico_reducido = function (functionResp)
     dataResp = "{\"error\":{\"message\":\"Uno o varios campos obligatorios vacios\",\"code\":702}}";
     functionResp(dataResp);
   }
+};
+
+function documentoHabilita(){
+  this.sdoc_id;
+}
+documentoHabilita.prototype.documentoHabilitaLicencia = function (functionResp){
+  urlComp = "/documentoHabilitaLicencia"
+  typeCall = "post";
+  dataParams = {
+    "sdoc_id": this.sdoc_id
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 };
 
 function rcNaturalJuridico(){ 

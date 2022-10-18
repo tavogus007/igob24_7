@@ -162,56 +162,94 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         datoObjectFile2 = new Object();
         datoObjectFiles_ci = [];
         try{
-            var nDatosLic = new getDatosLicencia();
-            nDatosLic.idActividadDesarrollada = idDesarrollada;
-            nDatosLic.superficie = superficie;
-            nDatosLic.getDatos_Licencia(function(resDatosLic){
-                var obtLic = JSON.parse(resDatosLic);
-                var datosLic = obtLic.success.dataSql;
-                if(datosLic.length > 0){
-                    $scope.sCategoria = true;
-                    $scope.smultiservicios = false;
-                    $scope.datosActividadLicencia = datosLic;
-                    $scope.datos.f01_tipo_lic = datosLic[0].idTipoLicencia;
-                    $scope.datos.f01_tipo_lic_descrip = datosLic[0].TipoLicenciaDescripcion;
-                    $scope.datos.f01_categoria_agrupada = datosLic[0].idActividadDesarrollada;
-                    $scope.datos.f01_categoria_agrupada_dem = datosLic[0].idActividadDesarrollada343;
-                    $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].ADDescripcion;
-                    $scope.GetValueZonaSegura(datosLic[0].idActividadDesarrollada);
-                    var comboz      = document.getElementById('f01_categoria_descrip');
-                    selected2   = comboz.options[comboz.selectedIndex].text;
-                    $scope.datos.f01_categoria_descripcion  = selected2;
-                    $scope.datos.f01_categoria_descrip2 = selected2;
-                    $scope.datos.f01_categoria_agrupada_descripcion = selected2;
-                    $scope.datos.f01_actividadesSecundarias = datosLic[0].ADDescripcion;
-                }else{
-                    $scope.msg = "Error !!";
-                }
-                if (idDesarrollada == 907 || idDesarrollada == '907') {
-                    $scope.actividadDesarrolladaM();
-                    $scope.sCategoria = false;
-                    $scope.smultiservicios = true;
-                }
-                datoObjectFile1.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
-                datoObjectFile1.campo = 'Cédula de identidad (Anverso)';
-                datoObjectFile1.nombre = 'Cédula de identidad (Reverso)';
-                datoObjectFiles_ci[0] = datoObjectFile1;
-                datoObjectFile2.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
-                datoObjectFile2.campo = 'Cédula de identidad (Anverso)';
-                datoObjectFile2.nombre = 'Cédula de identidad (Reverso)';
-                datoObjectFiles_ci[1] = datoObjectFile2;
-                $scope.datos.FILE_CI = datoObjectFiles_ci;
-                $scope.getRequisitosActividad($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
-                $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
-                $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
-                $scope.getRequisitosTecnicosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
-                //$scope.$apply();
+            if(superficie){
+                var nDatosLic = new getDatosLicencia();
+                nDatosLic.idActividadDesarrollada = idDesarrollada;
+                nDatosLic.superficie = superficie;
+                nDatosLic.getDatos_Licencia(function(resDatosLic){
+                    var obtLic = JSON.parse(resDatosLic);
+                    var datosLic = obtLic.success.dataSql;
+                    if(datosLic.length > 0){
+                        $scope.sCategoria = true;
+                        $scope.smultiservicios = false;
+                        $scope.datosActividadLicencia = datosLic;
+                        $scope.datos.f01_tipo_lic = datosLic[0].idTipoLicencia;
+                        $scope.datos.f01_tipo_lic_descrip = datosLic[0].TipoLicenciaDescripcion;
+                        $scope.datos.f01_categoria_agrupada = datosLic[0].idActividadDesarrollada;
+                        $scope.datos.f01_categoria_agrupada_dem = datosLic[0].idActividadDesarrollada343;
+                        $scope.datos.f01_categoria_agrupada_descrip = datosLic[0].ADDescripcion;
+                        $scope.GetValueZonaSegura(datosLic[0].idActividadDesarrollada);
+                        var comboz      = document.getElementById('f01_categoria_descrip');
+                        selected2   = comboz.options[comboz.selectedIndex].text;
+                        $scope.datos.f01_categoria_descripcion  = selected2;
+                        $scope.datos.f01_categoria_descrip2 = selected2;
+                        $scope.datos.f01_categoria_agrupada_descripcion = selected2;
+                        $scope.datos.f01_actividadesSecundarias = datosLic[0].ADDescripcion;
+                    }else{
+                        $scope.msg = "Error !!";
+                    }
+                    if (idDesarrollada == 907 || idDesarrollada == '907') {
+                        $scope.actividadDesarrolladaM();
+                        $scope.sCategoria = false;
+                        $scope.smultiservicios = true;
+                    }
+                    datoObjectFile1.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
+                    datoObjectFile1.campo = 'Cédula de identidad (Anverso)';
+                    datoObjectFile1.nombre = 'Cédula de identidad (Reverso)';
+                    datoObjectFiles_ci[0] = datoObjectFile1;
+                    datoObjectFile2.url = CONFIG.APIURL + "/files/" + "RC_CLI/" + sessionService.get('IDSOLICITANTE') + "/" + $scope.datos.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
+                    datoObjectFile2.campo = 'Cédula de identidad (Anverso)';
+                    datoObjectFile2.nombre = 'Cédula de identidad (Reverso)';
+                    datoObjectFiles_ci[1] = datoObjectFile2;
+                    $scope.datos.FILE_CI = datoObjectFiles_ci;
+                    $scope.ConsultaEmprendimiento(idDesarrollada);
+                    $scope.getRequisitosActividad($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                    $scope.getRequisitosFormulario($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                    $scope.getRequisitosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                    $scope.getRequisitosTecnicosCategoria($scope.datos.f01_categoria_agrupada,$scope.datos.f01_tipo_per);
+                    //$scope.$apply();
+                    $.unblockUI();
+                });
+            }
+            else{
+                swal('', 'Debe registrar la superficie de la actividad antes del tipo de actividad desarrollada', 'error');
                 $.unblockUI();
-            });
+            }
         }catch(e){
             console.log("Error en la actividad desarrolladaXA");
              $.unblockUI();
         }
+    }
+
+    ///////////////////////////////MI PRIMER EMPRENDIMIENTO///////////////////////////
+    $scope.ConsultaEmprendimiento = function (idDesarrollada) {
+        $.blockUI();
+        console.log("$scope.datos",$scope.datos);
+        var identificacion  = "";
+        var clase = "";
+        if($scope.datos.f01_tipo_per=='N' || $scope.datos.f01_tipo_per_desc=='NATURAL' || $scope.datos.f01_tipo_per=='NATURAL' ){
+            clase = "N";
+            identificacion = $scope.datos.f01_num_dos_prop;
+        }
+        try{
+            var emprendimiento = new primerEmprendimiento();
+            emprendimiento.idActividadDesarrollada = idDesarrollada;
+            emprendimiento.clase = clase;
+            emprendimiento.identificacion = identificacion;
+            emprendimiento.consultaEmprendimiento(function (respuesta) {
+                if(JSON.parse(respuesta).success){
+                    var res = JSON.parse(respuesta).success.dataSql[0];
+                    $scope.datos.habilitaEmpredimiento = res.respuesta;
+
+                }else{
+                    $scope.datos.habilitaEmpredimiento = "";
+                }
+                $.unblockUI();
+            });
+        } catch (e) {
+            console.log("Error en la actividad desarrollada");
+            $.unblockUI();
+        }  
     }
 
     $scope.getRequisitosActividad = function(idCategoria, persona){
@@ -2620,25 +2658,29 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 if(datos.f01_tip_act =='SU' || datos.f01_tip_act =='SUCUR'){
                     datos.f01_tip_act1 = 'SUCURSAL';
                 }
-                var pubMod = '';
-                pubMod = '<tr><td>VIAE</td>'+
-                '<td>TIPO</td>' +
-                '<td>CARACTERÍSTICA</td>'+
-                //'<td>CARAS</td>'+
-                '<td>DESCRIPCIÓN</td>'+
-                '<td>ALTO</td>'+
-                '<td>ANCHO</td>'+
-                '<td>SUPERFICIE</td>';
-                for (i = 0; i < datos.publicidad.length; i++){
-                    pubMod = pubMod +'<tr>' +
-                    '<td>' + datos.publicidad[i].id + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_TIPO_LETRE + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_CARA + '</td>'+
-                    //'<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_DESC + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_ANCHO + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
-                    '<td>' + datos.publicidad[i].INT_SUP + '</td></tr>';
+                var pubMod ="";
+                if(datos.rdTipoTramite1 == 'NUEVO'){
+                    pubMod = '<tr><td>VIAE</td>'+
+                    '<td>TIPO</td>' +
+                    '<td>CARACTERÍSTICA</td>'+
+                    //'<td>CARAS</td>'+
+                    '<td>DESCRIPCIÓN</td>'+
+                    '<td>ALTO</td>'+
+                    '<td>ANCHO</td>'+
+                    '<td>SUPERFICIE</td>';
+                    for (i = 0; i < datos.publicidad.length; i++){
+                        pubMod = pubMod +'<tr>' +
+                        '<td>' + datos.publicidad[i].id + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_TIPO_LETRE + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_CARA + '</td>'+
+                        //'<td>' + datos.publicidad[i].INT_NRO_CARA + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_DESC + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_ANCHO + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_ALTO + '</td>'+
+                        '<td>' + datos.publicidad[i].INT_SUP + '</td></tr>';
+                    }
+                }else{
+                    pubMod = pubMod + 'Sin Publicidad';
                 }
                 //CABECERA
                 stringFormulario40  =   stringFormulario40.replace("#f01_num_pmc#", datos.f01_num_pmc);
@@ -2941,6 +2983,10 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         /*REQUISITOS2018*/
         data.sArrayFileArRequisitos = $scope.fileArRequisitos;
         var taemayor = 0;
+        if(data.f01_telef_prop=="" || data.f01_telef_prop==" ")
+        {
+            data.f01_telef_prop = "0";
+        }
         if(data.f01_tipo_lic == 32 || data.f01_tipo_lic == '32'){
             for (var i = 0; i < data.licenciam.length; i++) {
                 if (parseInt(data.licenciam[i].f01_tae) >= taemayor) {
@@ -2978,12 +3024,12 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "") {
                     $scope.serializarInformacion(data);
                     $scope.formulario401(data);
-                    $("#declaracionN").modal("show");
+                    $("#aceptacionCondiciones").modal("show");
                 }else{
                      if (data.rdTipoTramite1 == 'RENOVACION') {
                         $scope.serializarInformacion(data);
                         $scope.formulario401(data);
-                        $("#declaracionN").modal("show");
+                        $("#aceptacionCondiciones").modal("show");
                      } else {
                         swal('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
                     };
@@ -3018,12 +3064,12 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 if (data.rdTipoTramite1 == 'NUEVO' && data.publicidad != "") {
                     $scope.serializarInformacion(data);
                     $scope.formulario401(data);
-                    $("#declaracionN").modal("show");
+                    $("#aceptacionCondiciones").modal("show");
                 }else{
                     if (data.rdTipoTramite1 == 'RENOVACION') {
                         $scope.serializarInformacion(data);
                         $scope.formulario401(data);
-                        $("#declaracionN").modal("show");
+                        $("#aceptacionCondiciones").modal("show");
                      } else {
                         swal('', "Datos obligatorios, Por favor verificar los datos del elemento publicitario y/o adjuntar las fotografías", 'warning');
                     };
@@ -3187,7 +3233,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
             datosNeXO['f01_observaciones_i']        =  "0";
             /*DATOSDELTITULARDELALICENCIA*/
             //DATOSGENERALES
-            datosNeXO['f01_nit_prop']               = paramForm.f01_nit_prop;
+            datosNeXO['f01_nit_prop']               = paramForm.f01_nit_prop+"";
             datosNeXO['f01_tip_doc_prop']           =paramForm.f01_tip_doc_prop;
             datosNeXO['f01_expedido_prop']          =paramForm.f01_expedido_prop;
             datosNeXO['f01_pri_nom_prop']           =paramForm.f01_pri_nom_prop;
@@ -3254,7 +3300,7 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
                 decjuradaN.url = $scope.datos.declaracion_jurada;
             };
             decjuradaN.campo = 'Declaración Jurada Natural';
-            decjuradaN.nombre = 'DECLARACIÓN JURADA';
+            decjuradaN.nombre = 'DECLARACIÓN JURADA DE DATOS';
             datoObjectdj[0] = decjuradaN;
             datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos.concat(decjuradaN);
             //datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
@@ -3293,9 +3339,13 @@ function regularNuevoController($scope,$timeout, $q, $rootScope, $routeParams, $
         if(paramForm.rdTipoTramite1 == "NUEVO" || paramForm.rdTipoTramite1 == 'NUEVO'){
             datosNeXO['sw_publicidad']      =  "CP" ;
             datosNeXO['swpublicidad']      =  "CP" ;
+            datosNeXO['publicidad']=paramForm.publicidad;
+            datosNeXO['publicidad_grilla']=paramForm.publicidad_grilla;
         }if(paramForm.rdTipoTramite1 == "RENOVACION" || paramForm.rdTipoTramite1 == 'RENOVACION'){
             datosNeXO['sw_publicidad']      =  "SP" ;
             datosNeXO['swpublicidad']      =  "SP" ;
+            datosNeXO['publicidad']=[];
+            datosNeXO['publicidad_grilla']=[];
         }
         datosNeXO['publicidad']=paramForm.publicidad;
         datosNeXO['publicidad_grilla']=paramForm.publicidad_grilla;

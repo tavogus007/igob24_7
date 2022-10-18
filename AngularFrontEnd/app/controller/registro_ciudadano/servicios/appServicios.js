@@ -32,16 +32,11 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
       { name: 'template8.html', url: '../../../app/view/servicios/semdes/solicitud_viaje.html'},//formulario juegos
       { name: 'template9.html', url: '../../../app/view/servicios/semdes/solicitud_viaje.html'},//formulario juegos
       { name: 'template10.html', url: '../../../app/view/servicios/aeregular/natural.html'}, //formulario juegos
-      { name: 'template11.html', url: '../../../app/view/servicios/aeregular/juridico.html'}, //formulario juegos
-      { name: 'template12.html', url: '../../../app/view/servicios/aeregular/renovacion343/renovacion_licencia.html'},
-      { name: 'template13.html', url: '../../../app/view/servicios/aeregular/renovacion343/renovacion_licencia_juridico.html'},
-      { name: 'template14.html', url: '../../../app/view/servicios/aeregular/emision343/natural_nuevo.html'}, 
-      { name: 'template15.html', url: '../../../app/view/servicios/aeregular/emision343/juridico_nuevo.html'} 
+      { name: 'template11.html', url: '../../../app/view/servicios/aeregular/juridico.html'} //formulario juegos
+
     ];
     $scope.serivicosInternet = [
-        { name: 'Actividades Economicas Regulares', id:'10'},
-        { name: 'Renovación Licencia de Funcionamiento - 2019', id:'34'}, 
-        { name: 'Actividades Economicas Regulares - 2019', id:'35'} 
+        { name: 'Actividades Economicas Regulares', id:'10'}
     ];
 
     $scope.btnEnviarForm = true;
@@ -52,22 +47,6 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
 
     $scope.template     =   "";
     var aDocAdjuntos    =   new Array();
-
-    $scope.seleccionarProceso = function(proceso){
-        $scope.procesoSeleccionado  =   proceso.id;
-        if($scope.procesoSeleccionado == 10){
-            sidservicio =   10; 
-        }
-        if($scope.procesoSeleccionado == 34){
-            sidservicio =   34; 
-        }
-        $scope.procesoSeleccionado  =   proceso.id;
-        $scope.btnNuevoTramtite     =   false;
-        $scope.datos.f01_actividad_desarrollada = "";
-        $scope.datosActividad = ""; 
-       
-    }; 
-
     $scope.recuperarDatosRegistro = function(){
         var datosini = {};
         var datosCiudadano = new rcNatural();
@@ -233,7 +212,6 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
         recuperarDatos.datosCiudadanoNatural(function(resultado){
             resultadoApi = JSON.parse(resultado);
             datos           =   resultadoApi[0];
-            $scope.datosRecuperados = datos;
             sTipoPersona    =   resultadoApi[0].dtspsl_tipo_persona;
             $scope.sTipoPersona    =   resultadoApi[0].dtspsl_tipo_persona;
             fechactual      =   fecha.getFullYear() + "/" + fecha.getMonth() + "/" + fecha.getDate();
@@ -330,24 +308,15 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                         });                          
                     },300);
                 }else{
-                    var gestion = datos.dtspsl_poder_replegal.split(/[ -.!,&|\[\]/\\]+/);
-                    console.log('la gessssssssssss      ',gestion);
-                    if (gestion[1] == 'NaN' || gestion[1] == NaN || gestion[1] == 'undefined' || gestion[1] == undefined || gestion[1] == null || gestion[1] == '') {
-                        datosForm['f01_ges_vig_pod'] = gestion[0];
-                        datosForm['f01_num_pod_leg'] = gestion[0];
-                    } else{
-                        datosForm['f01_num_pod_leg'] = gestion[0];                        
-                        datosForm['f01_ges_vig_pod'] = gestion[1];
-                    };
                         datosForm['f01_tipo_per']               = sTipoPersona;               
                         datosForm['f01_tip_doc_prop']           = "NIT";
                         datosForm['CI_BIGDATA']                 = datos._id;
                         datosForm['f01_form_id']                = datos._id;
                         datosForm['f01_num_doc_per_jur']        = datos.dtspsl_nit;
                         datosForm['f01_raz_soc_per_jur']        = datos.dtspsl_razon_social;
-                        //datosForm['f01_ges_vig_pod']            = datos.dtspsl_poder_replegal;
+                        datosForm['f01_ges_vig_pod']            = datos.dtspsl_poder_replegal;
                         datosForm['f01_num_doc_rep']            = datos.dtspsl_ci_representante;
-                        //datosForm['f01_num_pod_leg']            = datos.dtspsl_nro_notaria;
+                        datosForm['f01_num_pod_leg']            = datos.dtspsl_nro_notaria;
                         datosForm['f01_tip_doc_rep']            = 'CI';
                         datosForm['f01_expedido_rep']           = datos.dtspsl_expedido;
                         datosForm['f01_email_rep']              = datos.dtspsl_correo;
@@ -436,7 +405,10 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
         });
     };
 
- 
+    $scope.habilitarCrear = function(id){
+        $scope.procesoSeleccionado  =   10;
+        $scope.btnNuevoTramtite     =   false;
+    };
     
     $scope.re=false;
     $scope.rej=false;
@@ -474,8 +446,7 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
                     if(response.success.dataSql.length > 0){
                         $scope.dataGenesisCidadano  =   response.success.dataSql;
                     } else {
-                        //$scope.dataGenesisCidadano  =   {};
-                        $scope.dataGenesisCidadano  =  '';
+                        $scope.dataGenesisCidadano  =   {};
                     }
                 } else {
                     $scope.txtMsgConexionGen    =   "Se ha producido un problema de conexion al cargar los datos";
@@ -595,7 +566,6 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
         }else{
             if(sTipoPersona == 'JURIDICO')
             {
-
                 datosForm_inicio['f01_id']                  = datosIniciales.f01_id;
                 datosForm_inicio['CI_BIGDATA']              = datosIniciales.CI_BIGDATA;
                 datosForm_inicio['f01_tip_doc_prop']        = datosIniciales.f01_tip_doc_prop;
@@ -689,373 +659,31 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
            $.blockUI(); 
         },500);
         $scope.seleccionarTramiteRender(tramite);
-        //$scope.open_mapa_ae_update();
-        //openMapGis();        
-    }
-    ///////////////////****MAPA GIS*****/////////////////////////
-
-    
-    $scope.open_mapa_ae = function()
-    {
-        setTimeout(function()
-        {
-            $("#map_principal").empty();
-            $scope.map = new ol.Map
-            ({
-              target: 'map_principal',
-              layers: [
-                        new ol.layer.Group({
-                                            title: 'Mapas Base',
-                                            layers: [
-                                                      osm,
-                                                      municipios,
-                                                      zonas_tributarias,
-                                                      vias  
-                                                    ]
-                                          }),
-                        new ol.layer.Group({
-                                            title: 'Capas',
-                                            layers: [
-                                                      //macrodistritos,
-                                                      vectorLayerZonas,
-                                                      vectorLayer
-                                                    ]
-                                          })
-                      ],
-
-              view: new ol.View({
-                zoom: 16,
-                center: ol.proj.fromLonLat([-68.133555,-16.495687])
-              })
-            });
-              
-            var layerSwitcher = new ol.control.LayerSwitcher({tipLabel: 'Leyenda'});
-            $scope.map.addControl(layerSwitcher);
-
-            $scope.map.on('click', function (evt)
-            {
-                datos = {};
-                vectorSource.clear();
-                if(jsonURLS)
-                {
-                    var url_sit    =   jsonURLS.SIT_GEO;
-                    //console.log('INTERMEDIO EN MAPA-----',url_sit);
-                }
-                var url_r = url_sit+'/geoserver/wms';
-                //console.log("URL PARA RIESGOS",url_r);
-
-                var viewResolution = view.getResolution();
-
-                var WMSsource_z = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'sit:zonasgu2016',
-                              'TILED': true 
-                            }
-                });
-                var url_z = WMSsource_z.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var WMSsource_zt = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'catastro:zonasvalor2015',
-                              'TILED': true 
-                            }
-                });
-                var url_zt = WMSsource_zt.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var WMSsource_v = new ol.source.ImageWMS({
-                    ratio: 1,
-                    url: url_r,
-                    params: {
-                              'FORMAT': 'image/png',
-                              'VERSION': '1.1.1',
-                              'LAYERS': 'catastro:vias2',
-                              'TILED': true 
-                            }
-                });
-                var url_v = WMSsource_v.getGetFeatureInfoUrl(
-                                                          evt.coordinate, viewResolution, view.getProjection(),
-                                                          { 'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50  ,format_options: 'callback: getJson'}
-                );
-
-                var coord = $scope.map.getCoordinateFromPixel(evt.pixel);
-                var centro = ol.proj.transform(coord,'EPSG:3857',epsg32719);
-                var wkt = '';
-                var centro_1 = ol.proj.transform(coord,'EPSG:3857',epsg4326);
-                var latitud = centro_1[1];
-                var longitud = centro_1[0];
-                wkt = "POINT("+centro[0]+" "+centro[1]+")";
-
-                datos.latitud = latitud;
-                datos.longitud = longitud;
-
-                $scope.latitud = latitud;
-                $scope.longitud = longitud;
-              
-                var url = url_sit+'/geoserver/sit/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=sit:zonasref&maxFeatures=50&callback=getJson&outputFormat=text%2Fjavascript&format_options=callback%3A+getJson&cql_filter=INTERSECTS(wkb_geometry,'+ wkt +')';   
-                
-                console.log ("latitud: ",latitud);
-                console.log ("longitud: ",longitud);
-             
-                setTimeout(function()
-                {
-                    $.ajax({
-                              url: url_z,
-                              //data: parameters,
-                              type: 'GET',
-                              dataType: 'jsonp',
-                              jsonpCallback: 'getJson',
-                              success: function (data)
-                              {
-                                //console.log('OK.....', data);
-                                if(data.features.length == 1)
-                                {                         
-                                  var distrito = data.features[0].properties.distrito;
-                                  //console.log('distrito:', distrito);
-
-                                  var cod_macrodistrito = data.features[0].properties.macro;
-                                  //console.log('cod macro:', cod_macrodistrito);
-                              
-                                  var macrodistrito =  data.features[0].properties.macrodistrito;
-                                  //console.log('macrodistrito:', macrodistrito);
-                                                      
-                                  var zona = data.features[0].properties.zona;
-                                  //console.log('zona:', zona);
-
-                                  var codigo_zona = data.features[0].properties.codigozona;
-                                  //console.log('cod zona sit:',codigo_zona);
-
-                                  datos.zona = zona;
-                                  datos.cod_zona_sit = codigo_zona;
-                                  datos.distrito = distrito;
-                                  datos.macrodistrito = macrodistrito;
-
-                                  var n_genesis = geo_id_genesis.length;
-                                  for (var i=0;i<n_genesis;i++)
-                                  {
-                                    if(geo_id_sit_servicio[i ]=== codigo_zona )
-                                    {
-                                      cod_zona_genesis = geo_id_genesis[i];
-                                      //console.log("cod zona genesis: ",cod_zona_genesis);
-                                      datos.cod_zona_genesis = cod_zona_genesis;
-                                    }
-                                  }
-
-                                  setTimeout(function()
-                                  {
-                                    $.ajax({
-                                            type: "POST",
-                                            url:url_zt,
-                                            dataType: 'jsonp',
-                                            jsonpCallback: 'getJson',
-                                            success: function (data) 
-                                            {
-                                              var c = data.features.length;
-                                              //console.log(data.features);
-                                              if(c==1)
-                                              {
-                                                var cod_zona_t = data.features[0].properties.grupovalor;
-                                                cod_zona_t = cod_zona_t.replace("-","");
-                                                var cod_zona_tributaria = parseInt(cod_zona_t);
-                                                //console.log("cod zona tributaria: ",cod_zona_tributaria);
-                                                datos.codigo_zona_tributaria = cod_zona_tributaria;
-                                                setTimeout(function()
-                                                {
-                                                  $.ajax({
-                                                          type: "POST",
-                                                          url:url_v,
-                                                          dataType: 'jsonp',
-                                                          jsonpCallback: 'getJson',
-                                                          success: function (data) 
-                                                          {
-                                                            var c = data.features.length;
-                                                            //console.log(data.features);
-                                                            if(c==1)
-                                                            {
-                                                              var id_via = data.features[0].properties.idvias;
-                                                              //console.log("id via: ",id_via);
-
-                                                              var nombre_via = data.features[0].properties.nombrevia;
-                                                              //console.log("nombre via: ",nombre_via);
-
-                                                              var tipo_via = data.features[0].properties.tipovia;
-                                                              //console.log("tipo via: ",tipo_via);
-
-                                                              datos.nombre_via = nombre_via;
-                                                              datos.tipo_via = tipo_via;
-                                                            }
-                                                            else
-                                                            {
-                                                              //console.log("ningun resultado para vias");
-                                                            }
-                                                          }
-                                                        });
-                                                },50);
-                                              }
-                                              else
-                                              {
-                                                //console.log("ningun resultado para zona tributaria");
-                                              }
-                                            }
-                                          });
-                                  },100);
-                                }
-                                else
-                                {
-                                  //console.log("ningun resultado para zonas");
-                                }
-                              },
-                              error: function (data)
-                              { 
-                                console.log(data);
-                              }   
-                          });
-                },200);
             
-                var feature = new ol.Feature(
-                      new ol.geom.Point(ol.proj.fromLonLat(centro_1))
-                );
-                    
-                feature.setStyle(iconStyle);
-                vectorSource.addFeature(feature);
-
-                //console.log("JSON DATOS",datos);
-                return datos;
-            });
-            //////////////////////////////////////
-        },550);
-    };
-    
-    
-    $scope.buscar_ubicacion_p = function()
-    {
-      var nombre_1 = new Array();
-      var f = '';
-      //var nombre = document.getElementById('busqueda_p').value;
-      var nombre = $('#busqueda_p').val();
-      //console.log("ZONA EN appServicios...",nombre);
-      nombre = nombre.toUpperCase();
-      var ca = "CALLE ";
-      ca = ca.concat(nombre);
-      var c = 0;
-      /////////////////////////////
-      var tipo = "lugares";
-      var data = '';
-      ///////////////////////////////
-      if(nombre==='')
-      {
-        var obj = {'nombre':'INTRODUZCA DATOS!!!...'};
-        //console.log("Vacio :",obj);
-        //map.removeLayer(vectorLayerZonas);
-        vectorLayerZonas.getSource().clear();
-      }
-      else
-      {  
-        if(tipo == 'lugares')
-        {
-          $scope.map.removeLayer(vectorLayerZonas);
-          for (var i=0;i<geo_zonas.features.length;i++)
-          {
-            var nombre_zona =  geo_zonas.features[i].properties.zonaref;
-            var x_c = geo_zonas_centroides.features[i].geometry.coordinates[0];
-            var y_c = geo_zonas_centroides.features[i].geometry.coordinates[1];
-            if(nombre === nombre_zona)
-            {
-              c=c+1;
-              var geo_zona =  geo_zonas.features[i];
-              var xx = x_c;
-              var yy = y_c;
-            }
-          }
-          if(c>0)
-          {
-            //alert("mapa_principal");
-            geo_zona = JSON.stringify(geo_zona);
-            vectorLayerZonas.setSource(new ol.source.Vector({
-                                                         features: (new ol.format.GeoJSON({defaultDataProjection:'EPSG:3857'})).readFeatures(geo_zona)
-            }));
-
-            vectorLayerZonas.setStyle(myStyleZonas);
-
-            $scope.map.addLayer(vectorLayerZonas);
-            $scope.map.getView().setCenter([xx,yy]);
-            $scope.map.getView().setZoom(15);
-
-            setTimeout(function(){
-              //alert();
-              vectorLayerZonas.getSource().clear();
-            },4000);
-
-          }
-        }
-        if(c==0)
-        {
-          var obj = {'nombre':'NO EXISTEN REGISTROS!!!'};
-          //console.log("Vacio :",obj);
-        }
-      }   
-    }
-    
-    /////////////////////////////////////////////////////////////
-
-      
+    }    
     
     $scope.seleccionarTramiteRender = function (tramite) {
-        console.log('tramiteeeee    ',tramite);
-        //openMapGis();
-        $scope.open_mapa_ae();
-
         //$scope.getCaptchasXX();
-        $scope.procesoSeleccionado   =   tramite.vdvser_id;
+        $scope.tramiteSeleccionado   =   tramite.vtra_id;
         $rootScope.tramiteId = tramite.vtra_id;
-        sessionService.set('IDTRAMITE', $rootScope.tramiteId);
+        sessionService.set('IDTRAMITE', tramite.vtra_id);
         sessionService.set('IDSERVICIO', tramite.vdvser_id);
         sessionService.set('ESTADO', tramite.venviado);
-
         $scope.template = "";
         $scope.formulario = "mostrar";
         //TIPO_PERSONA
         var tipoPersona =   sessionService.get('TIPO_PERSONA');
-        var sidservicio =   $scope.procesoSeleccionado;
-        console.log('sidservicio    ',sidservicio);
+        var sidservicio =   tramite.vdvser_id;
         if(tipoPersona == 'NATURAL' && sidservicio == 10){
             sidservicio =   10;
-        }
-        if(tipoPersona == 'NATURAL' && sidservicio == 34){
-            sidservicio =   12;
-        }
-        if(tipoPersona == 'NATURAL' && sidservicio == 35){
-            sidservicio =   14;
         }
 
         if(tipoPersona == 'JURIDICO' && sidservicio == 10){
             sidservicio = 11;
         }
-        if(tipoPersona == 'JURIDICO' && sidservicio == 34){
-            sidservicio =   13;
-        }
-        if(tipoPersona == 'JURIDICO' && sidservicio == 35){
-            sidservicio =   15;
-        }
-
-        
 
         if (tramite.venviado == "SI") {
             $scope.template         =   $scope.templates[sidservicio];
-
         } else {
             $scope.template         =   $scope.templates[sidservicio];
         }
@@ -1170,13 +798,7 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
             if(obj.f01_tipo_lic == 3375){
                 obj.f01_actividadesSecundarias =   obj.f01_actividadesSecundarias; 
             }else{
-                //PARA NUEVA LEY 343
-                if (obj.f01_tipo_lic != '1' || obj.f01_tipo_lic != 1 || obj.f01_tipo_lic != 3 || obj.f01_tipo_lic != '3' || obj.f01_tipo_lic != 4 || obj.f01_tipo_lic != '4' || obj.f01_tipo_lic != '100' || obj.f01_tipo_lic != 100 || obj.f01_tipo_lic != '101' || obj.f01_tipo_lic != 101 || obj.f01_tipo_lic != '3375' || obj.f01_tipo_lic != 3375) {
-                    obj.f01_actividadesSecundarias =   obj.f01_actividadesSecundarias; 
-                } else{
-                    obj.f01_actividadesSecundarias = '';
-                };
-                //obj.f01_actividadesSecundarias = '';
+                 obj.f01_actividadesSecundarias = '';
             }
         }
 
@@ -1240,229 +862,75 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
 
     //ALMACENANDO FORMULARIO
 
-     
-   
+    $scope.adicionarServicioGamlp = function(idservicio){
+        var dataInicio  =   { }; 
+        var fecha= new Date();
+        var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        var sIdServicio = 10;
+        var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+        var sFechaTramite = fechactual;        
+        dataInicio.INT_FORM_ALMACENADO='C';        
+        //var datosSerializados   =  JSON.stringify(dat);
+        var datosSerializados   =  JSON.stringify(dataInicio);
 
-    $scope.adicionarServicioGamlp = function(datos){ 
-        $scope.recuperandoDatosGenesis();
+        try{
+            var dataInicioForm  =   { };
+            dataInicioForm.vdvser_id = idservicio;
+            dataInicioForm.venviado = "NO";
+            dataInicioForm.datos = dataInicio;
+            dataInicioForm.form_contenido = JSON.stringify(dataInicio);
+            
+            var crea = new adicionaTramitesFormulario();
+            crea.frm_tra_fecha = sFechaTramite;
+            crea.frm_tra_enviado = "NO";
+            crea.frm_tra_registrado = fechactual;
+            crea.frm_tra_modificado = fechactual;
+            crea.id_servicio = sIdServicio;
+            crea.data_json = datosSerializados;
+            //crea.data_json = JSON.stringify(dataInicio);
+            crea.oid_ciudadano = sIdCiudadano;
+            crea.id_usuario = 3;
+           
+            crea.adiciona_Tramites_Formulario(function(res){
+                x = JSON.parse(res);
+                response = x.success;
+                if(response.length  > 0){
+                    sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites_datos);                    
+                    $.unblockUI();
+                    dataInicioForm.vtra_id = response[0].sp_insertar_formulario_tramites_datos;                    
+                    $scope.tramitesCiudadano(dataInicioForm);
+                    $scope.getCaptchasX();
+                    //swal('', 'Registro Creado correctamente', 'success');
+                    sessionService.destroy('NROTRAMITE');
+                    sessionService.destroy('NROTRAMITEID');
+                    sessionService.destroy('IDPROCESO');
 
-        var tipoPersona     =   sessionService.get('TIPO_PERSONA');
-        var condiciones = '';
-        if(tipoPersona == "NATURAL")
-        {
-            tipoPersona = "N";
-            condiciones = $scope.datosRecuperados.dtspsl_file_condiciones_uso;
-        }
-         if(tipoPersona == "JURIDICO")
-        {
-            tipoPersona = "J";
-            condiciones = $scope.datosRecuperados.dtspsl_file_condiciones_uso_j;
-        }
-        if (condiciones == 'undefined' || condiciones == null || condiciones == '') {
-            swal('', 'Estimado Ciudadano, para poder proseguir con el trámite deberá aceptar las condiciones de uso en el IGOB 24/7', 'warning');
-        } else{
-            if ($scope.datosRecuperados.dtspsl_activaciond == 'SI' && $scope.datosRecuperados.dtspsl_activacionf == 'SI') {
-                if(datos == 10){
-                    var dataInicio  =   {};
-                    dataInicio["f01_tipo_lic"] = "";
-                    dataInicio["f01_categoria_agrupada"] = "";
-                    dataInicio["f01_categoria_descrip"] = "";
-                    $scope.datos.f01_tip_act_de = "";
-                    $scope.datos.f01_categoria_agrupada_descripcion = "";
-                    $scope.datos.f01_categoria_descri = "";
-                    var fecha= new Date();
-                    var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 10;
-                    var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-                    var sFechaTramite = fechactual;
-                    dataInicio.INT_FORM_ALMACENADO='C';
-                    var datosSerializados   =  JSON.stringify(dataInicio);
-                    $.blockUI();
-                    try{
-                        var crea = new adicionaTramitesFormulario();
-                        crea.frm_tra_fecha = sFechaTramite;
-                        crea.frm_tra_enviado = "NO";
-                        crea.frm_tra_registrado = fechactual;
-                        crea.frm_tra_modificado = fechactual;
-                        crea.id_servicio = sIdServicio;
-                        crea.data_json = datosSerializados;
-                        crea.oid_ciudadano = sIdCiudadano;
-                        crea.id_usuario = 3;
-                        $.blockUI();
-                        crea.adiciona_Tramites_Formulario(function(res){
-                            x = JSON.parse(res);
-                            response = x.success;
-                            if(response.length  > 0){
-                                sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
-                                $.unblockUI();
-                                $scope.tramitesCiudadano();
-                                swal('', 'Registro almacenado correctamente', 'success');
-                                sessionService.destroy('NROTRAMITE');
-                                sessionService.destroy('NROTRAMITEID');
-                                sessionService.destroy('IDPROCESO');
-                                $scope.btnEnviarForm    =   false;
-                                $scope.btnGuardarForm   =   false;
-                                $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                            $('#registro').modal('hide');
-                            }
-                            else{
-                                $.unblockUI();
-                            }
-                        });
-                    }catch(e){
-                        console.log('*Error*', e);
-                        $.unblockUI();
-                    }
+                    $scope.btnEnviarForm    =   false;
+                    $scope.btnGuardarForm   =   false;
+                    $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
+
+                $('#registro').modal('hide');
                 }
-                if(datos == 35){
-                    var dataInicio  =   {};
-                    dataInicio["f01_tipo_lic"] = "";
-                    dataInicio["f01_categoria_agrupada"] = "";
-                    dataInicio["f01_categoria_descrip"] = "";
-                    $scope.datos.f01_tip_act_de = "";
-                    $scope.datos.f01_categoria_agrupada_descripcio = "";
-                    $scope.datos.f01_categoria_descri = "";
-                    var fecha= new Date();
-                    var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                    var sIdServicio = 35;
-                    var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-                    var sFechaTramite = fechactual;
-                    dataInicio.INT_FORM_ALMACENADO='C';
-                    var datosSerializados   =  JSON.stringify(dataInicio);
-                    $.blockUI();
-                    try{
-                        var crea = new adicionaTramitesFormulario();
-                        crea.frm_tra_fecha = sFechaTramite;
-                        crea.frm_tra_enviado = "NO";
-                        crea.frm_tra_registrado = fechactual;
-                        crea.frm_tra_modificado = fechactual;
-                        crea.id_servicio = sIdServicio;
-                        crea.data_json = datosSerializados;
-                        crea.oid_ciudadano = sIdCiudadano;
-                        crea.id_usuario = 3;
-                        $.blockUI();
-                        crea.adiciona_Tramites_Formulario(function(res){
-                            x = JSON.parse(res);
-                            response = x.success;
-                            if(response.length  > 0){
-                                sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
-                                $.unblockUI();
-                                $scope.tramitesCiudadano();
-                                swal('', 'Registro almacenado correctamente', 'success');
-                                sessionService.destroy('NROTRAMITE');
-                                sessionService.destroy('NROTRAMITEID');
-                                sessionService.destroy('IDPROCESO');
-                                $scope.btnEnviarForm    =   false;
-                                $scope.btnGuardarForm   =   false;
-                                $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                            $('#registro').modal('hide');
-                            }
-                            else{
-                                $.unblockUI();
-                            }
-                        });
-                    }catch(e){
-                        console.log('*Error*', e);
-                        $.unblockUI();
-                    }
+                else{
+                    $.unblockUI();
                 }
-               
-                if(datos == 34){
-
-                    if ($scope.dataGenesisCidadano != ''){
-                        var idContribuyente =   $scope.dataGenesisCidadano[0].idContribuyente;
-                        var contribuyente   =   new gLstActividadEconomica();
-                        contribuyente.idContribuyente   =   idContribuyente;
-                        contribuyente.tipo  = tipoPersona;            //try{
-                        contribuyente.lstActividadEconomica(function(resultado){
-                            resultadoApi = JSON.parse(resultado);
-                            if (resultadoApi.success.dataSql.length) {
-                                var response    =   resultadoApi;
-                                var dataInicio  =   {}; 
-                                dataInicio["f01_tipo_lic"] = "";
-                                dataInicio["f01_categoria_agrupada"] = "";
-                                dataInicio["f01_categoria_descrip"] = "";
-                                $scope.datos.f01_tip_act_de = "";
-                                $scope.datos.f01_categoria_agrupada_descripcio = "";
-                                $scope.datos.f01_categoria_descri = ""; 
-                                var fecha= new Date();
-                                var fechactual=fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
-                                var sIdServicio = 34;
-                                var sIdCiudadano = sessionService.get('IDSOLICITANTE');
-                                var sFechaTramite = fechactual;
-                                dataInicio.INT_FORM_ALMACENADO='C';
-                                var datosSerializados   =  JSON.stringify(dataInicio);
-                                $.blockUI();
-                                try{
-                                    var crea = new adicionaTramitesFormulario();
-                                    crea.frm_tra_fecha = sFechaTramite;
-                                    crea.frm_tra_enviado = "NO";
-                                    crea.frm_tra_registrado = fechactual;
-                                    crea.frm_tra_modificado = fechactual;
-                                    crea.id_servicio = sIdServicio;
-                                    crea.data_json = datosSerializados;
-                                    crea.oid_ciudadano = sIdCiudadano;
-                                    crea.id_usuario = 3;
-                                    $.blockUI();
-                                    crea.adiciona_Tramites_Formulario(function(res){
-                                        x = JSON.parse(res);
-                                        response = x.success;
-                                        if(response.length  > 0){
-                                            sessionService.set('IDTRAMITE', response[0].sp_insertar_formulario_tramites);
-                                            $.unblockUI();
-                                            $scope.tramitesCiudadano();
-                                            swal('', 'Registro almacenado correctamente', 'success');
-                                            sessionService.destroy('NROTRAMITE');
-                                            sessionService.destroy('NROTRAMITEID');
-                                            sessionService.destroy('IDPROCESO');
-                                            $scope.btnEnviarForm    =   false;
-                                            $scope.btnGuardarForm   =   false;
-                                            $rootScope.$broadcast('inicializarFechaOblitatorio', $scope.datos);
-                                        $('#registro').modal('hide');
-                                        }
-                                        else{
-                                            $.unblockUI();
-                                        }
-                                    });  
-                                }catch(e){
-                                    console.log('*Error*', e);
-                                    $.unblockUI();
-                                }
-                            }
-                            else{
-                            }
-                        })                        
-                    } else{
-                        swal("Estimado Usuario", "Ud. no cuenta con Actividades Economicas registradas", "warning")
-                    };                       
-                }
-                
-            } else{
-                swal('', "Debe realizar las activaciones fisica y digital para poder realizar el trámite", 'warning');
-            };
+            });
+            
+        }catch(e){
+            console.log('*Error*');
+            $.unblockUI();
         }
-    }
-
+    };
     $scope.btnCapcha=true;
     $scope.ErrorCapcha='';
 
-
     $scope.crearTramiteAE = function() {
         if($scope.procesoSeleccionado != ''){
-            if($scope.procesoSeleccionado == 10){
-
-                sidservicio =   10; 
-            }
-            if($scope.procesoSeleccionado == 34){
-                sidservicio =   34; 
-            }
-            if($scope.procesoSeleccionado == 35){
-                sidservicio =   35; 
-            }
-            href="#registro_ciudadano|servicios|index.html"
-            $scope.adicionarServicioGamlp(sidservicio);
+            $scope.adicionarServicioGamlp(10);
         }
+        href="#registro_ciudadano|servicios|index.html"
     }
+
     $scope.getCaptchasX=function(){
         $scope.valorrandom = Math.floor(Math.random() * (224 - 1) + 1);
         $scope.resultadoC="";
@@ -1829,93 +1297,6 @@ app.controller('serviciosController', function ($scope, $rootScope ,$routeParams
     $scope.cambioServicio = function(dat) {
         $scope.servicio = dat;
     }
-
-
-    $scope.generarDocumentoPhp = function (){
-        $.blockUI();
-        var tipoPersona = '';
-        var oidCiudadano = '';
-        var datosCiudadano = '';
-        var datosci = '';
-        var datosexpedido = '';
-        var dEmpresa = '';
-        var dnit = '';
-        var datoForm4 = '';
-        var stform = '';
-         tipoPersona     = sessionService.get('TIPO_PERSONA');
-        if(tipoPersona == 'NATURAL' || tipoPersona == 'N'){
-            oidCiudadano    = sessionService.get('IDSOLICITANTE');
-            datosCiudadano  = (sessionService.get('US_NOMBRE')+' '+sessionService.get('US_PATERNO')+' '+sessionService.get('US_MATERNO'));
-            datosci         = sessionService.get('CICIUDADANO');
-            datosexpedido   = sessionService.get('CIEXPEDIDO');
-            datoForm4 = JSON.stringify($rootScope.datosForm401);
-            $.ajax({
-                url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
-                type:"post",
-                data:{
-                    "soid": oidCiudadano,
-                    "sorigen": "PLATAFORMA INSTITUCIONAL",
-                    "stipo": tipoPersona,
-                    "usuario": datosCiudadano,
-                    "cedula":  datosci,
-                    "expedido": datosexpedido,
-                    "empresa": '',
-                    "nit": '',
-                    "fecha": $scope.fechafinalserver,
-                    "hora": $scope.sHoraFinal,
-                    "data": datoForm4,
-                    "stipo_form": '401'
-                },
-                success:function(response){
-                    var urlData = response;
-                    $rootScope.decJuradaNatural = urlData;
-                    $scope.InsertarDocumento(response);
-                    $rootScope.datosEnv.declaracion_jurada = urlData;
-                    $scope.serializarInformacion($rootScope.datosEnv);
-                    $.unblockUI();
-                }
-
-            });
-        }else{
-            if(tipoPersona == 'JURIDICO' || tipoPersona == 'J'){
-                oidCiudadano    = sessionService.get('IDSOLICITANTE');
-                datosCiudadano  = $scope.datosIniciales.f01_pri_nom_rep +' '+ $scope.datosIniciales.f01_ape_pat_rep;
-                datosci         = $scope.datosIniciales.f01_num_doc_rep;
-                dEmpresa        = $scope.datosIniciales.f01_raz_soc_per_jur;
-                dnit            = $scope.datosIniciales.f01_num_doc_per_jur;
-                datoForm4 = JSON.stringify($rootScope.datosForm401);
-                $.ajax({
-                    url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
-                    type:"post",
-                    data:{
-                        "soid": oidCiudadano,
-                        "sorigen":"PLATAFORMA INSTITUCIONAL",
-                        "stipo":tipoPersona,
-                        "usuario": datosCiudadano,
-                        "cedula":  datosci,
-                        "expedido": '',
-                        "empresa": dEmpresa,
-                        "nit": dnit,
-                        "fecha": $scope.fechafinalserver,
-                        "hora": $scope.horafinal,
-                        "data": datoForm4,
-                        "stipo_form": '401'
-                    },
-                    success:function(response){
-                        if(response.length>0){
-                            var urlData = response;
-                            $rootScope.decJuradaNatural = urlData;
-                            $scope.InsertarDocumento(response);
-                            $rootScope.datosEnv.declaracion_jurada = urlData;
-                            $scope.serializarInformacion($rootScope.datosEnv);
-                            $.unblockUI();
-                        }
-                    }
-                });
-            }
-        }
-    };
-
     $scope.combo = "<select id='servicio' class='seleccionaServicio'>  <option value='1'>Internet</option> <option value='3'>Salud</option> <option value='4'>Publicidad</option> </select> <br>";
 
     ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
@@ -1978,7 +1359,4 @@ app.directive("confirmButton", function($document, $parse) {
             });
         }
     };
-    ///////////////////////////**** INICIO MAPA GIS***** /////////////////////////////////////
-    
-    ///////////////////////////****** FIN MAPA GIS****** /////////////////////////////////////
 });

@@ -65,7 +65,7 @@
     "direccion": "America Dirección Av. Las Americas Nº 1100 Teléfono(s) 70653268",
     "informacion": [{
       "actualizado": "3 agosto 2022",
-      "tamanio": "33 MBs",
+      "tamanio": "9.98 MBs",
       "version": "1.1",
       "clasificacion": "Para todos",
       "ofrecido": "Gobierno Autónomo Municipal de La Paz",
@@ -77,5 +77,34 @@
     "descarga": "../registro_ciudadano/documentos_Apk/apk/conductorConfiable.apk",
     "descripcion_corta": "Rutas permite a los ciudadanos ver las rutas y recorridos.",
     "descripcion_larga": "Rutas permite a los ciudadanos ver las rutas y recorridos de las diferentes lineas de la ciudad de La Paz permitiendo ver con exactitud los lugares por donde se debe recorrer en las artereas paceñas."
+  },
+  {
+    "idApp": 4,
+    "titulo": "App La Paz Bus",
+    "imagen0": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus1.webp",
+    "imagen1": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus2.webp",
+    "imagen2": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus3.webp",
+    "imagen3": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus4.webp",
+    "imagen4": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus5.webp",
+    "imagen5": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus6.webp",
+    "imagen6": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus7.webp",
+    "imagen7": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus8.webp",
+    "imagen8": "../registro_ciudadano/documentos_Apk/imagenes/lapazbus/lpzbus9.webp",
+    "entidad": "GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ",
+    "direccion": "America Dirección Av. Las Americas Nº 1100 Teléfono(s) 70653268",
+    "informacion": [{
+      "actualizado": "31 ene 2022",
+      "tamanio": "12.9 MBs",
+      "version": "1.1",
+      "clasificacion": "Para todos",
+      "ofrecido": "Gobierno Autónomo Municipal de La Paz",
+      "informe": "Varía según el dispositivo",
+      "desarrollado": "G.A.M.L.P."
+    }],
+    "fecha": "31 de Enero 2022",
+    "url": "https://play.google.com/store/apps/details?id=com.uact.dgsit.applapazbus&hl=es_VE",
+    "descarga": "../registro_ciudadano/documentos_Apk/apk/lapazbus.apk",
+    "descripcion_corta": "App informativa La Paz Bus.",
+    "descripcion_larga": "Las principales características del app son:<br>Tiempo de arribo del bus: <br>Te informamos en cuántos minutos aproximadamente llegará el bus al punto donde te encuentras. <br>Información sobre nuestro servicio:<br> las rutas, paradas, tarifas, guía usuario y mucho más."
   }
 ]

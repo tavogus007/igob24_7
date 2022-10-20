@@ -116,6 +116,8 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
     var datosCiudadano   = new rcNatural();
     datosCiudadano.oid = $scope.oidCiu;
     datosCiudadano.datosCiudadanoNatural(function(results){
+      console.log("results");
+      console.log(results.length);
       results = JSON.parse(results);
       $scope.datosCiudadano = results[0];
       console.log('$scope.datosCiudadano',$scope.datosCiudadano);
@@ -375,9 +377,13 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
     var tramites  = new listaTramitesMov();
     tramites.idCiudadano = sIdCiudadano;
     tramites.tra_ser = idTram;
+    console.log("tramites");
+    console.log(tramites);
     tramites.spbusquedaformulariomovilidad(function(data){
       var data = JSON.parse(data).success;
       $scope.tramites = data;
+      console.log("$scope.tramites");
+      console.log($scope.tramites);
       angular.forEach(data,function(val, index)
       {
         if(val['form_contenido'])
@@ -413,6 +419,8 @@ function modificacionOperadoresController($scope, $rootScope, $routeParams, $loc
 
   $scope.crear_tramite = function()
   {
+    console.log("$scope.datosCiudadano");
+    console.log($scope.datosCiudadano);
     if($scope.tipo_persona == "NATURAL")
     {
       var condiciones = $scope.datosCiudadano.dtspsl_file_condiciones_uso;

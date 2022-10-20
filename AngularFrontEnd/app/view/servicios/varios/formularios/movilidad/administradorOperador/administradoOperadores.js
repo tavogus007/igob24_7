@@ -128,6 +128,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
 
   $scope.seleccionarOperadorrenovar = function(ope){
     $scope.ope = ope;
+    $scope.datosOfiR = ope.oficinas; 
     $scope.tramitesCiudadano();
     $scope.listarenovacion = true;
     $scope.recuperandoDatosGenesis(ope);
@@ -259,17 +260,19 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
   });
 
   $scope.Operadorrenovar = function(ope){
+    //console.log(ope);
     ope = JSON.parse(ope);
     $scope.registrorenovacion = true;
     $scope.registro = false;
     $scope.datosrepresentante = ope.yrepr_datos;
     $scope.datos.id_ope = ope.xope_id;
-    console.log("------------- oficinas -----------------");
+    //console.log("------------- oficinas -----------------");
     $scope.datos.oficinas = ope.oficinas;
     $scope.datos.oficina_data = ope.oficina_data;
-    console.log($scope.datos.oficinas);
-    console.log($scope.datos.oficina_data);
-    console.log("------------------------------");
+    $scope.datos.ope_requisitos = ope.yope_requisitos;
+    //console.log($scope.datos.oficinas);
+    //console.log($scope.datos.oficina_data);
+    //console.log("------------------------------");
     $scope.datosoperador = ope;
     if(ope.yope_requisitos != undefined){
         $scope.fileArRequisitos =  ope.yope_requisitos;
@@ -632,8 +635,8 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     console.log(id);
     console.log(opc);
     console.log("-------------------------------------------");
-    console.log("$scope.datosOfiR");
-    console.log($scope.datosOfiR);
+    console.log("$scope.datos");
+    console.log($scope.datos);
     $.blockUI();
     //$scope.buscaOficinas();
     var swOfi = 0;
@@ -656,15 +659,17 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
         && $scope.datos.RO_ESP_DIS!='' && $scope.datos.RO_ESP_DIS!=undefined && $scope.datos.RO_VIA_PAR_MOM!=''&& $scope.datos.RO_VIA_PAR_MOM!=undefined
         && $scope.datos.RO_ENT_CALL_PM!='' && $scope.datos.RO_ENT_CALL_PM!=undefined){
             //$scope.capturarImagen($scope.datos.RO_MAC_OF_VALUE);
-            //console.log("$scope.aMacrodistritos");
+            //console.log("$scope.aMacrodistritos ********************************************");
             //console.log($scope.aMacrodistritos);
             for (var i = 0; i<$scope.aMacrodistritos.length ; i++) {
                 if($scope.aMacrodistritos[i].mcdstt_id==$scope.datos.RO_MAC_OF){
                     $scope.datos.RO_MAC_OF_VALUE = $scope.aMacrodistritos[i].mcdstt_macrodistrito;
                 }
             }
-            $scope.distritoZonas($scope.datos.RO_MAC_OF);
-            //console.log("$scope.aDistritoZona");
+            //console.log("*****************************************************   $scope.datos.RO_MAC_OF");
+            //console.log($scope.datos.RO_MAC_OF);
+            $scope.distritoZonasope($scope.datos.RO_MAC_OF);
+            //console.log("$scope.aDistritoZona *********************************");
             //console.log($scope.aDistritoZona);
             for (var i = 0; i<$scope.aDistritoZona.length ; i++) {
                 if($scope.aDistritoZona[i].dist_nombre == $scope.datos.RO_ZONA_OF_VALUE){
@@ -716,19 +721,17 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
             }else{
                 var viae = [];
             }
-            //console.log("$scope.objOficinas");
-            //console.log($scope.objOficinas);
             if($scope.datos.RO_CAN_VEH_SUC == undefined ){
                 swal("", "La cantidad de vehiculos debe ser mayor a 20", "warning"); 
             }else{
-                console.log("------------------------");
-                console.log($scope.datos.RO_MOD);
-                console.log("$scope.publicid");
-                console.log($scope.publicid);
-                console.log("viae");
-                console.log(viae);
-                console.log("viae.length");
-                console.log(viae.length);
+                //console.log("------------------------");
+                //console.log($scope.datos.RO_MOD);
+                //console.log("$scope.publicid");
+                //console.log($scope.publicid);
+                //console.log("viae");
+                //console.log(viae);
+                //console.log("viae.length");
+                //console.log(viae.length);
                 if($scope.datos.RO_MOD == 1 && viae.length != 0){
                     var swL = 0;
                     for(var i=0; i<$scope.objOficinas.length ; i++){
@@ -740,9 +743,20 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
                         swL = 0;
                     }
                     if(swL == 0){
-                        datosOf = JSON.stringify(datosOf);
+                        //datosOf = JSON.stringify(datosOf);
                         viae = JSON.stringify(viae);
-                        /*var ofic = new ubicacion();
+
+                        for(var i=0; i<$scope.objOficinas.length ; i++){
+                          if(id == $scope.objOficinas[i].ofi_id){
+                            $scope.objOficinas[i].ofi_oficina = macro; 
+                            $scope.objOficinas[i].ofi_revision = '{}'; 
+                            $scope.objOficinas[i].ofi_datos =  datosOf; 
+                          }
+                        }
+                        $scope.datos.oficina_data = $scope.objOficinas;
+
+                        /*
+                        var ofic = new ubicacion();
                         ofic.id = id; 
                         ofic.idope = idOpe;
                         ofic.oficina = macro; 
@@ -771,15 +785,25 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
                     }
                 }else{
                     if($scope.datos.RO_MOD == 1){
-                        datosOf = JSON.stringify(datosOf);
+                        //datosOf = JSON.stringify(datosOf);
                         viae = JSON.stringify(viae);
-                        /*var ofic = new ubicacion();
+                        
+                        for(var i=0; i<$scope.objOficinas.length ; i++){
+                          if(id == $scope.objOficinas[i].ofi_id){
+                            $scope.objOficinas[i].ofi_oficina = macro; 
+                            $scope.objOficinas[i].ofi_revision = '{}'; 
+                            $scope.objOficinas[i].ofi_datos =  datosOf; 
+                          }
+                        }
+                        $scope.datos.oficina_data = $scope.objOficinas;
+                        /*
+                        var ofic = new ubicacion();
                         ofic.id = id; 
                         ofic.idope = idOpe;
-                        ofic.oficina = macro; 
-                        ofic.datos = datosOf; 
-                        ofic.revision = '{}'; 
-                        ofic.viae = viae; 
+                          ofic.oficina = macro; 
+                          ofic.datos = datosOf; 
+                          ofic.revision = '{}'; 
+                          ofic.viae = viae; 
                         ofic.usr = 1; 
                         ofic.opcion = opc;
                         ofic.datosOficina(function(results){
@@ -2759,7 +2783,8 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       })
       */
     }
-  }  
+  }
+
   $scope.ejecutarFile = function(idfile){
     iniciarLoadFyler();
     var sid =   document.getElementById(idfile);
@@ -2947,7 +2972,13 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
 
   //**********************Guardar Datos*************************
   $scope.guardar_tramite = function(){
-    $scope.datos.oficinas = $scope.arrayOficinas;
+    //$scope.datos.oficinas = $scope.arrayOficinas;
+    //console.log("------------- fileArRequisitos -----------------");
+    //console.log($scope.fileArRequisitos);
+    //console.log("--------------   $scope.datos.ope_requisitos ----------- ");
+    //console.log($scope.datos.ope_requisitos);
+
+
     $scope.datos.Tipo_tramite_creado = "WEB";
     try {
       console.log('$scope.datos',$scope.datos);
@@ -2961,10 +2992,11 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       crear.frm_tra_id_ciudadano = sIdCiudadano;
       crear.frm_tra_id_usuario = 1;
       crear.frm_idTramite = idTramite;
+      console.log("----------------------------------------------------------------------");
       console.log("crear");
       console.log(crear);
       console.log(crear.data_json);
-      /*
+      
       $.blockUI();
       crear.sp_crear_datos_formulario(function(results){
         results = JSON.parse(results);
@@ -2979,7 +3011,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
           sweet.show('', "Formulario no almacenado", 'error');
         }
       });
-      */
+      
     }catch(e){
       console.log("Error..",e);
       $.unblockUI();

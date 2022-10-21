@@ -284,9 +284,13 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     }else{
         $scope.fileArRequisitos = {};
     }
+    console.log("ope.hab_deno");
+    console.log(ope.hab_deno);
+    console.log("------------------------------");
     if(ope.hab_deno != undefined){
       $scope.datos.hab_deno = ope.hab_deno;
       document.getElementById('RO_DEN').disabled=false;
+      denominacion = ope.xope_denominacion;
     }else{
       $scope.datos.hab_deno = false;
       document.getElementById('RO_DEN').disabled=true;

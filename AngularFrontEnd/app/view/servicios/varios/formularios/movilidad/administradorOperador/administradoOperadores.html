@@ -1128,7 +1128,7 @@
                           <form class="form-horizontal ng-pristine ng-valid" method="post">
                             <div  class="table-responsive">
                               <table  ng-table="tablaTramites"  class="table table-striped table-hover">
-                                <tr style="cursor: pointer;text-align: center;" ng-show="tramite.ope_id === {{ope.xope_id}}" ng-repeat="tramite in $data  | filter:query" ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}" ng-click="seleccionar(tramite.vtra_id)">
+                                <tr style="cursor: pointer;text-align: center;" ng-show="tramite.ope_id === {{ope.xope_id}} ||tramite.ope_id === {{ope.ope_id}}" ng-repeat="tramite in $data  | filter:query" ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}" ng-click="seleccionar(tramite.vtra_id)">
                                   <td  data-title="'Código'" ng-click="seleccionarTramitereno(tramite)">{{tramite.vcodigo}} {{tramite.frm_tra_enviado}}</td>
                                   <td  data-title="'Denominacion'" ng-click="seleccionarTramitereno(tramite)">{{tramite.operador}}</td>
                                   <td  data-title="'Tipo de Trámite'" ng-click="seleccionarTramitereno(tramite)">{{tramite.vservicio}}</td>

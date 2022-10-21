@@ -10,6 +10,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
   $scope.registrorenovacion = false;
   $scope.listarenovacion = false;
   $scope.datosOfiR = {};
+  $scope.tramite_datos = {};
   $scope.datos = {};
   $scope.datosd = {};
   $scope.objVehiculos = [];
@@ -31,7 +32,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
   $scope.aMacrodistritos = {};
   $scope.publicid = [];
   $scope.publi=[];
-  var idTram = 40;
+  var idTram = 84;
   $scope.ope = {};
   $scope.ope.xope_id = 0;
   $scope.documentosarc = new Array();
@@ -143,11 +144,15 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     tramites.tra_ser = idTram;
     tramites.spbusquedaformulariomovilidad(function(data){
       var data = JSON.parse(data).success;
+      console.log("data");
+      console.log(data);
       $scope.tramites = data;
       angular.forEach(data,function(val, index)
       {
-        if(val['form_contenido'])
-        {
+        if(val['form_contenido']){
+          console.log("--------- form_contenido --------------");
+          console.log(JSON.parse(val['form_contenido']));
+          console.log("-----------------------------------");
           data[index].datos = val['form_contenido'];
           data[index].operador = JSON.parse(val['form_contenido']).xope_denominacion;
           data[index].ope_id = JSON.parse(val['form_contenido']).xope_id;
@@ -281,8 +286,10 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     }
     if(ope.hab_deno != undefined){
       $scope.datos.hab_deno = ope.hab_deno;
+      document.getElementById('RO_DEN').disabled=false;
     }else{
       $scope.datos.hab_deno = false;
+      document.getElementById('RO_DEN').disabled=true;
     }
     console.log("------------- fileArRequisitos -----------------");
     console.log($scope.fileArRequisitos);
@@ -2152,15 +2159,15 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       && $scope.datos.RO_TIP_C!=undefined)
     {
       $('#modalConductor').modal('hide');
-      $.blockUI({ css: { 
-        border: 'none', 
-        padding: '10px', 
-        backgroundColor: '#000', 
-          '-webkit-border-radius': '10px', 
-          '-moz-border-radius': '10px', 
-        opacity: .5, 
-        color: '#fff' 
-        },message: "Espere un momento por favor ..." }); 
+      $.blockUI({ css: {
+        border: 'none',
+        padding: '10px',
+        backgroundColor: '#000',
+        '-webkit-border-radius': '10px',
+        '-moz-border-radius': '10px',
+        opacity: .5,
+        color: '#fff'
+      },message: "Espere un momento por favor ..." });
       setTimeout(function(){
         var id_suc = 0;
         var nom_suc = '';
@@ -2748,18 +2755,24 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
   $scope.seleccionarTramitereno = function(tramite){
     console.log("seleccionarTramitereno");
     //datos.RO_DEN
+    $scope.tramite_datos = tramite;
     console.log('tramite',tramite);
     sessionService.set('IDTRAMITE',tramite.vtra_id);
     $scope.arrayOficinas = [];
     $scope.mostrar_formulario = true;
     if(tramite.venviado == 'SI'){
       //$scope.desabilita = true;
-      $scope.datos = JSON.parse(tramite.form_contenido);
+      document.getElementById('miFormGuardar').disabled=true;
+      document.getElementById('gu').disabled=true;
+      $scope.Operadorrenovar(tramite.datos);
+      //$scope.datos = JSON.parse(tramite.form_contenido);
       $scope.datosOperador = true;
       var data = $scope.datos.oficinas;
       $scope.operadoresOficinas = data;
       $scope.tablaOficinas.reload();
     }else{
+      document.getElementById('miFormGuardar').disabled=false;
+      document.getElementById('gu').disabled=true;
       //$scope.desabilita = false;
       //$scope.datosOperador = false;
       if(sessionService.get('TIPO_PERSONA')=='JURIDICO'){
@@ -2977,12 +2990,44 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     //console.log($scope.fileArRequisitos);
     //console.log("--------------   $scope.datos.ope_requisitos ----------- ");
     //console.log($scope.datos.ope_requisitos);
+    console.log(" ---------------------  $scope.tramite_datos ---------------------");
+    console.log($scope.tramite_datos);
+    console.log(" --------------------- antiguo tramite.form_contenido ---------------------");
+    console.log(JSON.parse($scope.tramite_datos.form_contenido));
+    
+    // console.log(JSON.parse($scope.tramite_datos.form_contenido).oficina_data);
+    // console.log(JSON.parse($scope.tramite_datos.form_contenido).oficinas);
+    // console.log(JSON.parse($scope.tramite_datos.form_contenido).yope_requisitos);
+    // console.log(JSON.parse($scope.tramite_datos.form_contenido).xope_denominacion);
+    
+    // console.log("----------------------------------------------------------------------");
+    // console.log($scope.datos.oficina_data);
+    // console.log($scope.datos.oficinas);
+    // console.log($scope.datos.ope_requisitos);
+    // console.log($scope.datos.RO_DEN);
+    // console.log($scope.datos.hab_deno);
 
+    var datros_tramite = JSON.parse($scope.tramite_datos.form_contenido);
+    datros_tramite.oficina_data = $scope.datos.oficina_data;
+    datros_tramite.oficinas = $scope.datos.oficinas;
+    datros_tramite.yope_requisitos = $scope.datos.ope_requisitos;
+    datros_tramite.hab_deno = $scope.datos.hab_deno;
+    if($scope.datos.hab_deno){
+      datros_tramite.xope_denominacion = $scope.datos.RO_DEN;
+    }
+    $scope.tramite_datos.form_contenido = JSON.stringify(datros_tramite);
+    console.log("----------------------------------------------------------------------");
+    console.log(datros_tramite);
+    console.log(" ---------------------  nuevo tramite.form_contenido ---------------------");
+    console.log(JSON.parse($scope.tramite_datos.form_contenido));
+    
 
+    //if($scope.hab_deno){}
     $scope.datos.Tipo_tramite_creado = "WEB";
     try {
-      console.log('$scope.datos',$scope.datos);
-      var datosSerializados   =  JSON.stringify($scope.datos);
+      //console.log('$scope.datos',$scope.datos);
+      //var datosSerializados   =  JSON.stringify($scope.datos);
+      var datosSerializados   =  $scope.tramite_datos.form_contenido;
       var idCiudadano         = sessionService.get('IDSOLICITANTE');
       var idTramite           = sessionService.get('IDTRAMITE');
       var idServicio          = idTram;
@@ -2992,10 +3037,10 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       crear.frm_tra_id_ciudadano = sIdCiudadano;
       crear.frm_tra_id_usuario = 1;
       crear.frm_idTramite = idTramite;
-      console.log("----------------------------------------------------------------------");
-      console.log("crear");
-      console.log(crear);
-      console.log(crear.data_json);
+      //console.log("----------------------------------------------------------------------");
+      //console.log("crear");
+      //console.log(crear);
+      //console.log(crear.data_json);
       
       $.blockUI();
       crear.sp_crear_datos_formulario(function(results){
@@ -3031,76 +3076,82 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     }, function() {
       swal.close();
       setTimeout(function(){
-        console.log($scope.datos,'datos');
-        if($scope.datos.oficinas.length>0 || $scope.datos.f10_modificacionRepEmpresa){
-          if($scope.datos.f10_modificacionRepEmpresa){
-            console.log($scope.datos,12333444);
-            if($scope.tipo_persona == 'NATURAL'){
-              var razonSocial = $scope.datos.RO_NOM_RL +' '+ $scope.datos.RO_PAT_RL+' '+$scope.datos.RO_MAT_RL;
-              var nit = '';
-              var ci = $scope.datos.RO_CI_RL;
-              var datosRepresentante = {
-                'RO_NOM_RL':$scope.datos.RO_NOM_RL,
-                'RO_PAT_RL':$scope.datos.RO_PAT_RL,
-                'RO_MAT_RL':$scope.datos.RO_MAT_RL,
-                'RO_CAS_RL':$scope.datos.RO_CAS_RL,
-                'RO_CI_RL':$scope.datos.RO_CI_RL,
-                'RO_EXP_RL':$scope.datos.RO_EXP_RL,
-                'RO_CEL_RL':$scope.datos.RO_CEL_RL,        
-                'RO_CORR_RL':$scope.datos.RO_CORR_RL,
-                'RO_ZONA_RL':$scope.datos.RO_ZONA_RL,
-                'RO_TIP_VIA_RL':$scope.datos.RO_TIP_VIA_RL,
-                'RO_CALL_RL':$scope.datos.RO_CALL_RL,
-                'RO_NRO_RL':$scope.datos.RO_NRO_RL
-              }
-            }else{
-              var razonSocial = $scope.datos.MO_RZ;
-              var nit = $scope.datos.MO_NIT;
-              var ci = nit;
-              var datosRepresentante = {
-                'RO_NIT':$scope.datos.MO_NIT,
-                'RO_RZ':$scope.datos.MO_RZ,
-                'RO_POD_RL':$scope.datos.MO_POD_RL,
-                'RO_NOT_RL':$scope.datos.MO_NOT_RL,
-                'RO_ZON_OF':$scope.datos.MO_ZON_OF,
-                'RO_TIP_VIA_OF':$scope.datos.MO_TIP_VIA_OF,
-                'RO_NON_VIA_RL':$scope.datos.MO_NOM_VIA_OF,        
-                'RO_NUM_DOM_OF':$scope.datos.MO_NUM_DOM_OF,
-                'RO_NOM_RLJ':$scope.datos.MO_NOM_RLJ,
-                'RO_PAT_RLJ':$scope.datos.MO_PAT_RLJ,
-                'RO_MAT_RLJ':$scope.datos.MO_MAT_RLJ,
-                'RO_CI_RLJ':$scope.datos.MO_CI_RLJ,
-                'RO_EXP_RLJ':$scope.datos.MO_EXP_RLJ,
-                'RO_CEL_RLJ':$scope.datos.MO_CEL_RLJ
-              }
-            }
-            var rep = new actualizaRepresentante();
-            rep.ope_id = $scope.datos.MO_ID_OPE;
-            rep.ci_repr = ci; 
-            rep.datos = JSON.stringify(datosRepresentante);
-            rep.usr_id = 1;
-            rep.persona = $scope.tipo_persona;
-            rep.oidciudadano = $scope.datos.MO_OID;
-            rep.repr_adjuntos = JSON.stringify($scope.datos.fileArRequisitosArrayRepresentante);
-            rep.modificaRepresentante(function(results){
-              results = JSON.parse(results).success.data[0].sp_ope_modifica_representante;
-              if(results == 1){
-                $scope.crea_tramite_lotus($scope.datos);
-              }else{
-                swal("", "Ocurrio un error vuelva a intentarlo", "error");
-              }
-            })
-          }else{
-            $scope.crea_tramite_lotus($scope.datos);
-          }
-        }
-        else{
-          swal("", "No se modifico el dato de ninguna oficina, ni del representante legal", "warning");  
-        }
-        console.log($scope.datos,'datos');
+        $scope.crea_tramite_lotus_reno(JSON.parse($scope.tramite_datos.form_contenido));
+        // console.log($scope.datos,'datos');
+        // if($scope.datos.oficinas.length>0 || $scope.datos.f10_modificacionRepEmpresa){
+        //   if($scope.datos.f10_modificacionRepEmpresa){
+        //   }else{
+        //     $scope.crea_tramite_lotus($scope.tramite_datos.form_contenido);
+        //   }
+        // }
+        // else{
+        //   swal("", "No se modifico el dato de ninguna oficina, ni del representante legal", "warning");  
+        // }
+        console.log($scope.tramite_datos.form_contenido,'datos');
       },100);
     });
   };
+  $scope.crea_tramite_lotus_reno = function (datos) {
+    $.blockUI({ css: {
+      border: 'none',
+      padding: '10px',
+      backgroundColor: '#000',
+      '-webkit-border-radius': '10px',
+      '-moz-border-radius': '10px',
+      opacity: .5,
+      color: '#fff'
+    },message: "Espere un momento por favor ..." });
+    setTimeout(function(){
+      $.blockUI();
+      var f = new Date();  
+      datos.g_fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()
+      datos.g_tipo = 'RENO';
+      var data_form = JSON.stringify(datos);
+      var tramite = new crear_Tramite_lotus();
+      tramite.proid = 191;
+      tramite.actid = 1124;
+      tramite.usr_id = 0;
+      tramite.datos = data_form;
+      tramite.procodigo = 'RENO';
+      tramite.macro_id = 0;
+      tramite.nodo_id = 672;
+      tramite.ws_id = 24;
+      tramite.tram_lotus(function(results){ 
+        results = JSON.parse(results);
+        console.log('results',results);
+        if (results !=null) {
+          results = results.success.data[0].casonro;
+          $scope.validarFormProcesos(results);
+          $.unblockUI();
+        }else{
+          alertify.error("Señor(a) Ciudadano(a) ocurrio un error al enviar su Tramité.", );
+          $.unblockUI();
+        }
+      }); 
+    },300);           
+  };
+
+  $scope.validarFormProcesos = function(nroTramite){
+    var idUsuario = sessionService.get('IDUSUARIO');
+    try {
+      idUsuario = 4; 
+      var tramiteIgob = new datosFormularios();
+      tramiteIgob.frm_idTramite = sessionService.get('IDTRAMITE');
+      tramiteIgob.frm_tra_enviado = 'SI';
+      tramiteIgob.frm_tra_if_codigo = nroTramite;
+      tramiteIgob.frm_tra_id_usuario = idUsuario;
+      tramiteIgob.validarFormProcesos(function(resultado){
+        $scope.mostrar_formulario = false;
+        swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramite + "\n Usted debe dirigirse al tercer día hábil a la Secretaria Municipal de Movilidad y contactarse con el Asesor Legal DROM, portando sus documentos originales para la verificación.");
+        $scope.tramitesCiudadano();
+        $.unblockUI(); 
+      });
+    } catch (error){
+      alertify.success('Registro no modificado');
+      $.unblockUI(); 
+    }
+  };
+
 
 
 }

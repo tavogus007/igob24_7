@@ -2761,7 +2761,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       $scope.tablaOficinas.reload();
     }else{
       document.getElementById('miFormGuardar').disabled=false;
-      document.getElementById('gu').disabled=true;
+      document.getElementById('gu').disabled=false;
       //$scope.desabilita = false;
       //$scope.datosOperador = false;
       if(sessionService.get('TIPO_PERSONA')=='JURIDICO'){
@@ -3098,7 +3098,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       var data_form = JSON.stringify(datos);
       var tramite = new crear_Tramite_lotus();
       tramite.proid = 192;
-      tramite.actid = 1124;
+      tramite.actid = 1129;
       tramite.usr_id = 0;
       tramite.datos = data_form;
       tramite.procodigo = 'RENO';

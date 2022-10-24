@@ -265,28 +265,20 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
   });
 
   $scope.Operadorrenovar = function(ope){
-    //console.log(ope);
     ope = JSON.parse(ope);
     $scope.registrorenovacion = true;
     $scope.registro = false;
     $scope.datosrepresentante = ope.yrepr_datos;
     $scope.datos.id_ope = ope.xope_id;
-    //console.log("------------- oficinas -----------------");
     $scope.datos.oficinas = ope.oficinas;
     $scope.datos.oficina_data = ope.oficina_data;
     $scope.datos.ope_requisitos = ope.yope_requisitos;
-    //console.log($scope.datos.oficinas);
-    //console.log($scope.datos.oficina_data);
-    //console.log("------------------------------");
     $scope.datosoperador = ope;
     if(ope.yope_requisitos != undefined){
         $scope.fileArRequisitos =  ope.yope_requisitos;
     }else{
         $scope.fileArRequisitos = {};
     }
-    console.log("ope.hab_deno");
-    console.log(ope.hab_deno);
-    console.log("------------------------------");
     if(ope.hab_deno != undefined){
       $scope.datos.hab_deno = ope.hab_deno;
       document.getElementById('RO_DEN').disabled=false;
@@ -295,8 +287,6 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       $scope.datos.hab_deno = false;
       document.getElementById('RO_DEN').disabled=true;
     }
-    console.log("------------- fileArRequisitos -----------------");
-    console.log($scope.fileArRequisitos);
     $scope.tipo_persona = ope.yrepr_tip_per;
     if(ope.yrepr_tip_per == 'NATURAL'){
         $scope.datos.RO_NOM_RL = ope.yrepr_datos.RO_NOM_RL;
@@ -371,9 +361,6 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     $scope.datos.RO_FEC_INFORME = ope.xope_datos.RO_FEC_INFORME;
     $scope.datos.txt_f01_upload_TEC_INS = ope.xope_datos.txt_f01_upload_TEC_INS;
     $scope.datos.f01_upload_TEC_INS_url = ope.xope_datos.f01_upload_TEC_INS_url;
-    console.log("------------- $scope.datos -------------");
-    console.log($scope.datos);
-    console.log("--------------------------");
   }
 
   $scope.volver = function (){
@@ -405,8 +392,6 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       $scope.publicidad = true;
       $scope.botonn="new";
       $scope.open_map_reg_ope();
-      // console.log("$scope.datos");
-      // console.log($scope.datos);
       $scope.objOficinas = $scope.datos.oficina_data;
       for (var i = 0; i < $scope.objOficinas.length; i++) {
           $scope.datos['RO_INS_CONC'+$scope.objOficinas[i].ofi_id.toString()] = $scope.objOficinas[i].ofi_revision.cumpleIns;
@@ -515,7 +500,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
         }
     }
     $scope.docArray =   datoObjectFinal;
-    console.log($scope.docArray,'docarray');
+    //console.log($scope.docArray,'docarray');
     $scope.datosAdj = [];
     setTimeout(function(){
         iniciarLoadFyle();
@@ -3112,7 +3097,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       datos.g_tipo = 'RENO';
       var data_form = JSON.stringify(datos);
       var tramite = new crear_Tramite_lotus();
-      tramite.proid = 191;
+      tramite.proid = 192;
       tramite.actid = 1124;
       tramite.usr_id = 0;
       tramite.datos = data_form;

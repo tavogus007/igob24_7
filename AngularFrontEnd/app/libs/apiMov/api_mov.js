@@ -462,6 +462,24 @@ observaciones.prototype.lstTodasObservaciones = function (functionResp) {
     };
     ejecutarAjaxMov(urlComp, typeCall, dataParams, functionResp);
 };
+
+//*******************************Renovacion Operador*********************************
+function renovacionOpe(){
+  this.id_ope;
+  this.detalle_ren;
+};
+
+renovacionOpe.prototype.renovacionOpera = function (functionResp) {     
+  urlCompIf =  "/renovacionOpe";     
+  typeCallIf = "post";     
+  dataParamsIf = { 
+    "id_ope":      this.id_ope,
+    "detalle_ren": this.detalle_ren
+  };    
+  ejecutarAjaxMov(urlCompIf, typeCallIf,dataParamsIf, functionResp); 
+};
+
+
 //*******************************Renovacion TIC y TMOV*********************************
 function renovacionVehTmov(){
   this.id_veh;

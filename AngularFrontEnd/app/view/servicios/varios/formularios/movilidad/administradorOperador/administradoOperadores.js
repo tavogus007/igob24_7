@@ -24,6 +24,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
   $scope.idRegistro = 37;
   $scope.nroTramite = '';
   $scope.datosMostrar = 0;
+  $scope.renoMostrar = '00';
   $scope.oidCiu = sessionService.get('IDSOLICITANTE');
   $scope.datos.RO_TIP_OPE_A =[{"tipoOp":"Sindicato"},{"tipoOp":"Asociación"},{"tipoOp":"Cooperativa"},{"tipoOp":"Empresa"}];
   $scope.tipo_persona='';
@@ -34,6 +35,8 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
   $scope.publi=[];
   var idTram = 84;
   $scope.ope = {};
+  $scope.opetramite = '00';
+  $scope.opetramite_mensaje = '';
   $scope.ope.xope_id = 0;
   $scope.documentosarc = new Array();
 
@@ -110,9 +113,11 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       act.actualiza_veh_cond(function(results){
         console.log(results)
       });*/
+      $scope.tramiteSeleccionadoope = ope.xope_id;
       $scope.operador = ope;
       $scope.registro = true;
       $scope.registrorenovacion = false;
+      $scope.listarenovacion = false;
       $scope.datosOfiR = ope.oficinas; 
       $scope.datos.ope_id = ope.xope_id;
       $scope.datos.den_ope = ope.xope_denominacion;
@@ -127,37 +132,81 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     },200);
   }
 
-  $scope.seleccionarOperadorrenovar = function(ope){
-    $scope.ope = ope;
-    $scope.datosOfiR = ope.oficinas; 
-    $scope.tramitesCiudadano();
-    $scope.listarenovacion = true;
-    $scope.recuperandoDatosGenesis(ope);
-    $scope.listarAE();
+  $scope.seleccionarOperadorrenovar = function(ope_data){
+    if(ope_data.estadores == 'VIGENTE'){
+      $scope.renoMostrar = '00';
+    }else{
+      $scope.renoMostrar = '11';
+    }
+    if(typeof(ope_data.xope_datos.RO_TRAMITE)    == 'undefined' || ope_data.xope_datos.RO_TRAMITE == null){
+      if(ope_data.estadores == 'VENCIDO' || ope_data.estadores == 'VENCIDO '){
+        $scope.renoMostrar = '00';
+        $scope.opetramite = '00';
+        $scope.opetramite_mensaje = '';
+      }
+    }else{
+      if(ope_data.xope_datos.RO_ESTADO_TRAMITE=='EN PROCESO'){
+        $scope.renoMostrar = '11';
+        $scope.opetramite = '00';
+        $scope.opetramite_mensaje = ope_data.xope_datos.RO_TRAMITE+' > '+ ope_data.xope_datos.RO_ESTADO_TRAMITE;
+      }else{
+        if(ope_data.xope_datos.RO_ESTADO_TRAMITE=='RECHAZADO'){
+            $scope.renoMostrar = '00';
+            $scope.opetramite = '00';
+            $scope.opetramite_mensaje = ope_data.xope_datos.RO_TRAMITE+' > '+ope_data.xope_datos.RO_ESTADO_TRAMITE;
+          }else{
+            if(ope_data.estadores == 'VENCIDO' || ope_data.estadores == 'VENCIDO '){
+              $scope.renoMostrar = '00';
+              $scope.opetramite = '00';
+            }
+          $scope.opetramite_mensaje = '';
+        }
+      }
+    }
+    
+    $scope.tramiteSeleccionadoope = ope_data.xope_id;
     $scope.registrorenovacion = false;
+    $scope.listarenovacion = true;
     $scope.registro = false;
+    $scope.datosOfiR = ope_data.oficinas; 
+    $scope.ope = ope_data;
+    $scope.tramitesCiudadano();
+    $scope.recuperandoDatosGenesis(ope_data);
+    $scope.listarAE();
+    
+    
   }
 
   $scope.tramitesCiudadano = function(){
+    $scope.opetramite = '00';
     var tramites  = new listaTramitesMov();
     tramites.idCiudadano = sIdCiudadano;
     tramites.tra_ser = idTram;
     tramites.spbusquedaformulariomovilidad(function(data){
       var data = JSON.parse(data).success;
-      console.log("data");
-      console.log(data);
       $scope.tramites = data;
-      angular.forEach(data,function(val, index)
-      {
+      angular.forEach(data,function(val, index){
+        // opetramite
         if(val['form_contenido']){
-          console.log("--------- form_contenido --------------");
-          console.log(JSON.parse(val['form_contenido']));
-          console.log("-----------------------------------");
           data[index].datos = val['form_contenido'];
           data[index].operador = JSON.parse(val['form_contenido']).xope_denominacion;
           data[index].ope_id = JSON.parse(val['form_contenido']).xope_id;
         }
+        if($scope.ope.xope_id == JSON.parse(val['form_contenido']).xope_id){
+          if(val['venviado'] == 'NO'){
+            console.log(val);
+            $scope.opetramite = '11';
+          }else{
+            console.log(val);
+            console.log(JSON.parse(val['form_contenido']));
+            console.log(val['vcodigo']);
+            console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+          }
+        }
       });
+
+      console.log("------------------------------------------");
+      
       $scope.tramitesUsuario = data;
       $scope.tablaTramites.reload();
     })
@@ -1744,7 +1793,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
               var datosVeh = new vehiculo();
               datosVeh.id =  id; 
               datosVeh.ope_id = $scope.datos.ope_id;
-              datosVeh.placa = $scope.datos.RO_PLA_V; 
+              datosVeh.placa = ($scope.datos.RO_PLA_V).toUpperCase(); 
               datosVeh.datos = datosV; 
               datosVeh.usr_id = 1; 
               datosVeh.tipo_ser = $scope.datos.RO_MOD_VALUE; 
@@ -2174,7 +2223,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
           var dataC = {
             "RO_NOM_SUC" : nom_suc,
             "RO_EXP_C" : $scope.datos.RO_EXP_C,
-            "PLACA"    : $scope.datos.PLACA ,
+            "PLACA"    : ($scope.datos.PLACA).toUpperCase() ,
             "RO_NOM_C" : $scope.datos.RO_NOM_C,
             "RO_PAT_C" : $scope.datos.RO_PAT_C,
             "RO_MAT_C" : $scope.datos.RO_MAT_C,
@@ -3110,7 +3159,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
         console.log('results',results);
         if (results !=null) {
           results = results.success.data[0].casonro;
-          $scope.validarFormProcesos(results);
+          $scope.validarFormProcesos(results,datos.xope_id);
           $.unblockUI();
         }else{
           alertify.error("Señor(a) Ciudadano(a) ocurrio un error al enviar su Tramité.", );
@@ -3120,7 +3169,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
     },300);           
   };
 
-  $scope.validarFormProcesos = function(nroTramite){
+  $scope.validarFormProcesos = function(nroTramite,ope_id){
     var idUsuario = sessionService.get('IDUSUARIO');
     try {
       idUsuario = 4; 
@@ -3130,10 +3179,35 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       tramiteIgob.frm_tra_if_codigo = nroTramite;
       tramiteIgob.frm_tra_id_usuario = idUsuario;
       tramiteIgob.validarFormProcesos(function(resultado){
+        var operen = new renovacionOpe();
+        operen.id_ope = ope_id ;
+        operen.detalle_ren = nroTramite;
+        operen.renovacionOpera(function(results){
+          results = JSON.parse(results).success.data;
+          console.log(results);
+          
+          swal({
+            title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
+            text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2>Usted debe dirigirse al tercer día hábil a la Secretaria Municipal de Movilidad y contactarse con el Asesor Legal DROM, portando sus documentos originales para la verificación.',
+            html: true,
+            type: 'success',
+        },function(isConfirm){
+            if (isConfirm) {
+                var currentLocation = window.location;
+                var hrdato =  currentLocation.href
+                const hrdatos = hrdato.split("#");
+                var htldata = hrdatos[0]+"#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/administradorOperador/administradoOperadores.html";
+                document.location.href=htldata;
+            }
+        });
         $scope.mostrar_formulario = false;
-        swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramite + "\n Usted debe dirigirse al tercer día hábil a la Secretaria Municipal de Movilidad y contactarse con el Asesor Legal DROM, portando sus documentos originales para la verificación.");
+        //swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente.", "Su número de Trámite es: " + nroTramite + "\n Usted debe dirigirse al tercer día hábil a la Secretaria Municipal de Movilidad y contactarse con el Asesor Legal DROM, portando sus documentos originales para la verificación.");
         $scope.tramitesCiudadano();
         $.unblockUI(); 
+        })
+
+        
+
       });
     } catch (error){
       alertify.success('Registro no modificado');

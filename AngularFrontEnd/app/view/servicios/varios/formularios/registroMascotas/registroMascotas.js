@@ -215,7 +215,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     if ($scope.swimagen == true) {
       $scope.dataMascota.cod_chip = 'NO';
       $scope.insertarDataMascota(data);
-
       $scope.dataServicioMascota = JSON.stringify($scope.dataMascota);
       $scope.registroMascotas_servicio();
       $.unblockUI();
@@ -228,20 +227,17 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
   $scope.dataMascota = {};
   $scope.insertarDataMascota = function (data) {
-
-
     var crianza = $scope.AUTORIZACION_CRIANZA;
     var civil = $scope.SEGURO_RESP_CIVIL;
-
     if ($scope.botonMod == true) {
       $scope.dataMascota.xmascota_id = data.xmascota_id;
       $scope.dataMascota.xmascota_imagen_url = $scope.IMAGEN_MASCOTA;//data.xmascota_imagen_url;
-      $scope.dataMascota.xpertenece = $scope.tipoR;
+      // $scope.dataMascota.xpertenece = $scope.tipoR;
     }
     if ($scope.botonCrea == true) {
       $scope.dataMascota.titular_id = "0";//data.xmascota_titular_id;//2
       $scope.dataMascota.xmascota_imagen_url = $scope.IMAGEN_MASCOTA;
-      $scope.dataMascota.xpertenece = $scope.tipoR;
+      // $scope.dataMascota.xpertenece = $scope.tipoR;
     }
 
     if (data.xmascota_raza_id) {
@@ -253,9 +249,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.dataMascota.xmascota_titular_ci = sessionService.get('CICIUDADANO');//data.xmascota_titular_ci;//ci_igob
 
     $scope.dataMascota.xmascota_data = "{}";
-    //dataPDF
-
-
     //reg_desparasitacion
     $scope.reg_desparasitacion = {};
     $scope.reg_desparasitacion.fecha_aplicacion = data.mascota_feca_desparasitacion;
@@ -312,14 +305,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.dataMascota_data.marca = $scope.marca;  //MARCA
     $scope.dataMascota_data.reg_desparasitacion = $scope.ArrayDesparast_;//$scope.reg_desparasitacion;
     $scope.dataMascota_data.reg_marca = $scope.reg_marca;
-
-
-
-
-    $scope.dataMascota_data.certificados_peligrosos = [{ "autorizacion_crianza": crianza, "seguro_resp_civil": civil }]
-
-
-
+    $scope.dataMascota_data.certificados_peligrosos = [{ "autorizacion_crianza": crianza, "seguro_resp_civil": civil }];
     $scope.dataMascota_data.reg_vacunas = $scope.data1; ///recupera en la grilla
     if ($scope.vacunas.length > 0) {
       $scope.dataMascota_data.vacunas = 'si';
@@ -337,6 +323,9 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
   //RECUPERA DATOS DE LA MASCOTA
   $scope.seleccionarMascota = function (data_tramite) {
+
+    $scope.AUTORIZACION_CRIANZA = "";
+    $scope.SEGURO_RESP_CIVIL = "";
     $scope.botonMod = true;
     $scope.botonCrea = false;
     $scope.tramiteSeleccionado = data_tramite.xmascota_id;
@@ -350,11 +339,10 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       $scope.desabilitadoPeso = false;
     }
     var id_raza = data_tramite.xmascota_raza_id
-    if (id_raza == 27 || id_raza == 26 || id_raza == 28 || id_raza == 29 || id_raza == 30 || id_raza == 31 || id_raza == 82 || id_raza == 33 || id_raza == 34 || id_raza == 35) {
+    if (id_raza == 27 || id_raza == 26 || id_raza == 28 || id_raza == 29 || id_raza == 30 || id_raza == 31 || id_raza == 32 || id_raza == 82 || id_raza == 33 || id_raza == 34 || id_raza == 35) {
       $scope.autorizacionCrianza = true;
       $scope.responsabilidadCivil = true;
     } else {
-
       $scope.autorizacionCrianza = false;
       $scope.responsabilidadCivil = false;
     }
@@ -385,10 +373,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       $.unblockUI();
       $.LoadingOverlay("hide");
       $datos_mascota = $scope.respuesta[0].xmascota_data;
-
-
       $datos_mascota1 = JSON.parse($datos_mascota);
-
       alertify.success('Datos de la Mascota fue Recuperada');
       if ($scope.botonMod == true) {
         $scope.datosNoEditables = true;
@@ -427,19 +412,49 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         }
         $scope.btover7 = "mostrar";
         $scope.url_imagen = true; //cuando cambia imagen
-        $scope.btnverCrianza = true;
-        $scope.btoverCivil = true;
-
-
+        //$scope.btnverCrianza = true;
+        // $scope.btnVerCivil = true;
         $scope.datos.IMAGEN_MASCOTA = $scope.respuesta[0].xmascota_imagen_url;
-        $scope.datos.AUTORIZACION_CRIANZA = $datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza;
-        $scope.datos.SEGURO_RESP_CIVIL = $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil;
+        var id_raza = $scope.respuesta[0].xmascota_raza_id;
+        if (id_raza == 27 || id_raza == 26 || id_raza == 28 || id_raza == 29 || id_raza == 30 || id_raza == 31 || id_raza == 32 || id_raza == 82 || id_raza == 33 || id_raza == 34 || id_raza == 35) {
 
-        $scope.AUTORIZACION_CRIANZA = $scope.datos.AUTORIZACION_CRIANZA;
-        $scope.SEGURO_RESP_CIVIL = $scope.datos.SEGURO_RESP_CIVIL;
+          if ($datos_mascota1['certificados_peligrosos'] == undefined) {
+            swal('Estimado Ciudadano', 'Debe adjuntar los documentos AUTORIZACIÓN DE CRIANZA y SEGURO DE RESPONSABILIDAD CIVIL');
+            $scope.btnverCrianza = false;
+            $scope.btnVerCivil = false;
+            $scope.datos.AUTORIZACION_CRIANZA = "";
+            $scope.datos.SEGURO_RESP_CIVIL = "";
+          } else {
+
+            if ($datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza == undefined || $datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza == "" || $datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza == ''
+              || $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil == undefined || $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil == "" || $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil == '') {
+
+              swal('Estimado Ciudadano', 'Debe adjuntar los documentos AUTORIZACIÓN DE CRIANZA y SEGURO DE RESPONSABILIDAD CIVIL');
+              $scope.datos.AUTORIZACION_CRIANZA = "";
+              $scope.datos.SEGURO_RESP_CIVIL = "";
+              $scope.autorizacionCrianza = true;
+              $scope.responsabilidadCivil = true;
+
+              $scope.btnverCrianza = false;
+              $scope.btnVerCivil = false;
+
+            } else {
+              $scope.datos.AUTORIZACION_CRIANZA = $datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza;
+              $scope.datos.SEGURO_RESP_CIVIL = $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil;
+              $scope.autorizacionCrianza = true;
+              $scope.responsabilidadCivil = true;
+              $scope.btnverCrianza = true;
+              $scope.btnVerCivil = true;
+            }
 
 
+          }
 
+
+        } else {
+          $scope.autorizacionCrianza = false;
+          $scope.responsabilidadCivil = false;
+        }
         $scope.datos.xmascota_especie = $datos_mascota1.especie;
         $scope.datos.xmascota_raza = $datos_mascota1.raza;
         $scope.raza = $datos_mascota1.raza;
@@ -627,9 +642,24 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       } else {
         $scope.dataMascotaMod.xmascota_imagen_url = $scope.datos.IMAGEN_MASCOTA;//data.xmascota_imagen_url;
       }
+
+
+      if ($scope.AUTORIZACION_CRIANZA == '' || $scope.AUTORIZACION_CRIANZA == undefined) {
+        crianza = data.AUTORIZACION_CRIANZA;
+
+      } else {
+        crianza = $scope.AUTORIZACION_CRIANZA;
+
+      }
+
+      if ($scope.SEGURO_RESP_CIVIL == '' || $scope.SEGURO_RESP_CIVIL == undefined) {
+        civil = data.SEGURO_RESP_CIVIL;
+
+      } else {
+        civil = $scope.SEGURO_RESP_CIVIL;
+
+      }
     }
-    var crianza = $scope.AUTORIZACION_CRIANZA;
-    var civil = $scope.SEGURO_RESP_CIVIL;
     if (data.xmascota_raza_id) {
       $scope.dataMascotaMod.xmascota_raza_id = data.xmascota_raza_id;//raza_id
     } else {
@@ -725,7 +755,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.dataMascotaMod_data.reg_marca = $scope.reg_marca;
     $scope.dataMascotaMod_data.reg_vacunas = $scope.data1; ///recupera en la grilla
     $scope.dataMascotaMod_data.vacunas = $scope.vacunas; //VACUNAS
-    $scope.dataMascotaMod_data.certificados_peligrosos = [{ "autorizacion_crianza": crianza, "seguro_resp_civil": civil }]
+    $scope.dataMascotaMod_data.certificados_peligrosos = [{ "autorizacion_crianza": crianza, "seguro_resp_civil": civil }];
 
     if ($scope.data1) {
       if ($scope.data1.length > 0) {
@@ -744,7 +774,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   // serializar informacion
   //modificar Informacion
   $scope.modificarInformacionMascota = function (data) {
-
     swal({
       title: 'Mensaje de Advertencia',
       text: 'Estimado Ciudadano, ¿Se encuentra seguro/a de modificar los datos de su mascota?',
@@ -756,22 +785,36 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       closeOnConfirm: false
     }, function () {
       swal.close();
-      setTimeout(function () {
-        $scope.ModDataMascota(data);
-        var datosMascotaMod = new reglasnegocioM();
-        datosMascotaMod.identificador = 'SISTEMA_VALLE-CM-2037';
-        datosMascotaMod.parametros = JSON.stringify($scope.dataMascotaMod);
-        datosMascotaMod.llamarregla(function (results) {
-          var resp = JSON.parse(results);
-          var sci = sessionService.get('CICIUDADANO');
-          $scope.listarMascotasXci(sci);
-          $scope.cargarNuevaDataMascota();
-          $scope.mostrar_form_mascotas = false;
-          $scope.tablaTramites.reload();
-          $scope.$apply();
-          alertify.success('Datos de la Mascota fue Modificada');
+
+
+      console.warn("validar pfd", $scope.datos.AUTORIZACION_CRIANZA)
+      console.warn("validar pfd", $scope.datos.SEGURO_RESP_CIVIL)
+      if ($scope.validacionPDF()) {
+        console.warn("true")
+        setTimeout(function () {
+          $scope.ModDataMascota(data);
+          var datosMascotaMod = new reglasnegocioM();
+          datosMascotaMod.identificador = 'SISTEMA_VALLE-CM-2037';
+          datosMascotaMod.parametros = JSON.stringify($scope.dataMascotaMod);
+          datosMascotaMod.llamarregla(function (results) {
+            var resp = JSON.parse(results);
+            var sci = sessionService.get('CICIUDADANO');
+            $scope.listarMascotasXci(sci);
+            $scope.cargarNuevaDataMascota();
+            $scope.mostrar_form_mascotas = false;
+            $scope.tablaTramites.reload();
+            $scope.$apply();
+            alertify.success('Datos de la Mascota fue Modificada');
+          });
         });
-      });
+      } else {
+        console.warn("false")
+        alertify.error('Debe adjuntar los documentos AUTORIZACIÓN DE CRIANZA y SEGURO DE RESPONSABILIDAD CIVIL');
+
+        //swal('Estimado Ciudadano', 'Debe adjuntar los documentos AUTORIZACIÓN DE CRIANZA y SEGURO DE RESPONSABILIDAD CIVIL');
+
+      }
+
     });
   }
 
@@ -781,7 +824,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         if (value._raza_id == id_raza) {
           $scope.raza_mascota = value._raza_data;
         }
-        if (id_raza == 27 || id_raza == 26 || id_raza == 28 || id_raza == 29 || id_raza == 30 || id_raza == 31 || id_raza == 82 || id_raza == 33 || id_raza == 34 || id_raza == 35) {
+        if (id_raza == 27 || id_raza == 26 || id_raza == 28 || id_raza == 29 || id_raza == 30 || id_raza == 31 || id_raza == 32 || id_raza == 82 || id_raza == 33 || id_raza == 34 || id_raza == 35) {
           $("#formModalP").modal("show");
           $scope.raza_peligrosa = 'En mi calidad de titular de la mascota registrada , me comprometo hacerme responsable de mi mascota y cumplir con las normas legales en actual vigencia, En aplicación de la Ley 553, al Texto Ordenado de las Leyes Municipales Autonómicas 239/316, Reglamento de la Ley Municipal Autonómica para Animales de Compañía Artículos del 5 al 17, del 86 al 89.';
           /////--hermi
@@ -844,13 +887,17 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   }
 
   $scope.cargarNuevaDataMascota = function () {
+    $scope.datos.AUTORIZACION_CRIANZA = ""
+    $scope.datos.SEGURO_RESP_CIVIL = ""
+    $scope.SEGURO_RESP_CIVIL = '';
+    $scope.AUTORIZACION_CRIANZA = '';
+    $scope.btnverCrianza = false;
+    $scope.btnVerCivil = false;
     $scope.mostrarImagenI = false;
     $scope.mostrarImagenR = false;
     $scope.desabilitado = false;
     $scope.datos.IMAGEN_MASCOTA = '';
     $scope.btover7 = false;
-    $scope.btnverCrianza = false;
-    $scope.btoverCivil = false;
     $scope.botonMod = false;
     $scope.botonCrea = true;
     $scope.mostrar_form_mascotas = true;
@@ -907,8 +954,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       var resp = JSON.parse(results);
       $scope.mascotas_razas = resp;
       $scope.dsaraza = false;
-      //$scope.autorizacionCrianza = false;
-      //$scope.responsabilidadCivil = false;
       $scope.$apply();
     });
   }
@@ -1331,7 +1376,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   $scope.ejecutarFile = function (idfile) {
     $scope.fileId = idfile;
     var sid = document.getElementById(idfile);
-
     if (sid) {
       document.getElementById(idfile).click();
     } else {
@@ -1443,20 +1487,18 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $.blockUI();
     setTimeout(function () {
       //contadorAdjunto ++;
-      var nombre = obj.getAttribute("name"); 
-      var objarchivo = obj.files[0]; 
-      //$scope.IMAGEN_MASCOTA = obj.files[0]; 
-      var tamaniofile = obj.files[0]; 
+      var nombre = obj.getAttribute("name");
+      var objarchivo = obj.files[0];
+      $scope.IMAGEN_MASCOTA = obj.files[0];
+      var tamaniofile = obj.files[0];
+
       $scope.mostrarImagenI = true;
       $scope.mostrarImagenR = false;
       var ciCiudadano = sessionService.get('CICIUDADANO');
       $scope.direccionvirtual = "RC_CLI";
       //var sDirTramite = $scope.datos_responsable.ci;
       var uploadUrl = CONFIG.APIURL + "/files/IMAGENESMASCOTAS/" + ciCiudadano + "/" + $scope.fechayhora + "/";
-
       if (nombre == 'IMAGEN_MASCOTA' && (typeof (obj.files[0]) != 'undefined')) {
-        $scope.IMAGEN_MASCOTA = obj.files[0];
-
         var s_formatodoc = obj.files[0].type;
         s_formatodoc = s_formatodoc.split('/')[1];
         var nomdocumento = obj.files[0].name;
@@ -1464,8 +1506,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         var ext_doc = docextension[docextension.length - 1].toLowerCase();
         if ((ext_doc == 'pdf' || ext_doc == 'PDF') || (ext_doc == 'docx' || ext_doc == 'DOCX' || ext_doc == 'docxlm' || ext_doc == 'DOCXML') || (ext_doc == 'xlsx' || ext_doc == 'XLSX' || ext_doc == 'XLS' || ext_doc == 'xls')) {
           swal('Estimado Ciudadano', 'Debe adjuntar un archivo tipo imagen (png,jpg,jpeg)', 'error');
-          $.unblockUI();
-
         } else {
           if (tamaniofile.size > stam_min && tamaniofile.size <= stam_max) {
 
@@ -1477,30 +1517,24 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                 $scope.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                 document.getElementById("txt_" + nombre).value = nombreNuevo;
                 document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                //$scope.swimagen = true;
+                $scope.swimagen = true;
                 $scope.url_imagen = true; //cuando cambia imagen
                 $scope.btover7 = true;
-
               });
             }
           } else {
             if (tamaniofile.size <= stam_min) {
               if (validarFormatoDocumento("ADJ_IMG", obj.files[0].type) || validarFormatoDocumento("ADJ_DOC", obj.files[0].type)) {
                 var nombreNuevo = nombre + '_' + '_' + fechaNueva + '.' + ext_doc;
-
-
-
-
                 fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo);
                 $scope.datos.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                 $scope.IMAGEN_MASCOTA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                 document.getElementById("txt_" + nombre).value = nombreNuevo;
                 document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                // $scope.swimagen = true;
+                $scope.swimagen = true;
                 $scope.url_imagen = true; //cuando cambia imagen
                 $scope.btover7 = true;
                 $.unblockUI();
-
               } else {
                 swal('Advertencia', 'El archivo IMAGEN MASCOTA no es valido, seleccione un archivo de tipo imagen', 'error');
                 document.getElementById('IMAGEN_MASCOTA').value = '';
@@ -1524,6 +1558,36 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
         }
       }
+
+
+    }, 1000);
+  }
+  /********** */
+
+  $scope.cambiarPdf = function (obj, valor) {
+    var arraydoc = ["pdf", "doc", "docx", ".docx", ".docxlm"];
+    $scope.registroAdj = [];
+    var stam_min = 5242880;//Bytes
+    var stam_max = 15728640;//Bytes
+    var fechaNueva = "";
+    var fechaserver = new fechaHoraServer();
+    fechaserver.fechahora(function (resp) {
+      var sfecha = JSON.parse(resp);
+      var fechaServ = (sfecha.success.fecha).split(' ');
+      var fecha_ = fechaServ[0].split('-');
+      var hora_ = fechaServ[1].split(':');
+      fechaNueva = fecha_[0] + fecha_[1] + fecha_[2] + '_' + hora_[0] + hora_[1];
+    });
+    $.blockUI();
+    setTimeout(function () {
+      var nombre = obj.getAttribute("name");
+      var objarchivo = obj.files[0];
+      var tamaniofile = obj.files[0];
+
+      var ciCiudadano = sessionService.get('CICIUDADANO');
+      $scope.direccionvirtual = "RC_CLI";
+      var uploadUrl = CONFIG.APIURL + "/files/IMAGENESMASCOTAS/" + ciCiudadano + "/" + $scope.fechayhora + "/";
+
       if ((nombre == 'AUTORIZACION_CRIANZA' || nombre == 'SEGURO_RESP_CIVIL') && (typeof (obj.files[0]) != 'undefined')) {
         var s_formatodoc = obj.files[0].type;
         s_formatodoc = s_formatodoc.split('/')[1];
@@ -1545,10 +1609,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                   $scope.AUTORIZACION_CRIANZA = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                   document.getElementById("txt_" + nombre).value = nombreNuevo;
                   document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                  // $scope.swimagen = true;
-                  $scope.url_imagen = true; //cuando cambia imagen
-                  $scope.btnverCrianza = true;
-                  // $scope.btover7 = true;
                 });
 
               } else {
@@ -1559,10 +1619,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                   $scope.SEGURO_RESP_CIVIL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                   document.getElementById("txt_" + nombre).value = nombreNuevo;
                   document.getElementById("href_" + nombre).href = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                  //$scope.swimagen = true;
-                  $scope.url_imagen = true; //cuando cambia imagen
-                  $scope.btoverCivil = true;
-                  // $scope.btover7 = ;
+                  $scope.swimagen = false;
 
                 });
 
@@ -1584,7 +1641,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
                 } else {
                   $scope.datos.SEGURO_RESP_CIVIL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
                   $scope.SEGURO_RESP_CIVIL = uploadUrl + "/" + nombreNuevo + "?app_name=todoangular";
-                  $scope.btoverCivil = true;
+                  $scope.btnVerCivil = true;
 
                 }
 
@@ -1629,21 +1686,25 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
           }
 
         }
-
-
       }
 
-      if ($scope.IMAGEN_MASCOTA && $scope.AUTORIZACION_CRIANZA && $scope.SEGURO_RESP_CIVIL) {
-        $scope.swimagen = true;
+      if ($scope.botonMod == false) {
+        if ($scope.IMAGEN_MASCOTA && $scope.AUTORIZACION_CRIANZA && $scope.SEGURO_RESP_CIVIL) {
+          $scope.swimagen = true;
 
+        } else {
+          $scope.swimagen = false;
+        }
       } else {
-        $scope.swimagen = false;
-
+        $scope.swimagen = true;
       }
 
     }, 1000);
   }
 
+
+
+  /********** */
   $scope.actualiza = function (nombre) {
     document.getElementById('m1').value = 'http://localhost:8080/evidencia/' + nombre;
   }
@@ -1665,9 +1726,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     regServicio.id_usuario = 3;
     regServicio.data_formulario = $scope.dataServicioMascota;
     regServicio.data_ciudadano = mascotas;
-
     regServicio.registro_Servicio_Mascotas(function (respuesta) {
-
       var regMascota = JSON.parse(respuesta);
       //regMascota = regMascota.success[0].sp_insertar_formulario_servicios_datos;
       regMascota1 = regMascota.success.length;
@@ -1676,7 +1735,6 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         datosMascota.identificador = 'SISTEMA_VALLE-CM-2053';
         datosMascota.parametros = JSON.stringify($scope.dataMascota);
         $scope.dataServicioMascota = JSON.stringify($scope.dataMascota);
-
         datosMascota.llamarregla(function (results) {
           if (results.length == 0) {
             alertify.error("Su mascota no fue registrada, por favor verifique sus datos.");
@@ -1891,6 +1949,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
 
   //----------------VER DATOS MASCOTA -------------//
   $scope.verDatosMascota = function (data_tramite) {
+
     $scope.botonMod = false;
     $scope.botonCrea = false;
     $scope.tramiteSeleccionado = data_tramite.xmascota_id;
@@ -1901,18 +1960,18 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     $scope.desabilitadoPeso = true;
     $scope.mostrar_form_mascotas = true;
     $scope.datosMascotaVer($scope.tramiteSeleccionado);
-    //$scope.mostrarRaza(data_tramite.xmascota_raza_id)
     var id_raza = data_tramite.xmascota_raza_id
-    if (id_raza == 27 || id_raza == 26 || id_raza == 28 || id_raza == 29 || id_raza == 30 || id_raza == 31 || id_raza == 82 || id_raza == 33 || id_raza == 34 || id_raza == 35) {
+    if (id_raza == 27 || id_raza == 26 || id_raza == 28 || id_raza == 29 || id_raza == 30 || id_raza == 31 || id_raza == 32 || id_raza == 82 || id_raza == 33 || id_raza == 34 || id_raza == 35) {
       $scope.autorizacionCrianza = true;
       $scope.responsabilidadCivil = true;
+      $scope.btnverCrianza = true;
+      $scope.btnVerCivil = true;
     } else {
-
       $scope.autorizacionCrianza = false;
       $scope.responsabilidadCivil = false;
+      $scope.btnverCrianza = false;
+      $scope.btnVerCivil = false;
     }
-
-
   }
   $scope.datosMascotaVer = function (data) {
     cargando();
@@ -1955,8 +2014,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.convertirUrl = $scope.xmascota_imagen_urlM.split("files");
         $scope.xdeshabilitado = true;
 
-        $scope.btnverCrianza = true;
-        $scope.btoverCivil = true;
+
 
 
         if (($scope.convertirUrl[0] == 'http://40.117.46.159//rest/') || ($scope.convertirUrl[0] == 'https://40.117.46.159//rest/')) {
@@ -1969,14 +2027,54 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         } else {
           $scope.swimagen = false;
         }
-        $scope.btover7 = "mostrar";
-        $scope.url_imagen = true; //cuando cambia imagen
-        $scope.btnverCrianza = true;
+        $scope.btover7 = "mostrar";//********************************************** */
+        //  $scope.url_imagen = true; //cuando cambia imagen
+        // $scope.btnverCrianza = true;
+
         $scope.datos.IMAGEN_MASCOTA = $scope.respuesta[0].xmascota_imagen_url;
+        var id_raza = $scope.respuesta[0].xmascota_raza_id;
+        if (id_raza == 27 || id_raza == 26 || id_raza == 28 || id_raza == 29 || id_raza == 30 || id_raza == 31 || id_raza == 32 || id_raza == 82 || id_raza == 33 || id_raza == 34 || id_raza == 35) {
+          if ($datos_mascota1['certificados_peligrosos'] == undefined) {
+            swal('Estimado Ciudadano', 'Debe adjuntar los documentos AUTORIZACIÓN DE CRIANZA y SEGURO DE RESPONSABILIDAD CIVIL');
+            $scope.btnverCrianza = false;
+            $scope.btnVerCivil = false;
 
-        $scope.datos.AUTORIZACION_CRIANZA = $datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza;
-        $scope.datos.SEGURO_RESP_CIVIL = $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil;
+          } else {
+            if ($datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza == undefined || $datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza == "" || $datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza == ''
+              || $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil == undefined || $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil == "" || $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil == '') {
+              swal('Estimado Ciudadano', 'Debe adjuntar los documentos AUTORIZACIÓN DE CRIANZA y SEGURO DE RESPONSABILIDAD CIVIL');
+              $scope.datos.AUTORIZACION_CRIANZA = "";
+              $scope.datos.SEGURO_RESP_CIVIL = "";
+              $scope.autorizacionCrianza = true;
+              $scope.responsabilidadCivil = true;
 
+              $scope.btnverCrianza = false;
+              $scope.btnVerCivil = false;
+
+
+            } else {
+
+              $scope.datos.AUTORIZACION_CRIANZA = $datos_mascota1['certificados_peligrosos'][0].autorizacion_crianza;
+              $scope.datos.SEGURO_RESP_CIVIL = $datos_mascota1['certificados_peligrosos'][0].seguro_resp_civil;
+              $scope.autorizacionCrianza = true;
+              $scope.responsabilidadCivil = true;
+              $scope.btnverCrianza = true;
+              $scope.btnVerCivil = true;
+            }
+          }
+
+
+
+
+
+
+        } else {
+
+          $scope.datos.AUTORIZACION_CRIANZA = '';
+          $scope.datos.SEGURO_RESP_CIVIL = '';
+          $scope.autorizacionCrianza = false;
+          $scope.responsabilidadCivil = false;
+        }
         $scope.datos.xmascota_especie = $datos_mascota1.especie;
         $scope.datos.xmascota_raza = $datos_mascota1.raza;
         $scope.raza = $datos_mascota1.raza;
@@ -2134,6 +2232,20 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     });
   }
   //----------------------FIN-------------------------//
+  $scope.validacionPDF = function () {
+
+
+    if ($scope.datos.AUTORIZACION_CRIANZA == undefined || $scope.datos.AUTORIZACION_CRIANZA == "" || $scope.datos.AUTORIZACION_CRIANZA == ''
+      || $scope.datos.SEGURO_RESP_CIVIL == undefined || $scope.datos.SEGURO_RESP_CIVIL == "" || $scope.datos.SEGURO_RESP_CIVIL == ''
+    ) {
+      return false;
+
+    } else {
+      return true;
+    }
+
+
+  }
 
 
   $scope.validacionEstEsterilizacion = function () {

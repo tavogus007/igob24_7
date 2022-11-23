@@ -237,7 +237,14 @@
     $('.custom-upload input[type=file]').change(function () {
         if ($(this).val() != '' || $(this).val() != "") {
             $(this).next().find('input').val($(this).val());
-            angular.element(this).scope().cambiarFile(this, $(this).val());
+
+            if ($(this)[0].name == "IMAGEN_MASCOTA") {
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+
+            } else {
+                angular.element(this).scope().cambiarPdf(this, $(this).val());
+
+            }
         }
     });
 
@@ -963,7 +970,7 @@
                                                                         class="form-control input-lg required">
                                                                     <span class="input-group-btn">
                                                                         <a id="href_SEGURO_RESP_CIVIL"
-                                                                            ng-show="btoverCivil"
+                                                                            ng-show="btnVerCivil"
                                                                             href="{{datos.SEGURO_RESP_CIVIL}}"
                                                                             target="_blank">
                                                                             <button id="btn_SEGURO_RESP_CIVIL"
@@ -985,10 +992,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                           
-                                        </div>                                        <!--  nuevo hermi-->
+
+                                        </div> <!--  nuevo hermi-->
                                         <!--  nuevo hermi-->
-                              
+
                                         <!--fin hermi-->
 
                                         <div class="row" ng-show="desparasitacion">
@@ -1283,47 +1290,47 @@
 
                         <!-- Modal COMPROMISO-->
                         <div class="modal fade" class="modal-body" id="formModal" tabindex="-1" role="dialog"
-                            aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h2 class="modal-title" id="exampleModalLongTitle">
-                                            <center><strong>COMPROMISO</strong></center>
-                                        </h2>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p style="text-align:center"><strong>COMPROMISO DE TENENCIA RESPONSABLE DE
-                                                ANIMALES DE COMPAÑÍA </strong></p>
-                                        <p>&nbsp;</p>
-                                        <p style="text-align:justify">&nbsp;</p>
+                        aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title" id="exampleModalLongTitle">
+                                        <center><strong>COMPROMISO</strong></center>
+                                    </h2>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="text-align:center"><strong>COMPROMISO DE TENENCIA RESPONSABLE DE
+                                            ANIMALES DE COMPAÑÍA </strong></p>
+                                    <p>&nbsp;</p>
+                                    <p style="text-align:justify">&nbsp;</p>
 
-                                        <p style="text-align:justify">En mi calidad de titular de la mascota registrada,
-                                            me comprometo a no maltratar ni abandonar, brindar cuidado y atención a la
-                                            mascota bajo mi custodia y cumplir las normas legales en actual vigencia. En
-                                            cumplimiento a la Leyes Autonómicas Municipales 239-316 para Animales de
-                                            Compañía y su reglamentación.”</p>
-                                        <p style="text-align:justify">Yo {{nombre}} {{paterno}} {{materno}}, con Cédula
-                                            de Identidad No. {{ci}} {{exp}}, con domicilio en {{direccion}} {{nro}} de
-                                            la zona de {{zona}}, con teléfono No. {{celular}}, como titular del animal
-                                            de compañía de especie {{especie}}, de nombre {{nombre_mas}}, raza {{raza}}
-                                            , edad {{edad}} {{edad_desc}}, en el marco de la normativa vigente
-                                            (nacional, departamental y/o municipal) lo cuidaré de forma responsable,
-                                            brindándole alimento y agua, resguardo y cuidado médico veterinario
-                                            adecuado, conforme a las necesidades de mi animal de compañía, sabiendo que
-                                            entre las prohibiciones están el maltrato y/o el abandono del mismo.</p>
+                                    <p style="text-align:justify">En mi calidad de titular de la mascota registrada,
+                                        me comprometo a no maltratar ni abandonar, brindar cuidado y atención a la
+                                        mascota bajo mi custodia y cumplir las normas legales en actual vigencia. En
+                                        cumplimiento a la Leyes Autonómicas Municipales 239-316 para Animales de
+                                        Compañía y su reglamentación.”</p>
+                                    <p style="text-align:justify">Yo {{nombre}} {{paterno}} {{materno}}, con Cédula
+                                        de Identidad No. {{ci}} {{exp}}, con domicilio en {{direccion}} {{nro}} de
+                                        la zona de {{zona}}, con teléfono No. {{celular}}, como titular del animal
+                                        de compañía de especie {{especie}}, de nombre {{nombre_mas}}, raza {{raza}}
+                                        , edad {{edad}} {{edad_desc}}, en el marco de la normativa vigente
+                                        (nacional, departamental y/o municipal) lo cuidaré de forma responsable,
+                                        brindándole alimento y agua, resguardo y cuidado médico veterinario
+                                        adecuado, conforme a las necesidades de mi animal de compañía, sabiendo que
+                                        entre las prohibiciones están el maltrato y/o el abandono del mismo.</p>
 
-                                    </div>
+                                </div>
 
-                                    <div class="modal-footer">
+                                <div class="modal-footer">
 
-                                        <button id="btncerrarmodal" type="button" class="btn btn-default"
-                                            data-dismiss="modal" ng-click="noValidaCondicionUso()">No Acepto</button>
-                                        <button id="btnRegistro" type="button" class="btn btn-default"
-                                            data-dismiss="modal" ng-click="adicionarMascota(datos)">Acepto</button>
-                                    </div>
+                                    <button id="btncerrarmodal" type="button" class="btn btn-default"
+                                        data-dismiss="modal" ng-click="noValidaCondicionUso()">No Acepto</button>
+                                    <button id="btnRegistro" type="button" class="btn btn-default"
+                                        data-dismiss="modal" ng-click="adicionarMascota(datos)">Acepto</button>
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <!-- Modal COMPROMISO RAZAS PELIGROSAS -->
                         <div class="modal fade" class="modal-body" id="formModalP" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true">

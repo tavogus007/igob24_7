@@ -1,3 +1,4 @@
+
 function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $rootScope, sessionService, ngTableParams, $filter, $route, sweet, $http, FileUploader, $sce, fileUpload, filterFilter, $routeParams, $location, Data, $q, obtFechaActual, fileUpload1, fileUploadcorr) {
 
   var hoy = new Date();
@@ -324,6 +325,10 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
   //RECUPERA DATOS DE LA MASCOTA
   $scope.seleccionarMascota = function (data_tramite) {
 
+    $scope.vacunas = [];
+    $scope.data1 = [];
+
+    console.warn("////////////////", data_tramite)
     $scope.AUTORIZACION_CRIANZA = "";
     $scope.SEGURO_RESP_CIVIL = "";
     $scope.botonMod = true;
@@ -560,6 +565,8 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
         $scope.datos.imagen_png = $scope.respuesta[0].xmascota_imagen_url;
         $scope.datos.mascota_color = $datos_mascota1.color;
         $scope.datos.mascota_tamanio = $datos_mascota1.tamanio;
+        console.error("modificacion", $datos_mascota1)
+
         if ($datos_mascota1.reg_vacunas) {
           if ($datos_mascota1.reg_vacunas.length > 0) {
             //alert('MODIFICACION CON VACUNAS');
@@ -630,6 +637,10 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       $.unblockUI();
       $.LoadingOverlay("hide");
     });
+    /*********************************** */
+    /*********************************** */
+    /*********************************** */
+    console.error("modificacion F", $scope.datos)
   }
 
   $scope.dataMascotaMod = {};
@@ -751,10 +762,21 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     }
 
 
+    console.log("////////////////", $scope.vacunas)
     $scope.dataMascotaMod_data.marca = $scope.marca;  //MARCA
     $scope.dataMascotaMod_data.reg_marca = $scope.reg_marca;
     $scope.dataMascotaMod_data.reg_vacunas = $scope.data1; ///recupera en la grilla
-    $scope.dataMascotaMod_data.vacunas = $scope.vacunas; //VACUNAS
+    console.log("////////////////", $scope.data1)
+    console.log("////////////////", $scope.data1.length)
+    if ($scope.vacunas.length > 0) {
+      $scope.dataMascotaMod_data.vacunas = "si"; //VACUNAS
+
+    } else {
+      $scope.dataMascotaMod_data.vacunas = "no"; //VACUNAS
+
+    }
+    //$scope.dataMascotaMod_data.vacunas = $scope.vacunas; //VACUNAS
+
     $scope.dataMascotaMod_data.certificados_peligrosos = [{ "autorizacion_crianza": crianza, "seguro_resp_civil": civil }];
 
     if ($scope.data1) {
@@ -796,6 +818,9 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
           var datosMascotaMod = new reglasnegocioM();
           datosMascotaMod.identificador = 'SISTEMA_VALLE-CM-2037';
           datosMascotaMod.parametros = JSON.stringify($scope.dataMascotaMod);
+          console.warn($scope.dataMascotaMod)
+          console.warn(JSON.parse($scope.dataMascotaMod.xmascota_data))
+          
           datosMascotaMod.llamarregla(function (results) {
             var resp = JSON.parse(results);
             var sci = sessionService.get('CICIUDADANO');
@@ -806,6 +831,7 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
             $scope.$apply();
             alertify.success('Datos de la Mascota fue Modificada');
           });
+          
         });
       } else {
         console.warn("false")

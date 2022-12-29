@@ -237,7 +237,14 @@
     $('.custom-upload input[type=file]').change(function () {
         if ($(this).val() != '' || $(this).val() != "") {
             $(this).next().find('input').val($(this).val());
-            angular.element(this).scope().cambiarFile(this, $(this).val());
+
+            if ($(this)[0].name == "IMAGEN_MASCOTA") {
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+
+            } else {
+                angular.element(this).scope().cambiarPdf(this, $(this).val());
+
+            }
         }
     });
 
@@ -377,13 +384,22 @@
                                                     </td>
                                                     <!--td data-title="'Carnet'"><a href={{detalle_url}}{{tramite.xmascota_certdigital}} target="_blank" title="Ver/Descargar" class="btn btn-default btn-circle" ><i class="fa fa-newspaper-o" style="color:rgb(247, 33, 9)" ></i></a></td-->
                                                     <td data-title="'Opciones'">
-                                                        <a class="btn btn-default btn-circle" ng-click="verDatosMascota(tramite)" data-toggle="modal" tooltip="VER DATOS MASCOTA">
-                                                            <i class="fa fa-eye"     style="color:rgb(15, 15, 15)" ></i>
+                                                        <a class="btn btn-default btn-circle"
+                                                            ng-click="verDatosMascota(tramite)" data-toggle="modal"
+                                                            tooltip="VER DATOS MASCOTA">
+                                                            <i class="fa fa-eye" style="color:rgb(15, 15, 15)"></i>
                                                         </a>&nbsp;
-                                                        <a class="btn btn-default btn-circle" ng-click="seleccionarMascota(tramite)" data-toggle="modal" tooltip="EDITAR DATOS MASCOTA" ng-show="tramite.xmascota_estado === 'activo'">
-                                                            <i class="fa fa-edit"     style="color:rgb(15, 15, 15)"></i>
+                                                        <a class="btn btn-default btn-circle"
+                                                            ng-click="seleccionarMascota(tramite)" data-toggle="modal"
+                                                            tooltip="EDITAR DATOS MASCOTA"
+                                                            ng-show="tramite.xmascota_estado === 'activo'">
+                                                            <i class="fa fa-edit" style="color:rgb(15, 15, 15)"></i>
                                                         </a>&nbsp;
-                                                        <a class="btn btn-default btn-circle" data-target="#formModalElim" ng-click="llamModEli(tramite.xmascota_id)" data-toggle="modal" tooltip="ELIMINAR" ng-show="tramite.xmascota_estado === 'activo'">
+                                                        <a class="btn btn-default btn-circle"
+                                                            data-target="#formModalElim"
+                                                            ng-click="llamModEli(tramite.xmascota_id)"
+                                                            data-toggle="modal" tooltip="ELIMINAR"
+                                                            ng-show="tramite.xmascota_estado === 'activo'">
                                                             <i class="fa fa-trash-o" style="color:rgb(15, 15, 15)"></i>
                                                         </a>
                                                     </td>
@@ -517,7 +533,9 @@
                                     <bold>DATOS GENERALES DE LA MASCOTA</bold>
                                 </a></li>
 
-                            <li ng-show="desparasitacion"><a href="registro_ciudadano|servicios|index3.html#tabDesparasitacion" data-toggle="tab">
+                            <li ng-show="desparasitacion"><a
+                                    href="registro_ciudadano|servicios|index3.html#tabDesparasitacion"
+                                    data-toggle="tab">
                                     <bold>REGISTRO DE DESPARASITACIONES</bold>
                                 </a></li>
                             <li><a href="registro_ciudadano|servicios|index3.html#tabVacunas" data-toggle="tab">
@@ -530,24 +548,49 @@
                                 <div class="col-lg-12" class="tab">
                                     <div class="ibox float-e-margins">
                                         <div class="row">
-                                            <input type="hidden" ng-model="datos.ci_bigdata" id="ci_bigdata" name="ci_bigdata" class="form-control" width="30%" height="30" ng-disabled="true" />
-                                            <input type="hidden" ng-model="datos.fec_solicitud" id="fec_solicitud" name="int_fec_solicitud" class="form-control" width="30%" height="30" ng-disabled="true" />
-                                            <input type="hidden" ng-model="datos.xmascota_raza_id" id="xmascota_raza_id" name="xmascota_raza_id" class="form-control" width="30%" height="30" ng-disabled="true" />
-                                            <input type="hidden" ng-model="datos.xmascota_raza" id="xmascota_raza" name="xmascota_raza" class="form-control" width="30%" height="30" ng-disabled="true" />
-                                            <input type="hidden" ng-model="datos.xmascota_usr_id" id="xmascota_usr_id" name="xmascota_usr_id" class="form-control" width="30%" height="30" ng-disabled="true" />
-                                            <input type="hidden" ng-model="datos.titular_id" id="titular_id" name="titular_id" class="form-control" width="30%" height="30" ng-disabled="true" />
-                                            <input type="hidden" ng-model="datos.xmascota_titular_ci" id="xmascota_titular_ci" name="xmascota_titular_ci" class="form-control" width="30%" height="30" ng-disabled="true" />
-                                            <input type="hidden" ng-model="datos.xmascota_especie" id="xmascota_especie" name="xmascota_especie" class="form-control" width="30%" height="30" ng-disabled="true" />
-                                            <input type="hidden" ng-model="datos.xmascota_raza" id="xmascota_raza" name="xmascota_raza" class="form-control" width="30%" height="30" ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.ci_bigdata" id="ci_bigdata"
+                                                name="ci_bigdata" class="form-control" width="30%" height="30"
+                                                ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.fec_solicitud" id="fec_solicitud"
+                                                name="int_fec_solicitud" class="form-control" width="30%" height="30"
+                                                ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.xmascota_raza_id" id="xmascota_raza_id"
+                                                name="xmascota_raza_id" class="form-control" width="30%" height="30"
+                                                ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.xmascota_raza" id="xmascota_raza"
+                                                name="xmascota_raza" class="form-control" width="30%" height="30"
+                                                ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.xmascota_usr_id" id="xmascota_usr_id"
+                                                name="xmascota_usr_id" class="form-control" width="30%" height="30"
+                                                ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.titular_id" id="titular_id"
+                                                name="titular_id" class="form-control" width="30%" height="30"
+                                                ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.xmascota_titular_ci"
+                                                id="xmascota_titular_ci" name="xmascota_titular_ci" class="form-control"
+                                                width="30%" height="30" ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.xmascota_especie" id="xmascota_especie"
+                                                name="xmascota_especie" class="form-control" width="30%" height="30"
+                                                ng-disabled="true" />
+                                            <input type="hidden" ng-model="datos.xmascota_raza" id="xmascota_raza"
+                                                name="xmascota_raza" class="form-control" width="30%" height="30"
+                                                ng-disabled="true" />
                                             <div class="col-md-4">
                                                 <div class="col-md-12" align="left">
                                                     <div class="form-group" class="col-md-12">
                                                         <font color="#FF0000"> * </font>
                                                         <label for="url">Nombre (Animal de compañía):</label>
                                                         <div class="controls">
-                                                            <input ng-model="datos.mascota_nombre" name="mascota_nombre" id="mascota_nombre" class="form-control" type="text" placeholder="Ingrese nombre del animal de compañía" onkeyUp="return conMayusculas(this);" ng-disabled="desabilitado || datosNoEditables" required>
-                                                            <span style="color:red" ng-show="signupForm.mascota_nombre.$invalid">
-                                                                <span ng-show="signupForm.mascota_nombre.$error.required">Nombre es requerido.</span>
+                                                            <input ng-model="datos.mascota_nombre" name="mascota_nombre"
+                                                                id="mascota_nombre" class="form-control" type="text"
+                                                                placeholder="Ingrese nombre del animal de compañía"
+                                                                onkeyUp="return conMayusculas(this);"
+                                                                ng-disabled="desabilitado || datosNoEditables" required>
+                                                            <span style="color:red"
+                                                                ng-show="signupForm.mascota_nombre.$invalid">
+                                                                <span
+                                                                    ng-show="signupForm.mascota_nombre.$error.required">Nombre
+                                                                    es requerido.</span>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -559,13 +602,20 @@
                                                         <font color="#FF0000"> * </font>
                                                         <label for="url">Especie : </label>
                                                         <div class="controls">
-                                                            <select id="reg_especie" name="reg_especie" ng-model="datos.mascota_especie_id" ng-change="listarRaza(datos.mascota_especie_id);" class="form-control" placeholder="-- Seleccione --" ng-disabled="desabilitado || datosNoEditables" required>
+                                                            <select id="reg_especie" name="reg_especie"
+                                                                ng-model="datos.mascota_especie_id"
+                                                                ng-change="listarRaza(datos.mascota_especie_id);"
+                                                                class="form-control" placeholder="-- Seleccione --"
+                                                                ng-disabled="desabilitado || datosNoEditables" required>
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="1"> Canino </option>
                                                                 <option value="2"> Felino </option>
                                                             </select>
-                                                            <span style="color:red" ng-show="signupForm.reg_especie.$invalid">
-                                                                <span ng-show="signupForm.reg_especie.$error.required">Especie es requerido.</span>
+                                                            <span style="color:red"
+                                                                ng-show="signupForm.reg_especie.$invalid">
+                                                                <span
+                                                                    ng-show="signupForm.reg_especie.$error.required">Especie
+                                                                    es requerido.</span>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -582,7 +632,8 @@
                                                                 ng-options="dato._raza_id as dato._raza_data for dato in mascotas_razas"
                                                                 ng-model="datos.xmascota_raza_id"
                                                                 ng-change="mostrarRaza(datos.xmascota_raza_id);"
-                                                                ng-disabled="dsaraza || desabilitado || datosNoEditables" required>
+                                                                ng-disabled="dsaraza || desabilitado || datosNoEditables"
+                                                                required>
                                                                 <option value="">Escriba el nombre de la raza </option>
                                                             </select>
 
@@ -760,7 +811,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>                                            
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4">
@@ -773,7 +824,8 @@
                                                                 ng-model="datos.mascota_esterilizacion"
                                                                 onkeyup="mayus(this);" class="form-control"
                                                                 ng-change="muestra_esterilizacion(datos.mascota_esterilizacion);"
-                                                                ng-disabled="desabilitado || esterilizacionDisabled" required>
+                                                                ng-disabled="desabilitado || esterilizacionDisabled"
+                                                                required>
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="si"> Si </option>
                                                                 <option value="no"> No </option>
@@ -855,10 +907,102 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <!--  nuevo hermi-->
+
+                                        <div class="row">
+                                            <div class="col-md-6" ng-show="autorizacionCrianza">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url">AUTORIZACIÓN DE CRIANZA</label>
+                                                        <div class="controls">
+                                                            <div class="form-group custom-upload">
+                                                                <input type="file" id="AUTORIZACION_CRIANZA"
+                                                                    name="AUTORIZACION_CRIANZA"
+                                                                    ng-model="AUTORIZACION_CRIANZA" accept="pdf/*"
+                                                                    style="display: none;">
+                                                                <div class="input-group">
+                                                                    <input id="txt_AUTORIZACION_CRIANZA"
+                                                                        name="txt_AUTORIZACION_CRIANZA"
+                                                                        ng-model="datos.AUTORIZACION_CRIANZA"
+                                                                        type="hidden" ng-disabled="true"
+                                                                        class="form-control input-lg required">
+                                                                    <span class="input-group-btn">
+                                                                        <a id="href_AUTORIZACION_CRIANZA"
+                                                                            ng-show="btnverCrianza"
+                                                                            href="{{datos.AUTORIZACION_CRIANZA}}"
+                                                                            target="_blank">
+                                                                            <button id="btn_AUTORIZACION_CRIANZA"
+                                                                                class="browse btn btn-primary input-lg"
+                                                                                type="button"><i
+                                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                                        </a>
+                                                                        <button id="btn_AUTORIZACION_CRIANZA"
+                                                                            class="btnupload browse btn btn-primary input-lg"
+                                                                            type="button"
+                                                                            ng-click="ejecutarFile('AUTORIZACION_CRIANZA');"
+                                                                            ng-disabled="xdeshabilitado"><i
+                                                                                class="glyphicon glyphicon-upload"></i>
+                                                                            Subir</button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" ng-show="responsabilidadCivil">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url">SEGURO DE RESPONSABILIDAD CIVIL</label>
+                                                        <div class="controls">
+                                                            <div class="form-group custom-upload">
+                                                                <input type="file" id="SEGURO_RESP_CIVIL"
+                                                                    name="SEGURO_RESP_CIVIL"
+                                                                    ng-model="SEGURO_RESP_CIVIL" accept="pdf/*"
+                                                                    style="display: none;">
+                                                                <div class="input-group">
+                                                                    <input id="txt_SEGURO_RESP_CIVIL"
+                                                                        name="txt_SEGURO_RESP_CIVIL"
+                                                                        ng-model="datos.SEGURO_RESP_CIVIL" type="hidden"
+                                                                        ng-disabled="true"
+                                                                        class="form-control input-lg required">
+                                                                    <span class="input-group-btn">
+                                                                        <a id="href_SEGURO_RESP_CIVIL"
+                                                                            ng-show="btnVerCivil"
+                                                                            href="{{datos.SEGURO_RESP_CIVIL}}"
+                                                                            target="_blank">
+                                                                            <button id="btn_SEGURO_RESP_CIVIL"
+                                                                                class="browse btn btn-primary input-lg"
+                                                                                type="button"><i
+                                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                                        </a>
+                                                                        <button id="btn_SEGURO_RESP_CIVIL"
+                                                                            class="btnupload browse btn btn-primary input-lg"
+                                                                            type="button"
+                                                                            ng-click="ejecutarFile('SEGURO_RESP_CIVIL');"
+                                                                            ng-disabled="xdeshabilitado"><i
+                                                                                class="glyphicon glyphicon-upload"></i>
+                                                                            Subir</button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div> <!--  nuevo hermi-->
+                                        <!--  nuevo hermi-->
+
+                                        <!--fin hermi-->
+
                                         <div class="row" ng-show="desparasitacion">
                                             <div class="alert alert-danger fade in">
                                                 <label>
-                                                        Debe registrar los datos de la Desparasitación, dirigiendose a la pestaña <font color="#FF0000"> REGISTRO DE DESPARASITACIONES </font>
+                                                    Debe registrar los datos de la Desparasitación, dirigiendose a la
+                                                    pestaña <font color="#FF0000"> REGISTRO DE DESPARASITACIONES </font>
                                                 </label>
                                             </div>
                                         </div>
@@ -874,8 +1018,8 @@
                                                         <div class="controls">
                                                             <input ng-model="datos.reg_feca" name="reg_feca"
                                                                 id="reg_feca" class="form-control"
-                                                                ng-disabled="desabilitado || esterilizacionDisabled" type="number" min="2000"
-                                                                max={{gestion}}>
+                                                                ng-disabled="desabilitado || esterilizacionDisabled"
+                                                                type="number" min="2000" max={{gestion}}>
                                                             <span style="color:red"
                                                                 ng-show="signupForm.reg_feca.$invalid">
                                                                 <span ng-show="signupForm.reg_feca.$error.required">
@@ -894,7 +1038,8 @@
                                                             <select id="marca" name="marca"
                                                                 ng-model="datos.mascota_marca" class="form-control"
                                                                 placeholder="-- Seleccione --"
-                                                                ng-disabled="desabilitado || esterilizacionDisabled" ng-change="cambioNrocert();">
+                                                                ng-disabled="desabilitado || esterilizacionDisabled"
+                                                                ng-change="cambioNrocert();">
                                                                 <option value="">--Seleccione--</option>
                                                                 <option value="ninguna"> Ninguna </option>
                                                                 <option value="certificado"> Certificado </option>
@@ -956,11 +1101,13 @@
                                         <div class="form-group">
                                             <label for="url">Fecha de aplicacion - Desparasitación:</label>
                                             <div class="controls">
-                                                <input ng-model="datos.mascota_feca_desparasitacion" id="mascota_feca_desparasitacion"
+                                                <input ng-model="datos.mascota_feca_desparasitacion"
+                                                    id="mascota_feca_desparasitacion"
                                                     name="mascota_feca_desparasitacion" type="date" max={{fechaHoy}}
                                                     class="form-control" ng-disabled="desabilitado"
                                                     placeholder="Ingrese Fecha de aplicacion">
-                                                <span style="color:red" ng-show="signupForm.mascota_feca_desparasitacion.$invalid">
+                                                <span style="color:red"
+                                                    ng-show="signupForm.mascota_feca_desparasitacion.$invalid">
                                                     <span> Es requerido Fecha de Aplicación. </span>
                                                 </span>
                                             </div>
@@ -1013,7 +1160,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-12" ng-show="desparasitacion">
                                         <div class="table-responsive" ng-show="desparasitacion_si">
                                             <table ng-table="tablalstSoporte" show-filter="true"
@@ -1143,47 +1290,47 @@
 
                         <!-- Modal COMPROMISO-->
                         <div class="modal fade" class="modal-body" id="formModal" tabindex="-1" role="dialog"
-                            aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h2 class="modal-title" id="exampleModalLongTitle">
-                                            <center><strong>COMPROMISO</strong></center>
-                                        </h2>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p style="text-align:center"><strong>COMPROMISO DE TENENCIA RESPONSABLE DE
-                                                ANIMALES DE COMPAÑÍA </strong></p>
-                                        <p>&nbsp;</p>
-                                        <p style="text-align:justify">&nbsp;</p>
+                        aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h2 class="modal-title" id="exampleModalLongTitle">
+                                        <center><strong>COMPROMISO</strong></center>
+                                    </h2>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="text-align:center"><strong>COMPROMISO DE TENENCIA RESPONSABLE DE
+                                            ANIMALES DE COMPAÑÍA </strong></p>
+                                    <p>&nbsp;</p>
+                                    <p style="text-align:justify">&nbsp;</p>
 
-                                        <p style="text-align:justify">En mi calidad de titular de la mascota registrada,
-                                            me comprometo a no maltratar ni abandonar, brindar cuidado y atención a la
-                                            mascota bajo mi custodia y cumplir las normas legales en actual vigencia. En
-                                            cumplimiento a la Leyes Autonómicas Municipales 239-316 para Animales de
-                                            Compañía y su reglamentación.”</p>
-                                        <p style="text-align:justify">Yo {{nombre}} {{paterno}} {{materno}}, con Cédula
-                                            de Identidad No. {{ci}} {{exp}}, con domicilio en {{direccion}} {{nro}} de
-                                            la zona de {{zona}}, con teléfono No. {{celular}}, como titular del animal
-                                            de compañía de especie {{especie}}, de nombre {{nombre_mas}}, raza {{raza}}
-                                            , edad {{edad}} {{edad_desc}}, en el marco de la normativa vigente
-                                            (nacional, departamental y/o municipal) lo cuidaré de forma responsable,
-                                            brindándole alimento y agua, resguardo y cuidado médico veterinario
-                                            adecuado, conforme a las necesidades de mi animal de compañía, sabiendo que
-                                            entre las prohibiciones están el maltrato y/o el abandono del mismo.</p>
+                                    <p style="text-align:justify">En mi calidad de titular de la mascota registrada,
+                                        me comprometo a no maltratar ni abandonar, brindar cuidado y atención a la
+                                        mascota bajo mi custodia y cumplir las normas legales en actual vigencia. En
+                                        cumplimiento a la Leyes Autonómicas Municipales 239-316 para Animales de
+                                        Compañía y su reglamentación.”</p>
+                                    <p style="text-align:justify">Yo {{nombre}} {{paterno}} {{materno}}, con Cédula
+                                        de Identidad No. {{ci}} {{exp}}, con domicilio en {{direccion}} {{nro}} de
+                                        la zona de {{zona}}, con teléfono No. {{celular}}, como titular del animal
+                                        de compañía de especie {{especie}}, de nombre {{nombre_mas}}, raza {{raza}}
+                                        , edad {{edad}} {{edad_desc}}, en el marco de la normativa vigente
+                                        (nacional, departamental y/o municipal) lo cuidaré de forma responsable,
+                                        brindándole alimento y agua, resguardo y cuidado médico veterinario
+                                        adecuado, conforme a las necesidades de mi animal de compañía, sabiendo que
+                                        entre las prohibiciones están el maltrato y/o el abandono del mismo.</p>
 
-                                    </div>
+                                </div>
 
-                                    <div class="modal-footer">
+                                <div class="modal-footer">
 
-                                        <button id="btncerrarmodal" type="button" class="btn btn-default"
-                                            data-dismiss="modal" ng-click="noValidaCondicionUso()">No Acepto</button>
-                                        <button id="btnRegistro" type="button" class="btn btn-default"
-                                            data-dismiss="modal" ng-click="adicionarMascota(datos)">Acepto</button>
-                                    </div>
+                                    <button id="btncerrarmodal" type="button" class="btn btn-default"
+                                        data-dismiss="modal" ng-click="noValidaCondicionUso()">No Acepto</button>
+                                    <button id="btnRegistro" type="button" class="btn btn-default"
+                                        data-dismiss="modal" ng-click="adicionarMascota(datos)">Acepto</button>
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <!-- Modal COMPROMISO RAZAS PELIGROSAS -->
                         <div class="modal fade" class="modal-body" id="formModalP" tabindex="-1" role="dialog"
                             aria-labelledby="myModalLabel" aria-hidden="true">

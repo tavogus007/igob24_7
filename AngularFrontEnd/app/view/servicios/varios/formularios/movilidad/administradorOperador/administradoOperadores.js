@@ -3146,13 +3146,13 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       datos.g_tipo = 'RENO';
       var data_form = JSON.stringify(datos);
       var tramite = new crear_Tramite_lotus();
-      tramite.proid = 192;
-      tramite.actid = 1129;
+      tramite.proid = 89;
+      tramite.actid = 714;
       tramite.usr_id = 0;
       tramite.datos = data_form;
       tramite.procodigo = 'RENO';
       tramite.macro_id = 0;
-      tramite.nodo_id = 672;
+      tramite.nodo_id = 300;
       tramite.ws_id = 24;
       tramite.tram_lotus(function(results){ 
         results = JSON.parse(results);

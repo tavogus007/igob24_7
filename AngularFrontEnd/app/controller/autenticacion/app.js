@@ -673,3 +673,15 @@ function PagesController($scope, $http, $route, $routeParams, $compile, sessionS
 }
 
 PagesController.$inject = ['$scope', '$http', '$route', '$routeParams', '$compile', 'sessionService', '$location'];
+
+
+app.filter('replace', [function () {
+    return function (input, from, to) {
+      if(input === undefined) {
+        return;
+      }
+      var regex = new RegExp(from, 'g');
+      return input.replace(regex, to);
+       
+    };
+}]);

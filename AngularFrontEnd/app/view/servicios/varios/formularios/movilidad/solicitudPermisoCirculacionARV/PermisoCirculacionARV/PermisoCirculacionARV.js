@@ -21,14 +21,13 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
     $scope.des_servicio_cinco = false;
     $scope.div_motivo = false;
     $scope.tipoactividad = {};
-    $scope.tipoactividad = JSON.parse('[{"nombre": "EPSAS","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "DELAPAZ","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "LA PAZ LIMPIA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "YPFB","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Medios de comunicación","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Públicas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Privadas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Entidades Bancarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Funerarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Hoteles","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Turismo","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Lineas Aéreas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de seguridad privada","lf": 0,"cer": 0,"tmov": 1,"req_nom": 0},{"nombre": "Embajadas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Radio Taxis","lf": 0,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato de taxis(Constituidos como operadores)","lf": 1,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato COTRANSTUR","lf": 1,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "TERSA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Empresas Privadas de Transporte de Pasajeros (Constituidas como operadores)","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Particulares","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Empresas de delivery","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0}]');
+    $scope.tipoactividad = JSON.parse('[{"nombre": "Particulares","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "EPSAS","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "DELAPAZ","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "LA PAZ LIMPIA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "YPFB","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Medios de comunicación","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Públicas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Privadas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Entidades Bancarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Funerarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Hoteles","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Turismo","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Lineas Aéreas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de seguridad privada","lf": 0,"cer": 0,"tmov": 1,"req_nom": 0},{"nombre": "Embajadas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Radio Taxis","lf": 0,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato de taxis(Constituidos como operadores)","lf": 1,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato COTRANSTUR","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "TERSA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Empresas Privadas de Transporte de Pasajeros (Constituidas como operadores)","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de delivery","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0}]');
     $scope.tipovehiculo_privado = {};
     $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"MOTOCICLETA"}]');
     $scope.div_escoger_servicio = false;
 
-
     // requisitos de documentos adjuntos al formulario ******************************************************************************
-    $scope.singular_Titulo = 'IMPORTANTE: Recuerde que la otorgación del permiso de circulacion ARV está sujeto a análisis y solo se otorgarán en casos de emergencia relacionados a salud, traslado de y hacia el aeropuerto, vehículos oficiales y casos especiales debidamente justificados y respaldados. ';
+    $scope.singular_Titulo = 'IMPORTANTE: Recuerde que la otorgación del “PERMISO EXCEPCIONAL PARA CIRCULACIÓN EN EL ÁREA DE RESTRICCIÓN VEHICULAR” está sujeto a análisis y por lo tanto la solicitud puede ser rechazada.';
     $scope.plural_Titulo = 'Adjunte los siguientes documentos para cada requisito en un solo archivo (En formato PDF o DOC)';
 
 
@@ -43,7 +42,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
     $scope.singular_Cerdoc = 'Certificado o documento que acredite la última revisión técnica vehicular, otorgada por autoridad competente';
     $scope.singular_Ultimo = 'Último pago de impuestos del vehículo, el solicitante no debe contar con deudas pendientes sobre los impuestos a la propiedad de vehículos, ni sanciones en materia de transporte urbano';
     $scope.singular_Resolu = 'Resolución administrativa vigente emitida por la Autoridad Tributaria Municipal, de liberación de impuestos. (Si corresponde)';
-    $scope.singular_Roseta = 'Roseta Ambiental';
+    $scope.singular_Roseta = 'Roseta Ambiental Municipal , ( La Roseta Ambiental Municipal no es obligatoria para vehículos eléctricos)';
 
     $scope.plural_Nota = 'Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez – Secretario Municipal de Movilidad y Seguridad Ciudadana explicando y justificando la razón de la solicitud';
     $scope.plural_CeId = 'Cédula de Identidad del solicitante';
@@ -56,38 +55,8 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
     $scope.plural_Cerdoc = 'Certificado o documento que acredite la última revisión técnica vehicular, otorgada por autoridad competente';
     $scope.plural_Ultimo = 'Último pago de impuestos del vehículo, el solicitante no debe contar con deudas pendientes sobre los impuestos a la propiedad de vehículos, ni sanciones en materia de transporte urbano';
     $scope.plural_Resolu = 'Resolución administrativa vigente emitida por la Autoridad Tributaria Municipal, de liberación de impuestos. (Si corresponde)';
-    $scope.plural_Roseta = 'Roseta Ambiental';
+    $scope.plural_Roseta = 'Roseta Ambiental Municipal, ( La Roseta Ambiental Municipal no es obligatoria para vehículos eléctricos)';
 
-    /*
-    $scope.singular_Nota = 'Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez, Secretario Municipal de Movilidad, justificando las razones de la solicitud y adjuntando los respaldos correspondientes';
-    $scope.singular_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o representante legal, además adjuntar la fotocopia del conductor o los conductores en caso de que la solicitud sea para varios vehículos';
-    $scope.singular_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03, con radicatoria en el Municipio de La Paz o radicatoria en los Municipios colindantes en caso de brindar un servicio interciudad';
-    $scope.singular_tmov='Tarjeta Municipal de Operación Vehicular (T.M.O.V.) emitida al Servicio Público de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
-    $scope.singular_tic='Tarjeta de Identificación del Conductor (T.I.C.) emitida al Servicio de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
-    $scope.singular_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal vigente, para el caso entidades Bancarias, Medios de Comunicación, Líneas Aéreas, Empresas de Turismo, Hoteles, Empresas de Seguridad Privada, Funerarias y demás actividades económicas (Si corresponde)';
-    $scope.singular_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana, para el caso de empresas de seguridad (Si corresponde)';
-    $scope.singular_roseta = 'Roseta Ambiental emitida por la Secretaría Municipal de Gestión Ambiental y Energías Renovables';
-
-    $scope.plural_Nota = 'Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez, Secretario Municipal de Movilidad, justificando las razones de la solicitud y adjuntando los respaldos correspondientes';
-    $scope.plural_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o representante legal, además adjuntar la fotocopia del conductor o los conductores en caso de que la solicitud sea para varios vehículos';
-    $scope.plural_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03, con radicatoria en el Municipio de La Paz o radicatoria en los Municipios colindantes en caso de brindar un servicio interciudad';
-    $scope.plural_tmov='Tarjeta Municipal de Operación Vehicular (T.M.O.V.) emitida al Servicio Público de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
-    $scope.plural_tic='Tarjeta de Identificación del Conductor (T.I.C.) emitida al Servicio de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
-    $scope.plural_Licencia = 'Fotocopia de Licencia de Funcionamiento Municipal vigente, para el caso entidades Bancarias, Medios de Comunicación, Líneas Aéreas, Empresas de Turismo, Hoteles, Empresas de Seguridad Privada, Funerarias y demás actividades económicas (Si corresponde)';
-    $scope.plural_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana, para el caso de empresas de seguridad (Si corresponde)';
-    $scope.plural_roseta = 'Roseta Ambiental emitida por la Secretaría Municipal de Gestión Ambiental y Energías Renovables';
-    */
-
-    /*
-    $scope.tituloNota = $scope.singular_Nota;
-    $scope.tituloCerPropiedad = $scope.singular_CerPropiedad;
-    $scope.tituloCeId = $scope.singular_CeId;
-    $scope.tituloLicencia = $scope.singular_Licencia;
-    $scope.tituloCerti = $scope.singular_Certi;
-
-    $scope.titulotmov = $scope.plural_tmov;
-    $scope.titulotic = $scope.plural_tic;
-    */
 
     $scope.tituloNota = $scope.singular_Nota;
     $scope.tituloCeId = $scope.singular_CeId;
@@ -272,7 +241,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
             tramiteIgob.validarFormProcesos(function (resultado) {
                 swal({
                     title: 'Señor(a) Ciudadano(a) su trámite fue registrado correctamente.',
-                    text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2><br>“EN CASO DE QUE SU SOLICITUD SE APRUEBE, LE LLEGARÁ A SU BANDEJA DE NOTIFICACIONES EN IGOB EN ENLACE PARA QUE PUEDA DESCARGAR E IMPRIMIR EL PERMISO DE CIRCULACIÓN ARV. EN CASO DE QUE SU SOLICITUD SEA RECHAZADA SE LE ENVIARÁ A SU BANDEJA DE NOTIFICACIONES EN IGOB LA RAZÓN DEL RECHAZO DE TRÁMITE. <br> SU SOLICITUD SERA ATENDIDA EN UN PLAZO DE 2 DÍAS HÁBILES”',
+                    text: 'Su número de Trámite es:<h2></strong> ' + nroTramite + '</strong></h2><br>“En caso de que su solicitud se apruebe, le llegará a su bandeja de notificaciones en iGob un enlace para que pueda descargar e imprimir el PERMISO EXCEPCIONAL PARA CIRCULACIÓN EN EL ÁREA DE RESTRICCIÓN VEHICULAR. En caso de que su solicitud sea rechazada se le enviará a su bandeja de notificaciones en iGob la razón del rechazo de la solicitud”',
                     html: true,
                     type: 'success',
                 },function(isConfirm){
@@ -1083,53 +1052,6 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
         datoObjectFiles.push(datoObjectFile11); // FILE_Resolu
         datoObjectFiles.push(datoObjectFile12); // FILE_Roseta
 
-        /*
-        datoObjectFile1.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_Nota + "?app_name=todoangular";
-        datoObjectFile1.campo = $scope.datos.FILE_Nota;
-        datoObjectFile1.nombre = $scope.tituloNota;
-
-        datoObjectFile3.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_CeId + "?app_name=todoangular";
-        datoObjectFile3.campo = $scope.datos.FILE_CeId;
-        datoObjectFile3.nombre = $scope.tituloCeId;
-
-
-        datoObjectFile2.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_CerPropiedad + "?app_name=todoangular";
-        datoObjectFile2.campo = $scope.datos.FILE_CerPropiedad;
-        datoObjectFile2.nombre = $scope.tituloCerPropiedad;
-
-        datoObjectFile4.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_TMOV + "?app_name=todoangular";
-        datoObjectFile4.campo = $scope.datos.FILE_TMOV;
-        datoObjectFile4.nombre = $scope.titulotmov;
-
-        datoObjectFile5.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_TIC + "?app_name=todoangular";
-        datoObjectFile5.campo = $scope.datos.FILE_TIC;
-        datoObjectFile5.nombre = $scope.titulotic;
-
-        datoObjectFile6.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_Licencia + "?app_name=todoangular";
-        datoObjectFile6.campo = $scope.datos.FILE_Licencia;
-        datoObjectFile6.nombre = $scope.tituloLicencia;
-
-        datoObjectFile7.url = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sessionService.get('IDTRAMITE') + "/" + $scope.datos.FILE_Certi + "?app_name=todoangular";
-        datoObjectFile7.campo = $scope.datos.FILE_Certi;
-        datoObjectFile7.nombre = $scope.tituloCerti;
-
-        
-        datoObjectFiles.push(datoObjectFile1); // FILE_Nota
-        datoObjectFiles.push(datoObjectFile2); //FILE_CerPropiedad
-        datoObjectFiles.push(datoObjectFile3); // FILE_CeId
-
-        if($scope.TMOV){
-            datoObjectFiles.push(datoObjectFile4); // FILE_TMOV
-            datoObjectFiles.push(datoObjectFile5); // FILE_TIC
-        }
-        if($scope.LIC_FUN_SHOW){
-            datoObjectFiles.push(datoObjectFile6); // FILE_Licencia
-        }
-        if($scope.CERT_SEG_PRIV){
-            datoObjectFiles.push(datoObjectFile7); // FILE_Certi
-        }
-        */
-
         $scope.datos.FileDocumentos = datoObjectFiles;
         $rootScope.FileAdjuntos = datoObjectFiles;
         $scope.datos.File_Adjunto = datoObjectFiles;
@@ -1241,7 +1163,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                                                                     $scope.validadordocs = 1;
                                                                 } else {
                                                                     if ($scope.datos.FILE_Roseta == undefined || $scope.datos.FILE_Roseta == 'undefined') {
-                                                                        swal('', "Adjuntar la Roseta Ambiental", 'warning');
+                                                                        swal('', "Adjuntar la Roseta Ambiental Municipal", 'warning');
                                                                         $scope.validadordocs = 1;
                                                                     } else {
                                                                            if($scope.datos.PER_TRA_REG_TRANS != 'OTRO'){
@@ -1397,20 +1319,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
             swal('', 'Ingrese la marca del vehículo', 'warning');
         } else if (data.clase == '' || data.clase == undefined) {
             swal('', 'Ingrese la clase del vehículo', 'warning');
-        } else if (data.nombre == '' || data.nombre == undefined) {
-            swal('', 'Ingrese el Nombre', 'warning');
-        } else if (data.ape_primer == '' || data.ape_primer == undefined) {
-            swal('', 'Ingrese el Primer Apellido', 'warning');
-        //} else if (data.ape_segundo == '' || data.ape_segundo == undefined) {
-        //    swal('', 'Ingrese el Segundo Apellido', 'warning');
-        } else if (data.CI == '' || data.CI == undefined) {
-            swal('', 'Ingrese el Numero de Carnet', 'warning');
-        } else if (data.cat_licencia == '' || data.cat_licencia == undefined) {
-            swal('', 'Ingrese la Categoria de Licencia', 'warning');
-        } else if ($scope.validadorPlaca != 1) {
-            swal('', 'La Placa es incorrecta', 'warning');
-        //} else if (data.FILE_imagen == undefined || data.FILE_imagen == 'undefined') {
-        //    swal('', "Ajunte el Certificadod e Propiedad", 'warning');
+
         } else {
             $("#valida1").hide();
             $("#valida").hide();

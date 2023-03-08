@@ -509,7 +509,7 @@
                               <select id="PER_TRA_REG_TRANS_CBX" name="PER_TRA_REG_TRANS_CBX" placeholder="Actividad Economica"
                                 ng-model="datos.PER_TRA_REG_TRANS_CBX" class="form-control"
                                 ng-change="dinamicoFormulario(datos.PER_TRA_REG_TRANS_CBX)"
-                                ng-options="acteco.tmov+'|'+acteco.lf+'|'+ acteco.cer+'|'+acteco.req_nom+'|'+acteco.nombre as acteco.nombre for acteco in tipoactividad | orderBy:'nombre' "
+                                ng-options="acteco.tmov+'|'+acteco.lf+'|'+ acteco.cer+'|'+acteco.req_nom+'|'+acteco.nombre as acteco.nombre for acteco in tipoactividad  "
                                 ng-disabled="desabilitado">
                                 <option value="">--Seleccionar--</option>
                               </select>
@@ -532,7 +532,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <div class="controls">
-                          <label for="url">Ingrese el nombre de la empresa o institución</label>
+                          <label for="url">Ingrese el nombre de la persona, empresa o institución</label>
                           <input type="text" ng-model="datos.PER_nombre_empresa" id="PER_nombre_empresa"
                             name="PER_nombre_empresa" class="form-control" style="text-transform:uppercase;" value=""
                             width="30%" height="30" required ng-disabled="desabilitado" />
@@ -582,23 +582,14 @@
                   <div class="ibox float-e-margins">
                     <div class="col-md-12">
                       <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
-                        <h4>DATOS DE LOS VEHÍCULOS :</h4>
+                        <h4>DATOS DE LOS VEHÍCULOS SEGÚN RUAT:</h4>
                       </div>
                     </div>
                   </div>
                   <br><br>
                   <div class="col-md-12">
                     <div class="col-md-12">
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="url">TIPO DE VEHÍCULO :</label>
-                          <div class="controls">
-                            <select id="tipo_vehiculo" name="tipo_vehiculo" placeholder="Macrodistrito" ng-model="datosV.tipo_vehiculo" class="form-control" ng-change="cambioCombo(datosV.tipo_vehiculo);" ng-options="ope.nombre as ope.nombre for ope in tipovehiculo_privado" ng-disabled="desabilitado">
-                              <option value="">--Seleccionar--</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
+
                       <div class="col-sm-4">
                         <div class="form-group">
                           <label for="url">PLACA</label>
@@ -607,6 +598,15 @@
                           <span id="valida1" style="color:green;font-weight:bold; font-size:14px">La Placa es Correcta</span>
                         </div>
                       </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="url">TIPO DE VEHÍCULO :</label>
+                          <div class="controls">
+                            <input id="tipo_vehiculo" name="tipo_vehiculo" type="text" placeholder="Ejemplo: AUTOMOVIL" class="form-control" ng-model="datosV.tipo_vehiculo" ng-disabled="desabilitado" required onkeyup="mayus(this);" />
+                          </div>
+                        </div>
+                      </div>
+                      
                       <div class="col-sm-4">
                         <div class="form-group">
                           <label for="url">COLOR</label>
@@ -632,54 +632,7 @@
                           <input id="clase" name="clase" type="text" placeholder="" class="form-control" ng-model="datosV.clase" ng-disabled="desabilitado" required onkeyup="mayus(this);" />
                         </div>
                       </div>
-                    </div>
-                    <div class="col-md-12">
-                        <legend>Datos del Conductor</legend>
-                    </div> 
-                    <div class="col-md-12">
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                          <label for="url">NOMBRE DEL CONDUCTOR</label>
-                          <input id="nombre" name="nombre" type="text" placeholder="" class="form-control" style="text-transform:uppercase;" ng-model="datosV.nombre" ng-disabled="desabilitado" required oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*?)\..*/g, '$1');" onkeyup="mayus(this);"/>
-                        </div>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                          <label for="url">PRIMER APELLIDO</label>
-                          <input id="ape_primer" name="ape_primer" type="text" placeholder="" class="form-control" style="text-transform:uppercase;" ng-model="datosV.ape_primer" ng-disabled="desabilitado" required oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*?)\..*/g, '$1');" onkeyup="mayus(this);"/>
-                        </div>
-                      </div>
-                      <div class="col-sm-4">
-                        <div class="form-group">
-                          <label for="url">SEGUNDO APELLIDO</label>
-                          <input id="ape_segundo" name="ape_segundo" type="text" placeholder="" class="form-control" style="text-transform:uppercase;" ng-model="datosV.ape_segundo" ng-disabled="desabilitado" oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '').replace(/(\..*?)\..*/g, '$1');" onkeyup="mayus(this);"/>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label for="url">NUMERO DE CARNET</label>
-                          <div class="controls">
-                            <input type="text" ng-model="datosV.CI" id="CI" name="CI" class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30" ng-disabled="desabilitado" required onkeyup="mayus(this);"/>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-5">
-                        <div class="form-group">
-                          <label for="url">CATEGORIA DE LICENCIA DE CONDUCIR :</label>
-                          <div class="controls">
-                            <select id="cat_licencia" name="cat_licencia" placeholder="Macrodistrito" ng-model="datosV.cat_licencia" class="form-control ng-pristine ng-valid"  ng-disabled="desabilitado" required>
-                              <option value="" class="">--Seleccionar--</option>
-                              <option value="A">A</option>
-                              <option value="B">B</option>
-                              <option value="C">C</option>
-                              <option value="P">P</option>
-                              <option value="M">M</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
+
                       <div class="col-md-3">
                         <div class="form-group">
                           <label for="url">AGREGAR</label>
@@ -699,16 +652,12 @@
                             <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
                               ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
                               <!--cambios-->
-                              <td data-title="'TIPO DE VEHÍCULO'" align="center">{{tramite.tipo_vehiculo}}</td>
+                              
                               <td data-title="'PLACA'" align="center">{{tramite.placa}}</td>
-                              <td data-title="'CLASE'" align="center">{{tramite.clase}}</td>
-                              <td data-title="'MARCA'" align="center">{{tramite.marca}}</td>
+                              <td data-title="'TIPO DE VEHÍCULO'" align="center">{{tramite.tipo_vehiculo}}</td>
                               <td data-title="'COLOR'" align="center">{{tramite.color}}</td>
-                              <td data-title="'NUMERO DE CARNET'" align="center">{{tramite.CI}}</td>
-                              <td data-title="'NOMBRE'" align="center">{{tramite.nombre}}</td>
-                              <td data-title="'PRIMER APELLIDO'" align="center">{{tramite.ape_primer}}</td>
-                              <td data-title="'SEGUNDO APELLIDO'" align="center">{{tramite.ape_segundo}}</td>
-                              <td data-title="'CATEGORIA DE LICENCIA'" align="center">{{tramite.cat_licencia}}</td>
+                              <td data-title="'MARCA'" align="center">{{tramite.marca}}</td>
+                              <td data-title="'CLASE'" align="center">{{tramite.clase}}</td>
                               <td data-title="'OPCION'" align="center"><button ng-click="eliminarVehiculo(tramite)" type="button" class="btn btn-danger fa fa-times" ng-show="desabilitado==false"></button></td>
                             </tr>
                           </table>

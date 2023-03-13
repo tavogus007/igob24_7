@@ -21,7 +21,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
     $scope.des_servicio_cinco = false;
     $scope.div_motivo = false;
     $scope.tipoactividad = {};
-    $scope.tipoactividad = JSON.parse('[{"nombre": "Particulares","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "EPSAS","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "DELAPAZ","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "LA PAZ LIMPIA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "YPFB","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Medios de comunicación","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Públicas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Privadas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Entidades Bancarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Funerarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Hoteles","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Turismo","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Lineas Aéreas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de seguridad privada","lf": 0,"cer": 0,"tmov": 1,"req_nom": 0},{"nombre": "Embajadas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Radio Taxis","lf": 0,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato de taxis(Constituidos como operadores)","lf": 1,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato COTRANSTUR","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "TERSA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Empresas Privadas de Transporte de Pasajeros (Constituidas como operadores)","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de delivery","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0}]');
+    $scope.tipoactividad = JSON.parse('[{"nombre": "Particulares","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "EPSAS","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "DELAPAZ","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "LA PAZ LIMPIA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "YPFB","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Medios de comunicación","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Públicas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Instituciones Privadas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Entidades Bancarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Funerarias","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Hoteles","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Turismo","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Lineas Aéreas","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de seguridad privada","lf": 0,"cer": 0,"tmov": 1,"req_nom": 0},{"nombre": "Embajadas","lf": 1,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de Radio Taxis","lf": 0,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato de taxis(Constituidos como operadores)","lf": 1,"cer": 1,"tmov": 0,"req_nom": 0},{"nombre": "Sindicato COTRANSTUR","lf": 1,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "TERSA","lf": 0,"cer": 1,"tmov": 1,"req_nom": 1},{"nombre": "Empresas Privadas de Transporte de Pasajeros (Constituidas como operadores)","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0},{"nombre": "Empresas de delivery","lf": 0,"cer": 1,"tmov": 1,"req_nom": 0}]');
     $scope.tipovehiculo_privado = {};
     $scope.tipovehiculo_privado = JSON.parse('[{"nombre":"AUTOMOVIL"},{"nombre":"MOTOCICLETA"}]');
     $scope.div_escoger_servicio = false;
@@ -302,9 +302,12 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                 var nomdocumento = obj.files[0].name;
                 var docextension = nomdocumento.split('.');
                 var ext_doc = docextension[docextension.length - 1].toLowerCase();
+                console.log("ext_doc");
+                console.log(ext_doc);
                 if (arraydoc.indexOf(ext_doc) >= 0) {
                     if (objarchivo.size <= 1000000) {
                         var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
+                        console.log(" FILE objarchivo");
                         console.log(objarchivo);
                         console.log(uploadUrl);
                         console.log(nombreNuevo);
@@ -337,7 +340,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -384,7 +387,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     }
 
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -430,7 +433,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -476,7 +479,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -536,7 +539,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -596,7 +599,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -656,7 +659,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -716,7 +719,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -776,7 +779,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -836,7 +839,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -896,7 +899,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -956,7 +959,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $.unblockUI();
                     }
                 } else {
-                    swal('Advertencia', 'El archivo no es valido, seleccione un archivo de tipo doc, docx o documentos en formato pdf', 'error');
+                    swal('Advertencia', 'El formato del archivo no es válido, seleccione un archivo de imagen, tipo doc, docx o en formato PDF.', 'error');
                     document.getElementById("txt_" + nombre).value = "";
                     document.getElementById("href_" + nombre).href = "";
                     $scope.registroAdj.adjunto = '';
@@ -1117,35 +1120,36 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         swal('', "Ingrese al menos dos contactos alternativos", 'warning');
                         $scope.validadordocs = 1;
                     } else {
-
+                        console.log("$scope.datos.FILE_Nota");
+                        console.log($scope.datos.FILE_Nota);
                         if ($scope.datos.FILE_Nota == undefined || $scope.datos.FILE_Nota == 'undefined') {
-                            swal('', "Ajunte la  Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez", 'warning');
+                            swal('', "Adjuntar la  Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez", 'warning');
                             $scope.validadordocs = 1;
                         } else {
                             if ($scope.datos.FILE_CeId == undefined || $scope.datos.FILE_CeId == 'undefined') {
-                                swal('', "Ajunte la Fotocopia de Cédula de Identidad vigente del solicitante o Representante Legal", 'warning');
+                                swal('', "Adjuntar la Fotocopia de Cédula de Identidad vigente del solicitante o Representante Legal", 'warning');
                                 $scope.validadordocs = 1;
                             } else {
-                                if ($scope.datos.FILE_Poder == undefined || $scope.datos.FILE_Poder == 'undefined') {
-                                    swal('', "Adjuntar el Poder Notariado que acredite las actuaciones del representante legal para efectuar trámites ante el G.A.M.L.P.  (Si corresponde)", 'warning');
-                                    $scope.validadordocs = 1;
-                                } else {
-                                    if ($scope.datos.FILE_Peren == undefined || $scope.datos.FILE_Peren == 'undefined') {
-                                        swal('', "Adjuntar permiso Excepcional Vencido", 'warning');
-                                        $scope.validadordocs = 1;
-                                    } else {
-                                        if ($scope.datos.FILE_Licencia == undefined || $scope.datos.FILE_Licencia == 'undefined') {
-                                            swal('', "Adjuntar la Licencia de funcionamiento vigente en el caso de actividades económicas (Si corresponde)", 'warning');
-                                            $scope.validadordocs = 1;
-                                        } else {
+                                //if ($scope.datos.FILE_Poder == undefined || $scope.datos.FILE_Poder == 'undefined') {
+                                //    swal('', "Adjuntar el Poder Notariado que acredite las actuaciones del representante legal para efectuar trámites ante el G.A.M.L.P.  (Si corresponde)", 'warning');
+                                //    $scope.validadordocs = 1;
+                                //} else {
+                                    //if ($scope.datos.FILE_Peren == undefined || $scope.datos.FILE_Peren == 'undefined') {
+                                    //    swal('', "Adjuntar permiso Excepcional Vencido", 'warning');
+                                    //    $scope.validadordocs = 1;
+                                    //} else {
+                                        //if ($scope.datos.FILE_Licencia == undefined || $scope.datos.FILE_Licencia == 'undefined') {
+                                        //    swal('', "Adjuntar la Licencia de funcionamiento vigente en el caso de actividades económicas (Si corresponde)", 'warning');
+                                        //    $scope.validadordocs = 1;
+                                        //} else {
                                             if ($scope.datos.FILE_Certi == undefined || $scope.datos.FILE_Certi == 'undefined') {
                                                 swal('', "Adjuntar el Certificado de propiedad de registro del vehículo automotor (RUAT Actualizado), con radicatoria en el municipio de La Paz", 'warning');
                                                 $scope.validadordocs = 1;
                                             } else {
-                                                if ($scope.datos.FILE_Docpro == undefined || $scope.datos.FILE_Docpro == 'undefined') {
-                                                    swal('', "Adjuntar Documento que demuestre la vinculación de la persona natural o jurídica, pública o privada solicitante, con los vehículos motorizados, mismo que deberá incluir placas de circulación, nombre de los propietarios, cuando corresponda", 'warning');
-                                                    $scope.validadordocs = 1;
-                                                } else {
+                                                //if ($scope.datos.FILE_Docpro == undefined || $scope.datos.FILE_Docpro == 'undefined') {
+                                                //    swal('', "Adjuntar Documento que demuestre la vinculación de la persona natural o jurídica, pública o privada solicitante, con los vehículos motorizados, mismo que deberá incluir placas de circulación, nombre de los propietarios, cuando corresponda", 'warning');
+                                                //    $scope.validadordocs = 1;
+                                                //} else {
                                                     if ($scope.datos.FILE_Docseg == undefined || $scope.datos.FILE_Docseg == 'undefined') {
                                                         swal('', "Adjuntar Documento que acredite contar con el seguro obligatorio de accidentes de tránsito (SOAT actualizado), de servicio público vigente", 'warning');
                                                         $scope.validadordocs = 1;
@@ -1158,29 +1162,29 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                                                                 swal('', "Adjuntar el Último pago de impuestos del vehículo, el solicitante no debe contar con deudas pendientes sobre los impuestos a la propiedad de vehículos, ni sanciones en materia de transporte urbano", 'warning');
                                                                 $scope.validadordocs = 1;
                                                             } else {
-                                                                if ($scope.datos.FILE_Resolu == undefined || $scope.datos.FILE_Resolu == 'undefined') {
-                                                                    swal('', "Adjuntar la Resolución administrativa vigente emitida por la Autoridad Tributaria Municipal, de liberación de impuestos. (Si corresponde)", 'warning');
-                                                                    $scope.validadordocs = 1;
-                                                                } else {
-                                                                    if ($scope.datos.FILE_Roseta == undefined || $scope.datos.FILE_Roseta == 'undefined') {
-                                                                        swal('', "Adjuntar la Roseta Ambiental Municipal", 'warning');
-                                                                        $scope.validadordocs = 1;
-                                                                    } else {
+                                                                //if ($scope.datos.FILE_Resolu == undefined || $scope.datos.FILE_Resolu == 'undefined') {
+                                                                //    swal('', "Adjuntar la Resolución administrativa vigente emitida por la Autoridad Tributaria Municipal, de liberación de impuestos. (Si corresponde)", 'warning');
+                                                                //    $scope.validadordocs = 1;
+                                                                //} else {
+                                                                    //if ($scope.datos.FILE_Roseta == undefined || $scope.datos.FILE_Roseta == 'undefined') {
+                                                                    //    swal('', "Adjuntar la Roseta Ambiental Municipal", 'warning');
+                                                                    //    $scope.validadordocs = 1;
+                                                                    //} else {
                                                                            if($scope.datos.PER_TRA_REG_TRANS != 'OTRO'){
                                                                             $scope.datos.PER_CIR_MOTIVO = $scope.datos.PER_TRA_REG_TRANS;
                                                                         }else{
                                                                             $scope.datos.PER_CIR_MOTIVO = $scope.datos.PER_CIR_MOTIVO.toUpperCase();
                                                                         }
-                                                                    }
-                                                                }
+                                                                    //}
+                                                                //}
                                                             }
                                                         }
                                                     }
-                                                }
+                                                //}
                                             }
-                                        }
-                                    }
-                                }
+                                        //}
+                                    //}
+                                //}
                             }
                         }
                     }
@@ -1202,19 +1206,20 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                 default:
                     break;
             }
-            if(control == 0){
-                if ($scope.datos.FILE_Licencia == undefined || $scope.datos.FILE_Licencia == 'undefined') {
-                    swal('', "Adjunte la Fotocopia de Licencia de Funcionamiento Municipal", 'warning');
-                    $scope.validadordocs = 1;
-                }
-            }
+            //if(control == 0){
+            //    if ($scope.datos.FILE_Licencia == undefined || $scope.datos.FILE_Licencia == 'undefined') {
+            //        swal('', "Adjunte la Fotocopia de Licencia de Funcionamiento Municipal", 'warning');
+            //        $scope.validadordocs = 1;
+            //    }
+            //}
         }
-        if($scope.cer == 0){
-          if ($scope.datos.FILE_Certi == undefined || $scope.datos.FILE_Certi == 'undefined') {
-              swal('', "Adjunte el Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana", 'warning');
-              $scope.validadordocs = 1;
-          }
-        }
+        //if($scope.cer == 0){
+        //  if ($scope.datos.FILE_Certi == undefined || $scope.datos.FILE_Certi == 'undefined') {
+        //      swal('', "Adjunte el Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana", 'warning');
+        //      $scope.validadordocs = 1;
+        //  }
+        //}
+
         if($scope.validadordocs == 0){
           $scope.armarCampos(data);
         }
@@ -1321,6 +1326,10 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
             swal('', 'Ingrese la clase del vehículo', 'warning');
 
         } else {
+
+            if (data.marca == 'OTROS'){
+                data.marca = data.marcaotros;
+            }
             $("#valida1").hide();
             $("#valida").hide();
             $scope.datos.PER_TRA_CANT_VEHI_SOL = $scope.trmAutos.length;

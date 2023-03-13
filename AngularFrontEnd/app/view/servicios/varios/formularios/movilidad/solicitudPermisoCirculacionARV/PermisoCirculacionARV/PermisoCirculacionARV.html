@@ -602,7 +602,7 @@
                         <div class="form-group">
                           <label for="url">TIPO DE VEHÍCULO :</label>
                           <div class="controls">
-                            <input id="tipo_vehiculo" name="tipo_vehiculo" type="text" placeholder="Ejemplo: AUTOMOVIL" class="form-control" ng-model="datosV.tipo_vehiculo" ng-disabled="desabilitado" required onkeyup="mayus(this);" />
+                            <input id="tipo_vehiculo" name="tipo_vehiculo" type="text" placeholder="Ejemplo: COROLLA" class="form-control" ng-model="datosV.tipo_vehiculo" ng-disabled="desabilitado" required onkeyup="mayus(this);" />
                           </div>
                         </div>
                       </div>
@@ -617,19 +617,23 @@
                     <div class="col-md-12">
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <label for="url">Marca Vehículo</label>
+                          <label for="url">MARCA DE VEHÍCULO</label>
                           <div class="controls">
                             <select id="marca" name="marca" ng-model="datosV.marca" class="form-control" ng-disabled="desabilitado" required>
                               <option value="">Seleccionar</option>
                               <option ng-repeat="marcaMovis in obtMarcaMovilidades" value="{{marcaMovis.vmarca_movilidad}}" required>{{marcaMovis.vmarca_movilidad}}</option>
+                              <option value="OTROS">OTROS</option>
                             </select>
+                            <div ng-if="datosV.marca =='OTROS'">
+                              <input id="marcaotros" name="marcaotros" type="text" placeholder="" class="form-control" ng-model="datosV.marcaotros" ng-disabled="desabilitado" required onkeyup="mayus(this);" />
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="col-sm-4">
                         <div class="form-group">
-                          <label for="url">Clase Vehículo</label>
-                          <input id="clase" name="clase" type="text" placeholder="" class="form-control" ng-model="datosV.clase" ng-disabled="desabilitado" required onkeyup="mayus(this);" />
+                          <label for="url">CLASE DE VEHÍCULO</label>
+                          <input id="clase" name="clase" type="text" placeholder="Ejemplo: AUTOMOVIL" class="form-control" ng-model="datosV.clase" ng-disabled="desabilitado" required onkeyup="mayus(this);" />
                         </div>
                       </div>
 
@@ -702,7 +706,7 @@
                       </div>
                     </div>
                   </div>
-                  <br>
+                  <br><br>
 
                   <div>
                     <div class="form-group">
@@ -721,89 +725,6 @@
                                     <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover2 != null" ng-click="mostrarimg('FILE_CeId');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
                                   </a>
                                   <button id="btn_FILE_CeId" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_CeId');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-
-                  <div>
-                    <div class="form-group">
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloPoder}}</label>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group custom-upload">
-                              <input type="file" id="FILE_Poder" name="FILE_Poder" uploader-model="FILE_Poder" accept="pdf/*" style="display: none;">
-                              <div class="input-group">
-                                <input id="txt_FILE_Poder" name="txt_FILE_Poder" ng-model="datos.FILE_Poder" type="text" ng-disabled="true" class="form-control input-lg" required>
-                                <span class="input-group-btn">
-                                  <a id="href_FILE_Poder" target="_blank" href="">
-                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover3 != null" ng-click="mostrarimg('FILE_Poder');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                  </a>
-                                  <button id="btn_FILE_Poder" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Poder');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-
-
-                  <div>
-                    <div class="form-group">
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloPeren}}</label>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group custom-upload">
-                              <input type="file" id="FILE_Peren" name="FILE_Peren" uploader-model="FILE_Peren" accept="pdf/*" style="display: none;">
-                              <div class="input-group">
-                                <input id="txt_FILE_Peren" name="txt_FILE_Peren" ng-model="datos.FILE_Peren" type="text" ng-disabled="true" class="form-control input-lg" required>
-                                <span class="input-group-btn">
-                                  <a id="href_FILE_Peren" target="_blank" href="">
-                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover4 != null" ng-click="mostrarimg('FILE_Peren');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                  </a>
-                                  <button id="btn_FILE_Peren" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Peren');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-
-
-                  <div>
-                    <div class="form-group">
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloLicencia}}</label>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group custom-upload">
-                              <input type="file" id="FILE_Licencia" name="FILE_Licencia" uploader-model="FILE_Licencia" accept="pdf/*" style="display: none;">
-                              <div class="input-group">
-                                <input id="txt_FILE_Licencia" name="txt_FILE_Licencia" ng-model="datos.FILE_Licencia" type="text" ng-disabled="true" class="form-control input-lg" required>
-                                <span class="input-group-btn">
-                                  <a id="href_FILE_Licencia" target="_blank" href="">
-                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover5 != null" ng-click="mostrarimg('FILE_Licencia');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                  </a>
-                                  <button id="btn_FILE_Licencia" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Licencia');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                 </span>
                               </div>
                             </div>
@@ -841,36 +762,6 @@
                     </div>
                   </div>
                   <br>
-
-
-                  <div>
-                    <div class="form-group">
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloDocpro}}</label>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group custom-upload">
-                              <input type="file" id="FILE_Docpro" name="FILE_Docpro" uploader-model="FILE_Docpro" accept="pdf/*" style="display: none;">
-                              <div class="input-group">
-                                <input id="txt_FILE_Docpro" name="txt_FILE_Docpro" ng-model="datos.FILE_Docpro" type="text" ng-disabled="true" class="form-control input-lg" required>
-                                <span class="input-group-btn">
-                                  <a id="href_FILE_Docpro" target="_blank" href="">
-                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover7 != null" ng-click="mostrarimg('FILE_Docpro');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                  </a>
-                                  <button id="btn_FILE_Docpro" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Docpro');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
-
-
 
                   <div>
                     <div class="form-group">
@@ -956,19 +847,158 @@
                   <br>
 
 
+                  <div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">{{tituloRoseta}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_Roseta" name="FILE_Roseta" uploader-model="FILE_Roseta" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_Roseta" name="txt_FILE_Roseta" ng-model="datos.FILE_Roseta" type="text" ng-disabled="true" class="form-control input-lg" >
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_Roseta" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover12 != null" ng-click="mostrarimg('FILE_Roseta');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_Roseta" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Roseta');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+
+
+                  
+
 
                   <div>
                     <div class="form-group">
                       <div class="col-md-12">
                         <div class="row">
                           <div class="col-md-6">
-                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloResolu}}</label>
+                            <label for="url">{{tituloPeren}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_Peren" name="FILE_Peren" uploader-model="FILE_Peren" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_Peren" name="txt_FILE_Peren" ng-model="datos.FILE_Peren" type="text" ng-disabled="true" class="form-control input-lg" >
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_Peren" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover4 != null" ng-click="mostrarimg('FILE_Peren');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_Peren" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Peren');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+
+                  <div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">{{tituloPoder}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_Poder" name="FILE_Poder" uploader-model="FILE_Poder" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_Poder" name="txt_FILE_Poder" ng-model="datos.FILE_Poder" type="text" ng-disabled="true" class="form-control input-lg" >
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_Poder" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover3 != null" ng-click="mostrarimg('FILE_Poder');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_Poder" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Poder');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  
+
+                  <div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">{{tituloLicencia}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_Licencia" name="FILE_Licencia" uploader-model="FILE_Licencia" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_Licencia" name="txt_FILE_Licencia" ng-model="datos.FILE_Licencia" type="text" ng-disabled="true" class="form-control input-lg" >
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_Licencia" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover5 != null" ng-click="mostrarimg('FILE_Licencia');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_Licencia" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Licencia');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+
+                  <div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">{{tituloDocpro}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_Docpro" name="FILE_Docpro" uploader-model="FILE_Docpro" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_Docpro" name="txt_FILE_Docpro" ng-model="datos.FILE_Docpro" type="text" ng-disabled="true" class="form-control input-lg" >
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_Docpro" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover7 != null" ng-click="mostrarimg('FILE_Docpro');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_Docpro" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Docpro');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+
+                  <div>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url">{{tituloResolu}}</label>
                           </div>
                           <div class="col-md-6">
                             <div class="form-group custom-upload">
                               <input type="file" id="FILE_Resolu" name="FILE_Resolu" uploader-model="FILE_Resolu" accept="pdf/*" style="display: none;">
                               <div class="input-group">
-                                <input id="txt_FILE_Resolu" name="txt_FILE_Resolu" ng-model="datos.FILE_Resolu" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                <input id="txt_FILE_Resolu" name="txt_FILE_Resolu" ng-model="datos.FILE_Resolu" type="text" ng-disabled="true" class="form-control input-lg" >
                                 <span class="input-group-btn">
                                   <a id="href_FILE_Resolu" target="_blank" href="">
                                     <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover11 != null" ng-click="mostrarimg('FILE_Resolu');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
@@ -984,32 +1014,7 @@
                   </div>
                   <br>
 
-                  <div>
-                    <div class="form-group">
-                      <div class="col-md-12">
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloRoseta}}</label>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group custom-upload">
-                              <input type="file" id="FILE_Roseta" name="FILE_Roseta" uploader-model="FILE_Roseta" accept="pdf/*" style="display: none;">
-                              <div class="input-group">
-                                <input id="txt_FILE_Roseta" name="txt_FILE_Roseta" ng-model="datos.FILE_Roseta" type="text" ng-disabled="true" class="form-control input-lg" required>
-                                <span class="input-group-btn">
-                                  <a id="href_FILE_Roseta" target="_blank" href="">
-                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover12 != null" ng-click="mostrarimg('FILE_Roseta');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                  </a>
-                                  <button id="btn_FILE_Roseta" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_Roseta');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <br>
+                  
 
                 </div>
                 <div ng-show="botones_visibles == true">

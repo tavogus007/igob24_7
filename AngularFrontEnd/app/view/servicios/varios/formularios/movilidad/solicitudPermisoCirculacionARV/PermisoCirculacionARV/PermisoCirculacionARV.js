@@ -302,15 +302,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                 var nomdocumento = obj.files[0].name;
                 var docextension = nomdocumento.split('.');
                 var ext_doc = docextension[docextension.length - 1].toLowerCase();
-                console.log("ext_doc");
-                console.log(ext_doc);
                 if (arraydoc.indexOf(ext_doc) >= 0) {
                     if (objarchivo.size <= 1000000) {
                         var nombreNuevo = nombre + '_' + fechaNueva + '.' + ext_doc;
-                        console.log(" FILE objarchivo");
-                        console.log(objarchivo);
-                        console.log(uploadUrl);
-                        console.log(nombreNuevo);
                         fileUpload1.uploadFileToUrl1(objarchivo, uploadUrl, nombreNuevo); // error  yvan 
                         $scope.datos.FILE_Nota = nombreNuevo;
                         $scope.FILE_Nota = objarchivo;
@@ -335,8 +329,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Nota = "";
+                        $scope.datos.FILE_Nota = undefined;
                         $scope.FILE_Nota = "";
+                        $scope.btover1 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -346,6 +341,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Nota = undefined;
+                    $scope.FILE_Nota = "";
+                    $scope.btover1 = null;
                     $.unblockUI();
                 }
             }
@@ -381,8 +379,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_CeId = "";
+                        $scope.datos.FILE_CeId = undefined;
                         $scope.FILE_CeId = "";
+                        $scope.btover2 = null;
                         $.unblockUI();
                     }
 
@@ -393,6 +392,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_CeId = undefined;
+                    $scope.FILE_CeId = "";
+                    $scope.btover2 = null;
                     $.unblockUI();
                 }
             }
@@ -428,8 +430,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Poder = "";
+                        $scope.datos.FILE_Poder = undefined;
                         $scope.FILE_Poder = "";
+                        $scope.btover3 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -439,6 +442,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Poder = undefined;
+                    $scope.FILE_Poder = "";
+                    $scope.btover3 = null;
                     $.unblockUI();
                 }
             }
@@ -474,8 +480,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Peren = "";
+                        $scope.datos.FILE_Peren = undefined;
                         $scope.FILE_Peren = "";
+                        $scope.btover4 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -485,6 +492,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Peren = undefined;
+                    $scope.FILE_Peren = "";
+                    $scope.btover4 = null;
                     $.unblockUI();
                 }
             }
@@ -534,8 +544,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Licencia = "";
+                        $scope.datos.FILE_Licencia = undefined;
                         $scope.FILE_Licencia = "";
+                        $scope.btover5 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -545,6 +556,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Licencia = undefined;
+                    $scope.FILE_Licencia = "";
+                    $scope.btover5 = null;
                     $.unblockUI();
                 }
             }
@@ -594,8 +608,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Certi = "";
+                        $scope.datos.FILE_Certi = undefined;
                         $scope.FILE_Certi = "";
+                        $scope.btover6 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -605,6 +620,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Certi = undefined;
+                    $scope.FILE_Certi = "";
+                    $scope.btover6 = null;
                     $.unblockUI();
                 }
             }
@@ -654,8 +672,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Docpro = "";
+                        $scope.datos.FILE_Docpro = undefined;
                         $scope.FILE_Docpro = "";
+                        $scope.btover7 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -665,6 +684,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Docpro = undefined;
+                    $scope.FILE_Docpro = "";
+                    $scope.btover7 = null;
                     $.unblockUI();
                 }
             }
@@ -714,8 +736,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Docseg = "";
+                        $scope.datos.FILE_Docseg = undefined;
                         $scope.FILE_Docseg = "";
+                        $scope.btover8 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -725,6 +748,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Docseg = undefined;
+                    $scope.FILE_Docseg = "";
+                    $scope.btover8 = null;
                     $.unblockUI();
                 }
             }
@@ -774,8 +800,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Cerdoc = "";
+                        $scope.datos.FILE_Cerdoc = undefined;
                         $scope.FILE_Cerdoc = "";
+                        $scope.btover9 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -785,6 +812,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Cerdoc = undefined;
+                    $scope.FILE_Cerdoc = "";
+                    $scope.btover9 = null;
                     $.unblockUI();
                 }
             }
@@ -834,8 +864,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Ultimo = "";
+                        $scope.datos.FILE_Ultimo = undefined;
                         $scope.FILE_Ultimo = "";
+                        $scope.btover10 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -845,6 +876,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Ultimo = undefined;
+                    $scope.FILE_Ultimo = "";
+                    $scope.btover10 = null;
                     $.unblockUI();
                 }
             }
@@ -894,8 +928,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Resolu = "";
+                        $scope.datos.FILE_Resolu = undefined;
                         $scope.FILE_Resolu = "";
+                        $scope.btover11 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -905,6 +940,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Resolu = undefined;
+                    $scope.FILE_Resolu = "";
+                    $scope.btover11 = null;
                     $.unblockUI();
                 }
             }
@@ -954,8 +992,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                         $scope.registroAdj.adjunto = '';
                         $scope.adjunto = '';
                         valor = '';
-                        $scope.datos.FILE_Roseta = "";
+                        $scope.datos.FILE_Roseta = undefined;
                         $scope.FILE_Roseta = "";
+                        $scope.btover12 = null;
                         $.unblockUI();
                     }
                 } else {
@@ -965,6 +1004,9 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $scope.registroAdj.adjunto = '';
                     $scope.adjunto = '';
                     valor = '';
+                    $scope.datos.FILE_Roseta = undefined;
+                    $scope.FILE_Roseta = "";
+                    $scope.btover12 = null;
                     $.unblockUI();
                 }
             }

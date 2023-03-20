@@ -1010,7 +1010,7 @@ function CirculacionARVController($scope, $rootScope, $routeParams, $location, $
                     $.unblockUI();
                 }
             }
-            
+            $scope.$apply();
         }, 1000);
         $.unblockUI();
     }

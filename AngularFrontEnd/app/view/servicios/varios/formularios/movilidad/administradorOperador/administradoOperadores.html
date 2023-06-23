@@ -166,6 +166,7 @@
                       <td data-title="'Opciones'" style="width:10%" >
                         <a class="btn btn-default btn-circle" ng-show="operadores.estadores=='VIGENTE' || operadores.estadores=='RENOVAR' " ng-click="seleccionarOperador(operadores);" tooltip="Ver Datos del Operador"><i class="fa fa-eye" style="color:#249FE6"></i></a>
                         <!--<a class="btn btn-default btn-circle" ng-click="seleccionarOperadorrenovar(operadores);" tooltip="Renovar Operador"><i class="fa fa-retweet" style="color:#f9f50d"></i></a>-->
+                        <a class="btn btn-default btn-circle" ng-show="operadores.resultadoactual=='VIGENTE' || operadores.estadores=='RENOVAR' " ng-click="seleccionarOperador(operadores);" tooltip="Ver Datos del Operador"><i class="fa fa-eye" style="color:#249FE6"></i></a>
                         <a class="btn btn-default btn-circle" ng-show="operadores.estadores== 'VENCIDO ' || operadores.estadores=='VENCIDO' || operadores.estadores=='RENOVAR' " ng-click="seleccionarOperadorrenovar(operadores);" tooltip="Renovar Operador"><i class="fa fa-retweet" style="color:#f9f50d"></i></a>
                       </td>
                       <td data-title="'Denominaci&oacute;n'" style="width:10%" >{{operadores.xope_denominacion}}</td>

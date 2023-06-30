@@ -134,7 +134,7 @@ var icon= 0;
         <div class="col-md-12">
           <div class="ibox float-e-margins">
              <div id="mostrar" class="ibox-title">
-                <h5 class="ng-binding">{{translateIdioma.lbl_017_01}}</h5>                
+                <h5 class="ng-binding">{{translateIdioma.lbl_017_01}} 7777 </h5>                
              </div>
              <div class="ibox-content">
                   <div class="row">
@@ -185,10 +185,9 @@ var icon= 0;
           </div>
        </div>
 
-
         <div ng-show="mostra_form_viajes" class="ibox float-e-margins col-md-12">
           <div class="col-md-12">
-            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;">
+            <div class="ibox-title " style="background-color: #4baeb4 !important;color: white !important;">
               <h4>{{translateIdioma.lbl_018_01_1}}</h4>
             </div>
           </div>
@@ -207,7 +206,59 @@ var icon= 0;
                           </div>
                       </div>
                   </div>
-
+                  <div class="col-md-8" style="padding-top:1%">
+                    <div class="form-group">
+                    <label class="col-md-2 control-label ng-binding">{{translateIdioma.lbl_018_55}}: <font color="#FF0000" size="4px"> * </font></label>
+                        <div class="col-md-10">
+                            <select id="TER_MOT" class="form-control" ng-model="datos.TER_MOT" name="TER_MOT" ng-disabled="desabilitado" required="" style="">
+                                <option style="display:none" value=""> -- Seleccione -- </option>
+                                <option value="FAMILIAR">FAMILIAR</option>
+                                <option value="VACACIONES">VACACIONES</option>
+                                <option value="SALUD">SALUD</option>
+                                <option value="TRAMITES">TRAMITES</option>
+                                <option value="RETORNO">RETORNO</option>
+                                <option value="TRABAJO">TRABAJO</option>
+                                <option value="DEPORTIVO">DEPORTIVO</option>
+                                <option value="CULTURAL">CULTURAL</option>
+                                <option value="PASEO">PASEO</option>
+                                <option value="OTRO">OTRO</option>
+                            </select>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8" style="padding-top:1%">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label ng-binding">{{translateIdioma.lbl_018_53}}: <font color="#FF0000" size="4px"> * </font></label>
+                        <div class="col-md-10">
+                            <select id="TER_DEST" class="form-control" ng-model="datos.TER_DEST" name="TER_DEST" ng-disabled="desabilitado" required="" style="">
+                                <option style="display:none" value=""> -- Seleccione -- </option>
+                                <option value="BNI">Beni</option>
+                                <option value="CBB">Cochabamba</option>
+                                <option value="LPZ">La Paz</option>
+                                <option value="ORU">Oruro</option>
+                                <option value="PND">Pando</option>
+                                <option value="PTS">Potosi</option>
+                                <option value="SCZ">Santa Cruz</option>
+                                <option value="CHQ">Chuquisaca</option>
+                                <option value="TJA">Tarija</option>
+                                <option value="EXT">Exterior</option>
+                            </select>
+                        </div>
+                    </div>
+                  </div>
+                 
+                  <div class="col-md-8" style="padding-top:1%">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label ng-binding">{{translateIdioma.lbl_018_30}}: <font color="#FF0000" size="4px"> * </font></label>
+                        <div class="col-md-10">
+                          <select id="TER_SOLOS" class="form-control" name="TER_SOLOS" ng-model="datos.TER_SOLOS" ng-change="formSolos(daStos.TER_SOLOS);mensajevs();" ng-disabled="desabilitado" required="" style="">
+                                <option style="display:none" value="">--Seleccionar--</option>
+                                <option value="1">SI</option>
+                                <option value="2">NO</option>
+                            </select>
+                        </div>
+                    </div>
+                  </div>
                   <div ng-if="datos.TER_TIP_PERMISO=='F' || datos.TER_TIP_PERMISO=='D'"  class="col-md-4" style="padding-top:1%">
                       <a class="btn btn-primary ng-binding" data-toggle="modal" tooltip="Atender Caso" ng-click="TipoAutorizacion1(datos.TER_TIP_PERMISO);" ng-disabled="btnHelp1" data-target="#guiatramite1">{{translateIdioma.lbl_15_15_15}}</a>
                   </div>
@@ -260,7 +311,7 @@ var icon= 0;
                     </p>
                   </div>
                   <div class="col-md-12">
-                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important; width: 100%; padding-bottom:2%" >
+                    <div class="ibox-title" style="background-color: #4baeb4 !important;color: white !important;">
                       <h4>{{translateIdioma.lbl_018_11}} </h4>
                     </div>
                   </div>
@@ -268,16 +319,16 @@ var icon= 0;
                     <div class="col-md-12 table-responsive">
                       <table class="table table-striped table-hover">
                         <tr>
-                          <th style="background-color: #4baeb4 !important;color: white !important;">Nª</th>
-                          <th ng-if="envia_btn=='NO'" style="background-color: #4baeb4 !important;color: white !important;">
-                            <a class="btn btn-primary ng-binding" data-toggle="modal" data-target="#registro" ng-click="limpiar_gridni();" ng-disabled="desabilitado">Nuevo</a>
+                          <th style="background-color: #D7DBDD  !important;color: white !important;">Nª</th>
+                          <th ng-if="envia_btn=='NO'" style="background-color: #D7DBDD  !important;color: white !important;">
+                            <a class="btn btn-success ng-binding" data-toggle="modal" data-target="#registro" ng-click="limpiar_gridni();" ng-disabled="desabilitado">Agregar Nuevo</a>
                           </th>
-                          <th style="background-color: #4baeb4 !important;color: white !important;">CI</th>
-                          <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_06_02}}</th>
-                          <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_06_03}}</th>
-                          <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_06_04}}</th>
-                          <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_12_09}}</th>
-                          <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_018_22}}</th>
+                          <th style="background-color: #D7DBDD  !important;color: black !important;">CI</th>
+                          <th style="background-color: #D7DBDD  !important;color: black !important;">{{translateIdioma.lbl_06_02}}</th>
+                          <th style="background-color: #D7DBDD  !important;color: black !important;">{{translateIdioma.lbl_06_03}}</th>
+                          <th style="background-color: #D7DBDD  !important;color: black !important;">{{translateIdioma.lbl_06_04}}</th>
+                          <th style="background-color: #D7DBDD  !important;color: black !important;">{{translateIdioma.lbl_12_09}}</th>
+                          <th style="background-color: #D7DBDD  !important;color: black !important;">{{translateIdioma.lbl_018_22}}</th>
                         </tr>
                         <tr ng-repeat="comp_n in grid_n">
                           <td>{{$index+1}}</td>
@@ -296,60 +347,25 @@ var icon= 0;
                         </tr>
                       </table>
                     </div>
-
-                  <div class="col-md-8">
-                    <div class="form-group">
-                        <label class="col-md-2 control-label ng-binding"><font color="#FF0000" size="4px"> * </font> {{translateIdioma.lbl_018_30}}:</label>
-                        <div class="col-md-10">
-                            <select id="TER_SOLOS" class="form-control" name="TER_SOLOS" ng-model="datos.TER_SOLOS" ng-change="formSolos(daStos.TER_SOLOS);mensajevs();" ng-disabled="desabilitado" required="" style="">
-                                <option style="display:none" value="">--Seleccionar--</option>
-                                <option value="1">SI</option>
-                                <option value="2">NO</option>
-                            </select>
-                        </div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                        <h4 style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;" class="ng-binding">Estadisticas</h4>
-                    </div>
-                    <table class="table table-bordered table-hover">
-                      <tr>
-                        <td> <label>{{translateIdioma.lbl_20_39}}: </label> {{datos.NNA_CANT_MAS}}</td>
-                      </tr>
-                      <tr>
-                        <td> <label>{{translateIdioma.lbl_20_38}}: </label> {{datos.NNA_CANT_FEM}}</td>
-                      </tr>
-                      <tr>
-                        <td> <label>{{translateIdioma.lbl_20_40}}: </label> {{datos.NNA_CAN_MAS}}</td>
-                      </tr>
-                      <tr>
-                        <td> <label>{{translateIdioma.lbl_20_41}}: </label> {{datos.NNA_CAN_FEM}}</td>
-                      </tr>
-                      <tr>
-                        <td> <label>{{translateIdioma.lbl_018_10_9}}: </label> {{datos.NNA_CANT_TOTAL}}</td>
-                      </tr>
-                    </table>
-                  </div>
-
                   <div class="col-md-12">
-                    <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                        <h4 style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;" class="ng-binding">Datos de los Adultos que Viajan/Autorizan</h4>
+                    <div class="ibox-title" style="background-color: #4baeb4 !important;color: white !important;">
+                        <h4 style="border-bottom: solid 0px #E2E2E2 !important; width: 100%;" class="ng-binding">Datos de los Adultos que Viaja/Acompaña/Autoriza</h4>
                     </div>
                   </div>
                   <div class="col-md-12 table-responsive">
                     <table class="table table-striped table-hover">
                       <tr>
-                        <th style="background-color: #4baeb4 !important;color: white !important;">Nª</th>
-                        <th ng-if="envia_btn=='NO'" style="background-color: #4baeb4 !important;color: white !important;">
-                          <a class="btn btn-primary ng-binding" data-toggle="modal" data-target="#registro_adultos" ng-click="limpiar_gridni_adultos();" ng-disabled="desabilitado">Nuevo</a>
+                        <th style="background-color: #D7DBDD !important;color: white !important;">Nª</th>
+                        <th ng-if="envia_btn=='NO'" style="background-color: #D7DBDD !important;color: white !important;">
+                          <a class="btn btn-success ng-binding" data-toggle="modal" data-target="#registro_adultos" ng-click="limpiar_gridni_adultos();" ng-disabled="desabilitado">Agregar Nuevo</a>
                         </th>
-                        <th style="background-color: #4baeb4 !important;color: white !important;">CI</th>
-                        <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_06_02}}</th>
-                        <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_06_03}}</th>
-                        <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_06_04}}</th>
-                        <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_12_09}}</th>
-                        <th style="background-color: #4baeb4 !important;color: white !important;">{{translateIdioma.lbl_018_22}}</th>
+                        <th style="background-color: #D7DBDD !important;color: black !important;">CI</th>
+                        <th style="background-color: #D7DBDD !important;color: black !important;">{{translateIdioma.lbl_06_02}}</th>
+                        <th style="background-color: #D7DBDD !important;color: black !important;">{{translateIdioma.lbl_06_03}}</th>
+                        <th style="background-color: #D7DBDD !important;color: black !important;">{{translateIdioma.lbl_06_04}}</th>
+                        <th style="background-color: #D7DBDD !important;color: black !important;">{{translateIdioma.lbl_12_09}}</th>
+                        <th style="background-color: #D7DBDD !important;color: black !important;">Viaja/Acompaña</th>
+                        <th style="background-color: #D7DBDD !important;color: black !important;">{{translateIdioma.lbl_018_22}}</th>
                       </tr>
                       <tr ng-repeat="comp_a in grid_a">
                         <td>{{$index+1}}</td>
@@ -362,13 +378,14 @@ var icon= 0;
                         <td>{{comp_a.f01_ADUL_G_APAT}}</td>
                         <td>{{comp_a.f01_ADUL_G_AMAT}}</td>
                         <td>{{comp_a.f01_ADUL_TIP_DOC_valor}}</td>
+                        <td>{{comp_a.f01_ADUL_G_VA_valor}}</td>
                         <!--td>{{comp_a.f01_ADUL_G_GEN_valor}}</td-->
                         <td ng-if="comp_a.f01_ADUL_G_GEN_valor == 'F' || comp_a.f01_ADUL_G_GEN_valor == 'FEMENINO' "><img class="imagen" src=' data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAQAAAC0NkA6AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAJiS0dEAP+Hj8y/AAAACXBIWXMAAEOAAABDgAHIacZKAAADYklEQVRYw62XW4hNURiAv3MOM2rMMGbciVyaGMPDoCgh91uDknsR8UJKvCilXF6mPKMkSXmR4sUtJsq9SGNomGOUETE0aGaaM+f8HnbHXnvvtfZe+/Cvh33+tf61vv3/6z//WjuBjfRlFXXMYBQl9PKdNM+5xQ26rWZbSR1pRNO+cZQB/wOQpJ6cFuG0Npb+O+RkCMBpWfb9G2JjJEIQcuwuHFHBNyuI0MOcQiH1lghBSFNSCGIAP01Ljpehwd4jhUB2mhBJERE56e/voDw+5K4Jck0c6Zakd+RAXMRAevSIGlEloY41kYgHqQsLlSvPvONT9YslDZBZ+u6bPr2WalVdHs+T214PnLDUik4Uu+vxIJ+9kBOaUOWlzLX7boyMRsqdolgkT0TknAwREeS2AbJafZ2x9pBaZ0q1slS1mOSCCtHuit690c6jXelqNL7RYlWZHBvy28rtIapSFRtSwOk6xh4yznlkrdZtUZXhtpAkM50fYgV5qCqDbSHr8+GykwZVsbxYzKfDTclHEi1T1BTOkAr3pA+zOc8typB8pGzqRFpVEqZKnGA9l3n89yTMuZegeRaeeApQaEJO5zQf6KWT9/xyJ1VEIt54IZ91i+cj+IkJtPAWYTLF7nAX3SwMDdZYMqrazJkw6xOm4/aw0Ys2/wEsXArfv1FqmLztgG/xe7JdjspWSQVtD0alyTLaTZi1Pswe0/2rNjobS1nBLu4HJ7+UidL8F1Evk6RTRBr8vrToE7iPR8vwlHYmBs1qaGYhXymjh07W0ATAXIroUs1O2VSiUl7oglBs3Ppy1e4j/aMRAJU0BCHrjBAlu7KstEMApNhBixdy1oBoVa2uUmpe0i/FVNKPaWpV62GLdvIm3rlKFftZwAi6+BK2M4PYxmXdXX6YwZN++jT+wkXW6aoxbOOH6V+SsimN/vYgeEoeCp2gRewNhwhNDFQRy0O/cAV5poFURkGEiy6iyJ9NwbYnbrCclnNL+OZo85oA4qwNRHiSLzR3oo37ByBVdhBhCcAwem2M/ZKwhVyHJKv0GR0ur7G7kwGLqEpxTFd1gzLSc1Rs4L0tJEEOmuzcXukJVpFtsAQhDSN5ZWM6Om765lsj4xNAKcepi/oQS5asKO7IZnolm8q1SlvGKlQZrnCEX38A0VnGgEZAE8YAAABidEVYdGNvbW1lbnQAYm9yZGVyIGJzOjAgYmM6IzAwMDAwMCBwczowIHBjOiNlZWVlZWUgZXM6MCBlYzojMDAwMDAwIGNrOjUwMGQwMmE0ZjFmMWQ3NDk3MzQwY2M1ODY4OTZiZjExhJ/QAAAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxOC0wOC0wMVQyMjo0NTozMiswMDowMKohKjEAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTgtMDgtMDFUMjI6NDU6MzIrMDA6MDDbfJKNAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAABJRU5ErkJggg==' width="40px" height="40px"/></td>
                         <td ng-if="comp_a.f01_ADUL_G_GEN_valor == 'M' || comp_a.f01_ADUL_G_GEN_valor == 'MASCULINO' "><img class="imagen" src=' data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD//gBcYm9yZGVyIGJzOjAgYmM6IzAwMDAwMCBwczowIHBjOiNlZWVlZWUgZXM6MCBlYzojMDAwMDAwIGNrOjUwMGQwMmE0ZjFmMWQ3NDk3MzQwY2M1ODY4OTZiZjEx/9sAQwAGBAUGBQQGBgUGBwcGCAoQCgoJCQoUDg8MEBcUGBgXFBYWGh0lHxobIxwWFiAsICMmJykqKRkfLTAtKDAlKCko/9sAQwEHBwcKCAoTCgoTKBoWGigoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo/8AAEQgAMgAyAwEiAAIRAQMRAf/EABsAAQACAwEBAAAAAAAAAAAAAAAHCAUGCQED/8QAMRAAAQMDAgQFAgUFAAAAAAAAAQACAwQFEQYHEiExQQgTIlFhMnEUFTM3gVKCkbTD/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ALUrF6ov1BpjT1derxN5NDRxmSRwGSewAHckkADuSFlFFHim/YvUn3pv9mJBXzcHxMaqvkstPphkdht5yGvYBLUvHTm8jDff0gEf1Fa3trvlqjRE9c53k3mOulbNUuuDnvmcQMcpeLPTH1cQ9gMlRSiDoxs/uXbNzNPy19BC+krKZ4jq6N7w90TiMghwxxNODg4HQ8uS3xVT8DP6mtfbFF/3VrEBERAULeLuKtk2ZqnUUro4IqynfVtHSSLiwGn48wxn+AppWE1vp+HVWkLvYqh4jZX0z4BIW8XluI9L8d8Owf4QcxkX2q4HU1VNA9zXOie5hc05BIOMj4XxQWW8EEVadT6mmjlcLcyjiZNF2dKXkxuPyGtlH9xVvlCnhJ0xHY9q4riZGS1F5mdVOLR9DG+hrM98cLj93Edsqa0BERAUQb37zWXRdiuVvtV0hm1W6MxwQQASmmeeXHJ1a0t68LuZ5ciCoH393o1bW6rvmmrdV/lNpoaqWkIoyWyzhjuHL5OuDg+luBg4OeqgJB64lxJcSSeZJ7rxEQWj8Le8VpstiOk9XXFlFHFMTbqiZobE1rzl0bnj6cOJcHO5eojIAAVroZY54WSwvbJE9ocx7DkOB5gg9wuVy3vbndXVe38rW2O4F9BnL7fVZkp3e+G5y0/LSCe+UHRlFjNL3N1701abq+IQurqSGqMYdxBhewOxnvjOEQc+t9mNZvDq0MaGj8fIcAY5nmT/AJWhoiAiIgIiIOneimNj0bYWMaGsbQU4DQMADy28kREH/9k=' width="40px" height="40px"/></td>
                       </tr>
                     </table>
                   </div>
-                  <div class="col-md-12">
+                  <!--div class="col-md-12">
                       <h5 class="ng-binding">{{translateIdioma.lbl_018_52}}</h5>
                   </div>
                   <div class="col-md-6" style="padding-top:1%">
@@ -390,7 +407,7 @@ var icon= 0;
                             </select>
                         </div>
                     </div>
-                  </div>
+                  </div-->
                   <!--div class="col-md-6" style="padding-top:1%">
                     ng-change="getProvinciasDepto(datos.TER_DEST);"
                     <div class="form-group" ng-show="datos.TER_DEST != '10-Exterior'">
@@ -403,7 +420,7 @@ var icon= 0;
                         </div>
                     </div>
                   </div-->
-                  <div class="col-md-6" style="padding-top:1%">
+                  <!--div class="col-md-6" style="padding-top:1%">
                     <div class="form-group">
                     <label class="col-md-2 control-label ng-binding"><font color="#FF0000" size="4px"> * </font>{{translateIdioma.lbl_018_55}}:</label>
                         <div class="col-md-10">
@@ -422,7 +439,7 @@ var icon= 0;
                             </select>
                         </div>
                     </div>
-                  </div>
+                  </div-->
               </div>
               <div class="row">
                 <div class="col-md-12" align="right">

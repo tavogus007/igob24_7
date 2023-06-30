@@ -219,7 +219,11 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
           mes = "0"+ mes;
       }
       $scope.datos.TER_FEC_FIN = anio_actual+"-"+mes+"-"+dia;
+      if( $scope.datos.TER_FEC_RET > $scope.datos.TER_FEC_FIN ){
+        $scope.datos.TER_FEC_FIN = "";
+      }
     }
+
     $scope.cal_fechas_ini = function(edad){
       $scope.tt = edad.toString();
         if ($scope.tt.length>=11) {
@@ -957,7 +961,7 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
           indice = 0;
           if(results.length > 0)
           {
-            datosIF = results[0].sp_pmfunction_generica.split(",");
+            datosIF = results[0].crear_tramite_macro_temp.split(",");
             datosIF2 = datosIF[2];
             datosIF3 = datosIF[3];
             datosIF[0]= datosIF[0].substring(1, datosIF[0].length);

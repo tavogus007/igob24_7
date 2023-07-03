@@ -246,7 +246,20 @@ var icon= 0;
                         </div>
                     </div>
                   </div>
-                 
+                 <div class="col-md-8" style="padding-top:1%">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label ng-binding">Viaje vía: <font color="#FF0000" size="4px"> * </font></label>
+                        <div class="col-md-10">
+                          <select id="DEF_VIAJE_VIA" class="form-control" name="DEF_VIAJE_VIA" ng-model="datos.DEF_VIAJE_VIA" ng-change="formSolos(daStos.DEF_VIAJE_VIA);mensajevs();" ng-disabled="desabilitado" required="" style="">
+                                <option style="display:none" value="">--Seleccionar--</option>
+                                <option value="AEREO">AÉREA</option>
+                                <option value="TERRESTRE">TERRESTRE</option>
+                                <option value="AEREO_TERRESTRE">AÉREA Y TERRESTRE</option>
+                            </select>
+                        </div>
+                    </div>
+                  </div>
+
                   <div class="col-md-8" style="padding-top:1%">
                     <div class="form-group">
                         <label class="col-md-2 control-label ng-binding">{{translateIdioma.lbl_018_30}}: <font color="#FF0000" size="4px"> * </font></label>

@@ -445,6 +445,7 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
           $scope.datos.TER_FEC_RET = data_tramite.datos.TER_FEC_RET;
           $scope.datos.TER_FEC_FIN = data_tramite.datos.TER_FEC_FIN;
           $scope.datos.TER_SOLOS = data_tramite.datos.TER_SOLOS;
+          $scope.datos.DEF_VIAJE_VIA = data_tramite.datos.DEF_VIAJE_VIA;
           $scope.datos.TER_DEST = data_tramite.datos.TER_DEST;
           $scope.getProvinciasDepto(data_tramite.datos.TER_DEST);
           $scope.datos.TER_MOT = data_tramite.datos.TER_MOT;

@@ -844,7 +844,47 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
+                }else if(aNotif.success[i].obs_tra_sistema == 'CERO-PAPEL' && aNotif.success[i].serdv_descripcion == 'PERMISO DE CIRCULACIÓN ARV' ){      //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
+                    datoObjectNoti = new Object();
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    valorAE = mensaje.indexOf("&#34");
+                    var resAE = mensaje.split("&#34");
+                    if(valorAE != -1){
+                        $scope.actDetalle = resAE[0];
+                        var mensajeIgob = resAE[0];
+                        $scope.resAE = resAE[1];
+                        datoObjectNoti.obj_url_AE = $scope.resAE;
+                    }else{
+                        var mensajeIgob = mensaje;
+                    }
+                    datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
+                    datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
+                    datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
+                    datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
+                    datoObjectNoti.obs_tra_observaciones = mensajeIgob;
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
+                    datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
+                    datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
+                    datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                    datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
+                    datoObjectNoti.mensajeIgob = $scope.resAE1;
+                    if ($scope.resAE1 == undefined){
+                        datoObjectNoti.obj_url_ra = "noRA";
+                    }else{
+                        if(resAE.length > 1){
+                            datoObjectNoti.obj_url_AE = $scope.resAE1;
+                            datoObjectNoti.obj_url_ra = "noRA";
+                        }else{
+                            datoObjectNoti.obj_URL_AE = $scope.resAE1;
+                            datoObjectNoti.obj_url_ra = "noRA";
+                        }
+                    }
+                    datoObjectNotiFinal[i] = datoObjectNoti;
+                    $scope.myObj = datoObjectNotiFinal; //aNotif.success;
                 }
+
                 else{//CASO CONTRARIO....
                     var sAdjunto = 'NO';
                     $scope.myObj = aNotif.success;

@@ -900,6 +900,30 @@
                       </div>
                     </div>
                     <br>
+                    <div class="form-group">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <label for="url"><a style="color:#FF0000";>* </a>{{tituloroseta}}</label>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group custom-upload">
+                              <input type="file" id="FILE_roseta" name="FILE_roseta" uploader-model="FILE_roseta" accept="pdf/*" style="display: none;">
+                              <div class="input-group">
+                                <input id="txt_FILE_roseta" name="txt_FILE_roseta" ng-model="datos.FILE_roseta" type="text" ng-disabled="true" class="form-control input-lg" required>
+                                <span class="input-group-btn">
+                                  <a id="href_FILE_roseta" target="_blank" href="">
+                                    <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover8 != null" ng-click="mostrarimg('FILE_roseta');" data-toggle="modal"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                  </a>
+                                  <button id="btn_FILE_roseta" class="btnupload browse btn btn-primary input-lg" type="button" ng-click="ejecutarFile('FILE_roseta');" ng-disabled="desabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br>
                   </div>
                 </div>
                 <div ng-show="botones_visibles == true">

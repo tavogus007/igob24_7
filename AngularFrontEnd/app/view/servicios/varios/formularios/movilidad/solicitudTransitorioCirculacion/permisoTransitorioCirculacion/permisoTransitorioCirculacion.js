@@ -30,8 +30,8 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     // requisitos de documentos adjuntos al formulario ******************************************************************************
     $scope.singular_Titulo = 'IMPORTANTE: Recuerde que la otorgación del permiso excepcional de circulación por el día del peatón y la Madre tierra está sujeto a análisis y solo se otorgarán en casos de emergencia relacionados a salud, traslado de y hacia el aeropuerto, vehículos oficiales y casos especiales debidamente justificados y respaldados. ';
     $scope.plural_Titulo = 'Adjunte los siguientes documentos para cada requisito en un solo archivo (En formato PDF o DOC)';
-
-    $scope.singular_Nota = 'Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez, Secretario Municipal de Movilidad, justificando las razones de la solicitud y adjuntando los respaldos correspondientes';
+    
+    $scope.singular_Nota = 'Nota dirigida al Ing. Boris Adrian Bacarreza Bruno, Secretario Municipal de Movilidad y Seguridad Ciudadana ai, justificando las razones de la solicitud y adjuntando los respaldos correspondientes';
     $scope.singular_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o representante legal, además adjuntar la fotocopia del conductor o los conductores en caso de que la solicitud sea para varios vehículos';
     $scope.singular_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03, con radicatoria en el Municipio de La Paz o radicatoria en los Municipios colindantes en caso de brindar un servicio interciudad';
     $scope.singular_tmov='Tarjeta Municipal de Operación Vehicular (T.M.O.V.) emitida al Servicio Público de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';
@@ -40,7 +40,7 @@ function permisoDeleveryController($scope, $rootScope, $routeParams, $location, 
     $scope.singular_Certi = 'Certificación del Departamento de Control de Empresas Privadas de Vigilancia de la Policía Boliviana, para el caso de empresas de seguridad (Si corresponde)';
     $scope.singular_roseta = 'Roseta Ambiental emitida por la Secretaría Municipal de Gestión Ambiental y Energías Renovables';
 
-    $scope.plural_Nota = 'Nota dirigida al Lic. Enrique Gustavo Villanueva Gutierrez, Secretario Municipal de Movilidad, justificando las razones de la solicitud y adjuntando los respaldos correspondientes';
+    $scope.plural_Nota = 'Nota dirigida al Ing. Boris Adrian Bacarreza Bruno, Secretario Municipal de Movilidad y Seguridad Ciudadana ai, justificando las razones de la solicitud y adjuntando los respaldos correspondientes';
     $scope.plural_CeId = 'Fotocopia de Cédula de Identidad vigente del solicitante o representante legal, además adjuntar la fotocopia del conductor o los conductores en caso de que la solicitud sea para varios vehículos';
     $scope.plural_CerPropiedad = 'Fotocopia del Certificado de Propiedad de Registro del Vehículo Automotor CPRVA-03, con radicatoria en el Municipio de La Paz o radicatoria en los Municipios colindantes en caso de brindar un servicio interciudad';
     $scope.plural_tmov='Tarjeta Municipal de Operación Vehicular (T.M.O.V.) emitida al Servicio Público de Transporte Individual o Exclusivo de Pasajeros (Si corresponde)';

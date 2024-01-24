@@ -25,17 +25,20 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         { name: 'template1.html', url: '../../../app/view/servicios/atm/atm_vehiculos/vehiculos_juridico.html' },
         { name: 'template2.html', url: '../../../app/view/servicios/atm/atm_inmuebles/atm_inmueblesJuridicoLibros.html' },
         { name: 'template3.html', url: '../../../app/view/servicios/atm/atm_vehiculos/atm_motos_juridico.html' },
-        { name: 'template4.html', url: '../../../app/view/servicios/atm/atm_vehiculos/atm_vehiculosJuridicoLibros.html' }
+        { name: 'template4.html', url: '../../../app/view/servicios/atm/atm_vehiculos/atm_vehiculosJuridicoLibros.html' },
+        { name: 'template5.html', url: '../../../app/view/servicios/atm/atm_cambio_radicatoria/atmCambioRadicatoria.html' }
     ];
     $scope.serivicosInternetInmuebles = [
         { name: 'REGISTRO VALOR LIBROS INMUEBLES ', id: '20' },
     ];
 
     $scope.serivicosInternetVehiculos = [
-        { name: 'INSCRIPCION CASA COMERCIAL VEHICULOS ', id: '21' },
-        { name: 'INSCRIPCION CASA COMERCIAL MOTOS', id: '22' }//,
+        { name: 'INSCRIPCION CASA COMERCIAL VEHICULOS ', id: '21',validacion:$scope.mostrarMenuMascota },
+        { name: 'INSCRIPCION CASA COMERCIAL MOTOS', id: '22',validacion:$scope.mostrarMenuMascota },//,
         //{ name: 'BASE IMPONIBLE VEHICULOS', id: '23' },
+        { name: 'CAMBIO DE RADICATORIA', id: '42',validacion:'SI'  }
     ];
+	
     $scope.btnEnviarForm = true;
     $scope.datosGuardados = false;
     $scope.habGuardar1 = true;
@@ -53,7 +56,6 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 results = r.success;
                 angular.forEach(results, function (val, index) {
                     if (val['form_contenido']) {
-
                         results[index].datos = JSON.parse(val['form_contenido']);
                     }
                 });
@@ -65,8 +67,10 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 }
             });
         } catch (error) {
+			console.log(error);
         }
     };
+	
     $scope.tablaTramites = new ngTableParams({
         page: 1,
         count: 4,
@@ -124,7 +128,9 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
         if (tipoPersona == 'JURIDICO' && sidservicio == 23) {
             sidservicio = 6;
         }
-
+        if (sidservicio == 42) {
+            sidservicio = 7;
+        }
         if (tramite.venviado == "SI") {
             $scope.template = $scope.templates[sidservicio];
             $rootScope.t_enviado = false;
@@ -205,6 +211,8 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                             sessionService.set('IDTRAMITE', sIdTramite);
                         }
                     setTimeout(function () {
+                        $scope.botones = "mostrar";
+                        $scope.desabilitado = false;					
                         $rootScope.$broadcast('validarBtnEnviar', results.length);
                         $rootScope.$broadcast('inicializarCamposInternet', $scope.datos);
                         $rootScope.$broadcast('inicializarHtmlForm', tramite);
@@ -274,6 +282,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
             datosForm_inicio['FILE_FACTURA_LUZ'] = $scope.datosinic.FILE_FACTURA_LUZ;
         } else {
             if (sTipoPersona == 'JURIDICO') {
+                datosForm_inicio['FA_CORR'] = datosIniciales.FA_CORR;
                 datosForm_inicio['f01_id'] = datosIniciales.f01_id;
                 datosForm_inicio['CI_BIGDATA'] = datosIniciales.CI_BIGDATA;
                 datosForm_inicio['f01_tip_doc_prop'] = datosIniciales.f01_tip_doc_prop;
@@ -344,7 +353,9 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                 datosForm_inicio['f01_test_cons_sociedad_j'] = datosIniciales.f01_test_cons_sociedad_j;
                 datosForm_inicio['file_num_ident'] = datosIniciales.file_num_ident;
                 datosForm_inicio['file_reg_comer'] = datosIniciales.file_reg_comer;
-                datosForm_inicio['file_fund_emp'] = datosIniciales.file_fund_emp;
+                datosForm_inicio['file_fund_emp'] = datosIniciales.file_fund_emp; 
+                datosForm_inicio['file_poder'] = datosIniciales.file_poder;
+                datosForm_inicio['OID_REP'] = datosIniciales.OID_REP;
                 datosForm_inicio['INT_AC_TIP_VIA'] = datosIniciales.INT_AC_TIP_VIA;
             }
         }
@@ -386,6 +397,9 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
             }
             if ($scope.procesoSeleccionado == 23) {
                 sidservicio = 23;
+            }
+            if($scope.procesoSeleccionado == 42){
+                sidservicio = 42;
             }
             $scope.adicionarServicioGamlp(sidservicio);
         }
@@ -587,6 +601,55 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                                 sessionService.set('ESTADO', '');
                                 var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
 
+                                datosTramite = {};
+                                datosTramite.vtra_id = nro_tramite;
+                                datosTramite.vdvser_id = sIdServicio;
+                                datosTramite.venviado = "NO";
+                                datosTramite.form_contenido = datosSerializados;
+                                $scope.seleccionarTramiteAtm(datosTramite);
+                                $.unblockUI();
+                                alertify.success('Tramite creado correctamente');
+                                $('#crearTramite').modal('hide');
+                                $scope.tramitesCiudadano();
+                            }
+                            else {
+                                $.unblockUI();
+                            }
+                        });
+                    } catch (e) {
+                        $.unblockUI();
+                    }
+                }
+                if (datos == 42) {
+                    var dataInicio = {};
+                    var fecha = new Date();
+                    var fechactual = fecha.getFullYear() + "-" + (fecha.getMonth() + 1) + "-" + fecha.getDate() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+                    var sIdServicio = 42;
+                    var sIdCiudadano = sessionService.get('IDSOLICITANTE');
+                    var sFechaTramite = fechactual;
+                    dataInicio.INT_FORM_ALMACENADO = 'C';
+                    var datosSerializados = JSON.stringify(dataInicio);
+                    $.blockUI();
+                    try {
+                        var crea = new adicionaTramitesFormulario();
+                        crea.frm_tra_fecha = sFechaTramite;
+                        crea.frm_tra_enviado = "NO";
+                        crea.frm_tra_registrado = fechactual;
+                        crea.frm_tra_modificado = fechactual;
+                        crea.id_servicio = sIdServicio;
+                        crea.data_json = datosSerializados;
+                        crea.oid_ciudadano = sIdCiudadano;
+                        crea.id_usuario = 3;
+                        $.blockUI();
+                        crea.adiciona_Tramites_Formulario(function (res) {
+                            x = JSON.parse(res);
+                            response = x.success;
+                            if (response.length > 0) {
+                                $scope.template = "";
+                                sessionService.set('IDTRAMITE', '');
+                                sessionService.set('IDSERVICIO', '');
+                                sessionService.set('ESTADO', '');
+                                var nro_tramite = response[0].sp_insertar_formulario_tramites_datos;
                                 datosTramite = {};
                                 datosTramite.vtra_id = nro_tramite;
                                 datosTramite.vdvser_id = sIdServicio;
@@ -897,6 +960,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                     datosForm['f01_tipo_via'] = datos.dtspsl_tipo_via;
                     datosForm['f01_nombre_via'] = datos.dtspsl_nombre_via;
                     datosForm['f01_numero_casa'] = datos.dtspsl_numero_casa;
+                    
                     datosForm['INT_RL_FEC_EMISION_DOCUMENTO'] = fechactual;
                     datosForm['f01_num_notaria'] = datos.dtspsl_nro_notaria;
                     datosForm['f01_num_not'] = datos.dtspsl_nro_notaria;
@@ -908,6 +972,8 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                     datosForm['file_num_ident'] = datos.dtspsl_file_num_ident;
                     datosForm['file_reg_comer'] = datos.dtspsl_file_reg_comer;
                     datosForm['file_fund_emp'] = datos.dtspsl_file_fund_emp;
+                    datosForm['file_poder'] = datos.dtspsl_file_poder_legal;
+                    datosForm['FA_CORR'] = datos.dtspsl_correo;          
                     if (datos.dtspsl_ci_representante || datos.dtspsl_ci_representante != null && datos.dtspsl_ci_representante != "") {
                         try {
                             var buscarRepresentante = new rcNatural();
@@ -950,6 +1016,7 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
                                 datosForm['f01_expedido_rep'] = repLegalmongo[0].dtspsl_expedido;
                                 datosForm['FILE_FOTOCOPIA_CI_RA'] = repLegalmongo[0].dtspsl_file_fotocopia_ci;
                                 datosForm['FILE_FOTOCOPIA_CI_RR'] = repLegalmongo[0].dtspsl_file_fotocopia_ci_r;
+                                datosForm['OID_REP'] = repLegalmongo[0]._id;
                             });
                         } catch (e) {
                         }
@@ -1085,73 +1152,122 @@ app.controller('serviciosAtmController', function ($scope, $rootScope, $routePar
     };
 
     $scope.serializarInformacion = function (obj) {
-        obj.VH_CC_REQ_FAC_COMER = '';
-        obj.VH_CC_REQ_POL_IMPOR = '';
-        obj.VH_CC_PODER_COMPRADOR = '';
-        obj.INT_FORM_ALMACENADO = 'G';
-        obj.f01_tipo_per = sessionService.get('TIPO_PERSONA');
+        var idServicio = sessionService.get('IDSERVICIO');
+        if(idServicio != 42){
+            obj.VH_CC_REQ_FAC_COMER = '';
+            obj.VH_CC_REQ_POL_IMPOR = '';
+            obj.VH_CC_PODER_COMPRADOR = '';
+            obj.INT_FORM_ALMACENADO = 'G';
+            obj.f01_tipo_per = sessionService.get('TIPO_PERSONA');
 
-        obj.ID_TIPO_TRAMITE = 1301;
-        obj.VH_CC_NRO_DOC_IDEN = obj.f01_rl_nit;
-        obj.VH_CC_NOM_RAZ_SOC = obj.f01_raz_soc_per_jur;
-        obj.VH_CC_DIRECC = obj.f01_zon_rep_valor;
-        obj.VH_CC_NRO_CHASIS = obj.VH_CC_NRO_CHASIS;
-        obj.VH_CC_NRO_OBJ_TRIB = obj.VH_CC_NRO_OBJ_TRIB;
-        obj.VH_CC_TIP_OBJ_TRIB = 'POLIZA';
-        obj.VH_CC_FCHA_TRAM = $rootScope.fechayhora;
-        obj.VH_CC_NRO_OBJ_TRIB = obj.VH_CC_NRO_OBJ_TRIB;
-        obj.VH_CC_TIP_OBJ_TRIB = 'POLIZA';
-        obj.VH_CC_FCHA_TRAM = $rootScope.fechayhora;
-        obj.VH_CC_REQ_FAC_COMER = $scope.datos.urlFactura;
-        obj.VH_CC_REQ_POL_IMPOR = $scope.datos.urlPoliza;
-        obj.VH_CC_PODER_COMPRADOR = $scope.datos.urlPoder;
-        obj.VH_CC_CI_ANV = $rootScope.file_CI_A;
-        obj.VH_CC_CI_REV = $rootScope.file_CI_R;
-        obj.VH_CC_PODER_RL = $rootScope.file_PODER;
-        obj.VH_CC_NIT = $rootScope.file_NIT;
-        obj.VH_CC_CI_ANV = $rootScope.file_CI_A;
-        obj.VH_CC_CI_REV = $rootScope.file_CI_R;
-        obj.VH_CC_PODER_RL = $rootScope.file_PODER;
-        obj.VH_CC_NIT = $rootScope.file_NIT;
-        obj.cantidadFactura = $scope.datos.facturaFojas;
-        obj.cantidadPoliza = $scope.datos.duiFojas;
-        obj.cantidadPoder = $scope.datos.poderFojas;
-        if ((obj.cantidadFactura == 'undefined' || obj.cantidadPoliza == 'undefined' || obj.cantidadPoder == 'undefined' || obj.VH_CC_REQ_FAC_COMER == 'undefined' || obj.VH_CC_REQ_FAC_COMER == undefined) || (obj.VH_CC_REQ_POL_IMPOR == 'undefined' || obj.VH_CC_REQ_POL_IMPOR == undefined) || (obj.VH_CC_PODER_COMPRADOR == 'undefined' || obj.VH_CC_PODER_COMPRADOR == undefined) || (obj.VH_CC_NRO_OBJ_TRIB == 'undefined' || obj.VH_CC_NRO_OBJ_TRIB == undefined) || (obj.VH_CC_NRO_CHASIS == 'undefined' || obj.VH_CC_NRO_CHASIS == undefined)) {
-            swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
-        } else {
-            try {
-                var datosSerializados = JSON.stringify(obj);
-                var idCiudadano = sessionService.get('IDSOLICITANTE');
-                var idTramite = sessionService.get('IDTRAMITE');
-                var idServicio = sessionService.get('IDSERVICIO');
-                var Parametros = new datosFormularios();
-                Parametros.frm_tra_dvser_id = idServicio;
-                Parametros.data_json = datosSerializados;
-                Parametros.frm_tra_id_ciudadano = idCiudadano;
-                Parametros.frm_tra_id_usuario = 1;
-                Parametros.frm_idTramite = idTramite;
-                $rootScope.btnGuardarForm = true;
-                Parametros.sp_crear_datos_formulario(function (results) {
-                    results = JSON.parse(results);
-                    results = results.success;
-                    if (results.length > 0) {
-                        $.unblockUI();
-                        $scope.btnEnviarForm = false;
+            obj.ID_TIPO_TRAMITE = 1301;
+            obj.VH_CC_NRO_DOC_IDEN = obj.f01_rl_nit;
+            obj.VH_CC_NOM_RAZ_SOC = obj.f01_raz_soc_per_jur;
+            obj.VH_CC_DIRECC = obj.f01_zon_rep_valor;
+            obj.VH_CC_NRO_CHASIS = obj.VH_CC_NRO_CHASIS;
+            obj.VH_CC_NRO_OBJ_TRIB = obj.VH_CC_NRO_OBJ_TRIB;
+            obj.VH_CC_TIP_OBJ_TRIB = 'POLIZA';
+            obj.VH_CC_FCHA_TRAM = $rootScope.fechayhora;
+            obj.VH_CC_NRO_OBJ_TRIB = obj.VH_CC_NRO_OBJ_TRIB;
+            obj.VH_CC_TIP_OBJ_TRIB = 'POLIZA';
+            obj.VH_CC_FCHA_TRAM = $rootScope.fechayhora;
+            obj.VH_CC_REQ_FAC_COMER = $scope.datos.urlFactura;
+            obj.VH_CC_REQ_POL_IMPOR = $scope.datos.urlPoliza;
+            obj.VH_CC_PODER_COMPRADOR = $scope.datos.urlPoder;
+            obj.VH_CC_CI_ANV = $rootScope.file_CI_A;
+            obj.VH_CC_CI_REV = $rootScope.file_CI_R;
+            obj.VH_CC_PODER_RL = $rootScope.file_PODER;
+            obj.VH_CC_NIT = $rootScope.file_NIT;
+            obj.VH_CC_CI_ANV = $rootScope.file_CI_A;
+            obj.VH_CC_CI_REV = $rootScope.file_CI_R;
+            obj.VH_CC_PODER_RL = $rootScope.file_PODER;
+            obj.VH_CC_NIT = $rootScope.file_NIT;
+            obj.cantidadFactura = $scope.datos.facturaFojas;
+            obj.cantidadPoliza = $scope.datos.duiFojas;
+            obj.cantidadPoder = $scope.datos.poderFojas;
+            if ((obj.cantidadFactura == 'undefined' || obj.cantidadPoliza == 'undefined' || obj.cantidadPoder == 'undefined' || obj.VH_CC_REQ_FAC_COMER == 'undefined' || obj.VH_CC_REQ_FAC_COMER == undefined) || (obj.VH_CC_REQ_POL_IMPOR == 'undefined' || obj.VH_CC_REQ_POL_IMPOR == undefined) || (obj.VH_CC_PODER_COMPRADOR == 'undefined' || obj.VH_CC_PODER_COMPRADOR == undefined) || (obj.VH_CC_NRO_OBJ_TRIB == 'undefined' || obj.VH_CC_NRO_OBJ_TRIB == undefined) || (obj.VH_CC_NRO_CHASIS == 'undefined' || obj.VH_CC_NRO_CHASIS == undefined)) {
+                swal('Estimado ciudadano', "Debe completar los datos del formulario y/o adjuntar todos los requisitos...", 'warning');
+            } else {
+                try {
+                    var datosSerializados = JSON.stringify(obj);
+                    var idCiudadano = sessionService.get('IDSOLICITANTE');
+                    var idTramite = sessionService.get('IDTRAMITE');
+                    var idServicio = sessionService.get('IDSERVICIO');
+                    var Parametros = new datosFormularios();
+                    Parametros.frm_tra_dvser_id = idServicio;
+                    Parametros.data_json = datosSerializados;
+                    Parametros.frm_tra_id_ciudadano = idCiudadano;
+                    Parametros.frm_tra_id_usuario = 1;
+                    Parametros.frm_idTramite = idTramite;
+                    $rootScope.btnGuardarForm = true;
+                    Parametros.sp_crear_datos_formulario(function (results) {
+                        results = JSON.parse(results);
+                        results = results.success;
+                        if (results.length > 0) {
+                            $.unblockUI();
+                            $scope.btnEnviarForm = false;
+                            $scope.btnGuardarForm = false;
+                            $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
+                            swal('', "Formulario almacenado", 'success');
+                            $("#btnFormLicencia").removeAttr("disabled");
+                        } else {
+                            $.unblockUI();
+                            swal('', "Formulario no almacenado", 'error');
+                        }
+                    });
+                } catch (e) {
+                    $scope.btnGuardarForm = false;
+                    $.unblockUI();
+                }
+            }
+        }else{
+            obj.INT_FORM_ALMACENADO = 'G';
+            if (obj.url_certificado == undefined || obj.url_certificado == ""){         
+                swal('Estimado ciudadano', "Debe adjuntar su certificado de registro de propiedad", 'error');
+            } else {
+                const indiaRegex = /[0-9]{3,4}[A-Z]{3}$/;
+                const inputText = obj.FA_PLACA;
+                if(inputText.match(indiaRegex)) {
+                    try {
+                        var datosSerializados = JSON.stringify(obj);
+                        var idCiudadano = sessionService.get('IDSOLICITANTE');
+                        var idTramite = sessionService.get('IDTRAMITE');
+                        var idServicio = sessionService.get('IDSERVICIO');
+                        var Parametros = new datosFormularios();
+                        Parametros.frm_tra_dvser_id = idServicio;
+                        Parametros.data_json = datosSerializados;
+                        Parametros.frm_tra_id_ciudadano = idCiudadano;
+                        Parametros.frm_tra_id_usuario = 1;
+                        Parametros.frm_idTramite = idTramite;
+                        $rootScope.btnGuardarForm = true;
+                        Parametros.sp_crear_datos_formulario(function (results) {
+                            results = JSON.parse(results);
+                            results = results.success;
+                            if (results.length > 0) {
+                                $.unblockUI();
+                                $scope.btnEnviarForm = false;
+                                $scope.btnGuardarForm = false;
+                                $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
+                                swal('', "Formulario almacenado", 'success');
+                                $("#btnFormLicencia").removeAttr("disabled");
+                            } else {
+                                $.unblockUI();
+                                swal('', "Formulario no almacenado", 'error');
+                            }
+                        });
+                    } catch (e) {
                         $scope.btnGuardarForm = false;
-                        $rootScope.$broadcast('iniciaBtnHabilitar', 'G');
-                        swal('', "Formulario almacenado", 'success');
-                        $("#btnFormLicencia").removeAttr("disabled");
-                    } else {
                         $.unblockUI();
-                        swal('', "Formulario no almacenado", 'error');
-                    }
-                });
-            } catch (e) {
-                $scope.btnGuardarForm = false;
-                $.unblockUI();
+                    }    
+                } else {
+                    swal('Estimado ciudadano', 'El formato de la placa no es correcto', 'error');
+
+                }
             }
         }
     };
+
+    
 
     $scope.serializarInformacionMotos = function (obj) {
         obj.VH_CC_REQ_FAC_COMER = '';

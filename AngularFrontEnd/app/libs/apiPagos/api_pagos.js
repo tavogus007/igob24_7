@@ -2,10 +2,10 @@ var urlCompPago;
 var dataRespPago;
 var dataParamsPago;
 var typeCallPago;
-
 if(jsonURLS){
   var urlPagos = jsonURLS.CONEXION_PAGOS + 'api/'; 
   var urlFacPuente = jsonURLS.CONEXION_FACPUENTE;
+  var urlFacturacionV2 = jsonURLS.CONEXION_FACTURACION_AE_V2;
 }
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
@@ -45,6 +45,53 @@ function ejecutarAjaxPagoHTML(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
   });
   return dataResp;
 };
+
+
+////////////////////////////////////////////////SERVICIOS FACTURACION v2//////////////////////////////////////////
+function ejecutarAjaxFacturacionV2Token(vUrlComp, vTypeCall, vDataCall, vFunctionResp,tokenFAC) {
+console.log("urlFacturacionV2 (1):",urlFacturacionV2);
+  $.ajax({
+      type: vTypeCall,
+      url:  urlFacturacionV2 + vUrlComp,
+      data: vDataCall,
+      async: false,
+      success: function (response) {
+          dataResp = JSON.stringify(response);
+          vFunctionResp(dataResp);
+      },
+      error: function (response, status, error) {
+          dataResp = "{\"errorParametros\":{\"message\":\"" + response + "\",\"code\":700}}";
+          console.log("error", dataResp);
+          vFunctionResp(dataResp);
+      }
+  });
+  return dataResp;
+};
+
+function ejecutarAjaxFacturacionV2(vUrlComp, vTypeCall, vDataCall, vFunctionResp,tokenFacV2) {
+  var headers = {};
+  $.ajax({
+      type: vTypeCall,
+      url:  urlFacturacionV2 + vUrlComp,
+      data: vDataCall,
+      async: false,
+      headers: {
+          'authorization': tokenFacV2
+      },
+      success: function (response) {
+          dataResp = JSON.stringify(response);
+          vFunctionResp(dataResp);
+      },
+      error: function (response, status, error) {
+          dataResp = "{\"errorParametros\":{\"message\":\"" + response + "\",\"code\":700}}";
+          console.log("error", dataResp);
+          vFunctionResp(dataResp);
+      }
+  });
+  return dataResp;
+};
+
+
 /*///////////////GUARDAR factura//////////////////////*/
 function datafactura() {
   this.operacion;
@@ -267,4 +314,87 @@ inCredencial.prototype.eliminaCredencial = function (functionResp) {
       "tipo_credencial"       : this.tipo_credencial
   };
   ejecutarAjaxPago(urlCompPago, typeCallPago, dataParamsPago, functionResp);    
+};
+
+
+////////////////////////////////FACTURACION ELECTRONICA ONLINE v2//////////////////////////////
+function tokenFacturacionV2(){
+  this.usr_usuario;  
+  this.usr_clave;
+};
+tokenFacturacionV2.prototype.generaToken=function(functionResp){
+  urlComp = 'api/iFacturas/login';
+  typeCall = "POST";
+  dataParams= {
+      "usr_usuario"      :this.usr_usuario,
+      "usr_clave"        :this.usr_clave
+  };
+  ejecutarAjaxFacturacionV2Token(urlComp, typeCall, dataParams, functionResp);
+};
+
+function tipoDocumentos(){
+  this.dominio;  
+};
+tipoDocumentos.prototype.lstTipoDocumentos=function(functionResp){
+  var tokenFacV2 = sessionStorage.getItem('TOKEN_FACTURACIONV2');
+  urlComp = 'api/tipoDocumentos';
+  typeCall = "POST";
+  dataParams= {
+      "dominio"        :this.dominio
+  };
+  ejecutarAjaxFacturacionV2(urlComp, typeCall, dataParams, functionResp,tokenFacV2);
+};
+
+function itemRecaudadorFacturacion(){
+  this.numero_sucursal;  
+};
+itemRecaudadorFacturacion.prototype.lstItemRecaudador=function(functionResp){
+  var tokenFacV2 = sessionStorage.getItem('TOKEN_FACTURACIONV2');
+  urlComp = 'api/itemRecaudador';
+  typeCall = "POST";
+  dataParams= {
+      "numero_sucursal"        :this.numero_sucursal
+  };
+  ejecutarAjaxFacturacionV2(urlComp, typeCall, dataParams, functionResp,tokenFacV2);
+};
+
+
+function buscaDocumento(){
+  this.documento;
+  this.tipo_documento;
+};
+buscaDocumento.prototype.buscaDocumentoDetalle=function(functionResp){
+  var tokenFacV2 = sessionStorage.getItem('TOKEN_FACTURACIONV2');
+  urlComp = 'api/factura/informacionCiudadano/'+this.documento+'/'+this.tipo_documento;
+  typeCall = "GET";
+  dataParams= {};
+  ejecutarAjaxFacturacionV2(urlComp, typeCall, dataParams, functionResp,tokenFacV2);
+};
+
+function obtenerEstado(){
+  this.sucursal;
+  this.punto_venta;
+};
+obtenerEstado.prototype.obtenerEstadoCufd=function(functionResp){
+  var tokenFacV2 = sessionStorage.getItem('TOKEN_FACTURACIONV2');
+  urlComp = 'api/masivas/obtenerEsatdoCufd';
+  typeCall = "POST";
+  dataParams= {
+      "sucursal"          :this.sucursal,
+      "punto_venta"       :this.punto_venta
+  };
+  ejecutarAjaxFacturacionV2(urlComp, typeCall, dataParams, functionResp,tokenFacV2);
+};
+
+function buscarItem(){
+  this.sucursal;
+};
+buscarItem.prototype.buscarItemFacturacion=function(functionResp){
+  var tokenFacV2 = sessionStorage.getItem('TOKEN_FACTURACIONV2');
+  urlComp = 'api/item/listar';
+  typeCall = "POST";
+  dataParams= {
+      "sucursal"          :this.sucursal
+  };
+  ejecutarAjaxFacturacionV2(urlComp, typeCall, dataParams, functionResp,tokenFacV2);
 };

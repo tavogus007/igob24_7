@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <script type="text/javascript" src="../../view/servicios/atm/recepcionEmpresas/recepcionEmpresas.js"></script>
+</head>
+
+<body>
+    <script type="text/javascript">
+         var icon = 0;
+        $('#mostrar').click(function (event) {
+            event.preventDefault();
+            $("#caja").slideToggle();
+
+            if (icon == 0) {
+                $("#cerrar_i").removeClass("fa fa-sort-asc");
+                $("#cerrar_i").addClass("fa fa-sort-desc");
+                $("#cerrar_rc").css({ 'position': 'absolute', 'top': '-11px' });
+                icon = icon + 1;
+            }
+            else {
+                $("#cerrar_i").addClass("fa fa-sort-asc");
+                $("#cerrar_rc").css({ 'position': 'absolute', 'top': '5px' });
+                icon = 0;
+            }
+        });
+
+        $('#ibox-title').click(function (event) {
+            event.preventDefault();
+            $('#caja').slideUp();
+        });    
+        
+        $('.custom-upload input[type=file]').change(function(){
+            $(this).next().find('input').val($(this).val());
+            angular.element(this).scope().cambiarFile(this, $(this).val());
+        });
+        function iniciarLoadFyle(){
+            $('.custom-upload input[type=file]').change(function(){
+            $(this).next().find('input').val($(this).val());
+            angular.element(this).scope().cambiarFile(this, $(this).val());
+            });
+        }
+    </script>
+    <div ng-controller="recepcionEmpresasController" ng-init="inicio();">
+        <div class="col-md-12">
+            <div class="ibox float-e-margins">
+                <div id="mostrar" class="ibox-title">
+                    <h3>AGENTES DE INFORMACIÓN VEHICULOS</h3>
+                    <a href="#" id="cerrar_rc"><i class="fa fa-sort-asc flechaOscura" id="cerrar_i"></i></a>
+                </div>
+                <div class="ibox-content" id="caja">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form class="form-horizontal ng-pristine ng-valid">
+                                <div class="form-group">
+                                    <div class="col-lg-3">
+                                        <div style="text-align:center;">
+                                            <a class="btn btn-success" tooltip="Crear el trámite" ng-click="crearTramite()">
+                                                <i class="fa fa-file blanco shake-slow"></i>
+                                                {{translateTitulos.lbl_10_02}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                                    <div class="col-lg-6">
+                                        <input ng-model="query" id="busca1" class="form-control" placeholder="">
+                                    </div>
+                                </div>
+                            </form>
+                            <table ng-table="tablaTramites" class="table table-striped">
+                                <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
+                                    ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                                    <td data-title="'Código'" ng-click="seleccionarTramite(tramite)">
+                                        {{tramite.vcodigo}}</td>
+                                    <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite)">
+                                        {{tramite.vdescripcion}}</td>
+                                    <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)">
+                                        {{tramite.vfecha}} </td>
+                                    <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)">
+                                        {{tramite.venviado}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" ng-show="mostrarFormulario == true">
+                <div class="col-md-12 row principal ">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                            <h4>REGISTRO DE AGENTES DE INFORMACIÓN DE VEHICULOS</h4>
+                        </div>
+                        <br><br>
+                        <form name="signupForm" >
+                            <div class="col-md-12">
+                                <div >
+                                    <div class="col-md-12">
+                                        <legend>Datos de la persona Jurídica</legend>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_22}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_NIT" id="RECEP_NIT"
+                                                    name="RECEP_NIT" class="form-control" width="30%" height="30"
+                                                    ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_23}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_RAZON_SOCIAL" id="RECEP_RAZON_SOCIAL"
+                                                    name="RECEP_RAZON_SOCIAL" class="form-control" width="30%" height="30"
+                                                    ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_24}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_PODER" id="RECEP_PODER" name="RECEP_PODER" class="form-control" onkeyUp="checkInput(this);" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_25}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_NRO_NOTARIA" id="RECEP_NRO_NOTARIA" name="RECEP_NRO_NOTARIA" class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4" ng-show="false">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_14}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_MACRO" id="RECEP_MACRO" name="RECEP_MACRO"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                                <input type="hidden" ng-model="datos.RECEP_ID_MACRO" id="RECEP_ID_MACRO" name="RECEP_ID_MACRO"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                            <span style="color:red" ng-show="signupForm.RECEP_ID_MACRO.$invalid">
+                                                <span class="error"
+                                                    ng-show="signupForm.RECEP_ID_MACRO.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4" ng-show="false">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_16}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_DISTRITO" id="RECEP_DISTRITO"
+                                                    name="RECEP_DISTRITO" class="form-control" width="30%" height="30"
+                                                    ng-disabled="true">
+                                                <input type="hidden" ng-model="datos.RECEP_ID_DISTRITO" id="RECEP_ID_DISTRITO"
+                                                    name="RECEP_ID_DISTRITO" class="form-control" width="30%" height="30"
+                                                    ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_17}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_ZONA" id="RECEP_ZONA" name="RECEP_ZONA" class="form-control"
+                                                    width="30%" height="30" ng-disabled="true">
+                                                <input type="hidden" ng-model="datos.RECEP_ZONA" id="RECEP_ZONA" name="RECEP_ZONA"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_18}}:</label>
+                                            <div class="controls">
+                                                <select class="form-control" ng-model="datos.RECEP_TIPO_VIA" id="RECEP_TIPO_VIA" name="RECEP_TIPO_VIA" ng-disabled="true">
+                                                    <option value="">--Seleccionar--</option>
+                                                    <option value="AV">AVENIDA</option>
+                                                    <option value="CA">CALLE</option>
+                                                    <option value="CL">CALLEJON</option>
+                                                    <option value="PL">PLAZA</option>
+                                                    <option value="CN">CANCHA</option>
+                                                    <option value="PR">PARQUE</option>
+                                                    <option value="PA">PASAJE</option>
+                                                    <option value="ND">NO DEFINIDO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_19}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_NOMBRE_VIA" id="RECEP_NOMBRE_VIA" name="RECEP_NOMBRE_VIA"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_20}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_NRO_PUERTA" id="RECEP_NRO_PUERTA" name="RECEP_NRO_PUERTA"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-12">
+                                        <legend>Datos personales del representante legal</legend>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_NOMBRE_REP" id="RECEP_NOMBRE_REP" name="RECEP_NOMBRE_REP"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_PRIM_APE_REP" id="RECEP_PRIM_APE_REP" name="RECEP_PRIM_APE_REP"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_SEG_APE_REP" id="RECEP_SEG_APE_REP" name="RECEP_SEG_APE_REP"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">{{translateTitulos.lbl_12_30}}:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_CAS_APE_REP" id="RECEP_CAS_APE_REP" name="RECEP_CAS_APE_REP"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">Número de documento:</label>
+                                            <div class="controls">
+                                                <input ng-model="datos.RECEP_DOC_REP" id="RECEP_DOC_REP" name="RECEP_DOC_REP"
+                                                    class="form-control" width="30%" height="30" ng-disabled="true">
+                                            </div>
+                                        </div>
+                                    </div>
+            
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="url">Expedido:</label>
+                                            <div class="controls">
+                                                <select id="RECEP_DOC_EXP_REP" name="RECEP_DOC_EXP_REP" placeholder="expedido"
+                                                    ng-model="datos.RECEP_DOC_EXP_REP" class="form-control" ng-disabled="true"
+                                                    required>
+                                                    <option value="">--Seleccione--</option>
+                                                    <option value="LPZ">LA PAZ</option>
+                                                    <option value="CBB">COCHABAMBA</option>
+                                                    <option value="SCZ">SANTA CRUZ</option>
+                                                    <option value="CHQ">CHUQUISACA</option>
+                                                    <option value="TJA">TARIJA</option>
+                                                    <option value="PTS">POTOSI</option>
+                                                    <option value="ORU">ORURO</option>
+                                                    <option value="BNI">BENI</option>
+                                                    <option value="PND">PANDO</option>
+                                                    <option value="EXP">EXPEDIDO</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <legend>Declaración Mensual</legend>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Adjuntar Archivo de Declaración:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group custom-upload">
+                                        <input type="file" id="declaracion_mensual" name="declaracion_mensual"   style="display: none;">
+                                        <div class="input-group">
+                                            <input id="txt_declaracion_mensual" name="txt_declaracion_mensual" ng-model="datos.declaracion_mensual"  type="text" class="form-control input-lg" disabled required>
+                                            <span class="input-group-btn">
+                                                <a id="href_declaracion_mensual" ng-show="datos.declaracion_mensual_url != undefined" href="{{datos.declaracion_mensual_url }}" target="_blank">
+                                                    <button id="btn_declaracion_mensual" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                </a>
+                                                <button id="btn_declaracion_mensual_upload" ng-disabled="desabilita" ng-click="ejecutarFile('declaracion_mensual')" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12"><br><br><br><br></div>
+                                <div class="col-md-6" align="center" ng-show="botones != null">
+                                    <div class="col-md-12" align="center">
+                                        <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
+                                            <tr class="color">
+                                                <div style="background: #ffffff;">
+                                                    <div class="box2">
+                                                        <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
+                                                    </div>
+                                                    <div class="box2">
+                                                        <img class="img-responsive" src="{{imageLNGG}}"
+                                                            title="Palabra en CASTELLANO">
+                                                    </div>
+                                                </div>
+                                            </tr>
+                                            <tr class="color">
+                                                <td class="color22" colspan="3" width="70" align="center">
+                                                    <input id="resultadoCC" name="resultadoCC" type="text"
+                                                        style="border: 0px !important;" class="form-control"
+                                                        placeholder="{{palabraT}}" ng-model="resultadoCC"
+                                                        ng-keyup="VerificarCapchaa()" />
+                                                    <span ng-show="formulario.palabraT.$invalid">
+                                                        <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                                    </span>
+                                                    <label>{{palabraT}}</label>
+                                                </td>
+                                                <td class="color2" width="30" align="center">
+                                                    <a type="button" class="btn btn-default btn-circle" data-toggle="modal"
+                                                        data-target="modal" ng-click="getCaptchasXX();"><i
+                                                            class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072"
+                                                            title="Actualizar"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <b>
+                                            <font SIZE=3 color="red"> {{ErrorCapchasXX}}</font>
+                                        </b>
+                                        <b>
+                                            <font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font>
+                                        </b>
+                                        <b>
+                                            <font SIZE=2 color="green"> {{SuccesCapchasxx}}</font>
+                                        </b>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="col-md-12" align="right" ng-show="botones != null">
+                            <br><br>
+                            <button id="miFormGuardar" ng-click="guardarInformacion(datos);getCaptchasXX();" type="button"
+                                type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar"
+                                ng-disabled="habGuardar1" tooltip="Guardar Formulario">
+                            </button>
+                            <button id="btnFormLicencia" ng-click="validarEnvio(datos);" data-dismiss="modal" type="button"
+                                class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="btnEnviarFormLinea"
+                                tooltip="Enviar Formulario">
+                            </button>
+                            <br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

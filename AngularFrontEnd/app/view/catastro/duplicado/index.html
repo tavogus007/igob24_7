@@ -1,4 +1,10 @@
 <style>
+    .imgFotos {
+        width: 340px !important;
+        height: 340px !important;
+        align-items: center;
+    }
+
     @media (min-width: 768px) {
         #page-wrapper {
             min-height: 768px;
@@ -250,7 +256,6 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <p class="txtParrafo">Consiste en obtener una copia fidedigna <a href="#catastro|duplicado" style="font-weight: bold" class="txtResaltado">en línea a través de internet</a>  del Certificado de Registro Catastral cuando éste haya sido <b class="txtResaltado"> emitido a partir de la gestión 2012</b> y las características del predio no sufrieron ninguna modificación física, económica y/o jurídica.</p>
-
                                 </div>
                             </div>
                             <div class="row separador"></div>
@@ -335,7 +340,7 @@
                                                     <button class="btn btn-warning" ng-show="VerificarDespliegueFUM(solicitud)" data-toggle="modal" data-target="#divPopup4" ng-click="ImprimirProforma(solicitud.f)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir proforma de pago" ></span> Imprimir Proforma de Pago (FUM)</button>
                                                     <button class="btn btn-warning" ng-show="VerificarDespliegueEpago(solicitud)" ng-click="continuarPagoOL(solicitud)"><span class="glyphicon glyphicon-usd" aria-hidden="true" title="Imprimir proforma de pago" ></span> Continuar pago en línea</button>
                                                     <button class="btn btn-info" ng-show="VerificarDespliegueCC(solicitud)" data-toggle="modal" data-target="#divPopup7" ng-click="DeplegarDpl(solicitud)"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Imprimir Certificado" ></span> Imprimir Duplicado del Certificado</button>
-                                                    <button class="btn btn-success" ng-show="VerificarEstadoFacturado(solicitud)" data-toggle="modal" ng-click="mostrarFactura(solicitud)"><span class="glyphicon glyphicon-usd" aria-hidden="true" title="Imprimir Factura" ></span> Imprimir Factura</button>
+                                                    <button class="btn btn-success" ng-show="VerificarEstadoFacturado(solicitud)" data-toggle="modal" ng-click="verpdfFactura(solicitud)"><span class="glyphicon glyphicon-usd" aria-hidden="true" title="Imprimir Factura" ></span> Imprimir Factura</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -384,16 +389,11 @@
         </div>
     </div>
 
-
-
-
-
     <div class="col-lg-12" ng-if="false">
 	    <div class="ibox float-e-margins">
            <div class="cafeSuave" style="padding: 1px 10px 1px 10px;">
                 <h4 class="blanco"><strong>SOLICITUD DE DUPLICADO DE CERTIFICADO DE REGISTRO CATASTRAL</strong></h4>
             </div>
-
             <div style="background-color: white; padding: 15px">                        
                 <p>
                     Si desea solicitar un Duplicado de Certificado de Registro Catastral de su inmueble, presione el botón <strong>SOLICITAR DUPLICADO</strong>.
@@ -566,10 +566,10 @@
                     <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" ng-show="tipoVisor == 2 && dspl == true" data-target="#divPopup11" ng-click="genAdj()"><span class="glyphicon glyphicon-print" aria-hidden="true" title="Duplicado de Certificado Catastral"></span> Imprimir</button>
 
                     <div class="pull-right" style="padding: 1px">
-                        <button class="btn btn-info" ng-click="goNext()" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor == 2">></button>
+                        <button class="btn btn-info" ng-click="goNext()" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor == 2">&gt;</button>
                     </div>
                     <div class="pull-right" style="padding: 1px">
-                        <button class="btn btn-info" ng-click="goPrevious()" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor == 2"><</button>&nbsp;
+                        <button class="btn btn-info" ng-click="goPrevious()" ng-show="resultadoBusqueda.res == 'OK' || tipoVisor == 2">&lt;</button>&nbsp;
                     </div>
 
                     <div class="pull-right" style="padding: 1px">
@@ -804,7 +804,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="modal-title"><button class="btn-warning">Paso 4</button>&nbsp;Seleccione de tipo de pago.</h3><!--&nbsp;Generaci&oacute;n de Proforma de Pago FUM.-->
+                    <h3 class="modal-title"><button class="btn-warning">Paso 4</button>&nbsp;Seleccione el tipo de pago.</h3><!--&nbsp;Generaci&oacute;n de Proforma de Pago FUM.-->
                 </div>
                 <form name="formTipoPago" id="formTipoPago">
                     <div class="modal-body">
@@ -835,8 +835,8 @@
                                         </table>
                                 </div>
                             </div>
-                            <!-- Comentado por JFC 2021 06 25 - Se deshabilita el pago en linea Falla el metodo de pago enlinea-->
-                            <div class="col-xs-12">
+                            <!-- Comentado por ANGEL.LAURA 2023 06 22 - Se deshabilita el pago en linea TEMPORALMENTE-->
+                            <!--<div class="col-xs-12">
                                 <div class="table">
                                     <table>
                                         <tr>
@@ -853,13 +853,31 @@
                                         </tr>
                                     </table>
                                 </div>
-                            </div>
-
+                            </div>-->
+                            <!-- Angel Laura 2022 09 02 - pago por qr -->
+                            <!--<div class="col-xs-12">
+                                <div class="table">
+                                    <table>
+                                        <tr>
+                                            <td width="12%">
+                                                <input type="radio"  name="radioPago" ng-model="idTipoPago" value="4" title="Pago en linea por QR">
+                                                <button class="btn btn-info btn-circle" ng-click="idTipoPago=4">
+                                                    <span class="glyphicon glyphicon-usd" aria-hidden="true" title="Pago en efectivo"></span>
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <strong>Pago en qr:</strong>&nbsp;Realizar el pago a trav&eacute;s de un codigo QR.
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>-->
                             <div class="col-xs-12">
                                 <div ng-show="!idTipoPago" class="alert alert-danger" role="alert">
                                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                   <span class="sr-only">Error:</span>
-                                  Seleccione una opci&oacute;n.
+                                  <!-- Seleccione una opci&oacute;n. -->
+                                  Los servicios de pago en linea estan temporalmente deshabilitados, disculpe las molestias
                                 </div>
                             </div>
                             
@@ -877,7 +895,7 @@
     </div>
 
     <!-- Modal tipo pago: Paso 4: tipo de pago-->
-    <div id="divPopupPagoTarjeta" class="modal fade" role="dialog">
+    <div id="divPopupPagoTarjeta" class="modal fade" role="dialog" data-backdrop="static">
         <div class="modal-dialog" style="width:900px">
             <!-- Modal content-->
             <div class="modal-content">
@@ -1094,6 +1112,24 @@
         </div>
     </div>
 
+    <!-- Modal 9 pago tarjeta-->
+    <div id="divPopupTarjeta" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog" style="width:900px">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        <iframe id="frameTarjeta" height="600px" width="850px" ></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info pull-left" data-toggle="modal" data-dismiss="modal" data-target="#divPopup2" ng-click="cambiarImagen(7)" ><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Donde encontrar el C&oacute;digo Catastral"  ></span> GU&Iacute;A DE TR&Aacute;MITE</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="resetUrl()">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--ultimo modal: mantener al ultimo por la sobreposicion-->
     <!-- Modal 2: Guía de Tramite  -->
     <div id="divPopup2"  class="modal fade" role="dialog" tabindex="-1" data-focus-on="input:first">
@@ -1139,24 +1175,24 @@
     <!-- Modal Ver PDF FACTURA-->
     <div class="modal" id="divPopupfactura" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Factura</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title">Factura</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
                 <div class="modal-body">
-                    <object
-                    data="{{resultFactura}}"
-                    width=100% height=600></object>
+                    <div class="modal-body">
+                        <object
+                        data="{{resultFactura}}"
+                        width=100% height=600></object>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
 </div>

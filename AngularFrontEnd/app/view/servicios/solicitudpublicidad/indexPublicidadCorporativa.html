@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <script src="../../libs/loading/loadingoverlay.js"></script>
+    <script type="text/javascript" src="../../view/servicios/solicitudpublicidad/appSolicitudPublicidadCorporativa.js"></script>
+
+    <link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css" />
+    <link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css" />
+    <script type="text/javascript" src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/proj_4/proj4.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_calles.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_lugares.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
+    <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script>
+
+    <style>
+        input:required:invalid {
+            border: 1px solid red;
+        }
+        input:required:valid {
+            border: 1px solid green;
+        }
+        select:required:invalid {
+            border: 1px solid red;
+        }
+        select:required:valid {
+            border: 1px solid green;
+        }
+        .form-group {
+            padding-left: 8px;
+        }
+        input.largerCheckbox {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>   
+    <div id="mostrar" class="ibox-title">
+        <h5>Solicitud de Publicidad Corporativa</h5>
+    </div>
+<div  ng-controller="solicitudPublicidadController" data-ng-init="iniSolicitud();">
+    <div class="row"><br>  
+        <div class="col-sm-8">
+            <div class="btn-group btn-block">                  
+                <a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/solicitudpublicidad/indexSolicitudPublicidad.html'" class="btn btn-info">Volver atrás</a>              
+            </div>
+        </div> 
+        <div class="col-sm-4" align="right">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalcorp">Requisitos</button>
+        </div> 
+   </div>  
+<!-- Modal -->
+<div id="modalcorp" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">REQUISITOS PARA LA PUBLICIDAD  CORPORATIVA</h4>
+        </div>
+        <div class="modal-body">
+            <p>
+                Se establecen como requisitos  para la obtenci6n de la licencia de publicidad corporativa lo siguientes:<br>
+                <br>
+                <b>PUBLICIDAD CORPORATIVA POR SU  TAMA&Ntilde;O:</b> <br>
+                <br>
+                a) Formulario de Solicitud de  Licencia de Publicidad presentado por el (la) solicitante o el (la)  representante legal en caso de personas jur&iacute;dicas; <br>
+                b) Cedula de Identidad de! (de  la) solicitante o del (de la) representante legal de la persona jur&iacute;dica seg&uacute;n  corresponda, por &uacute;nica vez en caso de ser primera solicitud de tr&aacute;mite en el  GAMLP; <br>
+                c) Plano de ubicaci6n de!  inmueble y del elemento publicitario georreferenciado especificando las  dimensiones (alto, ancho y espesor), material, fotograf&iacute;as del entorno y  montajes fotogr&aacute;ficos del elemento publicitario a emplazarse; <br>
+                d) Licencia de funcionamiento  vigente de la actividad econ6mica solicitante otorgada por el GAMLP. <br>
+                e) Una vez verificado el  cumplimiento de las condiciones t&eacute;cnicas y tomando en cuenta que el (los)  elemento (s) publicitario (s) no incurre (n) en las restricciones t&eacute;cnicas  se&ntilde;aladas en el presente Reglamento Municipal, se deber&aacute;n adjuntar: <br>
+                &nbsp;&nbsp;&nbsp;1. Resumen T&eacute;cnico debidamente  firmado y sellado con el n&uacute;mero de registro profesional respectivo, por el (la)  profesional responsable del dise&ntilde;o y calculo estructural, mismo que se  constituir~ en una declaraci6n jurada que certifica que el (los) elemento (s)  publicitario(s) cumple(n) con todas las medidas de seguridad y ornato para su  emplazamiento; <br>
+                &nbsp;&nbsp;&nbsp;2. Fotocopia de la matr&iacute;cula de  registro profesional de! responsable del dise&ntilde;o y calculo estructural; <br>
+                &nbsp;&nbsp;&nbsp;3. P&oacute;liza de seguro contra da&ntilde;os  a terceros por un tiempo igual o mayor al periodo de vigencia de la Licencia de  Publicidad; <br>
+                &nbsp;&nbsp;&nbsp;4. Carta notariada de! (de la) o  los (las) propietarios (as) del bien inmueble autorizando el emplazamiento del  elemento publicitario; en caso de que el elemento publicitario vaya a  emplazarse en bienes sujetos al r&eacute;gimen de propiedad horizontal, carta  notariada de la Directiva de la Asociaci&oacute;n de Copropietarios autorizando el  emplazamiento o en su defecto del representante de los copropietarios; <br>
+                &nbsp;&nbsp;&nbsp;5. Reporte anual de medici&oacute;n de  la huella de carbono que produjo el elemento publicitario emplazado. <br>
+                <br>
+                <b>PARA PUBLICIDAD CORPORATIVA POR  SU USO:</b> <br>
+                <br>
+                a) Formulario de Solicitud de  Licencia de Publicidad presentado por el (la) solicitante o el (la)  representante legal en caso de persona jur&iacute;dica, debidamente firmado y sellado  por el (la) profesional responsable de la elaboraci&oacute;n de los documentos  t&eacute;cnicos, mismo que se constituir&aacute;n en una declaraci&oacute;n jurada que respalda que  el (los) elemento (s) publicitario (s) cuenta (n) con las condiciones de  seguridad y ornato para su emplazamiento. Anexo al Formulario deber&aacute; adjuntarse  descripci6n de los elementos publicitarios en la se identifique lugar de  emplazamiento, dimensiones, materiales, y muestreo fotogr&aacute;fico de cada  elemento. <br>
+                b) Cedula de identidad del (de  la) solicitante o del (de la) representante legal de la persona jur&iacute;dica seg&uacute;n  corresponda. <br>
+                c) Fotocopia de la matr&iacute;cula de  registro profesional del responsable de la<br>
+                d) Documento suscrito por el  (los) propietario (s) del inmueble que respalde la autorizaci&oacute;n para el  emplazamiento del (los) elemento (s) publicitario (s) y establezcan de manera  clara su corresponsabilidad sobre el emplazamiento, seguridad y sus efectos; <br>
+                e) Licencia de funcionamiento  vigente de la actividad econ6mica solicitante otorgada por el GAMLP.</p>                     
+                <hr>
+                <p align="justify">Para realizar el trámite, es necesario llenar e imprimir el formulario y adjuntar los requisitos correspondientes. Posteriormente, el formulario deberá ser presentado en las oficinas de la Unidad de Publicidad, ubicadas en la Calle Chichas – Edif. Espra, Piso 5, Miraflores. Estas oficinas se encuentran justo después de salir del puente de las Américas. Si necesitas contactarnos, puedes hacerlo a través del teléfono 2650715.</p>                  
+            </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+ <!--/ Modal --> 
+
+    <br>
+    <div id="pdfContainer" ng-show="mostrarPdf">
+        <p align="justify">Para realizar el trámite, es necesario imprimir el formulario y adjuntar los requisitos correspondientes. Posteriormente, el formulario deberá ser presentado en las oficinas de la Unidad de Publicidad, ubicadas en la Calle Chichas – Edif. Espra, Piso 5, Miraflores. Estas oficinas se encuentran justo después de salir del puente de las Américas. Si necesitas contactarnos, puedes hacerlo a través del teléfono 2650715.</p>
+        <iframe id="viewPdf" name="viewPdf" width="100%" height="800"></iframe>
+    </div>        
+        <div class="row">           
+                <div class="col-md-12">
+                    <div class="panel panel-info"  ng-show="formVisible">
+                        <div class="panel-heading">Formulario de solicitud de publicidad corporativa</div>
+                        <div class="panel-body">
+                            <input ng-model="datos.f01_publicidad" ng-init="datos.f01_publicidad = 'CORPORATIVA'" type="hidden">                                                     
+                            <!--persona Natural-->
+                            <div ng-show = "datos.tipoPersona == 'NATURAL'">                    
+                                <div class="col-md-12">
+                                    <legend>{{translateTitulos.lbl_12_07}}:</legend>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.nombres" id="nombres" name="nombres" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.primerApellido" id="primerApellido" name="primerApellido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.segundoApellido" id="segundoApellido" name="segundoApellido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_09}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.tipoDocumento" id="tipoDocumento" name="tipoDocumento" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_10}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.documento" id="documento" name="documento" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_11}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.expedido" id="expedido" name="expedido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.correo" id="correo" name="correo" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_13}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.celular" id="celular" name="celular" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>              
+                            </div>
+                            <!--persona Juridica-->
+                            <div ng-show = "datos.tipoPersona == 'JURIDICO'">
+                                <div class="col-md-12">
+                                    <legend>DATOS PERSONA JURÍDICA</legend>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_22}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.nit" id="nit" name="nit" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_23}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.razonSocial" id="razonSocial" name="razonSocial" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <legend>{{translateTitulos.lbl_12_26}}:</legend>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.nombreRepresentante" id="nombreRepresentante" name="nombreRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.primerApRepresentante" id="primerApRepresentante" name="primerApRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.secundoApRepresentante" id="secundoApRepresentante" name="secundoApRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >Número de documento:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.documentoRepresentante" id="documentoRepresentante" name="documentoRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url">Expedido:</label>
+                                        <div class="controls">
+                                            <select id="expedidoRepresentante" name="expedidoRepresentante" placeholder="expedido" ng-model="datos.expedidoRepresentante" class="form-control" ng-disabled="true" required>
+                                                <option value="">--Seleccione--</option>
+                                                <option value="LPZ">LA PAZ</option>
+                                                <option value="CBB">COCHABAMBA</option>
+                                                <option value="SCZ">SANTA CRUZ</option>
+                                                <option value="CHQ">CHUQUISACA</option>
+                                                <option value="TJA">TARIJA</option>
+                                                <option value="PTS">POTOSI</option>
+                                                <option value="ORU">ORURO</option>
+                                                <option value="BNI">BENI</option>
+                                                <option value="PND">PANDO</option>
+                                                <option value="EXP">EXPEDIDO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >Padrón:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.padron" id="padron" name="padron" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.correo" id="correo" name="correo" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_13}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.celular" id="celular" name="celular" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>                        
+                            </div>   
+                            <div>
+                                <!--div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >Número de licencia de funcionamiento (Licencia vigente):</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.f01_licencia" id="f01_licencia" name="f01_licencia" type="number" min="1" max="999999999" class="form-control"  width="30%" height="30" />
+                                        </div>
+                                    </div>
+                                </div--> 
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >Teléfono fijo o celular de contacto  </label>
+                                        <div class="controls">
+                                            <input ng-model="datos.f01_cel_contacto" id="f01_cel_contacto" name="f01_cel_contacto" class="form-control"  width="30%" height="30"/>                                                                                  
+                                        </div>
+                                    </div>
+                                </div>                              
+                            </div>
+
+                            <!--Datos de la publicidad-->
+                            <div>
+                                <div class="col-md-12">
+                                    <legend>Datos del elemento publicitario corporativo</legend>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                      <font color="#FF0000" size="4px"> * </font>
+                                      <label for="url" >Tipo de letrero:</label>
+                                        <div class="controls">
+                                            <select ng-model="categoria" id="categoria" name="categoria" ng-options="cat.descripcion for cat in categorias track by cat.idTipoLetrero" ng-change="cargarCaracteristicas()" class="form-control" required>
+                                                <option value="">Seleccionar</option>
+                                            </select>                                                
+                                        Publicidad corporativa por su tamaño se aplica cuando la superficie es mayor a 18mts2.<br>
+                                        Publicidad corporativa por su uso es cuando la publicidad se encuentra alejada de la actividad econónmica.<br>                                                                                                                                                           
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Caracteristica:</label>
+                                        <div class="controls">
+                                            <select ng-model="idTipoLetrero" id="idTipoLetrero" name="idTipoLetrero" ng-options="caract.caracteristica for caract in caracteristicas track by caract.idCaracteristica" class="form-control" required>                                              
+                                                <option value="">Seleccionar</option>
+                                            </select>                                           
+                                        </div>
+                                    </div>
+                                </div> 
+                            <div>
+                                <div class="col-md-12">
+                                    <legend>Ubicación del emplazamiento de la publicidad</legend>    
+                                    <p>En el siguiente mapa haga click en el lugar exacto donde solicitará el emplazamiento de publicidad.</p>                                                                   
+                                    <p>La imagen: <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAcEBAQFBAcFBQcKBwUHCgwJBwcJDA0LCwwLCw0RDQ0NDQ0NEQ0PEBEQDw0UFBYWFBQeHR0dHiIiIiIiIiIiIiL/2wBDAQgHBw0MDRgQEBgaFREVGiAgICAgICAgICAgICAhICAgICAgISEhICAgISEhISEhISEiIiIiIiIiIiIiIiIiIiL/wAARCAAVABYDAREAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABwb/xAAnEAAABgEEAQQDAQAAAAAAAAABAgMEBREGAAcSIRMUIjEyQVGBkf/EABcBAQEBAQAAAAAAAAAAAAAAAAYEBQf/xAAkEQACAgIBAwQDAAAAAAAAAAABAgMRAAQhBQYSIzFR4UGBwf/aAAwDAQACEQMRAD8AtN5dy3sHkLQuPSdO24CR6x7FP5sOZR6/zWbvbBRh4nGvavRotqJxMnB9m/P6w2fboZi6mnsqR4LZZ+QqSwI+0ATIFABf1qF91yfi8Va/a+pGoUjzC8i8eNv9wMQmIpBiwkvO7aok84Lcin6AAEbPV9jrZglUrV5zTqmhNHKzMtAsar6wj3sa5g9mlJqWi/QxyQ+nRVACjYX7eShfsI6yt4SM1kUMe9qy6UMQjSQNI3J+hh4YwFCx+NQgXit3CizjxsBBZHFRCjhRg2CPfEBdu88gAqfv6jx5jX81taCOo5HGcx7t2dWaT02bzXgiuP5iHkWMw+RMiMZdLztCKlW8ViACYl1dfjvVzoG98Ma2y8LeSGjWRONbR4illOQJuGxHLG0iotTlHimVUvkoprvr4vUcOogdsQ9R7h2JNWEXR5s/NcZeQsOyhopCLYgJWjYvBIphsQLd1erVWhWG5pmkcs3uc//Z"> representa un emplazamiento de publicidad corporativa.</p>               
+                                </div>
+                                <div class="col-md-12">
+                                    <div id="mapa_publicidad" style="height: 400px"></div>
+                                </div>                               
+                                <div class="col-md-3">                           
+
+                                    <div class="form-group" >
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Macrodistrito:</label>
+                                        <div class="controls">    
+                                        <select
+                                            id="f01_macro"
+                                            name="f01_macro"
+                                            placeholder="Macrodistrito" 
+                                            ng-model="datos.f01_macro"
+                                            class="form-control"
+                                            ng-disabled="desabilitadoO || desabilitado"
+                                            ng-change="distritoZonas(datos.f01_macro); GetValueMacrodistrito(datos.f01_macro);"
+                                            required>
+                                            <option value="" selected>--Seleccionar--</option>
+                                            <option ng-repeat="macro in aMacrodistritos | orderBy:['nombre','mcdstt_id']" value="{{macro.mcdstt_id}}">{{macro.mcdstt_macrodistrito}}</option>
+                                        </select>
+
+                                        </div>
+                                        <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                                            <span class="error" ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                        </span>
+                                    </div>
+                                </div>          
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Zona:</label>
+                                        <div class="controls">
+                                            <select id="f01_zona_descrip"
+                                                    name="f01_zona_descrip"
+                                                    placeholder="Distrito - Zona"
+                                                    ng-model="datos.f01_zona_descrip"
+                                                    class="form-control"
+                                                    ng-options="disZona.dist_nombre as disZona.dist_nombre for disZona in aDistritoZona | orderBy:['nombre','dist_nombre']"
+                                                    ng-change="actulizarIdDistrito();"
+                                                    ng-disabled="desabilitado"  required>
+                                                <option value="">--Seleccionar--</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>  
+                                                                                  
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                                        <div class="controls">
+                                            <select id="f01_tipo_via" class="form-control" ng-model="datos.f01_tipo_via"  name="f01_tipo_via" ng-disabled="desabilitado"
+                                             required  ng-change="cargarNombVia(datos.f01_tipo_via, datos.f01_zona_descrip);">
+                                                <option value="">--Seleccionar--</option>
+                                                <option value="AV">AVENIDA</option>
+                                                <option value="CA">CALLE</option>
+                                                <option value="CL">CALLEJON</option>
+                                                <option value="PL">PLAZA</option>
+                                                <option value="CN">CANCHA</option>
+                                                <option value="PR">PARQUE</option>
+                                                <option value="PA">PASAJE</option>
+                                                <option value="ND">NO DEFINIDO</option>
+                                            </select>
+                                         </div>
+                                    </div>
+                                </div> 
+                                     <input type="hidden" ng-model="datos.f01_via" id="f01_via" name="f01_via"/>
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Nombre de la calle / avenida:</label>
+                                        <div class="controls">
+                                          <input type="text" ng-model="datos.f01_nombre_via" id="f01_nombre_via" name="f01_nombre_via" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >{{translateTitulos.lbl_12_41}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.f01_num_dom" id="f01_num_dom" name="f01_num_dom" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" required/>
+                                        </div>
+                                    </div>
+                                </div>  
+                                <div class="col-md-3">
+                                    <div class="form-group" >
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Uso de espacio público municipal:</label>
+                                        <div class="controls">
+                                            <select ng-model="datos.f01_espacio_municipal" id="f01_espacio_municipal" name="f01_espacio_municipal"  class="form-control" required>
+                                                <option value="">Seleccionar</option>
+                                                <option value="SI">SI</option>
+                                                <option value="NO">NO</option>
+                                            </select>                                            
+                                        </div>
+                                    </div>
+                                </div>                                                                                                                 
+                            </div>
+                            <div>    
+                                <div class="col-md-12">
+                                    <legend>Detalle de caras del elemento publicitario</legend>
+                                </div>                                
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-xs-1">
+                                        <h4>#</h4>
+                                        </div>
+                                        <div class="col-xs-4">
+                                        <h4><font color="#FF0000" size="4px"> * </font> Descripción</h4>
+                                        </div>
+                                        <div class="col-xs-3">
+                                        <h4><font color="#FF0000" size="4px"> * </font> Superficie</h4>
+                                        </div>
+                                        <div class="col-xs-2">
+                                        <h4>&nbsp;</h4>
+                                        </div>
+                                    </div>                                  
+                                    <div ng-repeat="input in inputs" class="row">
+                                        <div class="col-xs-1">
+                                        <h4>Cara {{$index + 1}}</h4>
+                                        </div>
+                                        <div class="col-xs-4">
+                                        <div class="form-group" ng-class="{'has-error': input.descripcion.$invalid && input.descripcion.$dirty}">
+                                            <input ng-model="input.descripcion" id="descripcion{{$index}}" type="text" maxlength="200" class="form-control"style="text-transform:uppercase;"  required />                                          
+                                        </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                        <div class="form-group" ng-class="{'has-error': input.superficie.$invalid && input.superficie.$dirty}">
+                                            <input ng-model="input.superficie" id="superficie{{$index}}" type="number" step="0.01" min="0.1" max="99999" class="form-control"style="text-transform:uppercase;"  required />                                           
+                                        </div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                        <button ng-if="$index > 0" ng-click="eliminarInput($index)" class="btn btn-danger">
+                                            <span class="glyphicon glyphicon-remove"></span> Eliminar
+                                        </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6" align="right">
+                                        <h4>Superficie Total:</h4>
+                                        </div>
+                                        <div class="col-xs-3">
+                                        <h4>{{ calcularSuperficieTotal() }}</h4>
+                                        </div>
+                                    </div>
+                                
+                                    <button ng-click="agregarInput()" class="btn btn-primary" ng-disabled="formulario.$invalid">
+                                        <span class="glyphicon glyphicon-plus"></span> Agregar cara
+                                    </button><br><br>
+                                    </div>
+                                </div>
+                            <div>
+                                <div class="col-md-12" align="justify">  
+                                    <legend>DECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO</legend>
+                                </div>    
+                                <div class="col-md-12" align="justify" ng-if="datos.tipoPersona === 'NATURAL'">
+                                    Yo {{datos.nombres}} {{datos.primerApellido}} {{datos.segundoApellido}}, con Carnet de Identidad N° {{datos.documento}} expedido en {{datos.expedido}}, declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la ley Municipal Autonómica N°206/2016, los Decretos Municipales N°007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, articulo 78 de la Ley 2492 del código Tributario.
+                                    <br><br>
+                                </div>
+                                <div class="col-md-12" align="justify" ng-if="datos.tipoPersona === 'JURIDICO'">  
+                                    Yo {{datos.nombreRepresentante}} {{datos.primerApRepresentante}} {{datos.segundoApRepresentante}}, con Carnet de Identidad N° {{datos.documentoRepresentante}} expedido en {{datos.expedidoRepresentante}}, declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la ley Municipal Autonómica N°206/2016, los Decretos Municipales N°007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, articulo 78 de la Ley 2492 del código Tributario.
+                                    <br><br>
+                                </div>                                
+                                <div class="col-md-12">
+                                    <div class="alert alert-info">
+                                        <strong>Información: </strong>Debe imprimir el formulario y presentarlo con los requisitos en la Unidad de Publicidad, ubicado en el Edif. ESPRA piso 5, calle Chichas, Miraflores.
+                                    </div>
+                                </div>                             
+                            </div>
+                            <div class="col-md-12" align="right" >
+                                <button type="button" class="btn btn-success  fa fa-credit-card" ng-click="guardarSolicitud(datos)" > Registrar </button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>        
+</div>
+</body>

@@ -445,7 +445,7 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
           $scope.datos.TER_FEC_RET = data_tramite.datos.TER_FEC_RET;
           $scope.datos.TER_FEC_FIN = data_tramite.datos.TER_FEC_FIN;
           $scope.datos.TER_SOLOS = data_tramite.datos.TER_SOLOS;
-          $scope.datos.DEF_VIAJE_VIA = data_tramite.datos.DEF_VIAJE_VIA;
+		  $scope.datos.DEF_VIAJE_VIA = data_tramite.datos.DEF_VIAJE_VIA;
           $scope.datos.TER_DEST = data_tramite.datos.TER_DEST;
           $scope.getProvinciasDepto(data_tramite.datos.TER_DEST);
           $scope.datos.TER_MOT = data_tramite.datos.TER_MOT;
@@ -962,7 +962,7 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
           indice = 0;
           if(results.length > 0)
           {
-            datosIF = results[0].crear_tramite_macro_temp.split(",");
+            datosIF = results[0].sp_pmfunction_generica.split(",");
             datosIF2 = datosIF[2];
             datosIF3 = datosIF[3];
             datosIF[0]= datosIF[0].substring(1, datosIF[0].length);
@@ -1083,6 +1083,9 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
     $scope.buscarciudadano = function(ciciudadano,tipo){
         cargando();
         $scope.zonas = [];
+        if(!tipo){          
+		  setTimeout(function(){$.LoadingOverlay("hide"); alertify.error('Favor Seleccionar Tipo de Documento');}, 1000);
+        }   		
         if (tipo == "CN") {
           $scope.muestra_cn_n = true;
           $.LoadingOverlay("hide");

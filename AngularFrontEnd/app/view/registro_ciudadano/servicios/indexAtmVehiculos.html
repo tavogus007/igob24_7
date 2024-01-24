@@ -212,7 +212,8 @@
                                         <tr style="cursor: pointer;" class="column"
                                             ng-repeat="proceso in serivicosInternetVehiculos"
                                             ng-click="seleccionarProceso(proceso)"
-                                            ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}">
+                                            ng-style="proceso.id==procesoSeleccionado && {'background-color':'#FFEFB0','font-color':'#A2D5AE'}"
+                                            ng-show="proceso.validacion  == 'SI'">
                                             <td>{{$index+1}}</td>
                                             <td>{{proceso.name}}</td>
                                         </tr>
@@ -257,5 +258,22 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" class="animated fadeInUp" id="visualizacion" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">IMAGEN CRPVA</h4>
+                    </div>
+                    <div class="modal-body">
+                        <img class="img-responsive" src="../../libs/img/CRPVA.jpg">
+                    </div>
+                    <div class="modal-footer">                      
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>

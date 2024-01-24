@@ -252,6 +252,17 @@ dataSIT.prototype.amTasaValor = function (vidsubtipoTramite, vidPCCartilla,vtipo
     ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
 };
 
+dataSIT.prototype.tramitesEnCurso = function (codigoCatastral,functionResp)
+{
+    wsMethodSIT = "/tramitesEnCurso";
+    typeCall = "post";
+    dataParams = {
+        "codigoCatastral":  codigoCatastral
+    };
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
+
+
 dataSIT.prototype.tipoVia = function (vcodigoCatastral,functionResp)
 {
     wsMethodSIT = "/tipoVia";

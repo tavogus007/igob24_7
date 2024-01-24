@@ -267,7 +267,7 @@
   <div class="col-lg-12">
     <div class="ibox float-e-margins">
       <div id="mostrar" class="ibox-title">
-        <h5 class="ng-binding">ANIMALISTAS</h5>
+        <h5 class="ng-binding">ORGANIZACIONES PROTECTORAS DE ANIMALES</h5>
         <a id="cerrar_rc" style="position: absolute; top: 5px;"><i class="fa-sort-desc fa fa-sort-asc"
             style="color: #00adb5" id="cerrar_i"></i></a>
       </div>
@@ -345,10 +345,14 @@
                     <td data-title="'Estado'" ng-click="recuperarInformacion(tramite)">{{tramite.yestado}}</td>
                     <td data-title="'Vigencia'" ng-click="recuperarInformacion(tramite)">{{tramite.xdias_caduco}} dias
                     </td>
-                    <td data-title="'Certificado'" align="center"> <a target="_blank"
+                    <td data-title="'Asociados'" align="center"> <button type="button"
+                          class="btn btn-success" 
+                          ng-click="listadoAsociados(tramite)" ><i class="glyphicon glyphicon-eye-open"></i> </button></a></td>
+                    
+                    <!--td data-title="'Certificado'" align="center"> <a target="_blank"
                         href={{tramite.xvoluntario_url}}><button type="button"
                           class="btn btn-{{tramite.ycolor_certificado}}" ng-disabled="{{tramite.ydisa_certificado}}"><i
-                            class="glyphicon glyphicon-eye-open"></i> </button></a></td>
+                            class="glyphicon glyphicon-eye-open"></i> </button></a></td-->
                     <td data-title="'Registra tu mascota'" align="center"> <a
                         href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'"><button
                           type="button" class="btn btn-{{tramite.ycolor_registro}}"
@@ -545,7 +549,7 @@
     </div>
     <br>
     <br>
-    <div style="width: 70%;height: 60%;border: #000000;border-style: solid;margin-left: 100px;" id="mapa_mascotas">
+    <div style="width: 70%;height: 60%;border: #000000;border-style: solid;margin-left: 100px;" id="mapa_mascotas_animalistas">
     </div>
     <br>
     <br>
@@ -800,6 +804,17 @@
             </div>
           </div>
         </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for="url">Total Superficie en m2</label>
+            <div class="controls">
+              <input type="number" class="form-control" ng-model="datos.total_superficie" name="total_superficie"
+                value="memorandum" required ng-disabled="xdeshabilitado">
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
     <div ng-show="div_rescatistas_dos == true">
@@ -914,8 +929,83 @@
       </div>
     </div>
     <div ng-show="div_animalistas_aso == true">
+
       <div>
-        <h3 class="ng-binding" style="color: #4baeb4 !important;">ANIMALISTAS ASOCIADOS:</h3>
+        <h3 class="ng-binding" style="color: #4baeb4 !important;">ASISTENCIA VETERINARIA PROFESIONAL:</h3>
+      </div>
+      <div ng-show="div_agregar_experiencia">
+        <div class="col-md-12">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="url">Nombre completo del veterinario y/o Establecimiento veterinario </label>
+              <div class="controls">
+                <input type="text" ng-model="datosV.descripcion_veterinario" id="descripcion_veterinario" name="descripcion_veterinario"
+                  class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30"
+                  ng-disabled="xdeshabilitado" />
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label for="url">Adjunto</label>
+              <div class="controls">
+                <div class="form-group custom-upload">
+                  <input type="file" id="FILE_ADJUNTO_VETERINARIO" name="FILE_ADJUNTO_VETERINARIO"
+                    ng-model="FILE_ADJUNTO_VETERINARIO" accept="pdf/*" style="display: none;">
+                  <div class="input-group">
+                    <input id="txt_FILE_ADJUNTO_VETERINARIO" name="txt_FILE_ADJUNTO_VETERINARIO"
+                      ng-model="datosV.FILE_ADJUNTO_VETERINARIO" type="text" ng-disabled="true"
+                      class="form-control input-lg" required>
+                    <span class="input-group-btn">
+                      <a id="href_FILE_ADJUNTO_VETERINARIO" target="_blank" href={{FILE_ADJUNTO_VETERINARIO}}>
+                        <button id="" class="browse btn btn-primary input-lg" type="button" ng-show="btover7 != null"
+                          ng-click="mostrarimg('FILE_ADJUNTO_VETERINARIO');" data-toggle="modal"><i
+                            class="glyphicon glyphicon-eye-open"></i></button>
+                      </a>
+                      <button id="btn_FILE_ADJUNTO_VETERINARIO" class="btnupload browse btn btn-primary input-lg"
+                        type="button" ng-click="ejecutarFile2('FILE_ADJUNTO_VETERINARIO');"
+                        ng-disabled="xdeshabilitado"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="url">AGREGAR</label>
+              <div class="controls">
+                <button ng-click="adicionarVeterinario(datosV);" type="button" class="btn btn-success fa fa-plus-square"
+                  ng-disabled="xdeshabilitado"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading"><B></B></div>
+          <div class="panel-body" ng-disabled="true">
+            <table ng-table="tblVeterinario" class="table  table-hover" id="lsVehiculos">
+              <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
+                ng-style="tramite.IdActividad==sIdAeGrilla && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                <!--cambios-->
+                <td data-title="'NRO.'" align="center">{{$index+1}}</td>
+                <td data-title="'VETERINARIO'" align="center">{{tramite.descripcion_veterinario}}</td>
+                <td data-title="'ADJUNTO'" align="center"> <a target="_blank"
+                    href={{tramite.FILE_ADJUNTO_VETERINARIO}}><button type="button" class="btn btn-primary"><i
+                        class="glyphicon glyphicon-upload"></i> </button></a></td>
+                <td data-title="'ELIMINAR'" align="center"><button ng-click="eliminarVeterinario(tramite)" type="button"
+                    class="btn btn-danger fa fa-times" ng-disabled="xdeshabilitado"></button></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="ng-binding" style="color: #4baeb4 !important;">VOLUNTARIOS ASOCIADOS:</h3>
       </div>
       <div class="col-md-12">
         <div class="col-md-12">
@@ -971,7 +1061,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-          <h2 style="align-items: center;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;REGISTRO DE ANIMALISTA</h2>
+          <h2 style="align-items: center;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;REGISTRO DE VOLUNTARIOS</h2>
           <form name="form" readOnly="true" novalidate>
             <div class="modal-body">
               <div class="row" style="padding-top:2%">
@@ -988,7 +1078,7 @@
                 </p>
               </div>
               <div class="row" style="padding-top:2%">
-                <label class="ng-binding col-md-3">Fecha de Vacuna</label>
+                <label class="ng-binding col-md-3">Fecha de Vacuna Antirrabica</label>
                 <p class="input-group col-md-9">
                   <input id="fecha_vacuna" name="fecha_vacuna" type="text" class="form-control"
                     ng-model="mod.fecha_vacuna" datepicker-popup="" is-open="startDateOpened5" close-text="Close"
@@ -1198,6 +1288,32 @@
             </div>
           </form>
         </div>
+      </div>
+    </div>
+  </div>
+  <div id="myModalAsociados" class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h2 style="align-items: center;">&nbsp;LISTADO DE ASOCIADOS</h2>
+          <div class="modal-body">
+            
+            <table ng-table="tblListaAsociados" class="table table-striped table-hover">
+              <tr style="cursor: pointer;text-align: center;" ng-repeat="asociados in $data  | filter:query ">
+                <td data-title="'Nro.'" align="center">{{$index+1}}</td>
+                <td data-title="'Voluntario'">{{asociados.nombre}}</td>
+                <td data-title="'CI'">{{asociados.ci}}</td>
+                <td data-title="'Celular'" >{{asociados.celular}}</td>
+                <td data-title="'Función'" >{{asociados.funciones}}
+                </td>
+              </tr>
+            </table>
+
+          </div>
+          <div class="modal-footer">
+            
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+          </div>
       </div>
     </div>
   </div>

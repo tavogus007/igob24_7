@@ -133,6 +133,24 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             }
         });
     }
+	
+    $scope.sesionTokenCem=function(){
+        var urlToken = CONFIG.CONEXION_CARONTE + "/apiLogin";
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url : urlToken,
+            data: CONFIG.CREDENCIAL_CARONTE,
+            async: true,
+            success: function(response) {
+                dataResp = JSON.stringify(response);
+                sessionStorage.setItem('TOKEN_CEM', response.token);
+            },
+            error: function (response, status, error) {
+                dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+            }
+        });
+    }	
     
 	//SIERRA
 	 $scope.sesionTokenODM=function(){
@@ -228,6 +246,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             var sActFisica  =   "";
             var sActDigital =   "";
             $scope.sesionToken();
+			$scope.sesionTokenCem();
 			//$scope.sesionTokenODM();
             //$scope.sesionTokenATM();
             $scope.sesionTokenMas();
@@ -1011,4 +1030,13 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
             }, 500);
         });
     };
+	
+	
+    $scope.solicitarSoporteIgob = function () {
+        $scope.modalv = true;
+        setTimeout(() => {
+            $("#mdlCambioPineee").modal({keyboard: false});                    
+        }, 1000);
+    }
+	
 });

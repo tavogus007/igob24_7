@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+</head>
+<body>
+    <style>
+        input:required:invalid {
+            border: 1px solid red;
+        }
+
+        input:required:valid {
+            border: 1px solid green;
+        }
+
+        .form-group {
+            padding-left: 8px;
+        }
+
+        .box2 {
+            display: inline-block;
+            width: 190px;
+            margin: 2px;
+        }
+
+        .ng-table th {
+            text-align: left !important;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('html,body').scrollTop(0);
+            $('#guia').trigger('click');
+        });
+    </script>
+    <script src="../../libs/loading/loadingoverlay.js"></script>
+    <script type="text/javascript" src="../../view/servicios/fotocopia_legalizada_ae/appAeFotocopia.js"></script>
+    <script src="../../libs/apiPagos/api_pagos.js"></script>
+
+
+    <div ng-controller="solicitudFotocopiaAEController"  data-ng-init="inicioSolicitus();">
+        <div class="col-md-12"><br>
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" ng-show="mostrar">
+                    <div class="ibox-title">
+                        <h5>SOLICITUD DE COPIA LEGALIZADA DE LICENCIA DE FUNCIONAMIENTO </h5>
+                    </div>
+                    <div class="row"><br>
+                        <div class="col-sm-12">
+                            <div class="alert alert-success">
+                                Para más detalle sobre temas de trámites de licencias de funcionamiento, comuníquese mediante la línea gratuita <strong class="alert-link">800 13 5555</strong>.
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <ul class="nav nav-tabs">
+                                <li class="">
+                                    <a  id="guia" data-target="#tab-guia" data-toggle="tab">
+                                        <i class="fa fa-info-circle" style="color: black;"></i>GUIA DE TRAMITE
+                                    </a>
+                                </li>
+                                <li>
+                                    <a  id="tramites" data-target="#tab-tramite" data-toggle="tab" ng-click="listarSolicitudes()">
+                                        <i class="fa fa-table" style="color: black;"></i>MIS TRAMITES
+                                    </a>
+                                </li>
+                                <li >
+                                    <a id="solicitud" data-target="#tab-solicitud" data-toggle="tab" ng-click="listaAE()">
+                                        <i class="fa fa-file-text" style="color: black;"></i>SOLICITAR TRAMITE
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div role="tabpanel"  id="tab-guia" class="tab-pane">
+                                    <br>
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item list-group-item-action  flex-column align-items-start">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <img class="img-responsive" width="35" height="35" src="../../libs/img/ayuda.gif">
+                                                    </div>
+                                                    <div class="col-md-11">
+                                                        <h3 class="mb-1">Que es y en que consiste?</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <br>
+                                                    <p>Consiste en obtener una copia legalizada (COPIA FIEL DEL  ORIGINAL) de la licencia de funcionamiento, siempre y cuando esta se encuentre  vigente<br>
+                                                    <b>Nota.-</b> Las solicitud de licencia de funcionamiento de  actividades econ&oacute;micas de expendio y/o consumo de bebidas alcoh&oacute;licas,  internetes, educaci&oacute;n superior, industriales y/o manufactureras, hornos de panificaci&oacute;n,  para mayor informaci&oacute;n puede contactarse con la l&iacute;nea gratuita 800 13 5555.</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <img class="img-responsive" width="35" height="35" src="../../libs/img/reloj.gif">
+                                                    </div>
+                                                    <div class="col-md-11">
+                                                        <h3 class="mb-1">Cuanto dura el tramite?</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <br>
+                                                    <p>El tr&aacute;mite se realiza de manera inmediata obteniendo la  copia legalizada de su licencia de funcionamiento una vez efectivizado el pago.</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                        <img class="img-responsive" width="35" height="35" src="../../libs/img/costo.gif">
+                                                    </div>
+                                                    <div class="col-md-11">
+                                                        <h3 class="mb-1">Cuanto debe pagar?</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <br>
+                                                    <p>Costo es de Bs16 por cada copia legalizada de licencia de  funcionamiento, cancelados en las entidades financieras autorizadas, pago en l&iacute;nea  o a trav&eacute;s de su tarjeta de cr&eacute;dito o d&eacute;bito en plataformas de atenci&oacute;n a la ciudadan&iacute;a.</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <button type="button" class="btn btn-danger" ng-click="irSolicitud();"><i class="fa fa-hand-o-right" aria-hidden="true"></i> SOLICITAR TRAMITE</button>
+                                    </div>
+                                </div>
+                                <div role="tabpanel"  id="tab-tramite" class="tab-pane">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <form class="form-horizontal ng-pristine ng-valid">
+                                                <div class="form-group">
+                                                    <label class="col-lg-6 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                                                    <div class="col-lg-6">
+                                                        <input ng-model="query" id="busca1" class="form-control" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="table-responsive">
+                                                <table ng-table="tblSolicitudes" class="table  table-hover">
+                                                    <tr style="cursor: pointer;"  ng-click="asignadaId(tramite.vfrm_ser_id)" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vfrm_ser_id==idTramite && {'background-color':'#C1F4F7','font-color':'#A2D5AE'}">                                            
+                                                        <td data-title="'Número de Trámite'"> {{tramite.vfrm_ser_codigo_servicio}}</td>
+                                                        <td data-title="'Tipo de Trámite'">{{tramite.vdescripcion}}</td>
+                                                        <td data-title="'Nro. Actividad Económica'">{{tramite.vfrm_ser_dataformulario.idActividad}}</td>
+                                                        <td data-title="'Costo Copia Legalizada'">{{tramite.vfrm_ser_dataformulario.costo_fotocopias}} Bs.</td>
+                                                        <td data-title="'Estado Pago'">
+                                                            <div ng-show="tramite.vfrm_ser_estado_pago=='PAGADO'">
+                                                                <span class="badge badge-pill badge-success"><i class="fa fa-credit-card"></i>&nbsp;PAGADO</span>
+                                                            </div>
+                                                            <div ng-show="tramite.vfrm_ser_estado_pago!='PAGADO'">
+                                                                <span class="badge badge-pill badge-warning"><i class="fa fa-credit-card"></i>&nbsp;{{tramite.vfrm_ser_estado_pago}}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td data-title="'Fecha de Pago'">
+                                                            {{tramite.fecha_pago}}
+                                                        </td>
+                                                        <td data-title="'Fecha de Vencimiento Copia Legalizada'">
+                                                            {{tramite.vfrm_ser_dataformulario.fechaFinCopiaLeg}}
+                                                        </td>
+                                                        <td data-title="'Factura'" style="text-align:center">
+                                                            <div ng-show = "tramite.vfrm_ser_estado_pago == 'PAGADO' && tramite.vfrm_ser_urlfactura != ''">
+                                                                <button type="button" class="btn btn-success btn-circle" ng-click="verFactura(tramite.vfrm_ser_urlfactura)" tooltip="Ver Factura">
+                                                                    <i class="fa fa-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                        <td data-title="'Imprimir Copia Legalizada'" style="text-align:center">
+                                                            <div ng-show="tramite.vfrm_ser_estado_pago=='PAGADO'">
+                                                                <div ng-show = 'tramite.fecha_vigencia==undefined'>
+                                                                    <button type="button" class="btn btn-primary   btn-circle" ng-click="imprimirCopia(tramite)" tooltip="Imprimir Copia Legalizada Licencia">
+                                                                        <i class="fa fa-print"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <div ng-show = 'tramite.fecha_vigencia!=undefined'>
+                                                                    <div ng-show = '(tramite.fecha_vigencia >= fechaActual)==true'>
+                                                                        <button type="button" class="btn btn-primary  btn-circle" ng-click="imprimirCopia(tramite)" tooltip="Imprimir Copia Legalizada Licencia">
+                                                                            <i class="fa fa-print"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div ng-show = '(tramite.fecha_vigencia >= fechaActual)==false'>
+                                                                        <span class="badge badge-pill badge-danger"><i class="fa fa-credit-card"></i>&nbsp;VENCIDO</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div role="tabpanel"  id="tab-solicitud" class="tab-pane" >
+                                    <br>
+                                    <div class="row">
+                                        <br>
+                                        <div class="col-md-12">
+                                            <legend>Registro de Solicitud de Legalización de Licencia de Funcionamiento</legend>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <form class="form-horizontal ng-pristine ng-valid">
+                                                <div class="form-group">
+                                                    <label class="col-lg-6 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                                                    <div class="col-lg-6">
+                                                        <input ng-model="query" id="busca1" class="form-control" placeholder="">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="table-responsive">
+                                                <table ng-table="tblLicencias" class="table  table-hover">
+                                                    <tr style="cursor: pointer;" ng-repeat="licencia in $data  | filter:query " 
+                                                    ng-style="licencia.IdActividad==idAE && {'background-color':'#D3D3D3'} || licencia.fotocopiaHabilitada==0 && {'background-color':'#EFADAA'} " >
+                                                        <td data-title="'N°'" >{{licencia.Nro}}</td>
+                                                        <td data-title="'ID de Actividad'">{{licencia.IdActividad}}</td>
+                                                        <td data-title="'Nro. de Licencia'">{{licencia.numeroLicencia}}</td>
+                                                        <td data-title="'Denominación'">{{licencia.denominacion}}</td>
+                                                        <td data-title="'Dirección'">{{licencia.Direccion}} </td>
+                                                        <td data-title="'Actividad Desarrollada'"> {{licencia.actividadDesarrollada343}} </td>
+                                                        <td data-title="'Estado'">
+                                                            <div ng-show = '(licencia.fechaVencimiento >= fechaActual)==true'>
+                                                                VIGENTE
+                                                            </div>
+                                                            <div ng-show = '(licencia.fechaVencimiento >= fechaActual)==false'>
+                                                                VENCIDO
+                                                            </div>
+                                                        </td>
+                                                        <td data-title="'Opciones'">
+                                                            <div ng-show="licencia.fotocopiaHabilitada!=0 && (licencia.fechaVencimiento >= fechaActual)==true">
+                                                                <button type="button" ng-click="mostrarLicencia(licencia.urlLicencia)" tooltip="Ver Licencia" class="btn btn-success btn-circle btn-sm">
+                                                                    <i class="fa fa-eye" ></i>
+                                                                </button>&nbsp;&nbsp;
+                                                                <button type="button" ng-click ="legalizar(licencia)" tooltip="Legalizar Licencia" class="btn btn-danger btn-circle btn-sm">
+                                                                    <i class="fa fa-file-text"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div ng-show = "licencia.fotocopiaHabilitada==0 && (licencia.fechaVencimiento >= fechaActual)==true">
+                                                                <span>Realizar el trámite en la Subalcaldia que le corresponda</span>
+                                                            </div> 
+                                                            <div ng-show = "(licencia.fechaVencimiento >= fechaActual)==false">
+                                                                <span>Su Licencia de Funcionamiento esta Vencida</span>
+                                                            </div>                                                 
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="mostrarLegalizacion">
+                                        <hr>
+                                        <div class="col-md-12">
+                                            <div class="panel panel-info">
+                                                <div class="panel-heading">SOLICITAR TRAMITE</div>
+                                                <div class="panel-body">
+                                                    <!--persona Natural-->
+                                                    <div ng-show = "datos.tipoPersona == 'NATURAL'">                    
+                                                        <div class="col-md-12">
+                                                            <legend>{{translateTitulos.lbl_12_07}}:</legend>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.nombres" id="nombres" name="nombres" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div> 
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.primerApellido" id="primerApellido" name="primerApellido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.secundoApellido" id="secundoApellido" name="secundoApellido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_09}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.tipoDocumento" id="tipoDocumento" name="tipoDocumento" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_10}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.documento" id="documento" name="documento" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_11}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.expedido" id="expedido" name="expedido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.correo" id="correo" name="correo" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_13}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.celular" id="celular" name="celular" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>              
+                                                    </div>
+                                                    <!--persona Juridica-->
+                                                    <div ng-show = "datos.tipoPersona == 'JURIDICO'">
+                                                        <div class="col-md-12">
+                                                            <legend>DATOS PERSONA JURÍDICA</legend>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_22}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.nit" id="nit" name="nit" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_23}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.razonSocial" id="razonSocial" name="razonSocial" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <legend>{{translateTitulos.lbl_12_26}}:</legend>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.nombreRepresentante" id="nombreRepresentante" name="nombreRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.primerApRepresentante" id="primerApRepresentante" name="primerApRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.secundoApRepresentante" id="secundoApRepresentante" name="secundoApRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >Número de documento:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.documentoRepresentante" id="documentoRepresentante" name="documentoRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url">Expedido:</label>
+                                                                <div class="controls">
+                                                                    <select id="expedidoRepresentante" name="expedidoRepresentante" placeholder="expedido" ng-model="datos.expedidoRepresentante" class="form-control" ng-disabled="true" required>
+                                                                        <option value="">--Seleccione--</option>
+                                                                        <option value="LPZ">LA PAZ</option>
+                                                                        <option value="CBB">COCHABAMBA</option>
+                                                                        <option value="SCZ">SANTA CRUZ</option>
+                                                                        <option value="CHQ">CHUQUISACA</option>
+                                                                        <option value="TJA">TARIJA</option>
+                                                                        <option value="PTS">POTOSI</option>
+                                                                        <option value="ORU">ORURO</option>
+                                                                        <option value="BNI">BENI</option>
+                                                                        <option value="PND">PANDO</option>
+                                                                        <option value="EXP">EXPEDIDO</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>  
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.correo" id="correo" name="correo" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >{{translateTitulos.lbl_12_13}}:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.celular" id="celular" name="celular" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>                        
+                                                    </div>   
+                                                    <!--Datos Actividad Economica-->
+                                                    <div>
+                                                        <div class="col-md-12">
+                                                            <legend>Datos de la Actividad Economica:</legend>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >Denomicación:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.denominacionAe" id="denominacionAe" name="denominacionAe" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group" >
+                                                                <label for="url" >Actividad Desarrollada:</label>
+                                                                <div class="controls">
+                                                                    <input ng-model="datos.actividadDesarrolladaAe" id="actividadDesarrolladaAe" name="actividadDesarrolladaAe" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="col-md-12">
+                                                            <legend>Datos de la Solicitud:</legend>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group" >
+                                                                <label for="url" > <span style="color:#FF0000">*</span>Seleccione el motivo para cual requiere la copia legalizada de Licencia de Funcionamiento:</label>
+                                                                <div class="controls">
+                                                                    <select id="motivo_solicitud" name="motivo_solicitud" placeholder="Motivo solicitud" ng-model="datos.motivo_solicitud" class="form-control"  required>
+                                                                        <option value="">--Seleccione--</option>
+                                                                        <option value="LICITACIONES">LICITACIONES</option>
+                                                                        <option value="AFILIACION CAJA DE SEGUROS">AFILIACION CAJA DE SEGUROS</option>
+                                                                        <option value="SUSTANCIAS CONTROLADAS">SUSTANCIAS CONTROLADAS</option>
+                                                                        <option value="ADUANAS">ADUANAS</option>
+                                                                        <option value="OTRO">OTRO</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12" ng-show="datos.motivo_solicitud=='OTRO'">
+                                                            <div class="form-group" >
+                                                                <label for="url" > <span style="color:#FF0000">*</span> Detalle el motivo por el cual requiere copia(s) legalizada(s) de su Licencia de Funcionamiento:</label>
+                                                                <div class="controls">
+                                                                    <textarea class="form-control" id="exampleFormControlTextarea5"  ng-model="datos.motivo_solicitud_otro" id="motivo_solicitud_otro" name="motivo_solicitud_otro" rows="5"></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--div class="col-md-12">
+                                                            <div class="form-group" >
+                                                                <div class="row">
+                                                                    <div class="col-9 col-sm-11">
+                                                                        <textarea class="form-control" id="exampleFormControlTextarea5"  ng-model="datos.motivo_solicitud" id="motivo_solicitud" name="motivo_solicitud" rows="5"></textarea>
+                                                                    </div>
+                                                                    <div class="col-3 col-sm-1">
+                                                                        <br><img  width="100" height="100" src="../../libs/img/ayuda1.gif" tooltip="Crear el trámite" data-toggle="modal" data-target="#ayudaMotivo">
+        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div-->
+                                                        <div class="col-md-12">
+                                                            <div class="form-group" >
+                                                                <label for="url" >Costo de las Fotocopias:</label>
+                                                                <div class="controls">
+                                                                    <input type="text" ng-model="datos.costo_fotocopias" id="costo_fotocopias" name="costo_fotocopias" class="form-control" ng-disabled="true">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <hr>
+                                                        <br>
+                                                    </div>
+                                                    <div class="col-md-12" align="right" >
+                                                        <button type="button" class="btn btn-success  fa fa-credit-card" ng-click="guardarSolicitud(datos)" > &nbsp; &nbsp; PAGAR  &nbsp; &nbsp;</button>
+                                                        <!--button id="btnFormLicencia" ng-disabled="mostrarPago" ng-click="generacionOdm(datos)"  type="button" class="btn btn-success1 shake-little"  tooltip="Pagar Servicios"> &nbsp;<i class=" fa fa-credit-card"></i> &nbsp;PAGAR</button>
+                                                        <button id="miFormGuardar"  ng-click="guardarSolicitud()" type="button" class="btn btn-success1 fa fab fa-save shake-little fa-lg" name="formEnviar" tooltip="Guardar Formulario">                       
+                                                        <button id="btnFormLicencia" ng-disabled="mostrarPago" ng-click="generacionOdm(datos)"  type="button" class="btn btn-success1 fa fab fa-credit-card shake-little fa-lg"  tooltip="Pagar Servicios"></button-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                            <div class="modal fade" id="verLicencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <br>
+                                            <iframe  width="100%" height="500px" id="licen"></iframe>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="pago" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title">Solicitud de Pago</h3>
+                                            <!--button type="button" class="close" ng-click="cerrarModal();" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button-->
+                                        </div>
+                                        <div class="modal-body">
+                                            <iframe  width="100%" height="450px" frameborder="0" allowfullscreen id="vistaPago"></iframe>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default"  ng-click="cerrarModal();">Continuar</button>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="modal" id="ayudaMotivo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Ayuda</h5>
+                                            <button type="button" class="close" aria-label="Close" data-dismiss="modal">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Estos podrian ser los motivos por los cuales puede solicitar una legalización de Licencia de Funcionamiento:</p>
+                                            <ul class="list-group">
+                                                <li class="list-group-item">Para licitaciones</li>
+                                                <li class="list-group-item">Registro de Empresas</li>
+                                                <li class="list-group-item">OTRO</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal" id="formFacturacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #00B3BA;">
+                                            <strong><h3 class="modal-title" style="color:#fff;">Datos de Facturacion</h3></strong>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <legend>Datos del Pago:</legend> 
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="razonSocial"><span style="color:#FF0000">*</span> Concepto de Pago:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="descItemRecaudador" id="descItemRecaudador" name="descItemRecaudador" class="form-control" type="text" disabled required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="CI"><span style="color:#FF0000">*</span> Monto a Pagar:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.costo_fotocopias" id="costo_fotocopias" name="costo_fotocopias" class="form-control" type="text" disabled required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <legend>Datos de la Factura:</legend> 
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="CI"><span style="color:#FF0000">*</span> Tipo Documento:</label>
+                                                        <div class="controls">
+                                                            <select
+                                                                id="tipo_doc_fac"
+                                                                name="tipo_doc_fac"
+                                                                placeholder="Tipo Documento" ng-model="datos.tipo_doc_fac"
+                                                                ng-change="limpiaCampos()"
+                                                                class="form-control"
+                                                                ng-options="tipoDoc.codigo as tipoDoc.nombre for tipoDoc in tipoDocumentos | orderBy:['id_codigo','nombre']"
+                                                                required>
+                                                            </select>                                                    
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div ng-show="datos.tipo_doc_fac == 1">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label for="CI"><span style="color:#FF0000">*</span> DOCUMENTO:</label>
+                                                            <div class="controls">
+                                                                <input ng-model="datos.documento_fac" id="documento_fac" name="documento_fac" class="form-control" type="text" required/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <div class="form-group">
+                                                            <label for="CI">COMP.:</label>
+                                                            <div class="controls">
+                                                                <input ng-model="datos.doc_complemento_fac" id="doc_complemento_fac" name="doc_complemento_fac" class="form-control" type="text" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <div class="form-group">
+                                                            <label for="CI">&nbsp;</label>
+                                                            <div class="controls">
+                                                                <button type="button" ng-click ="buscarDatos(datos);"class="btn btn-primary btn-circle btn-sm"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div ng-show="datos.tipo_doc_fac != 1">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="razonSocial"><span style="color:#FF0000">*</span> Documento:</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" placeholder="Documento"  ng-model="datos.documento_fac" id="documento_fac" name="documento_fac"/>
+                                                                <div class="input-group-btn">
+                                                                    <button class="btn btn-primary" type="submit"  ng-click ="buscarDatos(datos);">
+                                                                        <span class="glyphicon glyphicon-search"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="razonSocial"><span style="color:#FF0000">*</span> Razón Social:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.razon_social_fac" id="razon_social_fac" name="razon_social_fac" class="form-control" type="text" required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="razonSocial"><span style="color:#FF0000">*</span> Correo:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.correo_fac" id="correo_fac" name="correo_fac" class="form-control" type="text" required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="razonSocial"><span style="color:#FF0000">*</span> Celular:</label>
+                                                        <div class="controls">
+                                                            <input ng-model="datos.celular_fac" id="celular_fac" name="celular_fac" class="form-control" type="text" required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            <button type="button" class="btn btn-primary" ng-click="generacionOdm(datos)">Aceptar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+</body>

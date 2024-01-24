@@ -1624,7 +1624,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 
 			iniciar:function () {
 
-				SITUtil.capas.GEOSERVER = "http://sitservicios.lapaz.bo/geoserver";
+				SITUtil.capas.GEOSERVER = "https://sitservicios.lapaz.bo/geoserver";
 				$scope.vectorSource = new ol.source.Vector(
 					//{
 					//features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)

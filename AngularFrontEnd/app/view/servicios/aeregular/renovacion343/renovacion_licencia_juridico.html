@@ -4,6 +4,20 @@
         <script type="text/javascript"  src="../../view/servicios/aeregular/renovacion343/appRenovacionJuridico.js"></script>
         <script type="text/javascript" src="../../libs/js/jic.js"></script>
         <script type="text/javascript" src="../../libs/js/jszip.js"></script>
+
+        <link rel="stylesheet" href="../../libs/Librerias/ol_4.6.5_dist/ol.css"/>
+        <link rel="stylesheet" href="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.css"/>
+
+        <script type="text/javascript" src="../../libs/Librerias/ol_4.6.5_dist/ol.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/ol-layerswitcher-master/src/ol-layerswitcher.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/proj_4/proj4.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/geo_zonas_centroides.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_calles.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_lugares.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
+        <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script> 
+
     </head>
 <script type="text/javascript">
     $('.custom-upload input[type=file]').change(function(){
@@ -359,7 +373,7 @@
                             <font color="#FF0000" size="4px"> * </font>
                             <label for="url" >{{translateTitulos.lbl_12_38}}:</label>
                             <div class="controls">
-                                <select id="f01_estab_es" class="form-control" ng-model="datos.f01_estab_es"  name="f01_estab_es" ng-disabled="true" ng-change="validarRequisitosForm();" required>
+                                <select id="f01_estab_es" class="form-control" ng-model="datos.f01_estab_es"  name="f01_estab_es" ng-disabled="desabilitado" ng-change="validarRequisitosForm();" required>
                                     <option value="">--Seleccionar--</option>
                                     <option value="PROPIO"> PROPIO </option>
                                     <option value="ALQUILADO"> ALQUILADO </option>
@@ -786,9 +800,9 @@
                     <div class="form-group" class="col-md-12">
                         <div class="controls">
                             <font color="#FF0000" size="4px">*  </font>
-                            <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="NUEVO" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Con Elementos Publicitarios
+                            <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" id="CON_VIAE" value="CON_VIAE" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Con Elementos Publicitarios
 
-                            <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="RENOVACION" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Sin Elementos Publicitarios
+                            <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" id="SIN_VIAE" value="SIN_VIAE" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Sin Elementos Publicitarios
                         </div>
                     </div>
                 </div> 
@@ -884,14 +898,14 @@
                                                           <input class="form-control" type="text"  id="INT_DESC" name="INT_DESC" placeholder="Descripción del Elemento" ng-model="publi.INT_DESC" ng-disabled="desabilitadoO || desabilitado" required onkeyUp="return conMayusculas(this);">
                                                         </th>
                                                         <th ng-show="especial==null">
-                                                          <input class="form-control" type="number" min="0" max="1500" id="INT_ALTO" name="INT_ALTO" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="desabilitadoO || desabilitado" required>
+                                                          <input class="form-control" type="number" min="0" max="1500" id="INT_ALTO" ng-blur ="validaSuperficie(publi);" name="INT_ALTO" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="desabilitadoO || desabilitado" required>
                                                           <span style="color:red" ng-show="formularioRegistro.INT_ALTO.$invalid">
                                                               <span ng-show="formularioRegistro.INT_ALTO.$error.required">Es requerido.
                                                               </span>
                                                           </span>
                                                         </th>
                                                         <th ng-show="especial==null">
-                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_ANCHO" name="INT_ANCHO" placeholder="Ancho" ng-model="publi.INT_ANCHO"ng-disabled="desabilitadoO || desabilitado" required>
+                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_ANCHO" ng-blur ="validaSuperficie(publi);" name="INT_ANCHO" placeholder="Ancho" ng-model="publi.INT_ANCHO"ng-disabled="desabilitadoO || desabilitado" required>
                                                             <span style="color:red" ng-show="formularioRegistro.INT_ANCHO.$invalid">
                                                                 <span ng-show="formularioRegistro.INT_ANCHO.$error.required">Es requerido.
                                                                 </span>

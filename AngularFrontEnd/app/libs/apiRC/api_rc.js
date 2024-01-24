@@ -657,6 +657,30 @@ rcNatural.prototype.modificarCambioPinNatural = function (functionResp)
   };
   ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 };
+
+rcNatural.prototype.actualizarSoporte = function (functionResp)
+{
+  urlComp = "/actualizarRegistroFC";
+  typeCall = "POST";
+  dataParams = {
+    "oid": ((typeof(this._oid) == 'undefined' || this._oid == null) ? "" : this._oid),
+    "telefono": ((typeof(this.telefono) == 'undefined' || this.telefono == null) ? "" : this.telefono),
+    "correo": ((typeof(this.correo) == 'undefined' || this.correo == null) ? "" : this.correo),
+  };
+  ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+
+rcNatural.prototype.restaurarCredencialesSoporte = function (functionResp)
+{
+  urlComp = "/recuperarPINV2";
+  typeCall = "POST";
+  dataParams = {
+    "usuario": ((typeof(this.ci) == 'undefined' || this.ci == null) ? "" : this.ci),
+    "correo": ((typeof(this.correo) == 'undefined' || this.correo == null) ? "" : this.correo),
+  };
+  ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
+};
+
 /*///////////////////////////////////////////////// JURIDICO /////////////////////////////////////////////////*/
 function rcJuridico() {
     this.nit;
@@ -1906,3 +1930,115 @@ rcNaturalJuridico.prototype.lst_validar_data_igob = function (functionResp){
   };
   ejecutarAjax(urlComp, typeCall, dataParams, functionResp);
 }
+
+
+//REGISTRAR SOLICITUD DE SERVICIOS AE
+function adicionaRegistroSolicitud(){
+  this.cod_servicio;
+  this.id_usuario;
+  this.data_formulario;
+  this.enviado;
+};
+adicionaRegistroSolicitud.prototype.adicionaRegistroSolicitudServicio=function(functionResp){
+  var sdataCiudadano = {};
+  try{      
+    var stipopersona = sessionStorage.getItem("TIPO_PERSONA");
+    var sidciudadano = sessionStorage.getItem("IDCIUDADANO");        
+    sdataCiudadano.stipopersona = stipopersona;
+    sdataCiudadano.sidciudadano = sidciudadano; 
+    if(stipopersona == 'NATURAL'){
+      var sciciudadano = sessionStorage.getItem("CICIUDADANO");           
+      var sapeparterno = sessionStorage.getItem("US_PATERNO");
+      var sap_ematerno = sessionStorage.getItem("US_MATERNO");
+      var s_correoelec = sessionStorage.getItem("US_EMAIL");
+      var s_nombre = sessionStorage.getItem("US_NOMBRE");
+      sdataCiudadano.sciciudadano = sciciudadano;
+      sdataCiudadano.sapeparterno = sapeparterno; 
+      sdataCiudadano.sap_ematerno = sap_ematerno;
+      sdataCiudadano.s_correoelec = s_correoelec; 
+      sdataCiudadano.s_nombre = s_nombre; 
+    }else if(stipopersona == 'JURIDICO'){
+      var snitciudaano = sessionStorage.getItem("NITCIUDADANO");
+      var cirepresentante = sessionStorage.getItem("REPRESENTANTECI");
+      var srepresentante = sessionStorage.getItem("REPRESENTANTE");
+      var srazonsocial = sessionStorage.getItem("US_NOMBRE");
+      sdataCiudadano.snitciudaano = snitciudaano;
+      sdataCiudadano.cirepresentante = cirepresentante; 
+      sdataCiudadano.srepresentante = srepresentante;
+      sdataCiudadano.srazonsocial = srazonsocial; 
+    }      
+  }catch(e){console.log("Error al recuperar Datos:", e);}    
+  var sjonDataCiudano = JSON.stringify(sdataCiudadano);    
+  urlComp = "/adicionaSolicitudServicio";
+  typeCall = "post";
+  dataParams= {
+    "cod_servicio" : this.cod_servicio,
+    "oid_ciudadano": sidciudadano,
+    "enviado": this.enviado,
+    "id_usuario":  this.id_usuario,
+    "data_formulario": this.data_formulario,
+    "frm_data_ciudadano":sjonDataCiudano
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};
+
+function lstRegistroSolicitud(){
+  this.oid_ciudadano;
+  this.tipo_servicio;
+};
+lstRegistroSolicitud.prototype.listaSolicitudServicio=function(functionResp){  
+  urlComp = "/listaSolicitudServicio";
+  typeCall = "post";
+  dataParams= {
+    "oid_ciudadano": this.oid_ciudadano,
+    "tipo_servicio": this.tipo_servicio
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};
+
+function actualizaServicio(){
+  this.id_form_ser;
+  this.datos_formulario;
+  this.id_usuario;
+};
+actualizaServicio.prototype.actualizaServicioSolicitud=function(functionResp){  
+  urlComp = "/actualizarSolicitud";
+  typeCall = "post";
+  dataParams= {
+    "id_form_ser": this.id_form_ser,
+    "datos_formulario": this.datos_formulario,
+    "id_usuario": this.id_usuario
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};
+
+function buscarServicio(){
+  this.id_form_ser;
+};
+
+buscarServicio.prototype.buscarServicioSolicitud=function(functionResp){  
+  urlComp = "/buscarSolicitud";
+  typeCall = "post";
+  dataParams= {
+    "id_form_ser": this.id_form_ser
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};
+
+//*********************************SERVICIOS ATM*******************************/
+function rcTramitesAtmId(){
+  this.sidciudadano;
+  this.idTramite;
+};
+
+rcTramitesAtmId.prototype.obtTramitesAtmId = function (functionResp)
+{
+  urlComp = "/listarTramitesIdAtm";
+  typeCall = "post";
+  dataParams = {
+    "sidciudadano": this.sidciudadano,
+    "idTramite"   : this.idTramite
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+}
+

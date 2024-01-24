@@ -884,7 +884,8 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
                 }
-
+				
+				
                 else{//CASO CONTRARIO....
                     var sAdjunto = 'NO';
                     $scope.myObj = aNotif.success;

@@ -3,7 +3,7 @@ function solicitudPermisoCirculacionARVController($scope, $rootScope, $routePara
     $scope.tipo_persona=sessionService.get('TIPO_PERSONA');
     $scope.oidCiu = sessionService.get('IDSOLICITANTE');
     $scope.tiposTramite = [
-        { detalle: 'Registro de Solicitud de PERMISO EXCEPCIONAL PARA CIRCULACIÓN EN EL ÁREA DE RESTRICCIÓN VEHICULAR', id:'88',tipo:$scope.tipo_persona}
+        { detalle: 'Registro de Solicitud de PERMISO EXCEPCIONAL PARA CIRCULACIÓN EN EL ÁREA DE RESTRICCIÓN VEHICULAR', id:'41',tipo:$scope.tipo_persona}
     ];
     $scope.datos = {};
     $scope.tablaTramites        =   {};
@@ -13,7 +13,7 @@ function solicitudPermisoCirculacionARVController($scope, $rootScope, $routePara
       { name: 'template1.html', url: '../../../app/view/servicios/varios/formularios/movilidad/solicitudPermisoCirculacionARV/PermisoCirculacionARV/PermisoCirculacionARV.html'}
     ];
   
-    $scope.deleveryID = 88;
+    $scope.deleveryID = 41;
     $scope.inicio = function(){
       $scope.tramitesCiudadano();
       $scope.cargarDatosCiudadano();

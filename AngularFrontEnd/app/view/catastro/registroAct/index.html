@@ -884,24 +884,24 @@
                     </div>
                     <div class="ibox-content-cat">
                         <div class="row">
-                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.guia)">
+                            <div class="col-sm-6" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.guia)">
                                 <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.guia.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.guia.codigo}">
                                     <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.guia.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
                                     <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.guia.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.guia.titulo}}</span>
                                 </div>
                             </div>
-                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.tramites); solicitud.acciones.listarExterno()">
+                            <div class="col-sm-6" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.tramites); solicitud.acciones.listarExterno()">
                                 <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.tramites.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.tramites.codigo}">
                                     <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.tramites.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
                                     <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.tramites.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.tramites.titulo}}</span>
                                 </div>
                             </div>
-                            <div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar)">
+                            <!--<div class="col-sm-4" style="cursor: pointer" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar)">
                                 <div class="alert alert-tab " ng-class="{'alert-info-dark':servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.solicitar.codigo, 'alert-info-lite':servicioCatastral.seleccionado.vistas.seleccionado.codigo != servicioCatastral.seleccionado.vistas.solicitar.codigo}">
                                     <span class="glyphicon glyphicon-ok" ng-show="servicioCatastral.seleccionado.vistas.solicitar.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo"></span>&nbsp;
                                     <span ng-class="{'alert-info-dark-titulo':servicioCatastral.seleccionado.vistas.solicitar.codigo == servicioCatastral.seleccionado.vistas.seleccionado.codigo}">{{servicioCatastral.seleccionado.vistas.solicitar.titulo}}</span>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
 
                         <div ng-show="servicioCatastral.seleccionado.vistas.seleccionado.codigo == servicioCatastral.seleccionado.vistas.guia.codigo" class="separadorTab">
@@ -995,7 +995,7 @@
                                 </div>
                             </div>
                             <div class="row separador"></div>
-                            <div class="row">
+                            <div class="row" ng-show="false">
                                 <div class="col-sm-12">
                                     <p class="txtSubtitulo">
                                         <a  class="txtSubtituloIcon">
@@ -1005,10 +1005,10 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row" ng-show="false">
                                 <div class="col-sm-12">
                                     <p class="txtParrafo">
-                                        Para iniciar este trámite, usted debe contratar a un profesional (arquitecto, ingeniero, topógrafo o geógrafo) para delegarle la atención de su trámite por este medio, eligiendo la opción <a class="enlace" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar)">SOLICITAR TRÁMITE</a> .
+                                        Para iniciar este trámite, usted debe contratar a un profesional (arquitecto, ingeniero, topógrafo o geógrafo) para delegarle la atención de su trámite por este medio, eligiendo la opción <a class="enlace" ng-click="servicioCatastral.acciones.seleccionarVista(servicioCatastral.seleccionado.vistas.solicitar)" >SOLICITAR TRÁMITE</a> .
                                     </p>
                                 </div>
                             </div>

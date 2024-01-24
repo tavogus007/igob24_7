@@ -1,0 +1,826 @@
+<html lang="en" ng-app="myApp">
+
+</html>
+
+<head>
+  <!-- Lllamada del Controlador --->
+  <script type="text/javascript" src="../..\view\servicios\cementerio\cementerio.js?v=20231123">
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<style type="text/css">
+  .bs-example {
+    margin: 20px;
+  }
+
+  /*.modal-content iframe {
+    margin: 0 auto;
+    display: block;
+  }*/
+</style>
+<style type="text/css">
+  #free-flash-intro a,
+  #free-flash-intro a:hover {
+    color: #615d5d;
+  }
+
+  #free-flash-intro a:hover {
+    text-decoration: none
+  }
+
+  .botonFuec {
+    font-size: 10px;
+    font-family: Verdana, Helvetica;
+    font-weight: bold;
+    color: white;
+    background: #5c9c37;
+    border: 3px;
+    border-color: #615d5d;
+    width: 40px;
+    height: 10px;
+  }
+</style>
+<style>
+  #footer {
+    position: relative;
+    top: 15px;
+    left: 5px;
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    height: 60px;
+  }
+
+  .btnBuscar {
+    background-color: #58e2fa;
+    border: none;
+    color: #070356;
+    text-align: center;
+    font-size: 20px;
+
+    opacity: 0.8;
+    transition: 0.3s;
+    border-radius: 4px;
+    width: 300px;
+    padding: 14px 28px;
+  }
+
+  .btnBuscar:hover {
+    opacity: 3;
+  }
+</style>
+<style type="text/css">
+  #caja {
+    display: block;
+  }
+
+  #mostrar {
+    display: block;
+  }
+
+  #cerrar_rc {
+    position: absolute;
+    top: 5px;
+    left: 92%;
+    font-size: 38px;
+    color: #FFCB05 !important;
+  }
+
+  /*ESTILOS PROPIOS DE CODIGO CAPTCHA*/
+  table.one {
+    border-collapse: collapse;
+    width: 100%;
+    border-spacing: 10px;
+  }
+
+  tr.color {
+    background-color: #6F7072;
+    /*border: green 5px solid; */
+  }
+
+  td.color2 {
+    border: #00B3BA 5px solid;
+    background-color: #00B3BA;
+    border-width: 5px;
+    padding: 1px;
+  }
+
+  td.colorCA {
+    border: #FEBF00 5px solid;
+    background-color: #FFFFFF;
+    border-width: 5px;
+    padding: 1px;
+  }
+
+  td.color22 {
+    border: #00B3BA 5px solid;
+    background-color: #00B3BA;
+    border-width: 5px;
+
+    padding: 1px;
+  }
+
+  input:required:invalid {
+    border: 1px solid red;
+  }
+
+  input:required:valid {
+    border: 1px solid green;
+  }
+
+  select:required:invalid {
+    border: 1px solid red;
+  }
+
+  select:required:valid {
+    border: 1px solid green;
+  }
+
+  .form-group {
+    padding-left: 8px;
+  }
+
+  .box2 {
+    display: inline-block;
+    width: 190px;
+    margin: 2px;
+  }
+
+  /*ESTILOS PROPIOS DE CODIGO CAPTCHA FIN*/
+</style>
+<div ng-controller="cementerioController" ng-init="inicio();">
+  <div ng-show="idInformacion">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="col-lg-12">
+          <div class="col-lg-10">
+            <div id="mostrar1" class="ibox-title">
+              <h5 class="ng-binding">TRÁMITE DE CONSERVACIÓN Y LIMPIEZA DE VÍAS DE CIRCULACIÓN DE NICHOS, SARCÓFAGOS Y URNAS
+              </h5>
+            </div>
+          </div>
+          <div class="col-lg-2"></div>
+          <right>
+            <a href="#/dashboard" class="btn btn-info btn-history">
+              <i class="fa fa-home"></i> Inicio
+            </a>
+          </right>
+        </div>
+        <div class="loaderContenedor" ng-show="loading.blockUI==true">
+          <div class="loader">
+          </div>
+        </div>
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="txtSubtitulo">
+                <a class="txtSubtituloIcon">
+                  <span class="glyphicon glyphicon-info-sign txtSubtituloIcon">
+                  </span>
+                </a>
+                ¿Qué es el trámite de Conservación y Limpieza de Vías de circulación de Nichos, Sarcófagos y Urnas?
+                <br />
+              </h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="txtParrafo">
+                - Es el servicio para mantener las buenas condiciones y la limpieza de las vías donde se encuentran las sepulturas perpetuas, brindando así un aspecto agradable para todos los visitantes.
+                <!-- <br>
+                - Brindando un aspecto agradable para todos los visitantes. -->
+              </p>
+            </div>
+          </div>
+          <div class="row separador">
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="txtSubtitulo">
+                <a class="txtSubtituloIcon">
+                  <span class="glyphicon glyphicon-info-sign txtSubtituloIcon">
+                  </span>
+                </a>
+                ¿Qué necesito para realizar el pago en línea?
+              </h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="txtParrafo">
+                - Para encontrar al difunto debe conocer el código de ubicación del fallecido o los datos exactos del difunto (nombres, apellidos o CI).
+                <br>
+                - Para realizar el pago, previamente deberá tener habilitada su tarjeta de crédito o débito para realizar transacciones por internet.
+                <!-- <br>
+                - Hágalo desde desde la comodidad de su hogar o donde se encuentre. -->
+              </p>
+            </div>
+          </div>
+          <div class="row separador">
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h4 class="txtSubtitulo">
+                <a class="txtSubtituloIcon">
+                  <span class="glyphicon glyphicon-info-sign txtSubtituloIcon">
+                  </span>
+                </a>
+                ¿Qué beneficios tengo al pagar mediante la plataforma web o móvil?
+              </h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <p class="txtParrafo">
+                -  Podrá pagar de manera fácil y rápida, evitando hacer filas y desde la comodidad de su hogar o donde se encuentre.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="ibox-content" id="caja">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="ibox float-e-margins">
+                <div id="mostrar2" >
+                  <h5 class="ng-binding">SOLICITUD DE TRÁMITE</h5>
+                </div>
+                <div class="loaderContenedor">
+                  <div class="loader">
+                  </div>
+                </div>
+                <div class="ibox-content">
+                  <h5>Buscar por:</h5>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-2">
+                      <button type="button" class="btn btn-primary" id="1" ng-click="mostrarCaptcha(1)">Código de Ubicación</button>
+                    </div>
+                    <div class="col-sm-12 col-md-9"><p>Realice la búsqueda con el código de ubicación del fallecido.</p></div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-sm-12 col-md-2">
+                      <button type="button" class="btn btn-primary" id="1" ng-click="mostrarCaptcha(2)">Datos Personales</button>
+                    </div>
+                    <div class="col-sm-12 col-md-9"><p>Realice la búsqueda con los datos personales del fallecido.</p></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div ng-show="idventanabusqueda">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="col-lg-12">
+          <div class="col-lg-10">
+            <div id="mostrar2" >
+              <h5 class="ng-binding">BUSCAR POR CÓDIGO DE UBICACIÓN
+              </h5>
+            </div>
+          </div>
+          <div class="col-lg-2"></div>
+          <right>
+            <button class="btn btn-sm btn-info btn-history pull-right" tooltip="Regresar" ng-click="principioI();">
+              <i class="fa fa-history" aria-hidden="true"></i>&nbsp;Atrás
+            </button>
+          </right>
+        </div>
+        <div class="loaderContenedor">
+          <div class="loader">
+          </div>
+        </div>
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-md-12">
+              <form class="form-horizontal ng-pristine ng-valid">
+                <div class="form-group">
+                  <label class="col-md-2 control-label ng-binding">Código de Ubicación: </label>
+                  <div class="col-sm-12 col-md-4">
+                    <input ng-model="query" id="busca1" class="form-control ng-pristine ng-valid" placeholder="">
+                  </div>
+                  <div class="col-sm-12 col-md-6">
+                    <div>
+                      <a class="btn btn-redondo" tooltip="Buscar Por Código" ng-click="datosUbicacion();">
+                        <div class="shake-slow">
+                          <i class="glyphicon glyphicon-search blanco">
+                          </i>
+                        </div>
+                      </a>
+                      <!--<button type="button" class="btn btn-default" ng-click="mostrarBusqueda();">Volver</button>-->
+                      <a data-toggle="modal" tooltip="Ayuda para ubicación" data-target="#ejemploUbi">
+                        <span class="btn btn-redondo">
+                          <div class="shake-slow">
+                            <i class="fa fa-question-circle blanco">
+                            </i>
+                          </div>
+                        </span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ejemploUbi" class="modal" role="dialog" data-backdrop="">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="modal-title">CÓDIGO - UBICACIÓN</h3>
+        </div>
+        <div class="modal-body">
+          <div class="row"><b>Deberá tener la proforma/comprobante de pago o solicitarlo al Cementerio de La Paz.</b>
+            <br>
+            <div class="col-md-12">
+              <img src="../servicios/cementerio/ubicar-ubi3.png" class="img-responsive"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-show="idDatosBusquedaSepultura">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="col-lg-12">
+          <div class="col-lg-10">
+            <div id="mostrar2" class="ibox-title">
+              <h5 class="ng-binding">DATOS ENCONTRADOS DE LA SEPULTURA INGRESADA
+              </h5>
+            </div>
+          </div>
+          <div class="col-lg-2"></div>
+          <right>
+            <!--<a href="#/dashboard" class="btn btn-info btn-history">
+              <i class="fa fa-history"></i> Inicio mostrarCaptcha(1)
+            </a>-->
+            <button class="btn btn-info btn-history" tooltip="Regresar" style="background-color: #E41B25;" ng-click="principioI();">
+              <i class="fa fa-trash" aria-hidden="true"></i>&nbsp;Cancelar
+            </button>
+          </right>
+        </div>
+        <div class="loaderContenedor">
+          <div class="loader">
+          </div>
+        </div>
+        <div class="ibox-content">
+          <div ng-show="idDatosBusquedaSepultura">
+            <div class="">
+              <!-- <div class="col-md-12"> -->
+                <div class="col-md-4">
+                  <h5>
+                    DESCRIPCIÓN DE LA SEPULTURA
+                  </h5>
+                  <table ng-table="tablaKardex" class="table table-striped table-bordered">
+                    <tr style="text-align: left;">
+                      <td data-title="'Sepultura'">
+                        <div ng-repeat="ubi in dUbi"><b>{{ubi.codigo}}</b></div>
+                      </td>
+                      <td data-title="'Tipo'">
+                        <div ng-repeat="ubi in dUbi"><b>{{ubi.tipo}}</b></div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="col-md-4" >
+                  <h5>
+                    DIFUNTOS ALOJADOS
+                  </h5>
+                  <div style="overflow-x:auto;">
+                    <table ng-table="tabla" class="table table-striped table-bordered table-hover">
+                      <tr style="text-align: left;">
+                        <td data-title="'Nombre Completo'">
+                          <div ng-repeat="fall in dFall"><b>{{fall.nombre}} {{fall.paterno}} {{fall.materno}}
+                              {{fall.casada}}</b></div>
+                        </td>
+                        <td data-title="'CI'" style="text-align: right;">
+                          <div ng-repeat="fall in dFall"><b>{{fall.cif}}</b></div>
+                        </td>
+                        <td data-title="'IDF'" style="text-align: right;">
+                          <div ng-repeat="fall in dFall"><b>{{fall.idf}}</b></div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <h5>
+                    TITULARES DE LA SEPULTURA
+                  </h5>
+                  <table ng-table="tablaKardex" class="table table-hover table-bordered">
+                    <tr style="text-align: left;">
+                      <td data-title="'Nombre Completo'">
+                        <div ng-repeat="tit in dTit"><b>{{tit.nombret}} {{tit.paternot}} {{tit.maternot}}
+                            {{tit.casadat}}</b></div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              <!-- </div> -->
+            </div>
+
+
+            <div class="panel-body">
+              <h4>
+                TRANSACCIONES REALIZADAS DE CONSERVACIÓN Y LIMPIEZA DE VÍAS DE CIRCULACIÓN
+              </h4>
+              <div class="table-responsive table align-middle">
+                <table ng-table="" class="table table-bordered table-hover">
+                  <tr style="text-align: center;">
+                    <td data-title="'Nro'">
+                      <div ng-repeat="datC in dClvs">{{$index+1}}</div>
+                    </td>
+                    <td data-title="'Fecha'">
+                      <div ng-repeat="datC in dClvs">{{datC.fecha_pago}}</div>
+                    </td>
+                    <!--<td data-title="'Servicio'">
+                      <div ng-repeat="datC in dClvs">{{datC.servicio}}</div>
+                    </td>
+                    <td data-title="'Ubicación'">
+                      <div ng-repeat="datC in dClvs">{{datC.ubicacion}}</div>
+                    </td>-->
+                    <td data-title="'Gestión'">
+                      <div ng-repeat="datC in dClvs">{{datC.gestion}}</div>
+                    </td>
+                    <td data-title="'Monto'">
+                      <div ng-repeat="datC in dClvs">{{datC.total}}</div>
+                    </td>
+                    <td data-title="'FUEC / PROFORMA'">
+                      <div ng-repeat="datC in dClvs">{{datC.proforma}}</div>
+                    </td>
+                    <!--<td data-title="'Estado'">
+                      <div ng-repeat="datC in dClvs">{{datC.estado}}</div>
+                    </td>-->
+                    <td align="center" data-title="'Imprimir Proforma'">
+                      <div ng-repeat="datC in dClvs">
+                        <button class="btn btn-success btn-xs" tooltip="Proforma" ng-click="reimpFuecs(datC.proforma);">
+                          <i class="fa fa-print" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </td>
+                    <td align="center" data-title="'Imprimir Factura'">
+                      <div ng-repeat="datC in dClvs">
+                        <button class="btn btn-success btn-xs" tooltip="Factura" ng-click="reimpFact(datC.posicion);">
+                          <i class="fa fa-print" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+
+
+
+            <div class="panel-body">
+              <h4>
+                GESTIONES A PAGAR
+              </h4>
+              <div class="table-responsive">
+                
+                <div class="col-md-12">
+                  <div class="col-md-6">
+                    <table ng-table="tabla" class="table table-striped table-bordered">
+                      <tr style="cursor: pointer;text-align: center;">
+                        <td data-title="'Nro'">
+                          <div ng-repeat="datD in dDeudas">{{$index+1}}</div>
+                        </td>
+                        <td data-title="'Gestión'">
+                          <div ng-repeat="datD in dDeudas">{{datD.gestionAdeuda}}</div>
+                        </td>
+                        <td data-title="'Estado'">
+                          <div ng-repeat="datD in dDeudas">{{datD.tipoGestion}}</div>
+                        </td>
+                        <td align="center" data-title="'Seleccione Gestión a Pagar'">
+                          <div ng-repeat="datD in dDeudas">
+                            <input class="form-check-input" type="checkbox" id="seleccionar{{$index+1}}"
+                              name="seleccionar1" value="{{datD.gestionAdeuda}}" ng-click="incluirAccion($index+1);">
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-md-6">
+                    <table ng-table="tablaKardex" class="table table-striped table-bordered">
+                      <tr style="cursor: pointer;text-align: center;">
+                        <th scope="col" align="center">Costo por Unidad</th>
+                        <th scope="col" align="center">Cantidad Seleccionada</th>
+                        <th scope="col" class="text-right">Total a Pagar</th>
+                      </tr>
+                      <tr style="cursor: pointer;text-align: center;">
+                        <td align="center">{{precioItem}}</td>
+                        <td align="center">{{cantSeleccionada}}</td>
+                        <td class="text-right">{{totalPrecioItems}}</td>
+                      </tr>
+                    </table>
+                    <div class="btn-group pull-right">
+                      <br>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col col-sm-12 pull-right">
+                <button id="pagoTarjeta" type="button" class="btn btn-success" ng-click="gestionesAdeudos();"
+                  id="btnBsqDataFact" disabled>
+                  <i class="glyphicon glyphicon-usd"></i>&nbsp;Pago con Tarjeta
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div ng-show="idBucarDatosFallecido">
+    <div class="col-lg-12">
+      <div class="ibox float-e-margins">
+        <div class="col-lg-12">
+          <div class="col-lg-10">
+            <div id="mostrar2" class="ibox-title">
+              <h5 class="ng-binding">BUSCAR POR DATOS PERSONALES DEL DIFUNTO
+              </h5>
+            </div>
+          </div>
+          <div class="col-lg-2"></div>
+          <right>
+            <button class="btn btn-info btn-history" tooltip="Regresar" ng-click="principioI();">
+              <i class="fa fa-history" aria-hidden="true"></i>&nbsp;Atrás
+            </button>
+          </right>
+        </div>
+        <div class="loaderContenedor">
+          <div class="loader"></div>
+        </div>
+        <div class="ibox-content">
+
+          <div id="idventanabusquedaDatosFallecido">
+            <div class="row">
+              <div class="col-md-12">
+                <label class="col-md-3 control-label ng-binding">Nro. CI.:</label>
+                <div class="form-group col-md-3">
+                  <input id="idCif" name="idCif" type="text" class="form-control" placeholder="CI."
+                    ng-keyup="bloqBuscarCi()">
+                </div>
+                <label class="col-md-3 control-label ng-binding">Nombre:</label>
+                <div class="form-group col-md-3">
+                  <input id="idNomFall" name="idNomFall" type="text" class="form-control" placeholder="Nombre"
+                    ng-keyup="bloqBuscarDatos()">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label class="col-md-3 control-label ng-binding">Apellido Paterno:</label>
+                <div class="form-group col-md-3">
+                  <input id="idApPatF" name="idApPatF" type="text" class="form-control" placeholder="Apellido Paterno"
+                    ng-keyup="bloqBuscarDatos()">
+                </div>
+                <label class="col-md-3 control-label ng-binding">Apellido Materno:</label>
+                <div class="form-group col-md-3">
+                  <input id="idApMatF" name="idApMatF" type="text" class="form-control" placeholder="Apellido Materno"
+                    ng-keyup="bloqBuscarDatos()">
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label class="col-md-3 control-label ng-binding">Apellido Casada:</label>
+                <div class="form-group col-md-3">
+                  <input id="idApCasF" name="idApCasF" type="text" class="form-control" placeholder="Apellido Casada"
+                    ng-keyup="bloqBuscarDatos()">
+                </div>
+                <label class="col-md-3 control-label ng-binding">IDF:</label>
+                <div class="form-group col-md-3">
+                  <input id="idIdfF" name="idIdfF" type="number" class="form-control" placeholder="Id. Fallecido"
+                    ng-keyup="bloqBuscarIdf()">
+                </div>
+              </div>
+
+              <!--<div ng-show="idBotonVolverBuscarPorDatosFallecido"> -->
+                <div class="col-sm-12">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-2">
+                      <button type="button" class="btn btn-sm btn-info btn-block" ng-Click="limpiar();"><span class='glyphicon glyphicon-erase'></span> Limpiar</button>
+                    </div>
+                    <div class="col-sm-12 col-md-2">
+                      <button disabled type="button" id="buscarFall" class="btn btn-info btn-block" ng-Click="obtFalls(); mostrarGrillaFallecidos();"><span class='glyphicon glyphicon-search'></span>Buscar</button>
+                    </div>
+                  </div>
+                </div>
+              <!--</div>-->
+
+              <div ng-show="idCoincidenciasFallecidos">
+                <h5>Resultado:</h5>
+                <div style="overflow-x:auto;" >
+                  <table ng-table="tablaFallecido" show-filter="true" class="table table-striped table-hover">
+                    <tr ng-repeat="tramite in dFallecido" ng-style="tramite.idf==tramiteSeleccionado && {'background-color':'#DCDCDC','font-color':'#A2D5AE'}">
+                      <td align="center" data-title="'NRO.'">{{$index+1}}</td>
+                      <td align="center" data-title="'IDF'">{{tramite.idf}}</td>
+                      <td align="center" data-title="'CI'">{{tramite.ci}}</td>
+                      <td align="center" data-title="'NOMBRES'">{{tramite.nombre}}</td>
+                      <td align="center" data-title="'AP. PATERNO'">{{tramite.paterno}}</td>
+                      <td align="center" data-title="'AP. MATERNO'">{{tramite.materno}}</td>
+                      <td align="center" data-title="'AP. CASADA'">{{tramite.casada}}</td>
+                      <td align="center" data-title="'ACCIÓN'">
+                        <button class="btn btn-success btn-sm" tooltip="Elegir" ng-click="seleccionarFallecido(tramite);">
+                          <i class="fa fa-folder-open-o" aria-hidden="true"></i>&nbsp;Seleccionar
+                        </button>
+                    </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!--
+  <div ng-show="idLlamarCaptcha">
+
+    <div class="col-lg-12">
+      <div class="col-lg-10">
+        <div id="mostrar1" class="ibox-title">
+          <h5 class="ng-binding">Escriba las palabras para continuar
+          </h5>
+        </div>
+      </div>
+      <div class="col-lg-2"></div>
+      <right>
+        <button class="btn btn-info btn-history" tooltip="Regresar" ng-click="principioI();">
+          <i class="fa fa-history" aria-hidden="true"></i>&nbsp;Inicio
+        </button>
+      </right>
+    </div>
+    <div class="col-md-12" align="center">
+
+      <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
+        <tr class="color">
+          <div style="background: #ffffff;">
+            <div class="box2">
+              <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
+            </div>
+            <div class="box2">
+              <img class="img-responsive" src="{{imageLNG}}" title="Palabra en CASTELLANO">
+            </div>
+          </div>
+        </tr>
+        <tr class="color">
+          <td class="color22" colspan="3" width="70" align="center">
+            <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control"
+              placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha()" required />
+            <label>{{palabraT}}</label>
+            <span ng-show="formulario.palabraT.$invalid">
+              <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+            </span>
+          </td>
+          <td class="color2" width="30" align="center">
+            <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal"
+              ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072"
+                title="Actualizar"></i>
+            </a>
+          </td>
+        </tr>
+      </table>
+      <b>
+        <font SIZE=3 color="red"> {{ErrorCapchasXX}}</font>
+      </b>
+      <b>
+        <font SIZE=2 color="green"> {{SuccesCapchasxx}}</font>
+      </b>
+    </div>
+  </div>
+-->
+
+
+
+  <!-- Modal  Visor Iframe-->
+  <div id="divPopupIFramePo" class="modal" role="dialog" data-backdrop="">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" ng-click="actualizarPagos(2)">&times;</button>
+          <h3 class="modal-title">PAGO CON TARJETA</h3>
+        </div>
+        <div class="modal-body">
+          <div class="row" id="visorModelo">
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12">
+
+                  <iframe id="visorIframe" src="" style="width: 100%;height: 500px;border: none;">
+
+                  </iframe>
+                  <!--<button type="button" class="btn btn-default" ng-click="mostrarMensajePago();">Mostrar</button>-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalDataFactura" class="modal" role="dialog" data-backdrop="" data-bs-backdrop="static"
+    data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" ng-click="actualizarPagos(1);">&times;</button>
+          <h3 class="modal-title">INGRESE SUS DATOS PARA LA FACTURA</h3>
+        </div>
+        <div class="modal-body">
+          <div class="row" id="factData">
+            <div class="col-md-12">
+              <div class="row">
+
+                <div class="col-md-12">
+                  <div class="form-group col-md-4">
+                    <label class="col-md-12 control-label ng-binding">Tipo Doc.</label>
+                    <select class="form-control" name="tipoDoc" id="tipoDoc" (change)="selTipoDoc()">
+                      <option value="1">CI - CARNET DE IDENTIDAD</option>
+                      <option value="2">CEX - CARNET EXTRANJERO</option>
+                      <option value="3">PAS - PASAPORTE</option>
+                      <option value="4">OD - OTRO DOCUMENTO</option>
+                      <option value="5">NIT - NÚMERO DE IDENTIFICACION TRIBUTARIA</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label class="col-md-12 control-label ng-binding">Número de Documento</label>
+                    <input id="numDoc" name="numDoc" type="number" class="form-control"
+                      placeholder="Ingrese Número de Documento" ng-keyup="bloqDatosEnv()">
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <div id="bntBsq">
+                      <label class="col-lg-12 control-label ng-binding">Solo NIT</label>
+                    <button type="button" class="btn btn-info" ng-click="buscarDoc();" id="bsqDoc">
+                      <i class="glyphicon glyphicon-search"></i>&nbsp;Comprobar
+                    </button>
+                    </div>
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <div id="respBsq">
+                      <label class="col-md-10 control-label ng-binding">Resultado</label>
+                    <input id="respDoc" name="respDoc" type="text" class="form-control" disabled>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <label class="col-md-6 control-label ng-binding">Nombres Apellidos / Razón Social:
+                  </label>
+                  <div class="form-group col-md-12">
+                  
+                  <input id="razonSolfact" name="razonSolfact" type="text" class="form-control" placeholder="Ingrese nombre / razón" onkeyup="this.value=this.value.toUpperCase()" ng-keyup="bloqDatosEnv();">
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <label class="col-md-6 control-label ng-binding">Correo Electrónico / Email:</label>
+                  <div class="form-group col-md-12">
+                    <input class="form-control" type="text" id="email" name="email" placeholder="Ingrese correo" onkeyup="" ng-keyup=""/>
+                    <span style="font-size: 13px; display:none;">Ingrese - No deje el espacio en blanco.</span>
+                    <span id="success" style="font-size: 13px; display:none; color:green;">Correo válido - La factura será enviado a su correo.</span>
+                    <span id="error" style="font-size: 13px; display: none; color: red;">Obligatorio - Ingrese correo para enviarle su factura.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-group pull-right">
+              <br>
+              <button type="button" class="btn btn-success" ng-click="iniciarFuec();" id="boton_mostrar_debito2"
+                disabled>
+                <i class="glyphicon glyphicon-arrow-right"></i>&nbsp;Continuar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -81,14 +81,14 @@
             </div>
 
             <div id="pnlListaSolicitudes" ng-show="flujo.paso == flujo.pasos.paso0">
-                <div class="container-fluid">
-                    Si desea solicitar un Permiso de Construcción para su inmueble, presione el botón INICIAR SOLICITUD.
+                <div class="container-fluid"><br>
+                    Si desea solicitar un Permiso de Construcción para su inmueble, utilice la opción PERMISOS DE CONSTRUCCIÓN - LICENCIA ÁGIL.
                     <br>
-                    Para m&aacute;s informaci&oacute;n presione el bot&oacute;n GU&Iacute;A DE SOLICITUD
+                    
                 </div>
                 <br>
                 <div>
-                    <button class="btn btn-info" ng-click="cambiarPaso(flujo.pasos.paso1)" ><span></span>Iniciar solicitud</button>
+                    <!--button class="btn btn-info" ng-click="cambiarPaso(flujo.pasos.paso1)" ><span></span>Iniciar solicitud</button-->
                     <button class="btn btn-info" data-toggle="modal" data-target="#divPopup2"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Guía"  ></span> Guía de trámite</button>
                 </div>
                 <hr>
@@ -100,7 +100,7 @@
                 <div class="ibox-content" id="caja">
                     <div>
                         <div class="panel ">
-                            <table  ng-table="tablaSolicitudes" class="table table-striped">
+                            <table  ng-table="tablaSolicitudes" class="table table-striped" ng-if="false">
                                 <tr ng-repeat="solicitud in $data "  >
                                     <!--<td data-title="'Nro.'" >{{$index+1}}</td>-->
                                     <td data-title="'Nro. Solicitud'">{{solicitud.idFichaTecnica}}</td>
@@ -112,7 +112,7 @@
                                         <div>
 
                                             <!--<button class="btn btn-success"  ng-show="solicitud.idEstado == 1 || solicitud.idEstado == 2" ng-click="setSolicitudParametrosEdificacion(solicitud)">Datos Técnicos</button>-->
-                                            <button class="btn btn-success" ng-show="solicitud.idEstado == 1 || solicitud.idEstado == 2" ng-click="accionDelegarSolicitud(solicitud)">Delegar Trámite</button>
+                                            <!--button class="btn btn-success" ng-show="solicitud.idEstado == 1 || solicitud.idEstado == 2" ng-click="accionDelegarSolicitud(solicitud)">Delegar Trámite</button-->
                                             <button class="btn btn-success" ng-show="solicitud.idEstado == 3" ng-click="accionDescargarSolicitud(solicitud)"><span class="glyphicon glyphicon-cloud-download"></span> Solicitud</button>
                                             <button class="btn btn-success" ng-show="solicitud.idEstado >= 4" ng-click="accionSeguimientoFlujo(solicitud)"><span class="glyphicon glyphicon-info-sign"></span> Seguimiento</button>
 

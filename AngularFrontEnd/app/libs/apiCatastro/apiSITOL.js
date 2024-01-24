@@ -59,6 +59,15 @@ dataSITOL.prototype.dplLstSol = function (vNroDoc, vTipoDoc, functionResp)
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
 };
 
+dataSITOL.prototype.direccionesSucursales = function (functionResp)
+{
+    wsMethodSITOL = "/direccionesSucursales";
+    typeCall = "post";
+    dataParams = {
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
 dataSITOL.prototype.dplLstMotivos = function (functionResp)
 {
     wsMethodSITOL = "/dplLstMotivos";
@@ -80,7 +89,7 @@ dataSITOL.prototype.dplLstMotivosDet = function (vidMotivo, functionResp)
 };
 
 
-dataSITOL.prototype.dplRegFum = function (vTipoTra,vIdCiudadano,vOIDCiudadano,vApellidos,vNombres,vNumeroDocumento,vExpedido,vTipoDocumento,vFUM,vIdMotivo,vIdMotivoDetalle,vCodigoCatastral,vNumInmueble,vNumCertificado,vfumEnc,vidTipoPago,vcodPago,vaccion, functionResp) //vtipoPago,vcodPago,
+dataSITOL.prototype.dplRegFum = function (vTipoTra,vIdCiudadano,vOIDCiudadano,vApellidos,vNombres,vNumeroDocumento,vExpedido,vTipoDocumento,vCorreo,vTelefono,vFUM,vIdMotivo,vIdMotivoDetalle,vCodigoCatastral,vNumInmueble,vNumCertificado,vfumEnc,vidTipoPago,vcodPago,vaccion, functionResp) //vtipoPago,vcodPago,
 {
     wsMethodSITOL = "/dplRegFum";
     typeCall = "post";
@@ -93,6 +102,8 @@ dataSITOL.prototype.dplRegFum = function (vTipoTra,vIdCiudadano,vOIDCiudadano,vA
         ,"NumeroDocumento":vNumeroDocumento
         ,"Expedido":vExpedido
         ,"TipoDocumento":vTipoDocumento
+        ,"correo":vCorreo
+        ,"telefono":vTelefono
         ,"FUM":vFUM
         ,"IdMotivo":vIdMotivo
         ,"IdMotivoDetalle":vIdMotivoDetalle
@@ -839,3 +850,114 @@ dataSITOL.prototype.regObtenerSolicitud = function (idTramiteOL,functionResp)
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
 };
 
+// ------------------------
+//  LICENCIA AGIL
+// ------------------------
+dataSITOL.prototype.pcv2Solicitud = function (
+    macrodistrito,
+    distritoMunicipal,
+    //lusu,
+    codigoCatastral,
+    nombreSolicitante,
+    paternoSolicitante,
+    maternoSolicitante,
+    numeroDocumentoSol,
+    tipoDocumento,
+    expedido,
+    telefonoSolicitante,
+    emailSolicitante,
+    arquitectoRegistroNacionalCAB,
+    arquitectoNombre,
+    arquitectoCorreo,
+    OID,
+    idPCCartilla,
+    direccion,
+    nroInmueble,
+    idExpedido,
+    functionResp)
+{
+    wsMethodSITOL = "/pcv2Solicitud";
+    typeCall = "post";
+    dataParams = {
+        "idPCv2Solicitud":0,
+        "macrodistrito": macrodistrito,
+        "distritoMunicipal":distritoMunicipal,
+        "idPCCartilla": idPCCartilla,
+        //"lusu":lusu,
+        "codigoCatastral":codigoCatastral,
+        "nombreSolicitante":nombreSolicitante,
+        "paternoSolicitante":paternoSolicitante,
+        "maternoSolicitante":maternoSolicitante,
+        "numeroDocumentoSol":numeroDocumentoSol,
+        "tipoDocumento":tipoDocumento,
+        "idExpedido":expedido,
+        "telefonoSolicitante":telefonoSolicitante,
+        "emailSolicitante":emailSolicitante,
+        "arquitectoRegistroNacionalCAB":arquitectoRegistroNacionalCAB,
+        "arquitectoNombre":arquitectoNombre,
+        "arquitectoCorreo":arquitectoCorreo,
+        "OID":OID,
+        "idPCCartilla":idPCCartilla,
+        "direccion":direccion,
+        "nroInmueble":nroInmueble,
+        "idExpedido":idExpedido,
+        "accion":"A1"
+    };
+
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.pcv2EnviosArquitecto = function (
+    codigoCatastral,
+    functionResp)
+{
+    wsMethodSITOL = "/verficaRemitidosArquitecto";
+    typeCall = "post";
+    dataParams = {
+        "codigoCatastral":codigoCatastral,
+        "accion":"C2"
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.nroEnviosArquitectoPCv2 = function (
+    functionResp)
+{
+    wsMethodSITOL = "/nroRemitidosArquitecto";
+    typeCall = "post";
+    dataParams = {
+        "accion":"C3"
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.pcv2Lst = function (solicitanteNroDoc, functionResp)
+{
+    wsMethodSITOL = "/pcv2Solicitud";
+    typeCall = "post";
+    dataParams = {
+        "numeroDocumentoSol":  solicitanteNroDoc,
+        "idPCCartilla": 0,
+        "idPCv2Solicitud":0,
+        "distritoMunicipal":0,
+        "tipoDocumento":0,
+        "arquitectoRegistroNacionalCAB":0,
+        "idExpedido":0,
+        "accion":"C1"
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.pcv2GetRestricciones = function (
+    codigoCatastral,
+    functionResp)
+{
+    wsMethodSITOL = "/pcv2GetRestricciones";
+    typeCall = "post";
+    dataParams = {
+        "codigoCatastral":codigoCatastral,
+        "accion":"C3"
+    };
+
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};

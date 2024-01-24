@@ -563,7 +563,8 @@
                       <!--TERMINA TIPO DE LICENCIA MULTIPLE-->
                     </div>
                     <!--PARA FOOD TRUCK-->
-                    <div ng-show = "datos.f01_categoria_descrip==211 || datos.f01_categoria_descrip=='211'">
+                    <div ng-show = "false">
+                    <!--div ng-show = "datos.f01_categoria_descrip==211 || datos.f01_categoria_descrip=='211'"-->
                         <div class="col-md-12">
                             <legend>Datos del Vehículo o Remolque:</legend>
                         </div>
@@ -923,8 +924,8 @@
                         <div class="form-group" class="col-md-12">
                             <div class="controls">
                                 <font color="#FF0000" size="4px">*  </font>
-                                <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="NUEVO" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Con Elementos Publicitarios
-                                <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" value="RENOVACION" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Sin Elementos Publicitarios
+                                <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" id="CON_VIAE" value="CON_VIAE" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Con Elementos Publicitarios
+                                <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" id="SIN_VIAE" value="SIN_VIAE" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Sin Elementos Publicitarios
                             </div>
                         </div>
                     </div>
@@ -980,14 +981,14 @@
                                                             <input class="form-control" type="text"  id="INT_DESC" name="INT_DESC" placeholder="Descripción" ng-model="publi.INT_DESC" ng-disabled="desabilitadoO || desabilitado" required onkeyUp="return conMayusculas(this);">
                                                         </th>
                                                         <th ng-show="especial==null">
-                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_ALTO" name="INT_ALTO" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="desabilitadoO || desabilitado" required>
+                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_ALTO" name="INT_ALTO" ng-blur ="validaSuperficie(publi);" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="desabilitadoO || desabilitado" required>
                                                             <span style="color:red" ng-show="formularioRegistro.INT_ALTO.$invalid">
                                                                 <span ng-show="formularioRegistro.INT_ALTO.$error.required">Es requerido.
                                                                 </span>
                                                             </span>
                                                         </th>
                                                         <th ng-show="especial==null">
-                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_ANCHO" name="INT_ANCHO" placeholder="Ancho" ng-model="publi.INT_ANCHO"ng-disabled="desabilitadoO || desabilitado" required>
+                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_ANCHO" name="INT_ANCHO" ng-blur ="validaSuperficie(publi);" placeholder="Ancho" ng-model="publi.INT_ANCHO"ng-disabled="desabilitadoO || desabilitado" required>
                                                             <span style="color:red" ng-show="formularioRegistro.INT_ANCHO.$invalid">
                                                                 <span ng-show="formularioRegistro.INT_ANCHO.$error.required">Es requerido.
                                                                 </span>

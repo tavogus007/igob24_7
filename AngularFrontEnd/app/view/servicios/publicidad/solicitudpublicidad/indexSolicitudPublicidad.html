@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+    <html lang="en" ng-app="myApp">
+    <head>
+        <script type="text/javascript" src="../../view/servicios/publicidad/solicitudpublicidad/appSolicitudPublicidad.js"></script>
+        <script src="../../libs/js/pdfmake.js"></script>
+        <script src="../../libs/js/vfs_fonts.js"></script>
+    </head>
+    
+    <body>
+        <div class="ibox-title">
+            <h5>Solicitud de Publicidad</h5>
+        </div>    
+<div class="row">
+            <div class="col-md-12">
+                <br><p>Para solicitar el emplazamiento de publicidad, llene el formulario correspondiente</p>                    
+            </div> 
+</div>
+<div class="row">    
+            <div class="col-sm-9">
+                <div class="btn-group btn-block">                  
+                    <a type="button" class="btn btn-primary" href="#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudpublicidad/indexPublicidadCorporativa.html'">Publicidad Corporativa</a>
+                    <a type="button" class="btn btn-primary" href="#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudpublicidad/indexPublicidadEventual.html'">Publicidad Eventual</a>            
+                    <a type="button" class="btn btn-primary" href="#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudpublicidad/indexPublicidadMovil.html'">Publicidad Móvil</a>                </div>
+            </div> 
+            <div class="col-sm-3" >
+                <div class="dropdown" >                    
+                    <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list" aria-hidden="true"></i> Requisitos<span class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a ng-click=""  data-toggle="modal" data-target="#modalcorp">Publicidad corporativa</a></li>
+                    <li><a ng-click=""  data-toggle="modal" data-target="#modaleventual">Publicidad eventual</a></li>
+                    <li><a ng-click=""  data-toggle="modal" data-target="#modalmovil">Publicidad móvil</a></li>                        
+                    </ul>
+                </div>
+            </div> 
+</div>    
+<!-- Modal -->
+<div id="modalcorp" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">REQUISITOS PARA LA PUBLICIDAD  CORPORATIVA</h4>
+        </div>
+        <div class="modal-body">
+            <p>
+                Se establecen como requisitos  para la obtenci6n de la licencia de publicidad corporativa lo siguientes:<br>
+                <br>
+                <b>PUBLICIDAD CORPORATIVA POR SU  TAMA&Ntilde;O:</b> <br>
+                <br>
+                a) Formulario de Solicitud de  Licencia de Publicidad presentado por el (la) solicitante o el (la)  representante legal en caso de personas jur&iacute;dicas; <br><br>
+                b) Cedula de Identidad de! (de  la) solicitante o del (de la) representante legal de la persona jur&iacute;dica seg&uacute;n  corresponda, por &uacute;nica vez en caso de ser primera solicitud de tr&aacute;mite en el  GAMLP; <br><br>
+                c) Plano de ubicaci6n de!  inmueble y del elemento publicitario georreferenciado especificando las  dimensiones (alto, ancho y espesor), material, fotograf&iacute;as del entorno y  montajes fotogr&aacute;ficos del elemento publicitario a emplazarse; <br><br>
+                d) Licencia de funcionamiento  vigente de la actividad econ6mica solicitante otorgada por el GAMLP. <br><br>
+                e) Una vez verificado el  cumplimiento de las condiciones t&eacute;cnicas y tomando en cuenta que el (los)  elemento (s) publicitario (s) no incurre (n) en las restricciones t&eacute;cnicas  se&ntilde;aladas en el presente Reglamento Municipal, se deber&aacute;n adjuntar: <br><br>
+                &nbsp;&nbsp;&nbsp;1. Resumen T&eacute;cnico debidamente  firmado y sellado con el n&uacute;mero de registro profesional respectivo, por el (la)  profesional responsable del dise&ntilde;o y calculo estructural, mismo que se  constituir~ en una declaraci6n jurada que certifica que el (los) elemento (s)  publicitario(s) cumple(n) con todas las medidas de seguridad y ornato para su  emplazamiento; <br><br>
+                &nbsp;&nbsp;&nbsp;2. Fotocopia de la matr&iacute;cula de  registro profesional de! responsable del dise&ntilde;o y calculo estructural; <br><br>
+                &nbsp;&nbsp;&nbsp;3. P&oacute;liza de seguro contra da&ntilde;os  a terceros por un tiempo igual o mayor al periodo de vigencia de la Licencia de  Publicidad; <br><br>
+                &nbsp;&nbsp;&nbsp;4. Carta notariada de! (de la) o  los (las) propietarios (as) del bien inmueble autorizando el emplazamiento del  elemento publicitario; en caso de que el elemento publicitario vaya a  emplazarse en bienes sujetos al r&eacute;gimen de propiedad horizontal, carta  notariada de la Directiva de la Asociaci&oacute;n de Copropietarios autorizando el  emplazamiento o en su defecto del representante de los copropietarios; <br><br>
+                &nbsp;&nbsp;&nbsp;5. Reporte anual de medici&oacute;n de  la huella de carbono que produjo el elemento publicitario emplazado. <br>
+                <br>
+                <b>PARA PUBLICIDAD CORPORATIVA POR  SU USO:</b> <br>
+                <br>
+                a) Formulario de Solicitud de  Licencia de Publicidad presentado por el (la) solicitante o el (la)  representante legal en caso de persona jur&iacute;dica, debidamente firmado y sellado  por el (la) profesional responsable de la elaboraci&oacute;n de los documentos  t&eacute;cnicos, mismo que se constituir&aacute;n en una declaraci&oacute;n jurada que respalda que  el (los) elemento (s) publicitario (s) cuenta (n) con las condiciones de  seguridad y ornato para su emplazamiento. Anexo al Formulario deber&aacute; adjuntarse  descripci6n de los elementos publicitarios en la se identifique lugar de  emplazamiento, dimensiones, materiales, y muestreo fotogr&aacute;fico de cada  elemento. <br><br>
+                b) Cedula de identidad del (de  la) solicitante o del (de la) representante legal de la persona jur&iacute;dica seg&uacute;n  corresponda. <br><br>
+                c) Fotocopia de la matr&iacute;cula de  registro profesional del responsable de la<br><br>
+                d) Documento suscrito por el  (los) propietario (s) del inmueble que respalde la autorizaci&oacute;n para el  emplazamiento del (los) elemento (s) publicitario (s) y establezcan de manera  clara su corresponsabilidad sobre el emplazamiento, seguridad y sus efectos; <br><br>
+                e) Licencia de funcionamiento  vigente de la actividad econ6mica solicitante otorgada por el GAMLP.</p>   
+                <hr>
+                <p align="justify">Para realizar el trámite, es necesario llenar e imprimir el formulario y adjuntar los requisitos correspondientes. Posteriormente, el formulario deberá ser presentado en las oficinas de la Unidad de Publicidad, ubicadas en la Calle Chichas – Edif. Espra, Piso 5, Miraflores. Estas oficinas se encuentran justo después de salir del puente de las Américas. Si necesitas contactarnos, puedes hacerlo a través del teléfono 2650715.</p>                  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+ <!--/ Modal --> 
+<!-- Modal -->
+<div id="modaleventual" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">REQUISITOS PARA PUBLICIDAD EVENTUAL</h4>
+        </div>
+        <div class="modal-body">         
+<p> Se establecen como requisitos para la obtenci&oacute;n de la licencia de publicidad  eventual los siguientes: <br><br>
+  a) Formulario de Solicitud de  Licencia de Publicidad presentado por el (la) solicitante o el (la)  representante legal en caso de personas jur&iacute;dicas;<br><br>
+  b) cedula de Identidad del (de  la) solicitante o del (de la) representante legal de la persona jur&iacute;dica seg&uacute;n  corresponda, por &uacute;nica vez en caso de ser primera solicitud de tr&aacute;mite en el  GAMLP; <br><br>
+  c) En caso de que la publicidad  utilice los recursos tecnol&oacute;gicos se&ntilde;alados en los incisos b), c), d), e), f), g),  h) e i) del art&iacute;culo 8 del presente Reglamento Municipal, se deber&aacute;n adjuntar c&aacute;lculo  del sistema el&eacute;ctrico elaborado por un profesional. <br><br>
+  d) Fotocopia de matr&iacute;cula de  registro profesional de! responsable de la elaboraci&oacute;n del c&aacute;lculo del sistema el&eacute;ctrico. <br><br>
+  e) Cuando corresponda, Licencia  de funcionamiento vigente de la actividad econ&oacute;mica otorgada por el GAMLP. En  caso de ser actividad econ&oacute;mica que cuente con Licencia de Funcionamiento de  otro municipio. <br><br>
+  f) Memor&aacute;ndum y / o Autorizaci6n  de uso de espacio emitida por la Sub alcald&iacute;a del macro distrito donde se efectuar&aacute;  el emplazamiento.<br><br>
+  g) Formulario de Compromiso de  retiro de elementos publicitarios hasta las veinticuatro (24) horas posteriores  a la fecha de solicitud.</p>  
+  <hr>
+  <p align="justify">Para realizar el trámite, es necesario llenar e imprimir el formulario y adjuntar los requisitos correspondientes. Posteriormente, el formulario deberá ser presentado en las oficinas de la Unidad de Publicidad, ubicadas en la Calle Chichas – Edif. Espra, Piso 5, Miraflores. Estas oficinas se encuentran justo después de salir del puente de las Américas. Si necesitas contactarnos, puedes hacerlo a través del teléfono 2650715.</p>                
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+ <!--/ Modal --> 
+<!-- Modal -->
+<div id="modalmovil" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">REQUISITOS PARA PUBLICIDAD MOVIL</h4>
+        </div>
+        <div class="modal-body">
+            <p> Se establecen como requisitos para la obtenci6n de la licencia de publicidad  móvil los siguientes: <br><br>
+              a) Formulario de Solicitud de  Licencia de Publicidad Móvil, presentado por el (la) solicitante o el (la)  representante legal en caso de personas jur&iacute;dicas, y cuando corresponda,  debidamente firmado y sellado por el (la) profesional responsable de la  elaboraci&oacute;n de los documentos t&eacute;cnicos, mismo que se constituye en una  declaraci&oacute;n jurada que respalda que el (los) elemento (s) publicitario (s)  cuenta(n) con las condiciones de seguridad y ornato para su emplazamiento; <br><br>
+              b) Cedula de identidad del (de  la) solicitante o del (de la) representante legal de la persona jur&iacute;dica seg&uacute;n  corresponda. <br><br>
+              c) Registro &Uacute;nico Automotor  (RUA); <br><br>
+              d) En caso de Publicidad Móvil  que utilice los recursos tecnol&oacute;gicos se&ntilde;alados en los incisos b), c), d) e),  &pound;), g), h) e i) del art&iacute;culo 8 del presente Reglamento Municipal, se deber&aacute;n  adjuntar el c&aacute;lculo del sistema el&eacute;ctrico elaborado por un profesional, con la  firma y sello respectivos. <br><br>
+              e) Fotocopia de matr&iacute;cula de  registro profesional del responsable de la elaboraci&oacute;n del c&aacute;lculo del sistema  el&eacute;ctrico. <br><br>
+              f) Cuando corresponda, licencia  de funcionamiento vigente de la actividad econ&oacute;mica solicitante otorgada por el  GAMLP. &iexcl;En caso de ser actividad econ&oacute;mica que cuente con Licencia de  Funcionamiento de otro municipio deber&aacute;n adicionalmente suscribir acta de  compromiso de retiro de! elemento publicitario dentro de las veinticuatro (24)  horas de vencida la vigencia de la Licencia de Publicidad la cual deber&aacute; ser  suscrita por el representante legal debidamente acreditado y con domicilio en  la ciudad de La Paz.</p>         
+            <hr>
+            <p align="justify">Para realizar el trámite, es necesario llenar e imprimir el formulario y adjuntar los requisitos correspondientes. Posteriormente, el formulario deberá ser presentado en las oficinas de la Unidad de Publicidad, ubicadas en la Calle Chichas – Edif. Espra, Piso 5, Miraflores. Estas oficinas se encuentran justo después de salir del puente de las Américas. Si necesitas contactarnos, puedes hacerlo a través del teléfono 2650715.</p>
+            </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+ <!--/ Modal --> 
+
+ <div class="row">     
+    <div class="col-sm-12"><br>            
+        <div ng-controller="solicitudPublicidadController">           
+                <!-- Modal -->
+                <div class="modal fade" id="pdfModal" tabindex="-1" role="dialog" aria-labelledby="pdfModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content" >
+                        <!--div class="modal-header modal-info">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="pdfModalLabel">Imprimir PDF</h4>
+                        </div-->
+                        <div class="modal-body" style="padding:0px">
+                        <iframe id="viewPdf" name="viewPdf" style="width: 100%; height: 500px;"></iframe>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- /Modal -->    
+                <div class="panel panel-info">
+                    <div class="panel-heading"><h4>Solicitudes de publicidad CORPORATIVA</h4></div>
+                    <div class="panel-body" style="padding: 0px;">
+                        <div class="table-responsive">                                                            
+                            <table ng-table="tablas.PUBC" class="table table-hover">
+                                <tr ng-repeat="tramite in $data">
+                                    <!-- Celdas de la tabla -->
+                                    <td data-title="'Código de solicitud'" class="header column.class">{{tramite.vfrm_ser_codigo_servicio}}</td>
+                                    <td data-title="'Fecha de solicitud'" class="header column.class">{{tramite.vfrm_ser_registrado | date : format : timezone}}</td>   
+                                    <td data-title="'Tipo de letrero'" class="header column.class">{{tramite.vfrm_ser_dataformulario.f01_tipo_letrero.descripcion}}</td>                                       
+                                    <td data-title="'Caracteristica'" class="header column.class">{{tramite.vfrm_ser_dataformulario.f01_caracteristica.caracteristica}}</td>                    
+                                    <td data-title="'Imprimir formulario'" style="text-align:center">                           
+                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPDFcorporativo(tramite)" tooltip="Imprimir">
+                                            <i class="fa fa-print"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>    
+            <div class="panel panel-info">
+                <div class="panel-heading"><h4>Solicitudes de publicidad MOVIL</h4></div>
+                <div class="panel-body" style="padding: 0px;">
+                        <div class="table-responsive">                          
+                            <table ng-table="tablas.PUBM" class="table table-hover">
+                                <tr ng-repeat="tramite in $data">
+                                    <!-- Celdas de la tabla -->
+                                    <td data-title="'Código'">{{tramite.vfrm_ser_codigo_servicio}}</td>
+                                    <td data-title="'Fecha'" class="header column.class">{{tramite.vfrm_ser_registrado | date : format : timezone}}</td>                 
+                                    <!--td data-title="'Tipo de solicitud'">{{tramite.vdescripcion}}</td-->
+                                    <td data-title="'Detalle'">{{tramite.vfrm_ser_dataformulario.listamoviles.length}} registros</td>
+                                    <td data-title="'Imprimir formulario'" style="text-align:center">
+                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPDFmovil(tramite)" tooltip="Imprimir">
+                                            <i class="fa fa-print"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                    </div>
+                </div>
+            </div>
+ 
+            <div class="panel panel-info">
+                <div class="panel-heading"><h4>Solicitudes de publicidad EVENTUAL</h4></div>
+                <div class="panel-body" style="padding: 0px;">
+                    <div class="table-responsive">                        
+                        <table ng-table="tablas.PUBE" class="table table-hover">
+                            <tr ng-repeat="tramite in $data">
+                                <!-- Celdas de la tabla -->
+                                <td data-title="'Código'">{{tramite.vfrm_ser_codigo_servicio}}</td>
+                                <td data-title="'Fecha'" class="header column.class">{{tramite.vfrm_ser_registrado | date : format : timezone}}</td> 
+                                <td data-title="'Tipo de solicitud'">{{tramite.vdescripcion}}</td>
+                                <td data-title="'Detalle'">{{tramite.vfrm_ser_dataformulario.f01_listaeventual.length}} registros</td>
+                                <td data-title="'Imprimir formulario'" style="text-align:center">
+                                    <button type="button" class="btn btn-primary btn-circle" ng-click="generarPDFeventual(tramite)" tooltip="Imprimir">
+                                        <i class="fa fa-print"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div> 
+    </div>        
+</div>    
+</body>
+</html>

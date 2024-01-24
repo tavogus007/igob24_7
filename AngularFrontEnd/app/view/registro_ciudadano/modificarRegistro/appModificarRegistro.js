@@ -2576,6 +2576,7 @@ $scope.vias_v2= function(zona,tipo)
             else
             {
               //alert();
+              /*
               var url_zonas_tributarias = zonas_tributarias.getSource().getGetFeatureInfoUrl(
                 evt.coordinate,$scope.mapa.getView().getResolution(),$scope.mapa.getView().getProjection(),{
                   'INFO_FORMAT': 'application/json',
@@ -2651,7 +2652,7 @@ $scope.vias_v2= function(zona,tipo)
                     var tipo_via = cod.tipovia;
                     //////////////////////////////////////////////////////////
                 }
-              });
+              });*/
             }
             /////////////////////////////////////////////////////////////////////
             var feature = new ol.Feature(

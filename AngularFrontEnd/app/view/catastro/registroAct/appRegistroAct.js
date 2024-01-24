@@ -1674,7 +1674,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 
 			iniciar:function () {
 
-				SITUtil.capas.GEOSERVER = "http://sitservicios.lapaz.bo/geoserver";
+				SITUtil.capas.GEOSERVER = "https://sitservicios.lapaz.bo/geoserver";
 				$scope.vectorSource = new ol.source.Vector(
 					//{
 					//features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
@@ -2085,7 +2085,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 			obtenerZona: function (wkt, paso) {
 				//console.log("Buscando zona");
 				//$.blockUI();
-				SITUtil.capas.GEOSERVER = "http://sitservicios.lapaz.bo/geoserver";
+				SITUtil.capas.GEOSERVER = "https://sitservicios.lapaz.bo/geoserver";
 				$.ajax({
 					method: 'POST',
 					dataType: 'jsonp',
@@ -2128,7 +2128,7 @@ function RegistrocatastralactController($scope, $rootScope, $routeParams, $locat
 			},
 			obtenerRiesgo : function (wkt, paso) {
 				console.log("Buscando zona de riesgo");
-				SITUtil.capas.GEOSERVER = "http://sitservicios.lapaz.bo/geoserver";
+				SITUtil.capas.GEOSERVER = "https://sitservicios.lapaz.bo/geoserver";
 				$.ajax({
 					method: 'POST',
 					dataType: 'jsonp',

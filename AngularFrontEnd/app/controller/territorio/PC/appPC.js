@@ -675,7 +675,7 @@ function PCController($scope, $rootScope, $routeParams, $location, $http, Data, 
     }
     $scope.visorIframeCambiarModelo = function (superficie,anchoVia, nroPlantas) {
         //$scope.visorIframe.url = "http://gmlpsr0038:8080/Proyectos2017/LUSU/modelo_lusu2.html?pisos=xpisos&anchoVia=xanchovia&superficie=xsuperficie";
-        $scope.visorIframe.url = "http://sitservicios.lapaz.bo/sit/LUSU/modelo_lusu2.html?pisos=xpisos&anchoVia=xanchovia&superficie=xsuperficie";
+        $scope.visorIframe.url = "https://sitservicios.lapaz.bo/sit/LUSU/modelo_lusu2.html?pisos=xpisos&anchoVia=xanchovia&superficie=xsuperficie";
         $scope.visorIframe.url = $scope.visorIframe.url.replace("xpisos",nroPlantas).replace("xanchovia",anchoVia).replace("xsuperficie",superficie)
         $scope.visorIframe.titulo = "Modelo 3D";
         $scope.visorIframe.texto = "Modelo generado en función a la superficie del predio y número máximo de plantas. <b style='color: red'>Modelo Referencial</b>";
@@ -685,7 +685,7 @@ function PCController($scope, $rootScope, $routeParams, $location, $http, Data, 
     }
     $scope.visorIframeCambiarMapa = function (codigoCatastral) {
         //$scope.visorIframe.url = "http://gmlpsr0038:8080/Proyectos2017/LUSU/MapaLUSU.html?codcat=xcodcat";
-        $scope.visorIframe.url = "http://sitservicios.lapaz.bo/sit/LUSU/MapaLUSU.html?codcat=xcodcat";
+        $scope.visorIframe.url = "https://sitservicios.lapaz.bo/sit/LUSU/MapaLUSU.html?codcat=xcodcat";
         $scope.visorIframe.url = $scope.visorIframe.url.replace("xcodcat",codigoCatastral);
         window.open($scope.visorIframe.url, "_blank");
 

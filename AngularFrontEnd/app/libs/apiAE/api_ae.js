@@ -3,6 +3,7 @@ var urlCompAe;
 var dataRespAe;
 var dataParamsAe;
 var typeCallAe;
+var urlCopiarArch = "";
 
 //CONEXION GENESIS
 
@@ -16,7 +17,30 @@ var stokenae = "";
 if(jsonURLS){
   var urlGENESIS = jsonURLS.CONEXION_API_PG_IF+"wsGENESIS";
   var urlIf2 = jsonURLS.CONEXION_API_PG_IF+"wsIf"; 
+  //var urlCopiarArch = jsonURLS.CONEXION_COPIA_ARCHIVOS;
+  var urlCopiarArch = jsonURLS.CONEXION_COPIA_DOCUMENTOS;
 }
+
+function ejecutarAjaxArchivo(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+    $.ajax({
+      type: vTypeCall,
+      url: urlCopiarArch + vUrlComp,
+      data: vDataCall,
+      //dataType: "json",
+      async: false,
+      success: function(response) {
+        //console.log(response);
+        dataResp = JSON.stringify(response);
+        vFunctionResp(dataResp);
+      },
+      error: function (response, status, error) {
+        //dataResp = response.responseText; 
+        dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+        vFunctionResp(dataResp);
+      }
+    });
+    return dataResp;
+};
 
 /*///////////////////////////////////////////////// EJECUTAR AJAX /////////////////////////////////////////////////*/
 function ejecutarAjaxIF2(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
@@ -262,4 +286,60 @@ primerEmprendimiento.prototype.consultaEmprendimiento = function (functionResp) 
         "identificacion":this.identificacion
     };
     ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+///////////////////////////////////VALIDAR MULTISERVICIO//////////////////////////////////
+function validarMultiservicio() {
+    this.cadena;
+};
+
+validarMultiservicio.prototype.validacionActividadDesarrollada = function (functionResp) {
+    urlCompAe = "/validacionActividadDesarrollada";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "cadena": this.cadena
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+/******************************LISTAR PUBLICIDADES**************************/
+function listarPublicidad() {
+    this.identificacion;
+    this.clase;
+    this.tipoPublicidad;
+};
+
+listarPublicidad.prototype.buscarPublicidades = function (functionResp) {
+    urlComp = "/buscarPublicidades";
+    typeCall = "post";
+    dataParams = {
+      "identificacion" : this.identificacion,
+      "clase" : this.clase,
+      "tipoPublicidad" : this.tipoPublicidad
+    };
+    ejecutarAjaxAE(urlComp, typeCall, dataParams, functionResp);
+};
+
+//////////////COPIA LEGALIZADA//////////////////////////
+gLstActividadEconomica.prototype.lstActividadEconomicaLegalizacion = function (functionResp) {
+    urlCompAe = "/lstActividaEconomicaLegalizacion";
+    typeCallAe = "post";
+    dataParamsAe = {
+        "idContribuyente":this.idContribuyente,
+        "tipo":this.tipo
+    };
+    ejecutarAjaxAE(urlCompAe, typeCallAe, dataParamsAe, functionResp);    
+};
+
+//COPIAR ARCHIVO
+function gCopiarArchivo() {
+    this.nombre_archivo;
+};
+gCopiarArchivo.prototype.copiarArchivoLinea = function (functionResp) {
+    urlComp = "copiaArchivopdf.php";
+    typeCall = "post";
+    dataParams = {
+      "nombre_licencia" : this.nombre_archivo
+    };
+    ejecutarAjaxArchivo(urlComp, typeCall, dataParams, functionResp);    
 };

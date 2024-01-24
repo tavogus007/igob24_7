@@ -149,3 +149,14 @@ app.directive('actualizacionClave', ['sessionService', function(sessionService){
 		}
     };
 }]);
+
+app.directive('actualizacionSoporte', ['sessionService', function(sessionService){
+    var svalidacionCiudadano = sessionService.get('USUARIO');
+    return{
+        restrict: 'E',
+        templateUrl: '../../view/servicios/varios/formularios/solicitudSoporte/index.html',        
+        link: function ($scope, $element, $rootScope, sessionService) {
+            $scope.modalv = false;
+		}
+    };
+}]);

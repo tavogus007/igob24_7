@@ -4,7 +4,6 @@ var dataParams;
 var typeCall;
 var urlAservicio    =    "";
 
-
 if(jsonURLS){
     urlATM = jsonURLS.CONEXION_API_PG_RC + "wsATM";
     key = jsonURLS.KEY;
@@ -12,11 +11,15 @@ if(jsonURLS){
 }
 
 function ejecutarAjaxATM(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
+	token = sessionStorage.getItem('TOKEN_API');
     $.ajax({
       type: vTypeCall,
       url: urlATM + vUrlComp,
       data: vDataCall,
       async: false,
+	  headers: {
+      'Authorization': 'Bearer ' + token
+		},
       success: function(response) {
         dataResp = JSON.stringify(response);
         vFunctionResp(dataResp);

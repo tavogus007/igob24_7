@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+</head>
+<body>
+    <style>
+        input:required:invalid {
+            border: 1px solid red;
+        }
+
+        input:required:valid {
+            border: 1px solid green;
+        }
+
+        .form-group {
+            padding-left: 8px;
+        }
+
+        .box2 {
+            display: inline-block;
+            width: 190px;
+            margin: 2px;
+        }
+
+        .ng-table th {
+            text-align: left !important;
+        }
+       
+        /*ESTILOS MODALIDADES DE PAGO*/
+        .paymentWrap {
+            padding: 50px;
+        }
+
+        .paymentWrap .paymentBtnGroup {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .paymentWrap .paymentBtnGroup .paymentMethod {
+            padding: 50px;
+            box-shadow: none;
+            position: relative;
+        }
+
+        .paymentWrap .paymentBtnGroup .paymentMethod.active {
+            outline: none !important;
+        }
+
+        .paymentWrap .paymentBtnGroup .paymentMethod.active .method {
+            border-color: #00b3ba;
+            outline: none !important;
+            box-shadow: 0px 3px 22px 0px #0d84d3;
+        }
+
+        .paymentWrap .paymentBtnGroup .paymentMethod .method {
+            position: absolute;
+            right: 3px;
+            top: 3px;
+            bottom: 3px;
+            left: 3px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border: 2px solid transparent;
+            transition: all 0.5s;
+        }
+
+        .paymentWrap .paymentBtnGroup .paymentMethod .method.visa {
+            background-image: url("data:image/png;base64,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");
+        }
+
+        .paymentWrap .paymentBtnGroup .paymentMethod .method.qr {
+            background-image: url("data:image/png;base64,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");
+        }
+
+        .paymentWrap .paymentBtnGroup .paymentMethod .method:hover {
+            border-color: #4dccec;
+            outline: none !important;
+        }
+        
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('html,body').scrollTop(0);
+            $('#guia').trigger('click');
+        });
+    </script>
+    <script src="../../libs/loading/loadingoverlay.js"></script>
+    <script src="../../libs/js/pdfmake.js"></script>
+    <script src="../../libs/js/vfs_fonts.js"></script>
+    <script type="text/javascript" src="../../view/servicios/publicidad/solicitudSuspencioPublicidad/solicitudSuspencion.js"></script>
+    
+    <div ng-controller="solicitudSuspencionController"  data-ng-init="inicio();">
+        <div class="col-md-12"><br>
+            <div class="ibox-content" id="caja">
+                <div class="row"><br>
+                    <div class="col-sm-12">
+                        <div class="ibox-title">
+                            <h5>SOLICITUD DE SUSPENCIÓN DE PUBLICIDAD</h5>
+                        </div>
+                    </div>
+                </div><br><br>
+                <div class="row">
+                    <div class="col-sm-12 b-r">
+                        <form class="form-horizontal ng-pristine ng-valid">
+                            <div class="form-group">
+                                <div class="col-lg-4">
+                                    <div style="text-align:center;">
+                                        <a class="btn btn-success" tooltip="Crear la Solicitud" ng-click="registrarSolicitud();">
+                                            <i class="fa fa-file blanco shake-slow"></i> Nueva Solicitud
+                                        </a>
+                                        <a class="btn btn-info" tooltip="Ver Requisitos" data-toggle="modal" data-target="#verRequisitos">
+                                            <i class="fa fa-list" aria-hidden="true"></i> <strong>Requisitos</strong> 
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8"></div>
+                                <div  class="col-lg-12"><br></div>
+                                <div class="col-lg-3"></div>
+                                <label class="col-lg-3 control-label">{{translateTitulos.lbl_10_02_1}}:</label>
+                                <div class="col-lg-6">
+                                    <input ng-model="query" id="busca1" class="form-control" placeholder="">
+                                </div>
+                            </div>
+                        </form>
+                        <div class="table-responsive">
+                            <table ng-table="tblSolicitudes" class="table  table-hover" >
+                                <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query " ng-style="tramite.vfrm_ser_id==idTramite && {'background-color':'#C1F4F7','font-color':'#A2D5AE'}">                                            
+                                    <td data-title="'Número de Trámite'"> {{tramite.vfrm_ser_codigo_servicio}}</td>
+                                    <td data-title="'Tipo de Suspención'">{{tramite.vdescripcion}}</td>
+                                    <td data-title="'Número de Documento'">
+                                        <div ng-show="tramite.vfrm_ser_dataformulario.tipoPersona=='JURIDICO'">
+                                            {{tramite.vfrm_ser_dataformulario.nit}}
+                                        </div>
+                                        <div ng-show="tramite.vfrm_ser_dataformulario.tipoPersona=='NATURAL'">
+                                            {{tramite.vfrm_ser_dataformulario.documento}}
+                                        </div>
+                                    </td>
+                                    <td data-title="'Razon Social'" >
+                                        <div ng-show="tramite.vfrm_ser_dataformulario.tipoPersona=='JURIDICO'">
+                                            {{tramite.vfrm_ser_dataformulario.razonSocial}}
+                                        </div>
+                                        <div ng-show="tramite.vfrm_ser_dataformulario.tipoPersona=='NATURAL'">
+                                            {{tramite.vfrm_ser_dataformulario.nombres}} {{tramite.vfrm_ser_dataformulario.primerApellido}} {{tramite.vfrm_ser_dataformulario.segundoApellido}}
+                                        </div>
+                                    </td>
+                                    <td data-title="'Fecha Socitud'">
+                                        {{tramite.vfrm_ser_registrado | date:'dd/MM/yy' }} 
+                                    </td>
+                                    <td data-title="'Imprimir formulario'" style="text-align:center">                           
+                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPdfSuspencion(tramite.vfrm_ser_dataformulario,tramite.vfrm_ser_codigo_servicio)" tooltip="Imprimir">
+                                            <i class="fa fa-print"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <br>
+                    </div>
+
+                    <div class="col-md-12" ng-show="mostrarFormulario == true">
+                        <div class="col-md-12 row principal ">
+                            <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+                                <h4><b>REGISTRO DE SOLICITUD DE SUSPENCION TEMPORAL DE PATENTE DE PUBLICIDAD</b></h4><br>
+                            </div>  
+                            <br>
+                            <!--persona Natural-->
+                            <div ng-show = "datos.tipoPersona == 'NATURAL'">                    
+                                <div class="col-md-12">
+                                    <legend>{{translateTitulos.lbl_12_07}}:</legend>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.nombres" id="nombres" name="nombres" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.primerApellido" id="primerApellido" name="primerApellido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.segundoApellido" id="segundoApellido" name="segundoApellido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_09}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.tipoDocumento" id="tipoDocumento" name="tipoDocumento" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_10}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.documento" id="documento" name="documento" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_11}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.expedido" id="expedido" name="expedido" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.correo" id="correo" name="correo" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_13}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.celular" id="celular" name="celular" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>              
+                            </div>
+                            <!--persona Juridica-->
+                            <div ng-show = "datos.tipoPersona == 'JURIDICO'">
+                                <div class="col-md-12">
+                                    <legend>DATOS PERSONA JURÍDICA</legend>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_22}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.nit" id="nit" name="nit" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_23}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.razonSocial" id="razonSocial" name="razonSocial" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <legend>{{translateTitulos.lbl_12_26}}:</legend>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.nombreRepresentante" id="nombreRepresentante" name="nombreRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.primerApRepresentante" id="primerApRepresentante" name="primerApRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.secundoApRepresentante" id="secundoApRepresentante" name="secundoApRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >Número de documento:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.documentoRepresentante" id="documentoRepresentante" name="documentoRepresentante" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url">Expedido:</label>
+                                        <div class="controls">
+                                            <select id="expedidoRepresentante" name="expedidoRepresentante" placeholder="expedido" ng-model="datos.expedidoRepresentante" class="form-control" ng-disabled="true" required>
+                                                <option value="">--Seleccione--</option>
+                                                <option value="LPZ">LA PAZ</option>
+                                                <option value="CBB">COCHABAMBA</option>
+                                                <option value="SCZ">SANTA CRUZ</option>
+                                                <option value="CHQ">CHUQUISACA</option>
+                                                <option value="TJA">TARIJA</option>
+                                                <option value="PTS">POTOSI</option>
+                                                <option value="ORU">ORURO</option>
+                                                <option value="BNI">BENI</option>
+                                                <option value="PND">PANDO</option>
+                                                <option value="EXP">EXPEDIDO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>                             
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_12}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.correo" id="correo" name="correo" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group" >
+                                        <label for="url" >{{translateTitulos.lbl_12_13}}:</label>
+                                        <div class="controls">
+                                            <input ng-model="datos.celular" id="celular" name="celular" class="form-control"  width="30%" height="30" ng-disabled="true"/>
+                                        </div>
+                                    </div>
+                                </div>                        
+                            </div>
+                            <div class="col-md-12">
+                                <br>
+                                <legend>Publicidades Coorporativas Registradas:</legend>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="alert alert-info" role="alert" align="justify">
+                                    <legend>Solicito la suspensión temporal de los siguientes elementos publicitarios por el mes de <strong>{{mesSuspencion}}</strong></legend>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table ng-table="tblPublicidadCoorporativa" show-filter="true" class="table  table-hover" >
+                                        <tr style="cursor: pointer;" ng-repeat="cooporativa in $data  | filter:query ">                                            
+                                            <td data-title="'ID. Publicidad'"  sortable="'idPublicidad'" filter="{'idPublicidad':'text'}"> {{cooporativa.idPublicidad}}</td>
+                                            <td data-title="'Tipo de Letrero'" sortable="'tipoLetrero'" filter="{'tipoLetrero':'text'}">{{cooporativa.tipoLetrero}}</td>
+                                            <td data-title="'Caracteristicas'" sortable="'caracteristica'" filter="{'caracteristica':'text'}">{{cooporativa.caracteristica}}</td>
+                                            <td data-title="'Macrodistrito'" sortable="'Macrodistrito'" filter="{'Macrodistrito':'text'}">{{cooporativa.Macrodistrito}}</td>
+                                            <td data-title="'Dirección'" sortable="'zona'" filter="{'zona':'text'}">Zona {{cooporativa.zona}} {{cooporativa.claseVia}} {{cooporativa.via}} {{cooporativa.numero}}</td>
+                                            <td data-title="'Caras'" sortable="'caras'" filter="{'caras':'text'}">{{cooporativa.caras}}</td>
+                                            <td data-title="'Superficie'" sortable="'superficie'" filter="{'superficie':'text'}">{{cooporativa.superficie}}</td>
+                                            <td data-title="'Seleccionar Publicidad para Suspención'" style="text-align:center"  filter="{'':'icono'}">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Baja" ng-model="cooporativa.solicitudSupencion">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <br><hr>
+                            </div> 
+                            <div class="col-md-12" align="justify">  
+                                <legend>DECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO</legend>
+                            </div>    
+                            <div class="col-md-12" align="justify" ng-if="datos.tipoPersona === 'NATURAL'">
+                                Yo {{datos.nombres}} {{datos.primerApellido}} {{datos.segundoApellido}}, con Carnet de Identidad N° {{datos.documento}} expedido en {{datos.expedido}}, declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la ley Municipal Autonómica N°206/2016, los Decretos Municipales N°007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, articulo 78 de la Ley 2492 del código Tributario.
+                                <br><br>
+                            </div>
+                            <div class="col-md-12" align="justify" ng-if="datos.tipoPersona === 'JURIDICO'">  
+                                Yo {{datos.nombreRepresentante}} {{datos.primerApRepresentante}} {{datos.segundoApRepresentante}}, con Carnet de Identidad N° {{datos.documentoRepresentante}} expedido en {{datos.expedidoRepresentante}}, declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la ley Municipal Autonómica N°206/2016, los Decretos Municipales N°007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, articulo 78 de la Ley 2492 del código Tributario.
+                                <br><br>
+                            </div>                                
+                            <div class="col-md-12">
+                                <div class="alert alert-info">
+                                    <strong>Información: </strong>Debe imprimir el formulario y presentarlo con los requisitos en la Unidad de Publicidad, ubicado en el Edif. ESPRA piso 5, calle Chichas, Miraflores.
+                                </div>
+                            </div>             
+                            <div class="col-md-12">
+                                <br><hr>
+                            </div> 
+                            <div class="col-md-6" align="center" >
+                                <div class="col-md-12" align="center">
+                                    <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
+                                        <tr class="color">
+                                            <div style="background: #ffffff;">
+                                                <div class="box2">
+                                                    <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
+                                                </div>
+                                                <div class="box2">
+                                                    <img class="img-responsive" src="{{imageLNGG}}"
+                                                        title="Palabra en CASTELLANO">
+                                                </div>
+                                            </div>
+                                        </tr>
+                                        <tr class="color">
+                                            <td class="color22" colspan="3" width="70" align="center">
+                                                <input id="resultadoCC" name="resultadoCC" type="text"
+                                                    style="border: 0px !important;" class="form-control"
+                                                    placeholder="{{palabraT}}" ng-model="resultadoCC"
+                                                    ng-keyup="VerificarCapchaa()" />
+                                                <span ng-show="formulario.palabraT.$invalid">
+                                                    <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                                </span>
+                                                <label>{{palabraT}}</label>
+                                            </td>
+                                            <td class="color2" width="30" align="center">
+                                                <a type="button" class="btn btn-default btn-circle" data-toggle="modal"
+                                                    data-target="modal" ng-click="getCaptchasXX();"><i
+                                                        class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072"
+                                                        title="Actualizar"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <b>
+                                        <font SIZE=3 color="red"> {{ErrorCapchasXX}}</font>
+                                    </b>
+                                    <b>
+                                        <font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font>
+                                    </b>
+                                    <b>
+                                        <font SIZE=2 color="green"> {{SuccesCapchasxx}}</font>
+                                    </b>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <br><hr>
+                            </div> 
+                            <div class="col-md-12" align="right" >
+                                <button type="button" class="btn btn-danger  fa fa-window-close" ng-click="cancelar();"> Cancelar </button>
+                                <button type="button" class="btn btn-success fa fa-floppy-o" ng-click="guardarSolicitud(datos);getCaptchasXX()" ng-disabled="habGuardar1"> Guardar </button>
+                                <br><br>
+                            </div>
+                        </div>
+                    </div>    
+                </div>
+             </div>
+        </div>
+        <!-- Modal requisitos-->
+        <div class="modal fade" id="verRequisitos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">REQUISITOS PARA SUSPENSIÓN DE ELEMENTOS PUBLICITARIOS</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form name="formulario" readOnly="true" novalidate>
+                                <div class="col-md-12">
+                                    <br>
+                                    <p class="text-justify"> 
+                                        <strong>I.</strong> Para la suspensión temporal mensual, deben presentarse los siguientes requisitos:
+                                    </p><br>
+                                </div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><strong>a) </strong>Formulario de solicitud de suspensión temporal en línea, especificando el tiempo de la suspensión temporal, el cual se constituye en una Declaración Jurada. 
+                                        </li>
+                                        <li class="list-group-item"><strong>b) </strong>Fotografías con indicación de fecha, demostrando la ausencia de emplazamiento de publicidad.
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-12">
+                                    <p class="text-justify"> 
+                                        <strong>II.</strong> Los elementos que no cuentan con Licencia de Publicidad vigente no pueden acogerse a la suspensión temporal.
+                                    </p><br>
+                                </div>
+                                <div class="col-md-12">
+                                    <p class="text-justify"> 
+                                        <strong>III.</strong> Los anuncios de teléfonos, contacto, disponibilidad de elemento publicitario u otros similares no implican verificación del hecho generador siempre y cuando no contengan logos o marcas, caso contrario no serán susceptibles de aplicación de la suspensión temporal de la patente en favor del operador publicitario.
+                                    </p><br>
+                                </div>
+                                <div class="col-md-12">
+                                    <p class="text-justify"> 
+                                        <strong>IV.</strong> En caso de que la suspensión temporal sea superior a 6 meses, se considerara como una baja definitiva, debiendo el administrado proceder con el retiro de la estructura publicitaria, o en su caso, deberá acreditar su uso para publicidad social de carácter gratuito por al menos 2 meses, para cuyo efecto deberá informar con respaldos a la Unidad de Publicidad de manera previa a realizar el emplazamiento de publicidad con propósito social o información institucional del GAMLP, la cual no deberá contar con logos o marcas corporativas que superen el 15% de la misma.
+                                    </p><br>
+                                </div>
+                                <div class="col-md-12">
+                                    <p class="text-justify"> 
+                                        <strong>V.</strong> El emplazamiento de publicidad con propósito social de carácter gratuito o información institucional del GAMLP, será verificado mediante informe de la Unidad de Publicidad, que deber acreditar que la misma no contiene logos o marcas corporativas que superen el 15%.                                        
+                                    </p><br>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="declaracion" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Declaración Jurada</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p align="justify">Para realizar el trámite, es necesario imprimir el formulario y adjuntar los requisitos correspondientes. Posteriormente, el formulario deberá ser presentado en las oficinas de la Unidad de Publicidad, ubicadas en la Calle Chichas – Edif. Espra, Piso 5, Miraflores. Estas oficinas se encuentran justo después de salir del puente de las Américas. Si necesitas contactarnos, puedes hacerlo a través del teléfono 2650715.</p>
+                        <iframe id="viewPdf" name="viewPdf" width="100%" height="800"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+</body>

@@ -1,0 +1,917 @@
+<html lang="en" ng-app="myApp">
+
+<head>
+    <script type="text/javascript" src="../../view/servicios/atm/atm_cambio_radicatoria/atmCambioRadicatoria.js"></script>
+    <script type="text/javascript" src="../../libs/js/jic.js"></script>
+    <script type="text/javascript" src="../../libs/js/jszip.js"></script>
+</head>
+<script type="text/javascript">
+    $(document).on('click', '#close-preview', function () {
+        $('.image-preview').popover('hide');
+        $('.image-preview').hover(
+            function () {
+                $('.image-preview').popover('show');
+            },
+            function () {
+                $('.image-preview').popover('hide');
+            }
+        );
+    });
+
+    $(function () {
+        var closebtn = $('<button/>', {
+            type: "button",
+            text: 'x',
+            id: 'close-preview',
+            style: 'font-size: initial;',
+        });
+        closebtn.attr("class", "close pull-right");
+        $('.image-preview').popover({
+            trigger: 'manual',
+            html: true,
+            title: "<strong>Preview</strong>" + $(closebtn)[0].outerHTML,
+            content: "There's no image",
+            placement: 'bottom'
+        });
+        $('.image-preview-clear').click(function () {
+            $('.image-preview').attr("data-content", "").popover('hide');
+            $('.image-preview-filename').val("");
+            $('.image-preview-clear').hide();
+            $('.image-preview-input input:file').val("");
+            $(".image-preview-input-title").text("Browse");
+        });
+
+        $(".image-preview-input input:file").change(function () {
+            var img = $('<img/>', {
+                id: 'dynamic',
+                width: 250,
+                height: 200
+            });
+            var file = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(".image-preview-input-title").text("");
+                $(".image-preview-clear").show();
+                $(".image-preview-filename").val(file.name);
+                img.attr('src', e.target.result);
+                $(".image-preview").attr("data-content", $(img)[0].outerHTML).popover("show");
+            }
+            reader.readAsDataURL(file);
+        });
+    });
+
+    
+
+    $('#file-input').change(function (e) {
+        var id = 0;
+        angular.element(this).scope().addImage(e, id);
+    });
+    function soloNumericoCelular(sValor, mensaje) {
+        Numer = parseInt(sValor);
+        if (isNaN(Numer)) {
+            return "";
+        } else {
+            var digits = ("" + Numer).split("");
+            if (digits.length == 8 && (digits[0] == 7 || digits[0] == 6)) {
+                $("#" + mensaje).hide();
+                return Numer;
+            } else {
+                $("#" + mensaje).show();
+                return "";
+            }
+        }
+    }
+    function valNumeroCelular(Control, mensaje) {
+        Control.value = soloNumericoCelular(Control.value, mensaje);
+    }
+
+    function phonenumber()
+    {
+        const indiaRegex = /[0-9]{3,4}[A-Z]{3}$/;
+        const inputText = document.getElementById("FA_PLACA").value;
+        if(inputText.match(indiaRegex)) {
+            console.log("Valid phone number");      
+        } else {
+            console.log("Not a valid Phone Number");
+        }
+    }
+
+    function soloNumericoTelefono(sValo, mensaje) {
+        Numer = parseInt(sValo);
+        if (isNaN(Numer)) {
+            $("#mprTelefono").val("");
+            angular.element(document.getElementById('mprTelefono')).scope().mprTelefono = 0;
+            return "";
+        } else {
+            var digits = ("" + Numer).split("");
+            if (digits.length == 7 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)) {//digits.length > 6 &&
+                $("#" + mensaje).hide();
+                return Numer;
+            } else {
+                $("#" + mensaje).show();
+                return "";
+            }
+        }
+    }
+    function valNumeroTelefono(Control, mensaje) {
+        Control.value = soloNumericoTelefono(Control.value, mensaje);
+    }
+
+    function soloNumericoCelular(sValor, mensaje) {
+        Numer = parseInt(sValor);
+        if (isNaN(Numer)) {
+            return "";
+        } else {
+            var digits = ("" + Numer).split("");
+            if (digits.length > 0 && (digits[0] == 7 || digits[0] == 6)) {
+                if (digits.length == 8)
+                    $("#" + mensaje).hide();
+                else $("#" + mensaje).show();
+                return Numer;
+            } else {
+                $("#" + mensaje).show();
+                return "";
+            }
+        }
+    }
+
+    function valNumeroCelular(Control, mensaje) {
+        Control.value = soloNumericoCelular(Control.value, mensaje);
+    }
+
+    function soloNumerico(variable) {
+        Numer = parseInt(variable);
+        if (isNaN(Numer)) {
+            return "";
+        }
+        return Numer;
+    }
+
+    function valNumero(Control) {
+        Control.value = soloNumerico(Control.value);
+    }
+
+    function soloNumericoTelefono(sValo, mensaje) {
+        Numer = parseInt(sValo);
+        if (isNaN(Numer)) {
+            return "";
+        } else {
+            var digits = ("" + Numer).split("");
+            if (digits.length < 9 && (digits[0] == 2 || digits[0] == 3 || digits[0] == 4)) {
+                if (digits.length == 7)
+                    $("#" + mensaje).hide();
+                else $("#" + mensaje).show();
+                return Numer;
+            } else {
+                $("#" + mensaje).show();
+                return "";
+
+            }
+        }
+    }
+
+    function valNumeroTelefono(Control, mensaje) {
+        Control.value = soloNumericoTelefono(Control.value, mensaje);
+    }
+
+    function conMayusculas(field) {
+        field.value = field.value.toUpperCase()
+    }
+
+    function checkInput(ob) {
+        var invalidChars = /[a-zA-ZÁáÀàÉéÈèÍíÌìÓóÒòÚúÙùÑñüÜ¡"'!@#/\$%\^&\*\¿?_~();:{}|<>´ñ,.?`=a-zA-Z]/;
+        if (invalidChars.test(ob.value)) {
+            ob.value = ob.value.replace(invalidChars, "");
+        }
+    };
+
+    function validarCaracter(Control) {
+        Control.value = checkInput(Control.value);
+        textoTroceado = Control.split(Control, " ");
+        if (digits.length < 11) {
+            return Control;
+        }
+        return "";
+    }
+
+    function accessScope(node, func) {
+        var scope = angular.element(document.querySelector(node)).scope();
+        scope.$apply(func);
+    }
+
+    function initMap() {
+        accessScope('#outerMapaModificar', function (scope) {
+            scope.initMap();
+        });
+    }
+
+    function validarEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    function setRepresentanteLegal(sValor) {
+        $("#rlNom").val("");
+        $("#rlMaterno").val("");
+    }
+
+    $('#file-input').change(function (e) {
+        var id = 0;
+        angular.element(this).scope().addImage(e, id);
+    });
+
+    function ejecutarFile(filename, idfile) {
+        var sid = document.getElementById(filename);
+        sidFile = idfile;
+        if (sid) {
+            document.getElementById(filename).click();
+        } else {
+            alert("Error ");
+        }
+    };
+
+    $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+    });
+    function iniciarLoadFyle(){
+        $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+        });
+    }
+</script>
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('.js-example-basic-single').select2();
+    });
+</script>
+<div class="page-content" ng-controller="cambioRadicatoriaController" data-ng-init="inicioCambioRadicatoria();">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
+            <h4>CAMBIO DE RADICATORIA</h4>
+        </div>
+        <div >
+            <form name="signupForm" >
+                <div ng-show="formulario != null">
+                    <div ng-show="divNatural != null">
+                        <div class="col-md-12">
+                            <legend>{{translateTitulos.lbl_12_07}}:</legend>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_NOMB" id="FA_NOMB" name="FA_NOMB" class="form-control"
+                                        width="30%" height="30" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_AP_PAT" id="FA_AP_PAT" name="FA_AP_PAT"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_AP_MAT" id="FA_AP_MAT" name="FA_AP_MAT"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">Apellido Casada:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_AP_CAS" id="FA_AP_CAS" name="FA_AP_CAS"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_09}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_TIPO_DOC" id="FA_TIPO_DOC" name="FA_TIPO_DOC"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_10}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_dos_prop" id="f01_num_dos_prop"
+                                        name="f01_num_dos_prop" class="form-control" width="30%" height="30"
+                                        ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_11}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_expedido_prop" id="f01_expedido_prop"
+                                        name="f01_expedido_prop" class="form-control" width="30%" height="30"
+                                        ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">Género:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_TIPO_GEN" id="FA_TIPO_GEN" name="FA_TIPO_GEN"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_12}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_CORR" id="FA_CORR" name="FA_CORR" class="form-control"
+                                        width="30%" height="30" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_13}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_CEL" id="FA_CEL" name="FA_CEL" class="form-control"
+                                        width="30%" height="30" ng-disabled="true" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_14}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                    <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_16}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc"
+                                        name="f01_distrito_desc" class="form-control" width="30%" height="30"
+                                        ng-disabled="true" />
+                                    <input type="hidden" ng-model="datos.f01_distrito" id="f01_distrito"
+                                        name="f01_distrito" class="form-control" width="30%" height="30"
+                                        ng-disabled="true" />
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_distrito.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_distrito.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_17}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_zon_prop_valor" id="f01_zon_prop_valor"
+                                        name="f01_zon_prop_valor" class="form-control" width="30%" height="30"
+                                        ng-disabled="true" />
+                                    <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_zona.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_zona.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_18}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_tip_via_prop" id="f01_tip_via_prop"
+                                        name="f01_tip_via_prop" class="form-control" width="30%" height="30"
+                                        ng-disabled="true" />
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_tip_via_prop.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_tip_via_prop.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_19}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_nom_via_prop" id="f01_nom_via_prop"
+                                        name="f01_nom_via_prop" class="form-control" width="30%" height="30"
+                                        ng-disabled="true" />
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_nom_via_prop.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_nom_via_prop.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_20}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_prop" id="f01_num_prop" name="f01_num_prop"
+                                        class="form-control" width="30%" height="30" ng-disabled="true" />
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_num_prop.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_num_prop.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="divJuridico != null" >
+                        <div class="col-md-12">
+                            <legend>Datos de la persona Jurídica</legend>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_22}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_doc_per_jur" id="f01_num_doc_per_jur"
+                                        name="f01_num_doc_per_jur" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_23}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_raz_soc_per_jur" id="f01_raz_soc_per_jur"
+                                        name="f01_raz_soc_per_jur" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_24}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod"
+                                        class="form-control" onkeyUp="checkInput(this);" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_25}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_14}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                                <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_16}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc"
+                                        name="f01_distrito_desc" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_distrito" id="f01_distrito"
+                                        name="f01_distrito" class="form-control" width="30%" height="30"
+                                        ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_17}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"
+                                        width="30%" height="30" ng-disabled="true">
+                                    <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_18}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_tipo_viarep" id="f01_tipo_viarep" name="f01_tipo_viarep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_19}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_nom_via_rep" id="f01_nom_via_rep" name="f01_nom_via_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_20}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_rep" id="f01_num_rep" name="f01_num_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <legend>Datos personales del representante legal</legend>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_27}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_pri_nom_rep" id="f01_pri_nom_rep" name="f01_pri_nom_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_28}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_pat_rep" id="f01_ape_pat_rep" name="f01_ape_pat_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_29}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_mat_rep" id="f01_ape_mat_rep" name="f01_ape_mat_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">{{translateTitulos.lbl_12_30}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_ape_cas_rep" id="f01_ape_cas_rep" name="f01_ape_cas_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">Número de documento:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_num_doc_rep" id="f01_num_doc_rep" name="f01_num_doc_rep"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="url">Expedido:</label>
+                                <div class="controls">
+                                    <select id="f01_expedido_rep" name="f01_expedido_rep" placeholder="expedido"
+                                        ng-model="datos.f01_expedido_rep" class="form-control" ng-disabled="true"
+                                        required>
+                                        <option value="">--Seleccione--</option>
+                                        <option value="LPZ">LA PAZ</option>
+                                        <option value="CBB">COCHABAMBA</option>
+                                        <option value="SCZ">SANTA CRUZ</option>
+                                        <option value="CHQ">CHUQUISACA</option>
+                                        <option value="TJA">TARIJA</option>
+                                        <option value="PTS">POTOSI</option>
+                                        <option value="ORU">ORURO</option>
+                                        <option value="BNI">BENI</option>
+                                        <option value="PND">PANDO</option>
+                                        <option value="EXT">EXTRANJERO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div >
+                        <div class="col-md-12">
+                            <legend>Datos del Vehículo:</legend>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Placa o Nro. PTA: </label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_PLACA" id="FA_PLACA" name="FA_PLACA" class="form-control"
+                                        width="30%" height="30" ng-disabled="desabilitado" ng-blur="validaPlaca()" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                </div>
+                                <span style="color:red" ng-show="signupForm.FA_PLACA.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.FA_PLACA.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <!--div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Número Objeto Tributario: </label>
+                                <div class="controls">
+                                    <input ng-model="datos.FA_NRO_TRIBUTARIO" id="FA_NRO_TRIBUTARIO" name="FA_NRO_TRIBUTARIO" class="form-control"
+                                        width="30%" height="30" ng-disabled="desabilitado" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;">
+                                </div>
+                                <span style="color:red" ng-show="signupForm.FA_NRO_TRIBUTARIO.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.FA_NRO_TRIBUTARIO.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Nro. de CRPVA: </label>
+                                <div class="controls">
+                                    <div class="input-group">
+                                        <input ng-model="datos.FA_NRO_CRPVA" id="FA_NRO_CRPVA" name="FA_NRO_CRPVA" class="form-control"
+                                        width="30%" height="30" ng-disabled="desabilitado" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#visualizacion">
+                                                <i class="fa fa-question-circle" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span style="color:red" ng-show="signupForm.FA_NRO_CRPVA.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.FA_NRO_CRPVA.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Fecha de Registro: </label>
+                                <div class="controls">
+                                    <input ng-model="datos.FECHA_REGISTRO" id="FECHA_REGISTRO" name="FECHA_REGISTRO"
+                                        class="form-control" width="30%" height="30" ng-disabled="true">
+                                </div>
+                                <span style="color:red" ng-show="signupForm.FECHA_REGISTRO.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.FECHA_REGISTRO.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="url">Tipo de Propiedad: </label>
+                                <div class="controls">
+                                    <select id="FA_TIPO_PROPIEDAD" name="FA_TIPO_PROPIEDAD" placeholder="TIPO PROPIEDAD"
+                                        ng-model="datos.FA_TIPO_PROPIEDAD" class="form-control" ng-disabled="desabilitado"
+                                        required>
+                                        <option value="">--Seleccione--</option>
+                                        <option value="PROPIETARIO">PROPIETARIO</option>
+                                        <option value="APODERADO">APODERADO</option>
+                                        <option value="POSEEDOR">POSEEDOR</option>
+                                    </select>
+                                </div>
+                                <span style="color:red" ng-show="signupForm.FA_TIPO_PROPIEDAD.$invalid">
+                                    <span class="error"
+                                        ng-show="signupForm.FA_TIPO_PROPIEDAD.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-md-12">
+                            <legend> Documentos Registrados:</legend>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="tab-content">
+                                <div id="tab-one" class="tab-pane active">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-bordered" id="tablaAdjuntos">
+                                                <thead>
+                                                    <th>#&nbsp;</th>
+                                                    <th>Opciones&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; </th>
+                                                    <th>Archivo&nbsp;</th>
+                                                    <th>Descripción&nbsp;</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="column" ng-repeat="archivo in datos.File_Adjunto">
+                                                        <td>{{$index+1}}</td>
+                                                        <td>
+                                                            <center>
+                                                                <a target="_blank" tooltip="Ver"  ng-click="imprimirArchivo(archivo.url)" class="btn btn-default btn-circle" data-toggle="modal" data-target="#docsVisor"><i class="fa fa-eye" style="color:#249FE6"></i></a>
+                                                            </center>
+                                                        </td>
+                                                        <td>{{archivo.campo}}</td>
+                                                        <td>{{archivo.nombre}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="col-md-12">
+                            <br><legend> Requisitos Solicitados:</legend>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="alert alert-danger" ng-show="datos.FA_TIPO_PROPIEDAD=='POSEEDOR'">
+                                ESTIMADO CIUDADANO: La declaración jurada de posesión de buena fe del vehículo automotor terrestre, será llenado al momento que recoja su Certificado de Registro de Propiedad - Vehículo Automotor(CRPVA)
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <font color="#FF0000" size="4px"> * </font><label for="url">Certificado de Registro de Propiedad - Vehículo Automotor (CRPVA), a color:</label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="f01_upload_certificado" name="f01_upload_certificado"
+                                                accept="application/pdf,image/jpg" style="display: none;">
+                                            <div class="input-group">
+                                                <input type="hidden" name="certificado_url" id="certificado_url">
+                                                <input id="certificado" name="certificado" type="text" placeholder=""
+                                                    ng-model="datos.nombre_certificado" class="form-control input-lg" disabled
+                                                    required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload_certificado" href="{{datos.url_certificado}}" target="_blank" ng-show="datos.url_certificado!=null">
+                                                        {{rmostrarviae}}
+                                                        <button id="btn_f01_upload_certificado" ng-disabled="true"
+                                                            class="browse btn btn-primary input-lg" type="button"><i
+                                                                class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload_certificado" ng-show="desabilitado==false"
+                                                        onclick="ejecutarFile('f01_upload_certificado', 'certificado')"
+                                                        class="btnupload browse btn btn-primary input-lg"
+                                                        type="button" {{{deshabilitado}}}><i
+                                                            class="glyphicon glyphicon-upload"></i> Subir
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="form-group" ng-show="datos.FA_TIPO_PROPIEDAD=='APODERADO'">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <label for="url">Documentación que acredite que el poseedor tiene bajo su tenencia de
+                                            buena fe el vehículo automotor terrestre (Documento privado de compra y
+                                            venta, Testimonio Poder, a color):
+                                        </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="f01_upload_documentacion" name="f01_upload_documentacion"
+                                                accept="application/pdf,image/jpg" style="display: none;">
+                                            <div class="input-group">
+                                                <input type="hidden" name="documentacion_url" id="documentacion_url">
+                                                <input id="documentacion" name="documentacion" type="text" placeholder=""  ng-model="datos.nombre_documentacion" class="form-control input-lg" disabled
+                                                    required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload_documentacion" href="{{datos.url_documentacion}}" target="_blank" ng-show="datos.url_documentacion!=null">
+                                                        {{rmostrarviae}}
+                                                        <button id="btn_f01_upload_documentacion2" ng-disabled="true"
+                                                            class="browse btn btn-primary input-lg" type="button"><i
+                                                                class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload_documentacion" ng-show="desabilitado==false"
+                                                        onclick="ejecutarFile('f01_upload_documentacion', 'documentacion')"
+                                                        class="btnupload browse btn btn-primary input-lg"
+                                                        type="button" {{{deshabilitado}}}><i
+                                                            class="glyphicon glyphicon-upload"></i> Subir
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                            <div class="form-group" ng-show="datos.FA_TIPO_PROPIEDAD=='POSEEDOR'">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <label for="url">Documentación que acredite que el poseedor tiene bajo su tenencia de
+                                            buena fe el vehículo automotor terrestre (Documento privado de compra y
+                                            venta, u otros similares) a color (Solo para poseedores):
+                                        </label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="f01_upload_documentacion_poseedor" name="f01_upload_documentacion_poseedor"
+                                                accept="application/pdf,image/jpg" style="display: none;">
+                                            <div class="input-group">
+                                                <input type="hidden" name="documentacion_poseedor_url" id="documentacion_poseedor_url">
+                                                <input id="documentacion_poseedor" name="documentacion_poseedor" type="text" placeholder=""  ng-model="datos.nombre_documentacion_poseedor" class="form-control input-lg" disabled
+                                                    required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_upload_documentacion_poseedor" href="{{datos.url_documentacion_poseedor}}" target="_blank" ng-show="datos.url_documentacion_poseedor!=null">
+                                                        {{rmostrarviae}}
+                                                        <button id="btn_f01_upload_documentacion_poseedor2" ng-disabled="true"
+                                                            class="browse btn btn-primary input-lg" type="button"><i
+                                                                class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_upload_documentacion_poseedor" ng-show="desabilitado==false"
+                                                        onclick="ejecutarFile('f01_upload_documentacion_poseedor', 'documentacion_poseedor')"
+                                                        class="btnupload browse btn btn-primary input-lg"
+                                                        type="button" {{{deshabilitado}}}><i
+                                                            class="glyphicon glyphicon-upload"></i> Subir
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><br>
+                        </div>
+                    </div>
+                </div>
+                <br><br><br><br><br><br>
+                <div class="col-md-6" align="center" ng-show="desabilitado==false">
+                    <div class="col-md-12" align="center">
+                        <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
+                            <tr class="color">
+                                <div style="background: #ffffff;">
+                                    <div class="box2">
+                                        <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
+                                    </div>
+                                    <div class="box2">
+                                        <img class="img-responsive" src="{{imageLNGG}}"
+                                            title="Palabra en CASTELLANO">
+                                    </div>
+                                </div>
+                            </tr>
+                            <tr class="color">
+                                <td class="color22" colspan="3" width="70" align="center">
+                                    <input id="resultadoCC" name="resultadoCC" type="text"
+                                        style="border: 0px !important;" class="form-control"
+                                        placeholder="{{palabraT}}" ng-model="resultadoCC"
+                                        ng-keyup="VerificarCapchaa()" />
+                                    <span ng-show="formulario.palabraT.$invalid">
+                                        <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                    </span>
+                                    <label>{{palabraT}}</label>
+                                </td>
+                                <td class="color2" width="30" align="center">
+                                    <a type="button" class="btn btn-default btn-circle" data-toggle="modal"
+                                        data-target="modal" ng-click="getCaptchasXX();"><i
+                                            class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072"
+                                            title="Actualizar"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                        <b>
+                            <font SIZE=3 color="red"> {{ErrorCapchasXX}}</font>
+                        </b>
+                        <b>
+                            <font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font>
+                        </b>
+                        <b>
+                            <font SIZE=2 color="green"> {{SuccesCapchasxx}}</font>
+                        </b>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12" align="right" ng-show="botones != null">
+            <button id="miFormGuardar" ng-click="serializarInformacion(datos);getCaptchasXX();" type="button"
+            type="button" class="btn btn-success1 fa fab fa-save shake-little" name="formEnviar"
+            tooltip="Guardar Formulario" ng-disabled="habGuardar1">
+            </button>
+            <button id="btnFormLicencia" ng-click="validarEnvio(datos);" data-dismiss="modal" type="button"
+                class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="btnEnviarFormLinea"
+                tooltip="Enviar Formularios">
+            </button>
+        </div>
+
+    </div>
+</div>
+
+</html>

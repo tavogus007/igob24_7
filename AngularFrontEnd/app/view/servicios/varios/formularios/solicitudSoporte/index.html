@@ -1,0 +1,280 @@
+<html>
+
+<head>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var ca = $("#prsPinA").val();
+      var cn = $("#dpsDocumento").val();
+      var cc = $("#prsPinC").val();
+      if (ca == 0 && cn == 0 && cc == 0) {
+        $("#btnprsCI").css("display", "none");
+        $("#btnBuscarDoc").css("display", "none");
+        $("#btnprsPinC").css("display", "none");
+      }
+      $("#prsPinA").keyup(function () {
+        var va = $(this).val();
+        $("#prsPinAV").val(va);
+        ca = $("#prsPinA").val();
+
+        if (ca.length == 0) {
+          $("#prsPinAV").css({ 'display': 'none' });
+          $("#btnprsCI").css("display", "none");
+          $('#btnprsCI').html('Mostrar');
+          $("#btnprsCI").css({ 'color': 'green' });
+          $("#btnprsCI").val(1);
+        }
+        else {
+          $("#btnprsCI").css({ 'display': 'block' });
+        }
+      });
+
+      $("#dpsDocumento").keyup(function () {
+        var vn = $(this).val();
+        $("#prsPinNV").val(vn);
+        cn = $("#dpsDocumento").val();
+
+        if (cn.length == 0) {
+          $("#prsPinNV").css({ 'display': 'none' });
+          $("#btnBuscarDoc").css("display", "none");
+          $("#btnBuscarDoc").css("display", "none");
+          $('#btnBuscarDoc').html('Mostrar');
+          $("#btnBuscarDoc").css({ 'color': 'green' });
+          $("#btnBuscarDoc").val(1);
+        }
+        else {
+          $("#btnBuscarDoc").css({ 'display': 'block' });
+        }
+      });
+
+      $("#prsPinC").keyup(function () {
+        var vc = $(this).val();
+        $("#prsPinCV").val(vc);
+        cn = $("#prsPinC").val();
+
+        if (cn.length == 0) {
+          $("#prsPinCV").css({ 'display': 'none' });
+          $("#btnprsPinC").css("display", "none");
+          $('#btnprsPinC').html('Mostrar');
+          $("#btnprsPinC").css({ 'color': 'green' });
+          $("#btnprsPinC").val(1);
+        }
+        else {
+          $("#btnprsPinC").css({ 'display': 'block' });
+        }
+      });
+    });
+
+    function FunctionprsCI() {
+      var btnprsCI = $("#btnprsCI").val();
+      if (btnprsCI == 1) {
+        $("#prsPinAV").fadeIn("slow", function () {
+          $("#prsPinAV").css("display", "block");
+          $('#btnprsCI').val(0);
+          $('#btnprsCI').html('Ocultar');
+          $("#btnprsCI").css({ 'color': 'red' });
+        });
+      }
+      else {
+        $("#prsPinAV").fadeOut("slow", function () {
+          $("#prsPinAV").css("display", "none");
+          $('#btnprsCI').val(1);
+          $('#btnprsCI').html('Mostrar');
+          $("#btnprsCI").css({ 'color': 'green' });
+        });
+      }
+    }
+    function FunctionprsPinN() {
+      var btnBuscarDoc = $("#btnBuscarDoc").val();
+      if (btnBuscarDoc == 1) {
+        $("#prsPinNV").fadeIn("slow", function () {
+          $("#prsPinNV").css("display", "block");
+          $("#btnBuscarDoc").val(0);
+          $("#btnBuscarDoc").html('Ocultar');
+          $("#btnBuscarDoc").css({ 'color': 'red' });
+        });
+      }
+      else {
+        $("#prsPinNV").fadeOut("slow", function () {
+          $("#prsPinNV").css("display", "none");
+          $('#btnBuscarDoc').val(1);
+          $('#btnBuscarDoc').html('Mostrar');
+          $("#btnBuscarDoc").css({ 'color': 'green' });
+        });
+      }
+    }
+    function FunctionprsPinC() {
+      var btnprsPinC = $("#btnprsPinC").val();
+      if (btnprsPinC == 1) {
+        $("#prsPinCV").fadeIn("slow", function () {
+          $("#prsPinCV").css("display", "block");
+          $("#btnprsPinC").val(0);
+          $("#btnprsPinC").html('Ocultar');
+          $("#btnprsPinC").css({ 'color': 'red' });
+        });
+      }
+      else {
+        $("#prsPinCV").fadeOut("slow", function () {
+          $("#prsPinCV").css("display", "none");
+          $('#btnprsPinC').val(1);
+          $('#btnprsPinC').html('Mostrar');
+          $("#btnprsPinC").css({ 'color': 'green' });
+        });
+      }
+    }
+  </script>
+  <script type="text/javascript"
+    src="../../view/servicios/varios/formularios/solicitudSoporte/solicitudSoporte.js"></script>
+  <script src="../../view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+  <link rel="stylesheet"
+    href="../../view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css" />
+  <link rel="stylesheet"
+    href="../../view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css"
+    id="toggleCSS" />
+</head>
+
+<body>
+  <div class="modal fade" id="mdlCambioPineee" ng-if="modalv" tabindex="-1" style="z-index:2001 !important;"
+    role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="page-content" ng-controller="cambioPinController" ng-init="inicioCapcha();">
+            <div>
+              <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                  <h5>ACTUALIZACION DE DATOS</h5>
+                </div>
+                <div class="ibox-content">
+                  <form method="get" class="form-horizontal ng-pristine ng-valid" name="formulario" readOnly="true"
+                    novalidate>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="url">CI</label>
+                            <div class="controls">
+                              <input ng-model="dpsDocumento"  ng-focus="limpiarCamposFormulario();" id="dpsDocumento" name="dpsDocumento" class="form-control"
+                                type="text" placeholder="Ingrese ci valido" ng-disabled="desabilitado" required>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <label for="url">TIPO PERSONA</label>
+                          <div class="form-group">
+                            <select id="tipo_persona" ng-init="tipo_persona = 'NATURAL'" name="tipo_persona"
+                              ng-model="tipo_persona"
+                              class="form-control ng-animate ng-valid ng-valid-required ng-pristine-remove ng-pristine-remove-active ng-dirty"
+                              disabled>
+                              <option value="NATURAL" selected> Natural </option>
+                              <option value="JURIDICO"> Jurídica </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-5">
+                          <label for="url"> &nbsp; &nbsp; &nbsp;</label>
+                          <div class="controls">
+                            <button ng-click="buscarPersona(dpsDocumento, tipo_persona);" value="1">Buscar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="url">NOMBRES</label>
+                            <div class="controls">
+                              <input ng-model="dpsNombres" id="dpsNombres" name="dpsNombres" class="form-control"
+                                type="text" placeholder="Ingrese ci/nit valido" ng-disabled="desabilitado"
+                                value="datanombresAd" readonly>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="url">CELULAR</label>
+                            <div class="controls">
+                              <input ng-model="dpsCelular" id="dpsCelular" name="dpsCelular" class="form-control"
+                                type="text" placeholder="Ingrese ci/nit valido" value="celularAd"
+                                ng-disabled="desabilitado">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-5">
+                          <div class="form-group">
+                            <label for="url">CORREO</label>
+                            <div class="controls">
+                              <input ng-model="dpsCorreo" id="dpsCorreo" name="dpsCorreo" class="form-control"
+                                type="email" placeholder="Ingrese ci/nit valido" value="correoAd"
+                                ng-disabled="desabilitado" required="required">
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group" align="right">
+                      <button type="button" ng-click="limpiarCamposFormulario();" class="btn btn-secondary"
+                        data-dismiss="modal">Cerrar</button>
+                      <button ng-click="restaurarCredenciales(dpsDocumento, dpsCorreo)" type="button"
+                        class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'"
+                        ng-disabled="formulario.dpsDocumento.$invalid || formulario.dpsNombres.$invalid || formulario.dpsCelular.$invalid || formulario.dpsCorreo.$invalid"
+                        class="btn btn-success">Restaurar PIN</button>
+                      <button ng-click="envioActualizacionData(dpsCelular, dpsCorreo)" type="button"
+                        class="btn btn-success" ng-show="boton=='new'" ng-hide="boton=='upd' || boton=='del'"
+                        ng-disabled="formulario.dpsDocumento.$invalid || formulario.dpsNombres.$invalid || formulario.dpsCelular.$invalid || formulario.dpsCorreo.$invalid"
+                        class="btn btn-success">Actualizar</button>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-6">
+                          <div style="align-items:flex-end;" id="mensajetext">{{smensaje}}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="url"></label>
+                            <div class="controls">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-2">
+                          <label for="url"></label>
+                          <div class="controls">
+                            <!--button  onClick="FunctionprsPinN();" value="1">Restaurar</!--button-->
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

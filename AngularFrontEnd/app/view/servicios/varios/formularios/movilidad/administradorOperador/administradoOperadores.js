@@ -33,7 +33,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
   $scope.aMacrodistritos = {};
   $scope.publicid = [];
   $scope.publi=[];
-  var idTram = 84;
+  var idTram = 40;
   $scope.ope = {};
   $scope.opetramite = '00';
   $scope.opetramite_mensaje = '';
@@ -1166,7 +1166,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
 			var vectorSource = new ol.source.Vector();
 			var vectorLayer = new ol.layer.Vector({source: vectorSource});
 			console.log("111111111111111");
-			//$("#mapActividad1").empty();
+			$("#mapActividad1").empty();
 			console.log("222222222222222222");
              //////////////////////////////////////////////////////////////////
 			var epsg32719 = 'EPSG:32719';
@@ -3224,7 +3224,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
       tramite.datos = data_form;
       tramite.procodigo = 'RENO';
       tramite.macro_id = 0;
-      tramite.nodo_id = 300;
+      tramite.nodo_id = 4371;
       tramite.ws_id = 24;
       tramite.tram_lotus(function(results){ 
         results = JSON.parse(results);

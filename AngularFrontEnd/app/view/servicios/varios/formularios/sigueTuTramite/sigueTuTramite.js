@@ -104,7 +104,13 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
         var siexiste8 = nrocaso.search(miRegExa8);
 
         if (siexiste1 != -1 || siexiste2 != -1 || siexiste3 != -1 || siexiste4 != -1 || siexiste5 != -1 || siexiste6 != -1 || siexiste7 != -1 || siexiste8 != -1) {
-            $scope.getTramiteLotus(datos);
+            //$scope.getTramiteLotus(datos);
+			//console.log("sessionService.get('TIPO_PERSONA'):", sessionService.get('TIPO_PERSONA'));
+            if(sessionService.get('TIPO_PERSONA') == 'NATURAL'){
+                $scope.getTramiteLotus(datos);
+            }else{
+                $scope.getTramiteLotusJuridico(datos);
+            }			
         } else {
             var miRegEx = /[\/]/g;
             var nro = '000' + datos.tramite;
@@ -345,7 +351,47 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
          },300);
     };
 
-    
+    $scope.getTramiteLotusJuridico = function (datos) {
+        //console.log("JURIDICO !!", datos);
+        $.blockUI(); 
+        setTimeout(function(){
+        try{
+            var tramitesLotus = new visualizarTramitesLotus();
+            tramitesLotus.ltci = '';
+            tramitesLotus.ltcodigo = datos.tramite;
+            tramitesLotus.ltclave = sessionService.get('NITCIUDADANO');
+            tramitesLotus.visualizar_TramitesLotus_j(function(data){
+                var response = JSON.parse(data); 
+                if (response.success.data.length > 0) {
+                    $scope.grillaHistorialLotus = "mostrar";
+                    $scope.grillaTramitesLineaAE = null;
+                    $scope.grillaHistorialTerr = null;
+                    $scope.grillaHistorialSitram247 = null;
+                    $scope.grillaHistorialAE = null;
+                    $scope.frmConsulta = null;
+                    $scope.historialLotus = response.success.data;
+                    $scope.tasunto = datos.tasunto;
+                    $scope.tcorrelativo = datos.tcorrelativo;
+                    $scope.tfregistro = datos.tfregistro;
+                    $scope.btnVolverActivo = true;
+                    $scope.$apply();                    
+                    $.unblockUI();
+                } else {
+                    swal('Autoconsulta', msjRegistroNoEncontrado, 'error');
+                    $.unblockUI();
+                    //sweet.show('Autoconsulta', 'Sin tramites en Lotus', 'error');//msjTrmsRegistroNoEncontrado
+                }
+            });
+        }
+        catch(e)
+        {
+            console.log("error", e);
+            swal('Autoconsulta', msjError, 'error');
+            $.unblockUI();
+        }
+         },300);
+    };
+        
 
     //TRAMITES SIMGEP AE
     //$scope.tramitesciudadano = [];
@@ -556,22 +602,15 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
     };
 
     //TRAMITES LOTUS
-    $scope.tramitesGeneradosLotus = function (ci) {
+    /*$scope.tramitesGeneradosLotus = function (ci) {
         var tramitelotus = new lstTramitesLotus();
         tramitelotus.ltci = ci;
-        //tramitelotus.ltcodigo = '';
-        //tramitelotus.ltclave = '';
         tramitelotus.lstTramites_Lotus(function (resultado) {
             var response = JSON.parse(resultado).success.data;
             if (response.length > 0) {
                 $scope.grillaTramitesLineaAE = "mostrar";
-                //$scope.grillaTramitesLineaLotus = "mostrar";
-                //$scope.grillaHistorialAE = null;
-                //$scope.grillaHistorialNEXO = null;
-                //$scope.grillaHistorialSITRAM = null;
                 $scope.frmConsulta = null;
-                $scope.tramiteCiudadanoLotus = response;
-                //$scope.tramitesLinea.push($scope.tramiteCiudadanoLotus);                
+                $scope.tramiteCiudadanoLotus = response;                
                 angular.forEach($scope.tramiteCiudadanoLotus,function(celda, fila)
                 {       
                     var tramites = {};
@@ -599,11 +638,8 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
                     $.unblockUI();
                     if ($scope.tramitesciudadano.length == 0) 
                     {
-                        //$("#divMsj").removeClass("fa fa-sort-asc");
-                        //$("#divMsj").addClass("well");
                         $("#divMsj").css({'display' : 'block' });
-                        $("#main1").fadeIn();
-                        //swal('','Estimado usuario, usted no cuenta con trámites hasta la fecha','warning');
+                        $("#main1").fadeIn();                        
                         $scope.msj = '¡ Estimado ciudadano, usted no cuenta con trámites en GAMLP a la fecha !'; 
                         $scope.$apply();
                     };
@@ -611,7 +647,110 @@ function siguetutramiteController($scope, $rootScope, $routeParams, $location, $
             }
             
         });
-    };
+    };*/
+	
+	
+$scope.tramitesGeneradosLotus = function (ci) {
+        var tramitelotus = new lstTramitesLotus();
+        tramitelotus.ltci = ci;
+        //tramitelotus.ltcodigo = '';
+        //tramitelotus.ltclave = '';
+        var valcinit    =   ((typeof(ci) == 'undefined' || ci == null) ? '' : ci);
+		//console.log("DATA CIUDADANO 44:", valcinit);
+		var nitciudadano = "";		
+        if(valcinit == '' || valcinit == 'undefined'){
+			tramitelotus.ltnit = sessionService.get('NITCIUDADANO');
+            tramitelotus.lstTramites_Lotus_j(function (resultado) {
+				//console.log("RESULTADO JURIDICO:", resultado);			
+                var response = JSON.parse(resultado).success.data;
+                if (response.length > 0) {
+                    $scope.grillaTramitesLineaAE = "mostrar";
+                    $scope.frmConsulta = null;
+                    $scope.tramiteCiudadanoLotus = response;                
+                    angular.forEach($scope.tramiteCiudadanoLotus,function(celda, fila)
+                    {       
+                        var tramites = {};
+                        tramites['tasunto'] = celda['tasunto'];
+                        tramites['ci'] = sessionService.get('NITCIUDADANO');
+                        tramites['tcorrelativo'] = celda['tcorrelativo'];
+                        tramites['tfregistro'] = celda['tfregistro'];
+                        tramites['id_tramite'] = celda['toid'];//tcas_id
+                        tramites['proceso'] = celda['tdata'];
+                        $scope.tramitesciudadano[i]=tramites;
+                        i++;                 
+                    }); 
+                    $scope.btnVolverActivo = true;
+                    $rootScope.tramitesciudadano = $scope.tramitesciudadano; 
+                    $scope.$apply();
+                    
+                    setTimeout(function(){
+                        $.unblockUI();
+                        $scope.$apply();
+                    }, 1000);
+                }else
+                {
+                    setTimeout(function(){
+                        $scope.$apply();
+                        $.unblockUI();
+                        if ($scope.tramitesciudadano.length == 0) 
+                        {
+                            $("#divMsj").css({'display' : 'block' });
+                            $("#main1").fadeIn();                     
+                            $scope.msj = '¡ Estimado ciudadano, usted no cuenta con trámites en GAMLP a la fecha !'; 
+                            $scope.$apply();
+                        };
+                    }, 1000);
+                }
+
+				
+            });
+			nitciudadano = sessionService.get('NITCIUDADANO');
+			//console.log("CIUDADANO:",nitciudadano);
+        }else{
+            tramitelotus.lstTramites_Lotus(function (resultado) {
+                var response = JSON.parse(resultado).success.data;
+                if (response.length > 0) {
+                    $scope.grillaTramitesLineaAE = "mostrar";
+                    $scope.frmConsulta = null;
+                    $scope.tramiteCiudadanoLotus = response;                
+                    angular.forEach($scope.tramiteCiudadanoLotus,function(celda, fila)
+                    {       
+                        var tramites = {};
+                        tramites['tasunto'] = celda['tasunto'];
+                        tramites['ci'] = ci;
+                        tramites['tcorrelativo'] = celda['tcorrelativo'];
+                        tramites['tfregistro'] = celda['tfregistro'];
+                        tramites['id_tramite'] = celda['tcas_id'];
+                        tramites['proceso'] = celda['tdata'];
+                        $scope.tramitesciudadano[i]=tramites;
+                        i++;                 
+                    }); 
+                    $scope.btnVolverActivo = true;
+                    $rootScope.tramitesciudadano = $scope.tramitesciudadano; 
+                    $scope.$apply();
+                    
+                    setTimeout(function(){
+                        $.unblockUI();
+                        $scope.$apply();
+                    }, 1000);
+                }else
+                {
+                    setTimeout(function(){
+                        $scope.$apply();
+                        $.unblockUI();
+                        if ($scope.tramitesciudadano.length == 0) 
+                        {
+                            $("#divMsj").css({'display' : 'block' });
+                            $("#main1").fadeIn();                     
+                            $scope.msj = '¡ Estimado ciudadano, usted no cuenta con trámites en GAMLP a la fecha !'; 
+                            $scope.$apply();
+                        };
+                    }, 1000);
+                }            
+            });
+        }
+    };	
+	
     
     $scope.validarTramiteLinea2 = function (data) {
         $scope.tramitesciudadano = [];

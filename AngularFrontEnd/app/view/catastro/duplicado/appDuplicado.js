@@ -48,11 +48,170 @@ function Padleft(pad,valor) {
 	return ans = pad.substring(0, pad.length - str.length) + str;
 };
 app.filter('unsafe', function($sce) { return $sce.trustAsHtml; });
+app.service('dgemService',function($http, sessionService,$rootScope,CONFIG){
+	this.getTkn=function () {
+		return $.ajax({
+			dataType: "json",
+			type: "POST",
+			url : CONFIG.CONEXION_FACTURACION_V2+"iFacturas/login",
+			data: CONFIG.CREDENCIAL_FACTURA,
+			async: false,
+			success: function(response) {
+				sessionService.set('TKN_FAC',response.data.token);
+			},
+			error: function (response, status, error) {
+				dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+				console.log("Error login pago en linea", response);
+			}
+		});
+	}
 
-function DuplicadosController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad,$timeout,$window) 
+	this.getTipoDocumento=function () {
+		$.ajax({
+			dataType: "json",
+			type: "POST",
+			url : CONFIG.CONEXION_FACTURACION_V2+"api/iFacturas/login",
+			data: CONFIG.CREDENCIAL_FACTURA,
+			async: false,
+			success: function(response) {
+				sessionService.set('TKN_FAC',response.data.token);
+			},
+			error: function (response, status, error) {
+				dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+				console.log("Error login pago en linea", response);
+			}
+		});
+
+		return $.ajax({
+			dataType: "json",
+			type: "POST",
+			url : CONFIG.CONEXION_FACTURACION_V2+"api/tipoDocumentos",
+			data: {"dominio": "TipoDocumentoIdentidad"},
+			async: false,
+			headers: {'authorization': "Bearer "+sessionService.get('TKN_FAC')},
+			success: function(response) {
+				console.log(response);
+				//$scope.listaTipoDocumentoFacturas=response;
+			},
+			error: function (response, status, error) {
+				dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+				console.log("Error login pago en linea", response);
+			}
+		});
+	}
+	this.getItemRecaudador=function (sucursal) {
+		return $.ajax({
+			dataType: "json",
+			type: "POST",
+			url : CONFIG.CONEXION_FACTURACION_V2+"api/itemRecaudador",
+			data: {"numero_sucursal": sucursal},
+			async: false,
+			headers: {'authorization': "Bearer "+sessionService.get('TKN_FAC')},
+			success: function(response) {
+				console.log(response);
+				//$scope.listaTipoDocumentoFacturas=response;
+			},
+			error: function (response, status, error) {
+				dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+				console.log("Error login pago en linea", response);
+			}
+		});
+	}
+	this.getEstadoCuf = function (sucursal) { //estado cuf
+        return $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: CONFIG.CONEXION_FACTURACION_V2+"api/masivas/obtenerEsatdoCufd",
+            data: {"sucursal":String(sucursal),"punto_venta":"0"},
+            headers: {
+                 'Authorization': 'Bearer ' + sessionService.get("TKN_FAC")
+            },
+            async: false,
+            success: function (response) {
+               console.log("tipodoc",response);
+               //sessionService.set("listaTipoDocumentosFacturas",JSON.stringify(response));
+            },
+            error: function (response, status, error) {}
+        });
+	};
+
+	this.registrarTrx = function (data) { //estado cuf
+        return $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: CONFIG.CONEXION_PAGOS+"api/v2/registrarTrx",
+            data: data,
+            headers: {
+                 'Authorization': 'Bearer ' + sessionService.get("TKN_FAC")
+            },
+            async: false,
+            success: function (response) {
+               console.log("tipodoc",response);
+               //sessionService.set("listaTipoDocumentosFacturas",JSON.stringify(response));
+            },
+            error: function (response, status, error) {}
+        });
+	};
+
+	this.verificarDocumento = function (data) { //estado cuf
+        return $.ajax({
+            dataType: "json",
+            type: "GET",
+            url: CONFIG.CONEXION_FACTURACION_V2+"api/factura/informacionCiudadano/"+data.nroDoc+"/"+data.tipoDoc,
+            //data: data,
+            //headers: {
+            //     'Authorization': 'Bearer ' + sessionService.get("TKN_FAC")
+            //},
+            async: false,
+            success: function (response) {
+               console.log("tipodoc",response);
+               //sessionService.set("listaTipoDocumentosFacturas",JSON.stringify(response));
+            },
+            error: function (response, status, error) {}
+        });
+	};
+
+	this.generarTknODM=function (dataODM) {
+		return $.ajax({
+			dataType: "json",
+			type: "POST",
+			url : CONFIG.CONEXION_SIERRA_VALLE+"/api/apiLogin",
+			data: CONFIG.CREDENCIAL_SIERRA_VALLE,
+			async: false,
+			success: function(response) {
+				sessionService.set('TKN_SIERRA',response.token);
+			},
+			error: function (response, status, error) {
+				dataResp = "{\"error\":{\"message\":\""+response.responseText+"\",\"code\":700}}";
+				console.log("Error login pago en linea", response);
+			}
+		});
+		// return $http({
+		// 	method: 'POST',
+		// 	url: CONFIG.CONEXION_SIERRA_VALLE+"/v.0.1/sierra/generacion_ODM",
+		// 	data:dataODM,
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 		'Authorization': "Bearer "+sessionService.get('TKN_SIERRA')
+		// 		}
+		// 	}).then(function successCallback(response) {
+		// 		console.log(response)
+		// 		// this callback will be called asynchronously
+		// 		// when the response is available
+		// 	}, function errorCallback(response) {
+		// 		// called asynchronously if an error occurs
+		// 		// or server returns response with an error status.
+		// 	});
+	};
+});
+
+function DuplicadosController($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad,$timeout,$window,dgemService) 
 {
 	$scope.NuevoTipoSolicitud=0;
 	$scope.diasImpresion=60;
+	$scope.sucursalDuplicados=205; 	// TODO: ajustar en produccion 205
+	$scope.itemFactura=4090; 		// TODO: revisar con produccion
+	$scope.usuarioIgob=354;			// TODO: id desarrollo y produccion
 	$scope.varSpin = false;
 	$scope.RegistroFUM={
 		registrado:null,
@@ -599,6 +758,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		$scope.RefreshUrl(url);
 		//$scope.servicioCatastral.seleccionado.vistas.seleccionado = angular.copy($scope.servicioCatastral.seleccionado.vistas.solicitar);
 		$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
+		$scope.CargarSolicitudesCiudadano();
 	};
 	$scope.pdfUrl = '../catastro/img/Default.pdf';
 
@@ -726,11 +886,15 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 			}
 		}).error(function (data, status, headers, config) {
 			sweet.show('', 'Error al gen dpl', 'error');
-			console.log("Error en la funcion vgDpl",data)
+			console.log("Error en la funcion vgDpl",data);
 		});
 	};
 	//Verifica solicitud pagada en linea y llama a servicio para generar duplicado
 	$scope.vdplepago = function(objFum){
+		if(objFum.FUM==null){
+			console.log("no se verifica pago, fum inexistente");
+			return;
+		}
 		var idFum = objFum.FUM;
 		var formData = {
 			'idfum':idFum
@@ -914,6 +1078,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 						//Registro tramite - Inicio
 						var fumb = data.fum;
 						var fumc = data.msg;
+						let fumMonto = data.monto;
+						let fumItR = data.itemR;
 						var ccb = $scope.resultadoBusqueda.codCat;
 	
 						var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
@@ -934,6 +1100,8 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 						var xidTipoPago=$scope.idTipoPago;
 						var xcodPago="0";
 						var xaccion="A";
+						var xcorreo=(aReg.correo!=null)?aReg.correo:"";
+						var xtelefono=(aReg.telefono!=null)?aReg.telefono:"";
 						if (tipoPersona != 'NATURAL') {
 							xApellidos=aReg.razonSocial;
 							xNombres=aReg.razonSocial;
@@ -942,7 +1110,7 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 							xTipoDocumento="NIT";
 						}
 						var regFum = new dataSITOL();
-						regFum.dplRegFum( xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ //xtipoPago,xcodPago,
+						regFum.dplRegFum(xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xcorreo,xtelefono,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ 
 							$.unblockUI();
 							var resApi = JSON.parse(resultado);
 							console.log("Registro solicitud",resApi);
@@ -1013,10 +1181,13 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 					sweet.show('', 'Error al registrar proforma de pago', 'error');
 					console.log("Error registro fum SIT ext, datos devueltos:", data);
 				});
-			
-			}else{
+			}
+			else if($scope.idTipoPago == 2) { // pago con tarjeta
+				$scope.verificarPagoOnline();
+			}
+			else {
 				$.unblockUI();
-				swal("Estimad@ Ciudadan@.","Los servicios de pagos en línea quedan suspendidos hasta un nuevo aviso. Agradecemos su compresión","info");
+				swal("Estimad@ Ciudadan@.","Serivio de pago incorrecto","info");
 				//Pagos en linea baja temporal
 				/*$scope.datosServicioOnline = "";//datosServicio;  
 				$scope.razonSocialFac = sessionService.get('US_PATERNO');
@@ -1024,10 +1195,43 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 				$('#divPopupPagoTarjeta').modal('show');*/
 			}
 		}
-
 	}
-	$scope.mensajeTemporal = function(){
-		swal("Estimad@ Ciudadan@.","Los servicios de pagos en línea quedan suspendidos hasta un nuevo aviso. Agradecemos su compresión","info");
+
+	$scope.verificarPagoOnline=function () {
+		//listados
+		var promise = dgemService.getTipoDocumento();
+		promise.then(function (dataDoc) {
+			$scope.dataDoc=dataDoc;
+			var promise = dgemService.getItemRecaudador($scope.sucursalDuplicados);
+			promise.then(function (dataSucursal) {
+				$scope.dataSucursal=dataSucursal;
+				$scope.RegistroItem = $filter('filter')($scope.dataSucursal.data, {codigo_item:$scope.itemFactura}, true)[0];	
+				console.log($scope.dataSucursal,$scope.RegistroItem);
+				//verificar nit en caso de empresa --> **revisar con german
+				//verificamos datos ciudadano, empresa 
+				if(tipoPersona != 'NATURAL'){
+					var dEmpresa = new Object();
+					dEmpresa.tipoDoc=5;
+					dEmpresa.nroDoc= aReg.nit;
+					var promise = dgemService.verificarDocumento(dEmpresa);
+					promise.then(function (dataSucursal) {
+						$scope.genPagoOL();
+					}, function (reject) {
+						console.log(reject);
+						sweet.show('', 'Error de conexion', 'error');
+					});
+				}
+				else{
+					$scope.genPagoOL();
+				}
+			}, function (reject) {
+				console.log(reject);
+				sweet.show('', 'Error de conexion', 'error');
+			});
+		}, function (reject) {
+			console.log(reject);
+			sweet.show('', 'Error de conexion', 'error');
+		});
 	}
 	$scope.registrarIGOB = function (param) {
 		console.log("param",param);
@@ -1658,7 +1862,9 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		});
 	};
 	$scope.continuarPagoOL = function(dataFUMGEN){
-		$scope.mensajeTemporal();
+		let formulario ="form_"+dataFUMGEN.odm+".html";
+		$scope.verFramePago(formulario);
+		//$scope.mensajeTemporal();
 		//Pagos en linea baja temporal
 		/*var importantStuff1 = window.open('../../../loading.html', '_blank','width=800,height=800,toolbar=no,menubar=no,location=0');	
 		sessionService.set('IDFUM', dataFUMGEN.FUM);
@@ -2194,37 +2400,265 @@ function DuplicadosController($scope, $rootScope, $routeParams, $location, $http
 		});
 
 		$.blockUI();			
+	}
+	// $scope.mostrarFactura = function (datosFac) {				
+	// 	$.blockUI();
+	// 	$scope.objFactura = new datafactura();
+	// 	$scope.objFactura.operacion = "login";
+	// 	$scope.objFactura.usr_usuario = "ciudadano.igob";
+	// 	$scope.objFactura.usr_clave = "c1ud4d4n0iGob";
+	// 	$scope.objFactura.dataFactura(function(resp){
+	// 		$.unblockUI();
+	// 		resp = JSON.parse(JSON.parse(resp));
+	// 		$scope.objFacturaPdf = new datafactura();
+	// 		$scope.objFacturaPdf.operacion = "getFacturaBase64";
+	// 		$scope.objFacturaPdf.tokenFactura = resp.dataResp.token;
+	// 		$scope.objFacturaPdf.idSucursal = "170";
+	// 		//ajuste Angel.Laura, solo se genera con el tipo SITDC, 20220630
+	// 		$scope.tipoCodFactura = datosFac.FUM+"-SITDC";
+	// 		//if(datosFac.idTipoPago === 2 ){
+	// 		//	$scope.tipoCodFactura = datosFac.FUM+"PO-DC";
+	// 		//}else{
+	// 		//	$scope.tipoCodFactura = datosFac.FUM+"-SITDC";
+	// 		//}
+	// 		//ajuste FIN Angel.Laura, solo se genera con el tipo SITDC, 20220630
+	// 		$scope.objFacturaPdf.codigo = $scope.tipoCodFactura;
+	// 		$scope.objFacturaPdf.dataFactura(function(respPDF){
+	// 			respPDF = JSON.parse(JSON.parse(respPDF));
+	// 			$('#divPopupfactura').modal('show');
+	// 			$scope.cerFactura = respPDF.dataResp.resp.facBase64;
+	// 			$scope.resultFactura = "data:application/pdf;base64,"+$scope.cerFactura;
+	// 			$.unblockUI();
+	// 		});
+	// 	});								
+	// }
+
+	$scope.mostrarFactura = function (datosFac) {	
+		console.log(datosFac);
 
 	}
-	$scope.mostrarFactura = function (datosFac) {				
-		$.blockUI();
-		$scope.objFactura = new datafactura();
-		$scope.objFactura.operacion = "login";
-		$scope.objFactura.usr_usuario = "ciudadano.igob";
-		$scope.objFactura.usr_clave = "c1ud4d4n0iGob";
-		$scope.objFactura.dataFactura(function(resp){
-			$.unblockUI();
-			resp = JSON.parse(JSON.parse(resp));
-			$scope.objFacturaPdf = new datafactura();
-			$scope.objFacturaPdf.operacion = "getFacturaBase64";
-			$scope.objFacturaPdf.tokenFactura = resp.dataResp.token;
-			$scope.objFacturaPdf.idSucursal = "170";
-			//ajuste Angel.Laura, solo se genera con el tipo SITDC, 20220630
-			$scope.tipoCodFactura = datosFac.FUM+"-SITDC";
-			//if(datosFac.idTipoPago === 2 ){
-			//	$scope.tipoCodFactura = datosFac.FUM+"PO-DC";
-			//}else{
-			//	$scope.tipoCodFactura = datosFac.FUM+"-SITDC";
-			//}
-			//ajuste FIN Angel.Laura, solo se genera con el tipo SITDC, 20220630
-			$scope.objFacturaPdf.codigo = $scope.tipoCodFactura;
-			$scope.objFacturaPdf.dataFactura(function(respPDF){
-				respPDF = JSON.parse(JSON.parse(respPDF));
-				$('#divPopupfactura').modal('show');
-				$scope.cerFactura = respPDF.dataResp.resp.facBase64;
-				$scope.resultFactura = "data:application/pdf;base64,"+$scope.cerFactura;
-				$.unblockUI();
+
+
+	$scope.genPagoOL=function(){
+		//generar ODM
+		const f = new Date();
+		var detalle = new Object();
+		detalle.odm_item_recaudador=$scope.RegistroItem.codigo_item;
+		detalle.odm_pre_unitario=$scope.RegistroItem.precio;
+		detalle.odm_cantidad=1;
+		detalle.odm_sub_total=$scope.RegistroItem.precio;
+		var dataODM = new Object();
+		dataODM.razon_social=aReg.nombre + ' ' + aReg.paterno + ' ' + aReg.materno;
+		dataODM.ci_nit=aReg.cedula;
+		if (tipoPersona != 'NATURAL') {
+			dataODM.razon_social=aReg.razonSocial;
+			dataODM.ci_nit=aReg.nit;
+		}
+
+		dataODM.unidad_recaudadora=parseInt($scope.RegistroItem.unidad_recaudadora);
+		dataODM.sucursal=parseInt($scope.RegistroItem.numero_sucursal);
+		dataODM.monto_total=$scope.RegistroItem.precio;
+		dataODM.detalles=[];
+		dataODM.detalles.push(detalle);
+		dataODM.data = {"gestion_pago":f.getFullYear().toString()};
+		var promise = dgemService.generarTknODM();
+		promise.then(function (response) {
+			$http({
+				method: 'POST',
+				url: CONFIG.CONEXION_SIERRA_VALLE+"/v.0.1/sierra/generacion_ODM",
+				data:dataODM,
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': "Bearer "+sessionService.get('TKN_SIERRA')
+				}
+			}).then(function successCallback(response) {
+				let nroOdm = response.data.data.nro_odm;
+				let nroRegistro =  response.data.data.nro_registro;
+				var ccb = $scope.resultadoBusqueda.codCat;
+				//generar registro catastro
+				var xTipoTra=$scope.NuevoTipoSolicitud==1?"DUPLICADO_NUEVO":"DUPLICADO";
+				var xIdCiudadano = "0";
+				var xOIDCiudadano = sessionService.get('IDUSUARIO');
+				var xApellidos = aReg.paterno + ' ' + aReg.materno;
+				var xNombres= aReg.nombre;
+				var xNumeroDocumento=aReg.cedula;
+				var xExpedido = aReg.expedido;
+				var xTipoDocumento = "CI";
+				if (tipoPersona != 'NATURAL') {
+					xApellidos=aReg.razonSocial;
+					xNombres=aReg.razonSocial;
+					xNumeroDocumento=aReg.nit;
+					xExpedido=aReg.expedido;
+					xTipoDocumento="NIT";
+				}
+				var xFUM=nroRegistro; //registramos en la columna ODM
+				var xIdMotivo=$scope.idMotivo;
+				var xIdMotivoDetalle=$scope.idMotivoDetalle;
+				var xCodigoCatastral=ccb;
+				var xNumInmueble="0";
+				var xNumCertificado="0";
+				var xfumEnc=nroOdm; //registramos ODM sin encriptar, PENDIENTE
+				var xidTipoPago=$scope.idTipoPago;
+				var xcodPago="0";
+				var xaccion="A1"; //llamamos a sp para ODM;
+				var xcorreo=(aReg.correo!=null)?aReg.correo:"";
+				var xtelefono=(aReg.telefono!=null)?aReg.telefono:"";
+				var regFum = new dataSITOL();
+				regFum.dplRegFum(xTipoTra,xIdCiudadano,xOIDCiudadano,xApellidos,xNombres,xNumeroDocumento,xExpedido,xTipoDocumento,xcorreo,xtelefono,xFUM,xIdMotivo,xIdMotivoDetalle,xCodigoCatastral,xNumInmueble,xNumCertificado,xfumEnc,xidTipoPago,xcodPago,xaccion, function(resultado){ 
+					$.unblockUI();
+					var resApi = JSON.parse(resultado);
+					console.log("Registro solicitud",resApi);
+					if(resApi.success)
+					{
+						try{
+							$scope.realizarSolicitudTarjeta(nroOdm,resApi.success.dataSql[0].idRegistro);
+							$scope.registrarIGOB(resApi.success.dataSql[0].idRegEnc);//idRegistro
+							$scope.CargarSolicitudesCiudadano();
+						}catch(e)
+						{
+							console.log("error al registrar en igob", e);
+						}
+					}
+					else
+					{
+						sweet.show('', 'Error al registrar proforma de pago', 'error');
+						console.log("Error al registrar proforma de pago", resApi.error.message);
+
+						$scope.idMotivoDetalle =0;
+						$scope.idMotivo =0;
+						$scope.RegistroFUM={
+							registrado:null,
+							mensaje:'Surgió un error al registrar la solicitud, por favor vuelva a intentar'
+						};
+					}
+				});
+				console.log(response);
+				$scope.dataODM=response;
+			}, function errorCallback(response) {
+				console.log(response);
 			});
-		});								
+		}, function (reject) {
+			console.log(reject);
+			sweet.show('', 'Error de conexion', 'error');
+		});
+
+
+
+	}
+
+	$scope.realizarSolicitudTarjeta=function (nroOdm,idRegistro) {
+		//realizar el form de pago
+		// armado de informacion para envio
+		var data = new Object();
+		data.oid_ciudadano=sessionService.get('IDUSUARIO');
+		data.direccion="S/N"//revisar campo
+		data.email=(aReg.correo!=null)?aReg.correo:"";
+		data.celular=(aReg.telefono!=null)?aReg.telefono:"";
+		if (tipoPersona == 'NATURAL') {
+			var stTipoDocumento = "CI";
+			$scope.RegistroDoc = $filter('filter')($scope.dataDoc, {nombre:stTipoDocumento}, false)[0];
+			data.tipo_documento=$scope.RegistroDoc.codigo;
+			data.ci_nit=aReg.cedula;
+			data.nombres=aReg.nombre;
+			data.apellidos=aReg.paterno+" "+aReg.materno;
+		}
+		else {
+			var stTipoDocumento = "NIT";
+			$scope.RegistroDoc = $filter('filter')($scope.dataDoc, {nombre:stTipoDocumento}, false)[0];
+			data.tipo_documento=$scope.RegistroDoc.codigo;
+			data.ci_nit=aReg.nit;
+			data.nombres=aReg.razonSocial;
+			data.apellidos=" ";
+		}
+		
+		data.odm = nroOdm;
+		data.total=$scope.RegistroItem.precio;
+		data.sistema="IGOB"
+		data.sucursal_facturacion=$scope.RegistroItem.numero_sucursal;
+		data.unidad_recaudadora=$scope.RegistroItem.unidad_recaudadora;
+		data.id_usuario_facturacion=$scope.usuarioIgob;
+		data.reprogramacion="NO";
+		data.servicio="CATASTRO";
+		data.nit_factura=data.ci_nit;
+		data.nombre_factura=data.nombres;
+		data.complemento="";
+		data.items=[];
+		//=================================
+		//generacion de item, objeto
+		var oItem = new Object();
+		oItem.concepto ="DUPLICADO DE CERTIFICADO DE REGISTRO CATASTRAL"; //modificar consulta por base
+		oItem.cantidad= 1;
+		oItem.precio_unitario=$scope.RegistroItem.precio;
+      	oItem.cod_Item_recaudador=$scope.RegistroItem.codigo_item;
+      	oItem.monto_descuento="0";
+      	oItem.subtotal=$scope.RegistroItem.precio;
+		oItem.id_item=$scope.RegistroItem.id_item;
+		//=================================
+		data.items.push(oItem);
+
+		var oData_opcional= new Object();
+		oData_opcional.registroTramite=idRegistro;
+		data.data_opcional=[];
+		data.data_opcional.push(oData_opcional);
+		//console.log(data);
+		dataJson = JSON.stringify(data);
+		var promise = dgemService.registrarTrx(data);
+		promise.then(function (resp) {
+			if(resp.formulario!=null && resp.formulario!="errorFacturacion.html") {
+				console.log(resp);
+				$scope.verFramePago(resp.formulario);
+				$scope.RegistrarFacturaTarjeta(idRegistro,nroOdm,0,"Pago por tarjeta - registro realizado",dataJson,JSON.stringify(resp)); //PENDIENTE fum 
+			}
+			else{
+				$scope.RegistrarFacturaTarjeta(idRegistro,nroOdm,0,"Pago por tarjeta - error en el registro.",dataJson,JSON.stringify(resp));//PENDIENTE fum
+				
+				sweet.show('', 'Error de conexion', 'error');
+			}
+			$scope.CargarSolicitudesCiudadano();
+		}, function (reject) {
+			console.log(reject);
+			sweet.show('', 'Error de conexion', 'error');
+		});
+	}
+
+	$scope.RegistrarFacturaTarjeta=function (xidRegistro,xOdm,xFacturaGenerada,xObservacion,xdataEnviada,xRespueta) {
+		p = {
+			idRegistro: xidRegistro,
+			ODM: xOdm,
+			facturaGenerada: xFacturaGenerada,
+			observacion: xObservacion,
+			dataEnviada: xdataEnviada,
+			dataRespuesta: xRespueta
+		};
+		$http({
+			method: 'POST',
+			url:CONFIG.SERVICE_SITOLext + 'guardarPagoTarjetaOdm',  
+			data: Object.toparams(p),
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+		}).success(function (data, status, headers, config) {
+			console.log(data);
+		}).error(function (data, status, headers, config) {
+			$.unblockUI();
+			sweet.show('', 'Error al registrar proforma de pago', 'error');
+			console.log("Error registro fum SIT ext, datos devueltos:", data);
+		});
+	}
+
+	$scope.verFramePago=function (form) {
+		$('#divPopupTarjeta').modal('show');
+		var urlPreview  = CONFIG.CONEXION_PAGOS+form;  //CONFIG.CONEXION_PAGOS
+		$('#frameTarjeta').attr('src',urlPreview);
+		//$scope.RefreshUrl(urlPreview);
+		$timeout(function(){$scope.varSpin=false}, 800);
+		$scope.fit();
+	}
+
+	$scope.verpdfFactura=function (solicitud){
+		$('#divPopup8').modal('show');
+		var urlFactura  = CONFIG.SERVICE_SITOLext + 'DesplegarFacTarjeta?u=' + solicitud.urlFactuta;
+		$('#PDFtoPrint').attr('src',urlFactura);
+		$scope.RefreshUrl(urlFactura);
+		$timeout(function(){$scope.varSpin=false}, 2800);
+		$scope.fit();
 	}
 }

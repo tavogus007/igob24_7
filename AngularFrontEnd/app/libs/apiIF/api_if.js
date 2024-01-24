@@ -712,6 +712,7 @@ visualizarTramitesSitram.prototype.visualizarTramites_Sitram = function (functio
 
 function lstTramitesLotus() {
     this.ltci;
+	this.ltnit;
     //this.ltcodigo;
     //this.ltclave;
 };
@@ -728,8 +729,20 @@ lstTramitesLotus.prototype.lstTramites_Lotus = function (functionResp) {
     ejecutarAjaxSigetuTramite(urlComp, typeCall, dataParams, functionResp);    
 };
 
+lstTramitesLotus.prototype.lstTramites_Lotus_j = function (functionResp) {
+    urlComp = "/lstTramitesXNit";
+    typeCall = "post";
+    dataParams= {
+        "ltnit" : this.ltnit
+        //"ltcodigo": this.ltcodigo,
+        //"ltclave": this.ltclave
+    };
+    ejecutarAjaxSigetuTramite(urlComp, typeCall, dataParams, functionResp);    
+};
+
 function visualizarTramitesLotus() {
     this.ltci;
+	this.ltnit;
     this.ltcodigo;
     this.ltclave;
 };
@@ -739,6 +752,17 @@ visualizarTramitesLotus.prototype.visualizar_TramitesLotus = function (functionR
     typeCall = "post";
     dataParams= {
         "ltci" : this.ltci,
+        "ltcodigo": this.ltcodigo,
+        "ltclave": this.ltclave
+    };
+    ejecutarAjaxSigetuTramite(urlComp, typeCall, dataParams, functionResp);    
+};
+
+visualizarTramitesLotus.prototype.visualizar_TramitesLotus_j = function (functionResp) {
+    urlComp = "/visualizarTramitesXNit";
+    typeCall = "post";
+    dataParams= {
+        "ltnit" : this.ltnit,
         "ltcodigo": this.ltcodigo,
         "ltclave": this.ltclave
     };
@@ -886,13 +910,15 @@ function tiendaVirtual() {
 function tramiteAe() {
     this.nombreCaso;
     this.documento;
+    this.nombreDoc;
 };
 tramiteAe.prototype.adjuntaDeclaracion = function (functionResp) {
-    urlComp = "/adjuntaDeclaracion";
+    urlComp = "/adjuntaDeclaracionFormulario";
     typeCall = "post";
     dataParams = {
       "nombreCaso" : this.nombreCaso,
-      "documento" : this.documento
+      "documento" : this.documento,
+      "nombreDoc" : this.nombreDoc
     };
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };

@@ -170,7 +170,7 @@
                         <div class="row">
                             <div class="controls">
                                 <strong>SR. CIUDADANO LE INFORMAMOS:</strong><br><br>
-                                Debe imprimir el Formulario que se encuentra en su bandeja de documentos con el número de tramite  <strong>{{datosDoc.vdoc_id_codigo}}</strong>, {{datosDoc.vdoc_nombre}} luego debe firmar unicamente el titular o representante legal de la actividad económica y subir el formulario {{mensaje}} 
+                                Debe imprimir el {{datosDoc.nombreFor}} que se encuentra en su bandeja de documentos con el número de tramite  <strong>{{datosDoc.vdoc_id_codigo}}</strong>, luego debe firmar unicamente el titular o representante legal de la actividad económica y subir el {{datosDoc.nombreFor}} firmado{{mensaje}} 
                                 <hr>
                                 <div  class="col-md-12">
                                     <div class="form-group">
@@ -182,7 +182,7 @@
                                                 <input type="file" id="f01_upload_formulario_401" name="f01_upload_formulario_401" accept=""  style="display: none;">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                                    <input id="txt_f01_upload_formulario_401" name="txt_f01_upload_formulario_401"  ng-model="f01_upload_formulario_401"  type="text" placeholder="Adjuntar Formulario 401" class="form-control input-lg" disabled required>
+                                                    <input id="txt_f01_upload_formulario_401" name="txt_f01_upload_formulario_401"  ng-model="f01_upload_formulario_401"  type="text" placeholder="Adjuntar Formulario" class="form-control input-lg" disabled required>
                                                     <span class="input-group-btn">
                                                         <a id="href_f01_upload_formulario_401" ng-show="urlDocumento!=''" href="{{urlDocumento}}" target="_blank">
                                                             <button id="btn_f01_upload_formulario_401" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>

@@ -406,11 +406,8 @@
         <div align="center">
             <a class="btn btn-lg btn-success" ng-click="cargarFichasReservadas()">
                 <i class="fa fa-table fa-3x pull-left"></i> {{translateTitulos.lbl_019_06}}<br></a>
-            <!--a class="btn btn-lg btn-success" ng-click="lstHospital();limpiarTodo();"-->
             <a class="btn btn-lg btn-success" data-toggle="modal" data-target="#declaracion" ng-click="inicioDeclaracion();">
                 <i class="fa fa-hospital-o  fa-3x pull-left"></i> {{translateTitulos.lbl_019_16}} de Fichas <br></a>
-
-            <!--a type="button" data-toggle="modal" data-target="#declaracion" ng-click="inicioDeclaracion()">prueba</a-->    
         </div>
         <div>
             <div ng-show="mostrarFichasReservadas">
@@ -539,9 +536,9 @@
                                                                 <p ng-if="fichas.presestado_prestacion == 'ATENDIDO'">ATENCION
                                                                     FINALIZADO</p>
                                                                 <p ng-if="fichas.presestado_prestacion == 'PENDIENTE PAGO'">
-                                                                    <button ng-click="datosparaCobrar(fichas)" type="button"
+                                                                    <!--button ng-click="datosparaCobrar(fichas)" type="button"
                                                                         class="btn btn-oscuro ng-binding" data-toggle="modal"
-                                                                        data-target="#modalDatos2Factura">PAGAR</button>
+                                                                        data-target="#modalDatos2Factura">PAGAR</button-->
                                                                 </p>
                                                             </td>
                                                             <td data-title="'Opciones'">
@@ -702,7 +699,6 @@
                                         <div class="row" style="padding: 10px">
                                             <div class="col-md-12" align="center">
                                                 <h4>“Estimado Ciudadan@:”</h4>
-                                                <!--h4>“Estimado Ciudadan@ conforme a normativa vigente deberá subir una foto legible de su Hoja de Referencia para la revisión y validación en Admisiones, <br> recordar que la misma tiene vigencia de 7 días. Posteriormente se le enviará a su bandeja de mensajes</h4--> 
                                             </div>
                                         </div>
                                         <div class="row" style="padding: 30px">
@@ -752,10 +748,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--div class="form-group" align="center">
-                                            <a type="button" class="btn btn-success center-block fa fa-credit-card"
-                                                ng-click="enviarCorreo()" height="30"><span> CORREO </span></a>
-                                        </div-->
                                     </div>
                                 </form>
                                 <div ng-show='especialidad_vista'>
@@ -778,12 +770,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <!--div class="col-md-12 row" style="padding: 10px;">
-                                        <div class="alert alert-danger">
-                                        <strong>El servicio de cita medica esta temporalmente deshabilitado</strong>
-                                        </div>
-                                    </div-->
 
                                     <div ng-repeat='especialidad in especialidades'><br>
                                         <div class="col-md-4">
@@ -1138,10 +1124,6 @@
                                                             <a type="button" class="btn btn-success center-block fa fa-credit-card"
                                                                 ng-click="reservaFichaInstitucional()" height="30"><span> SIGUIENTE </span></a>
                                                         </div>
-                                                        <!--div class="form-group" align="center">
-                                                            <a type="button" class="btn btn-success center-block fa fa-credit-card"
-                                                                ng-click="envioCorreo()" height="30"><span> CORREO </span></a>
-                                                        </div-->
                                                     </form>        
                                                 </div>
                                                 
@@ -1156,9 +1138,9 @@
                                                                     <div class="col-md-6">
                                                                         <label for="title">Tipo de Documento :</label>
                                                                         <div class="form-group">
-                                                                            <select class="js-example-basic-single form-control" id="tipDoc" name="tipDoc" ng-model="datosFact.tipDoc"
+                                                                            <select id="id_tipDoc" name="tipDoc" ng-model="datosFact.tipDoc"
                                                                                 ng-change="seleccionDocumento(datosFact.tipDoc);" class="form-control" required>
-                                                                                <option style="display:none" value="">-- Seleccionar --</option>
+                                                                                <option value="">-- Seleccionar --</option>
                                                                                 <option ng-repeat="tpdc in tpDocs" value="{{tpdc.codigo}}">{{tpdc.nombre}}</option>
                                                                             </select>
                                                                         </div>
@@ -1168,7 +1150,7 @@
                                                                     <div class="col-md-6" ng-show="habNit">
                                                                         <label for="title">Nit :</label>
                                                                         <div class="form-group">
-                                                                            <input ng-model="datosFact.nit" id="nit" name="nit" class="form-control" type="text" placeholder="Ingrese Nit" required>
+                                                                            <input ng-model="datosFact.nit" id="nit" name="nit" class="form-control" type="number" placeholder="Ingrese Nit" required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-1" ng-show="habNit">
@@ -1188,7 +1170,7 @@
                                                                     <div class="col-md-6" ng-show="habCi">
                                                                         <label for="title">C.I. :</label> 
                                                                         <div class="form-group">
-                                                                            <input ng-model="datosFact.ci" id="ci" name="ci" class="form-control" type="text" placeholder="Ingrese C.I." required>
+                                                                            <input ng-model="datosFact.ci" id="ci" name="ci" class="form-control" type="number" placeholder="Ingrese C.I." required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-2" ng-show="habCi">
@@ -1208,7 +1190,7 @@
                                                                     <div class="col-md-6" ng-show="habCEX">
                                                                         <label for="title">C.I. Extranjero :</label> 
                                                                         <div class="form-group">
-                                                                            <input ng-model="datosFact.nit" id="nit" name="nit" class="form-control" type="text" placeholder="Ingrese C.I." required>
+                                                                            <input ng-model="datosFact.nit" id="nit" name="nit" class="form-control" type="number" placeholder="Ingrese C.I." required>
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-1" ng-show="habCEX">
@@ -1231,7 +1213,7 @@
                                                                             <input onkeyup="return conMayusculas(this);"
                                                                                 ng-model="datosFact.razon_social" onChange="conMayusculas(this)"
                                                                                 id="razon_social" name="razon_social" class="form-control" type="text"
-                                                                                placeholder="Ingrese Razon Social" required>
+                                                                                placeholder="Ingrese Razon Social" onkeypress="return soloLetras(event)" onblur="limpia()" required>   
                                                                         </div>        
                                                                     </div>
                                                                 </div>
@@ -1272,18 +1254,11 @@
                                                                         <div class="col-md-4">
 
                                                                             <div class="row">
-                                                                                <button data-dismiss="modal"
-                                                                                    ng-disabled="formulario.tipDoc.$invalid && formulario.nit.$invalid && formulario.ci.$invalid && formulario.complemento.$invalid && formulario.correo.$invalid && formulario.celular.$invalid"
-                                                                                    data-toggle="modal"
-                                                                                    data-target="{{abrirmodal}}"
-                                                                                    ng-click="pagoQR(datosFact);"
-                                                                                    class="pay-link">
-                                                                                    <label for="title"
-                                                                                        class="text-center-label">Pago con
-                                                                                        Qr</label>
-                                                                                    <img src="../../view/img/pagos/qrSimple.png"
-                                                                                        title="Pago con QR"
-                                                                                        class="img-link">
+                                                                                <button ng-disabled="formulario.tipDoc.$invalid && formulario.nit.$invalid && formulario.ci.$invalid && formulario.complemento.$invalid && formulario.correo.$invalid && formulario.celular.$invalid"
+                                                                                    ng-click="validacionQR(datosFact);"
+                                                                                    class="pay-link" data-toggle="modal" data-target="{{abrirmodal}}">
+                                                                                    <label for="title" class="text-center-label">Pago con Qr</label>
+                                                                                    <img src="../../view/img/pagos/qrSimple.png" title="Pago con QR" class="img-link">
                                                                                 </button>
                                                                             </div>
                                                                         </div>
@@ -1291,14 +1266,10 @@
 
                                                                             <div class="row">
                                                                                 <button ng-disabled="formulario.tipDoc.$invalid && formulario.nit.$invalid && formulario.ci.$invalid && formulario.complemento.$invalid && formulario.correo.$invalid && formulario.celular.$invalid"
-                                                                                    ng-click="pagarOnlinePreguntar1(datosFact)"
+                                                                                    ng-click="validacionTARJETA(datosFact)" 
                                                                                     class="pay-link">
-                                                                                    <label for="title"
-                                                                                        class="text-center-label">Pago con
-                                                                                        Tarjeta</label>
-                                                                                    <img src="../../view/img/pagos/tarjetas.png"
-                                                                                        title="Pago con Tarjeta"
-                                                                                        class="img-link">
+                                                                                    <label for="title" class="text-center-label">Pago con Tarjeta</label>
+                                                                                    <img src="../../view/img/pagos/tarjetas.png" title="Pago con Tarjeta" class="img-link">
                                                                                 </button>
                                                                             </div>
                                                                         </div>
@@ -1466,7 +1437,7 @@
                                             <div class="controls">
                                                 <input onkeyup="return conMayusculas(this);" ng-model="datosFact1.razon_social2" onChange="conMayusculas(this)"
                                                     id="razon_social2" name="razon_social2" class="form-control" type="text"
-                                                    placeholder="Ingrese Razon Social">
+                                                    placeholder="Ingrese Razon Social" ng-pattern="/^[a-zA-Z\s]*$/" required>
                                             </div>
                                         </div>
                                     </div>
@@ -1512,9 +1483,6 @@
                                     </p>
                                 </div>
                             </div>
-                            <!--div class="row">
-                                <button type="button" class="btn btn-default" ng-click="" height="30"><i class="fa fa-download">  Descargar QR</i></button> 
-                            </div-->
                         </form>
                         </div>
                         <div class="modal-footer">
@@ -1537,7 +1505,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h3 class="modal-title"><button class="btn-warning">Paso 5</button>&nbsp;Pago por tarjeta.</h3><!--&nbsp;Generaci&oacute;n de Proforma de Pago FUM.-->
+                            <h3 class="modal-title"><button class="btn-warning">Paso 5</button>&nbsp;Pago por tarjeta.</h3>
                         </div>
                         <form name="formPagoTarjeta" id="formPagoTarjeta">
                             <div class="modal-body">
@@ -1672,13 +1640,7 @@
                                     </center>
                                 </div>
                             </div>
-                            
-                            <!--div class="row">
-                                <div class="col-sm-6" style="margin-top:1%;">
-                                    <button type="button" name="button" class="btn btn-success fa fa-clear"
-                                    ng-click="de_acuerdo_todo()">&nbsp;DE ACUERDO CON TODO</button>
-                                </div>
-                            </div-->                
+                                           
                         </div>
                     </div>
                 </div>

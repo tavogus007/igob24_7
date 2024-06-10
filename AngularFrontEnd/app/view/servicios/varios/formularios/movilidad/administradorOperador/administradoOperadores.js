@@ -1166,7 +1166,7 @@ function administracionOperadoresController ($scope, $rootScope, $routeParams, $
 			var vectorSource = new ol.source.Vector();
 			var vectorLayer = new ol.layer.Vector({source: vectorSource});
 			console.log("111111111111111");
-			$("#mapActividad1").empty();
+			//$("#mapActividad1").empty();
 			console.log("222222222222222222");
              //////////////////////////////////////////////////////////////////
 			var epsg32719 = 'EPSG:32719';

@@ -112,65 +112,101 @@ function solicitudPublicidadController($scope, sessionService, CONFIG, ngTablePa
       }
   });
 //********************************************** */
-$scope.generarPDFcorporativo = function(solicitud) {
+function getBase64ImageFromURL(url) { 
+  return new Promise((resolve, reject) => {
+    var img = new Image();
+    img.setAttribute("crossOrigin", "anonymous");
+    img.onload = () => {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      var dataURL = canvas.toDataURL("image/png");
+      resolve(dataURL);
+    };
+    img.onerror = error => {
+      reject(error);
+    };
+    img.src = url;
+  });
+}
 
-// Obtener los datos de la variable JSON
-var datosTabla = solicitud.vfrm_ser_dataformulario.f01_caras_desc;
-var tipo_via = "";
-var cel_contacto = "";
-var nombre = "";
-var numDocumento = "";
-if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="AV") tipo_via="AVENIDA";
-if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="CA") tipo_via="CALLE";
-if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="CL") tipo_via="CALLEJON";
-if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="PL") tipo_via="PLAZA";
-if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="CN") tipo_via="CANCHA";
-if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="PR") tipo_via="PARQUE";
-if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="PA") tipo_via="PASAJE";
-if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="ND") tipo_via="NO DEFINIDO";
+$scope.generarPDFcorporativo = function(solicitud){
+  $.blockUI({ css: { 
+                    border: 'none', 
+                    padding: '10px', 
 
-// Crear el contenido de la tabla
-var contenidoTabla = [];
-// Encabezado de la tabla
-var encabezado = [
-  { text: '#', style: 'tablaEncabezado' },  
-  { text: 'Descripción', style: 'tablaEncabezado',alignment: 'center' },
-  { text: 'Superficie en m2', style: 'tablaEncabezado',alignment: 'center' }
-];
-contenidoTabla.push(encabezado);
-// Filas de la tabla
-datosTabla.forEach(function(dato, index) {
-  var fila = [
-    { text: (index + 1).toString(), alignment: 'center' }, // Numeración de las filas
-     dato.descripcion,
-     dato.superficie.toString(),    
+                    backgroundColor: '#000', 
+                    '-webkit-border-radius': '10px', 
+                    '-moz-border-radius': '10px', 
+                    opacity: .5, 
+                    color: '#fff' 
+                },message: "Espere un momento por favor ..." }); 
+  setTimeout(function(){
+    PDFcorporativo(solicitud);
+  }, 3000); 
+}
+
+async function PDFcorporativo(solicitud) {
+  console.log("solicitud",solicitud);
+  // Obtener los datos de la variable JSON
+  var datosTabla = solicitud.vfrm_ser_dataformulario.f01_caras_desc;
+  var tipo_via = "";
+  var cel_contacto = "";
+  var nombre = "";
+  var numDocumento = "";
+  if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="AV") tipo_via="AVENIDA";
+  if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="CA") tipo_via="CALLE";
+  if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="CL") tipo_via="CALLEJON";
+  if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="PL") tipo_via="PLAZA";
+  if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="CN") tipo_via="CANCHA";
+  if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="PR") tipo_via="PARQUE";
+  if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="PA") tipo_via="PASAJE";
+  if(solicitud.vfrm_ser_dataformulario.f01_tipo_via =="ND") tipo_via="NO DEFINIDO";
+
+  // Crear el contenido de la tabla
+  var contenidoTabla = [];
+  // Encabezado de la tabla
+  var encabezado = [
+    { text: '#', style: 'tablaEncabezado' },  
+    { text: 'Descripción', style: 'tablaEncabezado',alignment: 'center' },
+    { text: 'Superficie en m2', style: 'tablaEncabezado',alignment: 'center' }
   ];
-  contenidoTabla.push(fila);
-});
-var fechaFormateada = $filter('date')(new Date(solicitud.vfrm_ser_registrado ), 'dd/MM/yyyy');
-if(solicitud.vfrm_ser_dataformulario.f01_cel_contacto) cel_contacto = ' -  '+solicitud.vfrm_ser_dataformulario.f01_cel_contacto; else cel_contacto = "";
-if(solicitud.vfrm_ser_dataformulario.tipoPersona == 'JURIDICO') {
+  contenidoTabla.push(encabezado);
+  // Filas de la tabla
+  datosTabla.forEach(function(dato, index) {
+    var fila = [
+      { text: (index + 1).toString(), alignment: 'center' }, // Numeración de las filas
+      dato.descripcion,
+      dato.superficie.toString(),    
+    ];
+    contenidoTabla.push(fila);
+  });
+  var fechaFormateada = $filter('date')(new Date(solicitud.vfrm_ser_registrado ), 'dd/MM/yyyy');
+  if(solicitud.vfrm_ser_dataformulario.f01_cel_contacto) cel_contacto = ' -  '+solicitud.vfrm_ser_dataformulario.f01_cel_contacto; else cel_contacto = "";
+  if(solicitud.vfrm_ser_dataformulario.tipoPersona == 'JURIDICO') {
     nombre =solicitud.vfrm_ser_dataformulario.nombreRepresentante +' '+  solicitud.vfrm_ser_dataformulario.primerApRepresentante +' '+  solicitud.vfrm_ser_dataformulario.secundoApRepresentante;
     numDocumento = solicitud.vfrm_ser_dataformulario.documentoRepresentante;  
     numExpedido = solicitud.vfrm_ser_dataformulario.expedidoRepresentante;
-    }
-    else {
-      nombre = solicitud.vfrm_ser_dataformulario.nombres + ' ' + solicitud.vfrm_ser_dataformulario.primerApellido+' '+ solicitud.vfrm_ser_dataformulario.segundoApellido;
-      numDocumento = solicitud.vfrm_ser_dataformulario.documento;
-      numExpedido = solicitud.vfrm_ser_dataformulario.expedido;
-    }
+  }
+  else {
+    nombre = solicitud.vfrm_ser_dataformulario.nombres + ' ' + solicitud.vfrm_ser_dataformulario.primerApellido+' '+ solicitud.vfrm_ser_dataformulario.segundoApellido;
+    numDocumento = solicitud.vfrm_ser_dataformulario.documento;
+    numExpedido = solicitud.vfrm_ser_dataformulario.expedido;
+  }
  // Crear el documento PDF
- var docDefinition = {
-		pageSize: 'letter',
-		pageMargins: [ 50, 90, 50, 100 ],
-		header: [        
+  var docDefinition = {
+    pageSize: 'letter',
+    pageMargins: [ 50, 90, 50, 100 ],
+    header: [        
       {image: headerImage,width: 390},  	 
             {canvas: [{ type: 'line', x1: 50, y1: 1, x2: 595-2*30, y2: 1, lineWidth: 1 }]}
           ],
     footer: {
-           columns: [
-			     {text: 'Unidad de Publicidad – DCI - SMDE - GAMLP\nCalle Chichas – Edif. Espra, Piso 5, Miraflores.\n(Saliendo del puente de las Américas)\nTelf. 2650715', alignment: 'left',fontSize: 8 ,margin: [50, 30, 0, 0] },
-			     {image: footerImage,width: 130},              
+          columns: [
+          {text: 'Unidad de Publicidad – DCI - SMDE - GAMLP\nCalle Chichas – Edif. Espra, Piso 5, Miraflores.\n(Saliendo del puente de las Américas)\nTelf. 2650715', alignment: 'left',fontSize: 8 ,margin: [50, 30, 0, 0] },
+          {image: footerImage,width: 130},              
             ],          
           },		    
     content: [
@@ -268,145 +304,192 @@ if(solicitud.vfrm_ser_dataformulario.tipoPersona == 'JURIDICO') {
       ]},
       { text: '\nDECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO',fontSize: 11, bold: true },
       { text: '\nYo ' + nombre + ', con Carnet de Identidad N° ' + numDocumento + ' expedido en ' + numExpedido + ', declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la Ley Municipal Autónoma N° 206/2016, los Decretos Municipales N° 007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, artículo 78 de la Ley 2492 del Código Tributario.' ,alignment: 'justify',fontSize: 9},    
-        { columns: [
+      { columns: [
         { width: 300,text: '\n\n\n\n\n\n\n_____________________________________\nFirma del solicitante',fontSize: 9 },
         { width: '*', text: '\nSELLO DE REGISTRO EN EL SISTEMA\n\n\n\n\n\n_________________________________________\n\n\nFecha de registro: ______/______/________',fontSize: 9 },
       ]},
-      ]
-    };
-        var pdfDocGenerator = pdfMake.createPdf(docDefinition);
-        pdfDocGenerator.getDataUrl(function(dataUrl) {
-        var iframe = document.getElementById('viewPdf');
-        iframe.src = dataUrl;
-        // Abrir el modal
-        $('#pdfModal').modal('show');
-  });
+      { text: '\n',fontSize: 11, bold: true },
+      { text: '\n',fontSize: 11, bold: true },
+      { text: '\nFOTOGRAFIAS ADJUNTAS',fontSize: 11, bold: true }
+    ]
+  };
+  for(var i=0;i < datosTabla.length ;i++)
+  {
+    if(datosTabla[i].url != undefined){
+      docDefinition.content.push(
+      [   { text: '\nFOTOGRAFÍA ' + (i+1)+'\n',fontSize: 11, bold: true },
+          { text: '\n',fontSize: 11, bold: true },
+          {image: await getBase64ImageFromURL(datosTabla[i].url),width: 200,height: 200}
+      ]);
+    }
+  }
+  var pdfDocGenerator = pdfMake.createPdf(docDefinition);
+  pdfDocGenerator.download("solicitudRegistroCoorporativa");
+  $.unblockUI(); 
 };
+
 //********************************************** */
 $scope.generarPDFmovil = function(solicitud) {
+  $.blockUI({ css: { 
+                    border: 'none', 
+                    padding: '10px', 
 
-// Obtener los datos de la variable JSON
-var datosTabla = solicitud.vfrm_ser_dataformulario.listamoviles;
- 
-// Crear el contenido de la tabla
-var contenidoTabla = [];
-var tipo_via = "";
-var cel_contacto = "";
-var nombre = "";
-var numDocumento = "";
-// Encabezado de la tabla
-var encabezado = [
-  { text: '#', style: 'tablaEncabezado' ,alignment: 'center'},  
-  { text: 'Tipo letrero', style: 'tablaEncabezado',alignment: 'center' },
-  { text: 'Característica', style: 'tablaEncabezado',alignment: 'center' } ,
-  { text: 'Marca', style: 'tablaEncabezado',alignment: 'center' },
-  { text: 'Placa', style: 'tablaEncabezado' ,alignment: 'center'},
-  { text: 'Vistas', style: 'tablaEncabezado' ,alignment: 'center'},
-  { text: 'Superficie en m2', style: 'tablaEncabezado',alignment: 'center' }
-];
-contenidoTabla.push(encabezado);
+                    backgroundColor: '#000', 
+                    '-webkit-border-radius': '10px', 
+                    '-moz-border-radius': '10px', 
+                    opacity: .5, 
+                    color: '#fff' 
+                },message: "Espere un momento por favor ..." }); 
+  setTimeout(function(){
+    PDFmovil(solicitud);
+  }, 3000); 
+}
 
-// Filas de la tabla
-datosTabla.forEach(function(dato, index) {
-  var fila = [
-    { text: (index + 1).toString(), alignment: 'center' }, // Numeración de las filas
-     dato.categoria.descripcion,
-     dato.idTipoLetrero.caracteristica,    
-     dato.marca,
-     dato.placa,
-     dato.vistas.toString(),
-     dato.superficie.toString()           
-  ];
-  contenidoTabla.push(fila);
-});
-var fechaFormateadaM = $filter('date')(new Date(solicitud.vfrm_ser_registrado ), 'dd/MM/yyyy');
-if(solicitud.vfrm_ser_dataformulario.f01_cel_contacto) cel_contacto = ' -  '+solicitud.vfrm_ser_dataformulario.f01_cel_contacto; else cel_contacto = "";
-if(solicitud.vfrm_ser_dataformulario.tipoPersona == 'JURIDICO') {
-  nombre =solicitud.vfrm_ser_dataformulario.nombreRepresentante +' '+  solicitud.vfrm_ser_dataformulario.primerApRepresentante +' '+  solicitud.vfrm_ser_dataformulario.secundoApRepresentante;
-  numDocumento = solicitud.vfrm_ser_dataformulario.documentoRepresentante;  
-  numExpedido = solicitud.vfrm_ser_dataformulario.expedidoRepresentante;
-  }
-  else {
-    nombre = solicitud.vfrm_ser_dataformulario.nombres + ' ' + solicitud.vfrm_ser_dataformulario.primerApellido+' '+ solicitud.vfrm_ser_dataformulario.segundoApellido;
-    numDocumento = solicitud.vfrm_ser_dataformulario.documento;
-    numExpedido = solicitud.vfrm_ser_dataformulario.expedido;
-  }
-// Crear el documento PDF
-var docDefinition = {
-  pageSize: 'letter',
-  pageMargins: [ 50, 90, 50, 100 ],
-  header: [        
-    {image: headerImage,width: 390},  	 
-          {canvas: [{ type: 'line', x1: 50, y1: 1, x2: 595-2*30, y2: 1, lineWidth: 1 }]}
-        ],
-  footer: {
-         columns: [
-         {text: 'Unidad de Publicidad – DCI - SMDE - GAMLP\nCalle Chichas – Edif. Espra, Piso 5, Miraflores.\n(Saliendo del puente de las Américas)\nTelf. 2650715', alignment: 'left',fontSize: 8 ,margin: [50, 10, 0, 0] },
-         {image: footerImage,width: 130},              
-          ],          
-        },		 
-  content: [
-    { text: 'FORMULARIO DE SOLICITUD DE PUBLICIDAD MÓVIL', fontSize: 11, alignment: 'center', bold: true },
-    { text: 'Código: ' + solicitud.vfrm_ser_codigo_servicio +  '      Fecha: ' + fechaFormateadaM, fontSize: 11, alignment: 'center', bold: true },
-    solicitud.vfrm_ser_dataformulario.tipoPersona === 'JURIDICO' ? [
-      { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
-      {
-        columns: [
-          { width: 150, text: 'NIT:', fontSize: 9, bold: true },
-          { width: '*', text: solicitud.vfrm_ser_dataformulario.nit, fontSize: 9 }
-        ]
-      },    
-      {
-        columns: [
-          { width: 150, text: 'Razón social:', fontSize: 9, bold: true },
-          { width: '*', text: solicitud.vfrm_ser_dataformulario.razonSocial, fontSize: 9 }
-        ]
-      }
-    ] : "",
-    { text: '\nDatos del solicitante', fontSize: 11, bold: true },
-    { columns: [
-      { width: 150, text: 'Nombre del solicitante:',fontSize: 9, bold: true },
-      { width: '*', text: nombre,fontSize: 9}
-    ]},
-    { columns: [
-      { width: 150, text: 'Cédula de identidad:',fontSize: 9, bold: true },
-      { width: '*', text: numDocumento,fontSize: 9 }
-    ]},
-    { columns: [
-      { width: 150, text: 'Correo electrónico:',fontSize: 9, bold: true },
-      { width: '*', text: solicitud.vfrm_ser_dataformulario.correo ,fontSize: 9}
-    ]},
-    { columns: [
-      { width: 150, text: 'Teléfono o Celular:',fontSize: 9, bold: true },
-      { width: '*', text: solicitud.vfrm_ser_dataformulario.celular,fontSize: 9 }
-    ]},
-    { text: '\nElementos moviles a registrar', fontSize: 11,bold: true },
+
+async function PDFmovil(solicitud) {
+    // Obtener los datos de la variable JSON
+    var datosTabla = solicitud.vfrm_ser_dataformulario.listamoviles;
+    
+    // Crear el contenido de la tabla
+    var contenidoTabla = [];
+    var tipo_via = "";
+    var cel_contacto = "";
+    var nombre = "";
+    var numDocumento = "";
+    // Encabezado de la tabla
+    var encabezado = [
+      { text: '#', style: 'tablaEncabezado' ,alignment: 'center'},  
+      { text: 'Tipo letrero', style: 'tablaEncabezado',alignment: 'center' },
+      { text: 'Característica', style: 'tablaEncabezado',alignment: 'center' } ,
+      { text: 'Marca', style: 'tablaEncabezado',alignment: 'center' },
+      { text: 'Placa', style: 'tablaEncabezado' ,alignment: 'center'},
+      { text: 'Vistas', style: 'tablaEncabezado' ,alignment: 'center'},
+      { text: 'Superficie en m2', style: 'tablaEncabezado',alignment: 'center' }
+    ];
+    contenidoTabla.push(encabezado);
+
+    // Filas de la tabla
+    datosTabla.forEach(function(dato, index) {
+      var fila = [
+        { text: (index + 1).toString(), alignment: 'center' }, // Numeración de las filas
+        dato.categoria.descripcion,
+        dato.idTipoLetrero.caracteristica,    
+        dato.marca,
+        dato.placa,
+        dato.vistas.toString(),
+        dato.superficie.toString()           
+      ];
+      contenidoTabla.push(fila);
+    });
+    var fechaFormateadaM = $filter('date')(new Date(solicitud.vfrm_ser_registrado ), 'dd/MM/yyyy');
+    if(solicitud.vfrm_ser_dataformulario.f01_cel_contacto) cel_contacto = ' -  '+solicitud.vfrm_ser_dataformulario.f01_cel_contacto; else cel_contacto = "";
+    if(solicitud.vfrm_ser_dataformulario.tipoPersona == 'JURIDICO') {
+      nombre =solicitud.vfrm_ser_dataformulario.nombreRepresentante +' '+  solicitud.vfrm_ser_dataformulario.primerApRepresentante +' '+  solicitud.vfrm_ser_dataformulario.secundoApRepresentante;
+      numDocumento = solicitud.vfrm_ser_dataformulario.documentoRepresentante;  
+      numExpedido = solicitud.vfrm_ser_dataformulario.expedidoRepresentante;
+    }
+    else {
+      nombre = solicitud.vfrm_ser_dataformulario.nombres + ' ' + solicitud.vfrm_ser_dataformulario.primerApellido+' '+ solicitud.vfrm_ser_dataformulario.segundoApellido;
+      numDocumento = solicitud.vfrm_ser_dataformulario.documento;
+      numExpedido = solicitud.vfrm_ser_dataformulario.expedido;
+    }
+    // Crear el documento PDF
+    var docDefinition = {
+      pageSize: 'letter',
+      pageMargins: [ 50, 90, 50, 100 ],
+      header: [        
+        {image: headerImage,width: 390},  	 
+              {canvas: [{ type: 'line', x1: 50, y1: 1, x2: 595-2*30, y2: 1, lineWidth: 1 }]}
+            ],
+      footer: {
+            columns: [
+            {text: 'Unidad de Publicidad – DCI - SMDE - GAMLP\nCalle Chichas – Edif. Espra, Piso 5, Miraflores.\n(Saliendo del puente de las Américas)\nTelf. 2650715', alignment: 'left',fontSize: 8 ,margin: [50, 10, 0, 0] },
+            {image: footerImage,width: 130},              
+              ],          
+            },		 
+      content: [
+        { text: 'FORMULARIO DE SOLICITUD DE PUBLICIDAD MÓVIL', fontSize: 11, alignment: 'center', bold: true },
+        { text: 'Código: ' + solicitud.vfrm_ser_codigo_servicio +  '      Fecha: ' + fechaFormateadaM, fontSize: 11, alignment: 'center', bold: true },
+        solicitud.vfrm_ser_dataformulario.tipoPersona === 'JURIDICO' ? [
+          { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
+          {
+            columns: [
+              { width: 150, text: 'NIT:', fontSize: 9, bold: true },
+              { width: '*', text: solicitud.vfrm_ser_dataformulario.nit, fontSize: 9 }
+            ]
+          },    
+          {
+            columns: [
+              { width: 150, text: 'Razón social:', fontSize: 9, bold: true },
+              { width: '*', text: solicitud.vfrm_ser_dataformulario.razonSocial, fontSize: 9 }
+            ]
+          }
+        ] : "",
+        { text: '\nDatos del solicitante', fontSize: 11, bold: true },
+        { columns: [
+          { width: 150, text: 'Nombre del solicitante:',fontSize: 9, bold: true },
+          { width: '*', text: nombre,fontSize: 9}
+        ]},
+        { columns: [
+          { width: 150, text: 'Cédula de identidad:',fontSize: 9, bold: true },
+          { width: '*', text: numDocumento,fontSize: 9 }
+        ]},
+        { columns: [
+          { width: 150, text: 'Correo electrónico:',fontSize: 9, bold: true },
+          { width: '*', text: solicitud.vfrm_ser_dataformulario.correo ,fontSize: 9}
+        ]},
+        { columns: [
+          { width: 150, text: 'Teléfono o Celular:',fontSize: 9, bold: true },
+          { width: '*', text: solicitud.vfrm_ser_dataformulario.celular,fontSize: 9 }
+        ]},
+        { text: '\nElementos moviles a registrar', fontSize: 11,bold: true },
+        {
+          style: 'tabla',
+          table: {
+            headerRows: 1,
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            body: contenidoTabla
+          },fontSize: 8
+        },
+        { text: '\nDECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO',fontSize: 11, bold: true },
+        { text: '\nYo ' + nombre + ', con Carnet de Identidad N° ' + numDocumento + ' expedido en ' + numExpedido + ', declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la Ley Municipal Autónoma N° 206/2016, los Decretos Municipales N° 007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, artículo 78 de la Ley 2492 del Código Tributario.' ,alignment: 'justify',fontSize: 10},      
+        { columns: [
+          { width: 300,text: '\n\n\n\n\n\n_____________________________________\nFirma del solicitante',fontSize: 9 },
+          { width: '*', text: 'SELLO DE REGISTRO EN EL SISTEMA\n\n\n\n\n\n_________________________________________\n\nFecha de registro: ______/______/________',fontSize: 9 },
+        ]},  
+        { text: '\n',fontSize: 11, bold: true },
+        { text: '\n',fontSize: 11, bold: true },
+        { text: '\nFOTOGRAFIAS ADJUNTAS',fontSize: 11, bold: true }
+      ]
+    };
+    for(var i=0;i < datosTabla.length ;i++)
     {
-      style: 'tabla',
-      table: {
-        headerRows: 1,
-        widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-        body: contenidoTabla
-      },fontSize: 8
-    },
-    { text: '\nDECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO',fontSize: 11, bold: true },
-    { text: '\nYo ' + nombre + ', con Carnet de Identidad N° ' + numDocumento + ' expedido en ' + numExpedido + ', declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la Ley Municipal Autónoma N° 206/2016, los Decretos Municipales N° 007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, artículo 78 de la Ley 2492 del Código Tributario.' ,alignment: 'justify',fontSize: 10},      
-    { columns: [
-      { width: 300,text: '\n\n\n\n\n\n_____________________________________\nFirma del solicitante',fontSize: 9 },
-      { width: '*', text: 'SELLO DE REGISTRO EN EL SISTEMA\n\n\n\n\n\n_________________________________________\n\nFecha de registro: ______/______/________',fontSize: 9 },
-    ]},  
-  ]
-};
-  // Generar el documento en formato PDF
-  var pdfDocGenerator = pdfMake.createPdf(docDefinition);
-  pdfDocGenerator.getDataUrl(function(dataUrl) {
-    // Actualizar el origen del iframe con el URL del PDF
-    var iframe = document.getElementById('viewPdf');
-    iframe.src = dataUrl;
-
-    // Abrir el modal
-    $('#pdfModal').modal('show');
-  });
+      var url = '';
+      if(datosTabla[i].adjuntos != undefined){
+        if(datosTabla[i].adjuntos[0].url != undefined){
+          url = datosTabla[i].adjuntos[0].url;
+        }else if(datosTabla[i].adjuntos[1].url != undefined){
+          url = datosTabla[i].adjuntos[1].url;
+        }else if(datosTabla[i].adjuntos[2].url != undefined){
+          url = datosTabla[i].adjuntos[2].url;
+        }
+        docDefinition.content.push(
+        [   { text: '\nFOTOGRAFÍA PUBLICIDAD ' + (i+1)+'\n',fontSize: 11, bold: true },
+            { text: '\n',fontSize: 11, bold: true },
+            {image: await getBase64ImageFromURL(url),width: 180,height: 180}
+        ]);
+      }
+    }    
+    // Generar el documento en formato PDF
+    var pdfDocGenerator = pdfMake.createPdf(docDefinition);
+    pdfDocGenerator.download("solicitudRegistroMovil");
+    $.unblockUI(); 
+    /*pdfDocGenerator.getDataUrl(function(dataUrl) {
+      // Actualizar el origen del iframe con el URL del PDF
+      var iframe = document.getElementById('viewPdf');
+      iframe.src = dataUrl;
+      $('#pdfModal').modal('show');
+    });*/
 };
 //********************************************** */
 $scope.generarPDFeventual = function(solicitud) {

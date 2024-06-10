@@ -84,10 +84,15 @@
             $('html,body').scrollTop(0);
             $('#guia').trigger('click');
         });
+
+        function iniciarLoadFyle(){
+            $('.custom-upload input[type=file]').change(function(){
+            $(this).next().find('input').val($(this).val());
+            angular.element(this).scope().cambiarFile(this, $(this).val());
+            });
+        }
     </script>
     <script src="../../libs/loading/loadingoverlay.js"></script>
-    <script src="../../libs/js/pdfmake.js"></script>
-    <script src="../../libs/js/vfs_fonts.js"></script>
     <script type="text/javascript" src="../../view/servicios/publicidad/solicitudSuspencioPublicidad/solicitudSuspencion.js"></script>
     
     <div ng-controller="solicitudSuspencionController"  data-ng-init="inicio();">
@@ -148,8 +153,8 @@
                                         {{tramite.vfrm_ser_registrado | date:'dd/MM/yy' }} 
                                     </td>
                                     <td data-title="'Imprimir formulario'" style="text-align:center">                           
-                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPdfSuspencion(tramite.vfrm_ser_dataformulario,tramite.vfrm_ser_codigo_servicio)" tooltip="Imprimir">
-                                            <i class="fa fa-print"></i>
+                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPdfSuspencionDoc(tramite.vfrm_ser_dataformulario,tramite.vfrm_ser_codigo_servicio)" tooltip="Descargar">
+                                            <i class="fa fa-download"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -347,8 +352,39 @@
                                             <td data-title="'Caracteristicas'" sortable="'caracteristica'" filter="{'caracteristica':'text'}">{{cooporativa.caracteristica}}</td>
                                             <td data-title="'Macrodistrito'" sortable="'Macrodistrito'" filter="{'Macrodistrito':'text'}">{{cooporativa.Macrodistrito}}</td>
                                             <td data-title="'Dirección'" sortable="'zona'" filter="{'zona':'text'}">Zona {{cooporativa.zona}} {{cooporativa.claseVia}} {{cooporativa.via}} {{cooporativa.numero}}</td>
-                                            <td data-title="'Caras'" sortable="'caras'" filter="{'caras':'text'}">{{cooporativa.caras}}</td>
-                                            <td data-title="'Superficie'" sortable="'superficie'" filter="{'superficie':'text'}">{{cooporativa.superficie}}</td>
+                                            <td data-title="'Caras'" sortable="'caras'" filter="{'caras':'text'}">
+                                                <div class="text-center">
+                                                    {{cooporativa.caras}}
+                                                </div>
+                                            </td>
+                                            <td data-title="'Superficie'" sortable="'superficie'" filter="{'superficie':'text'}">
+                                                <div class="text-center">
+                                                    {{cooporativa.superficie}}
+                                                </div>
+                                            </td>
+                                            <td data-title="'Fotografía'">
+                                                <div class="form-group custom-upload">
+                                                    <input type="file" id="f01_upload_publicidad_{{$index + 1}}" name="f01_upload_publicidad_{{$index + 1}}" accept="image/*"  style="display: none;">
+                                                    <div class="input-group">
+                                                        <input id="txt_f01_upload_publicidad_{{$index + 1}}" name="txt_f01_upload_publicidad_{{$index + 1}}" ng-model="cooporativa.adjunto"  type="text" placeholder="{{input.descripcion}}" class="form-control" disabled required>
+                                                        <span class="input-group-btn">
+                                                            <a id="href_f01_upload_publicidad_{{$index + 1}}" ng-show="cooporativa.url" href="{{cooporativa.url}}" target="_blank">
+                                                                <button id="btn_f01_upload_{{$index + 1}}" class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                            </a>
+                                                            <button id="btn_f01_upload_{{$index + 1}}"  ng-click="ejecutarFile('f01_upload_publicidad_' + ($index + 1),cooporativa.idPublicidad,'coorporativa')" class="btnupload browse btn btn-primary " type="button"><i class="glyphicon glyphicon-upload"></i> </button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-title="'Modificar'">
+                                                <div class="text-center">
+                                                    <button type="button" class="btn btn-danger btn-circle" ng-click="modificarPublicidad(cooporativa)" tooltip="Modificar Publicidad
+                                                    ">
+                                                        <i class="fa fa-edit"></i>
+                                                    </button>
+                                                </div>
+                                                
+                                            </td>
                                             <td data-title="'Seleccionar Publicidad para Suspención'" style="text-align:center"  filter="{'':'icono'}">
                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Baja" ng-model="cooporativa.solicitudSupencion">
                                             </td>
@@ -437,6 +473,34 @@
              </div>
         </div>
         <!-- Modal requisitos-->
+        <div class="modal fade bd-example-modal-sm" id="modificaPub" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Modificación Temporal de Datos Técnicos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label for="recipient-name" class="col-form-label">Nómero de Caras:</label>
+                                <input type="number" class="form-control" id="caras" ng-model="coorporativa.caras">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Superficie:</label>
+                                <input type="number" class="form-control" id="superficie" ng-model="coorporativa.superficie">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" ng-click="modificar(coorporativa);">Modificar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="modal fade" id="verRequisitos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">

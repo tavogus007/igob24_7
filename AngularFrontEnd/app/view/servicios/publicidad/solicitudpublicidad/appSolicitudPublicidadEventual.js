@@ -273,75 +273,75 @@ $scope.generarPDFeventual = function(solicitud) {
         numDocumento = $scope.datos.documento;
         numExpedido = $scope.datos.expedido;
     }
-  // Crear el documento PDF
-  var docDefinition = {
-		pageSize: 'letter',
-		pageMargins: [ 50, 90, 50, 100 ],
-		header: [        
-           {image: headerImage,width: 390},  	 
-            //{text: 'GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ',alignment: 'center',margin: [0,0]},
-            {canvas: [{ type: 'line', x1: 50, y1: 1, x2: 595-2*30, y2: 1, lineWidth: 1 }]}
-          ],
-    footer: {
-           columns: [
-			     {text: 'Unidad de Publicidad – DCI - SMDE - GAMLP\nCalle Chichas – Edif. Espra, Piso 5, Miraflores.\n(Saliendo del puente de las Américas)\nTelf. 2650715', alignment: 'left',fontSize: 8 ,margin: [50, 10, 0, 0] },
-			     {image: footerImage,width: 130},              
-            ],          
-          },
-    content: [
-      { text: 'FORMULARIO DE SOLICITUD DE PUBLICIDAD EVENTUAL', fontSize: 11, alignment: 'center', bold: true },
-      { text: 'Código: ' + solicitud.vfrm_ser_codigo_servicio +  '      Fecha: ' + fechaActual, fontSize: 11, alignment: 'center', bold: true },
-      $scope.datos.tipoPersona === 'JURIDICO' ? [
-        { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
+    // Crear el documento PDF
+    var docDefinition = {
+      pageSize: 'letter',
+      pageMargins: [ 50, 90, 50, 100 ],
+      header: [        
+            {image: headerImage,width: 390},  	 
+              //{text: 'GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ',alignment: 'center',margin: [0,0]},
+              {canvas: [{ type: 'line', x1: 50, y1: 1, x2: 595-2*30, y2: 1, lineWidth: 1 }]}
+            ],
+      footer: {
+            columns: [
+            {text: 'Unidad de Publicidad – DCI - SMDE - GAMLP\nCalle Chichas – Edif. Espra, Piso 5, Miraflores.\n(Saliendo del puente de las Américas)\nTelf. 2650715', alignment: 'left',fontSize: 8 ,margin: [50, 10, 0, 0] },
+            {image: footerImage,width: 130},              
+              ],          
+            },
+      content: [
+        { text: 'FORMULARIO DE SOLICITUD DE PUBLICIDAD EVENTUAL', fontSize: 11, alignment: 'center', bold: true },
+        { text: 'Código: ' + solicitud.vfrm_ser_codigo_servicio +  '      Fecha: ' + fechaActual, fontSize: 11, alignment: 'center', bold: true },
+        $scope.datos.tipoPersona === 'JURIDICO' ? [
+          { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
+          {
+            columns: [
+              { width: 150, text: 'NIT:', fontSize: 9, bold: true },
+              { width: '*', text: $scope.datos.nit, fontSize: 9 }
+            ]
+          },    
+          {
+            columns: [
+              { width: 150, text: 'Razón social:', fontSize: 9, bold: true },
+              { width: '*', text: $scope.datos.razonSocial, fontSize: 9 }
+            ]
+          }
+        ] : "",
+        { text: '\nDatos del solicitante', fontSize: 11, bold: true },
+        { columns: [
+          { width: 150, text: 'Nombre del solicitante:', fontSize: 9, bold: true },
+          { width: '*', text: nombre, fontSize: 9 }
+        ]},
+        { columns: [
+          { width: 150, text: 'Cédula de identidad:', fontSize: 9, bold: true },
+          { width: '*', text: numDocumento, fontSize: 9 }
+        ]},
+        { columns: [
+          { width: 150, text: 'Correo electrónico:', fontSize: 9, bold: true },
+          { width: '*', text: $scope.datos.correo , fontSize: 9}
+        ]},
+        { columns: [
+          { width: 150, text: 'Teléfono o Celular:', fontSize: 9, bold: true },
+          { width: '*', text: $scope.datos.celular + ' ' + cel_contacto , fontSize: 9}
+        ]},
+        { text: '\nTipo de evento en el que se emplazara la publicidad', fontSize: 11, bold: true },
+        { text: $scope.datos.f01_tipo_evento, fontSize: 9},
+        { text: '\nElementos publicitarios a emplazar eventualmente', fontSize: 11, bold: true },
         {
-          columns: [
-            { width: 150, text: 'NIT:', fontSize: 9, bold: true },
-            { width: '*', text: $scope.datos.nit, fontSize: 9 }
-          ]
-        },    
-        {
-          columns: [
-            { width: 150, text: 'Razón social:', fontSize: 9, bold: true },
-            { width: '*', text: $scope.datos.razonSocial, fontSize: 9 }
-          ]
-        }
-      ] : "",
-      { text: '\nDatos del solicitante', fontSize: 11, bold: true },
-      { columns: [
-        { width: 150, text: 'Nombre del solicitante:', fontSize: 9, bold: true },
-        { width: '*', text: nombre, fontSize: 9 }
-      ]},
-      { columns: [
-        { width: 150, text: 'Cédula de identidad:', fontSize: 9, bold: true },
-        { width: '*', text: numDocumento, fontSize: 9 }
-      ]},
-      { columns: [
-        { width: 150, text: 'Correo electrónico:', fontSize: 9, bold: true },
-        { width: '*', text: $scope.datos.correo , fontSize: 9}
-      ]},
-      { columns: [
-        { width: 150, text: 'Teléfono o Celular:', fontSize: 9, bold: true },
-        { width: '*', text: $scope.datos.celular + ' ' + cel_contacto , fontSize: 9}
-      ]},
-      { text: '\nTipo de evento en el que se emplazara la publicidad', fontSize: 11, bold: true },
-      { text: $scope.datos.f01_tipo_evento, fontSize: 9},
-      { text: '\nElementos publicitarios a emplazar eventualmente', fontSize: 11, bold: true },
-      {
-        style: 'tabla',
-        table: {
-          headerRows: 1,
-          widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 43, 43],
-          body: contenidoTabla
-        },fontSize: 8
-      },
-      { text: '\nDECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO',fontSize: 11, bold: true },
-      { text: '\nYo ' + nombre + ', con Carnet de Identidad N° ' + numDocumento + ' expedido en ' + numExpedido + ', declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la Ley Municipal Autónoma N° 206/2016, los Decretos Municipales N° 007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, artículo 78 de la Ley 2492 del Código Tributario.' ,alignment: 'justify',fontSize: 10},      
-      { columns: [
-      { width: 300,text: '\n\n\n\n\n\n_____________________________________\nFirma del solicitante',fontSize: 10 },
-      { width: '*', text: 'SELLO DE REGISTRO EN EL SISTEMA\n\n\n\n\n\n_________________________________________\n\nFecha de registro: ______/______/________',fontSize: 10 },
-    ]}, 
-    ]
-  };
+          style: 'tabla',
+          table: {
+            headerRows: 1,
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto', 43, 43],
+            body: contenidoTabla
+          },fontSize: 8
+        },
+        { text: '\nDECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO',fontSize: 11, bold: true },
+        { text: '\nYo ' + nombre + ', con Carnet de Identidad N° ' + numDocumento + ' expedido en ' + numExpedido + ', declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la Ley Municipal Autónoma N° 206/2016, los Decretos Municipales N° 007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, artículo 78 de la Ley 2492 del Código Tributario.' ,alignment: 'justify',fontSize: 10},      
+        { columns: [
+        { width: 300,text: '\n\n\n\n\n\n_____________________________________\nFirma del solicitante',fontSize: 10 },
+        { width: '*', text: 'SELLO DE REGISTRO EN EL SISTEMA\n\n\n\n\n\n_________________________________________\n\nFecha de registro: ______/______/________',fontSize: 10 },
+      ]}, 
+      ]
+    };
     // Generar el documento en formato PDF
     var pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getDataUrl(function(dataUrl) {

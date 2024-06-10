@@ -156,3 +156,34 @@ gCrearCasoSitramEnLinea.prototype.crearCasoEnLineaSitram = function (functionRes
     };
     ejecutarAjaxSitram(urlComp, typeCall, dataParams, functionResp);
 };
+
+
+function crearTramiteESitram() {
+  this.datos;
+  this.sub_tipotramite_id;
+  this.hoja_asunto;
+  this.fojas;
+  this.desc_fojas;    
+  this.usuario;
+  this.sistema_origen_id;
+  //this.tipo_hr;
+  //this.correlativo;
+  // this.nodo_origen;
+  //this.nodo_id;
+  //this.estado;
+};
+
+crearTramiteESitram.prototype.crearCasoEnLineaEsitram = function (functionResp){
+  urlComp = "/crearTramiteIgobEsitram";
+  typeCall = "post";
+  dataParams = {
+    "datos_dinamicos": this.datos,
+    "sub_tipotramite_id": this.sub_tipotramite_id,
+    "hoja_asunto": this.hoja_asunto,
+    "fojas": this.fojas,
+    "descrip_fojas": this.desc_fojas,
+    "usuario": this.usuario,
+    "sistema_origen_id": this.sistema_origen_id,
+  };
+  ejecutarAjaxSitram(urlComp, typeCall, dataParams, functionResp);
+}

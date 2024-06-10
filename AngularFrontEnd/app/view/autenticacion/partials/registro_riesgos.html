@@ -550,7 +550,7 @@ function validaCorreo (){
     title: 'Municipio',
         visible: true,
         source: new ol.source.TileWMS({
-            url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+            url: 'https://sitservicios.lapaz.bo/geoserver/wms',
             params: { 'LAYERS': 'g_municipio', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
             serverType: 'geoserver',
             crossOriginKeyword: 'anonymous'
@@ -584,7 +584,7 @@ function validaCorreo (){
         opacity: 0.5,
         visible: true,
         source: new ol.source.TileWMS({
-            url: 'http://sitservicios.lapaz.bo/geoserver/wms',
+            url: 'https://sitservicios.lapaz.bo/geoserver/wms',
             params: { 'LAYERS': 'g_riesgos_2011', 'VERSION': '1.1.1', 'FORMAT': 'image/png', 'TILED': true },
             serverType: 'geoserver',
             crossOriginKeyword: 'anonymous'

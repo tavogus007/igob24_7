@@ -1,8 +1,3 @@
-//var urlSITOL = "http://serviciosrs.lapaz.bo/wsSITOL";
-//var urlSITOL = "http://192.168.5.141:9098/wsSITOL";
-//var urlSITOL = "http://localhost:9091/wsSITOL";
-//var urlSITOL = "http://gmlppc06408:9091/wsSITOL";
-//var urlSITOL = "http://localhost:9091/wsSITOL";
 var wsMethodSITOL;
 var dataResp;
 var dataParams;
@@ -40,7 +35,6 @@ function ejecutarAjaxSITOL(vwsMethodSITOL, vTypeCall, vDataCall, vFunctionResp) 
 
 function dataSITOL(){
     this.ci
-
 };
 
 // ------------------------
@@ -931,6 +925,45 @@ dataSITOL.prototype.nroEnviosArquitectoPCv2 = function (
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
 };
 
+dataSITOL.prototype.pcv2GetIdPCSolicitud = function (
+    codigoCatastral,
+    functionResp)
+{
+    wsMethodSITOL = "/pcv2GetIdPCSolicitud";
+    typeCall = "post";
+    dataParams = {
+        "codigoCatastral":codigoCatastral,
+        "accion":"C4"
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.pcv2GetIdEncript = function (
+    idPCv2Solicitud,
+    functionResp)
+{
+    wsMethodSITOL = "/pcv2GetIdEncript";
+    typeCall = "post";
+    dataParams = {
+        "idPCv2Solicitud":idPCv2Solicitud,
+        "accion":"C5"
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+dataSITOL.prototype.pcv2VerifcaSolicitudEnCurso = function (
+    idPCv2Solicitud,
+    functionResp)
+{
+    wsMethodSITOL = "/pcv2VerifcaSolicitudEnCurso";
+    typeCall = "post";
+    dataParams = {
+        "idPCv2Solicitud":idPCv2Solicitud,
+        "accion":"C6"
+    };
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
 dataSITOL.prototype.pcv2Lst = function (solicitanteNroDoc, functionResp)
 {
     wsMethodSITOL = "/pcv2Solicitud";
@@ -959,5 +992,20 @@ dataSITOL.prototype.pcv2GetRestricciones = function (
         "accion":"C3"
     };
 
+    ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
+};
+
+
+//FSA 04/04/2024
+dataSITOL.prototype.getUltimaTarea = function (
+    idInsFlujo,
+    functionResp)
+{
+    wsMethodSITOL = "/getUltimaTarea";
+    typeCall = "post";
+    dataParams = {
+        "idInsFlujo" : idInsFlujo,
+        "accion" : "C6"
+    };
     ejecutarAjaxSITOL(wsMethodSITOL, typeCall, dataParams, functionResp);
 };

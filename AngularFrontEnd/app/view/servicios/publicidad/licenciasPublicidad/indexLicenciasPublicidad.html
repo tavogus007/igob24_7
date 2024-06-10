@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+</head>
+<body>
+    <style>
+        input:required:invalid {
+            border: 1px solid red;
+        }
+
+        input:required:valid {
+            border: 1px solid green;
+        }
+
+        .form-group {
+            padding-left: 8px;
+        }
+
+        .box2 {
+            display: inline-block;
+            width: 190px;
+            margin: 2px;
+        }
+
+        .ng-table th {
+            text-align: left !important;
+        }
+       
+        
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('html,body').scrollTop(0);
+            $('#guia').trigger('click');
+        });
+    </script>
+    <script src="../../libs/loading/loadingoverlay.js"></script>
+    <script src="../../libs/js/pdfmake.js"></script>
+    <script src="../../libs/js/vfs_fonts.js"></script>
+    <script type="text/javascript" src="../../view/servicios/publicidad/licenciasPublicidad/licenciasPublicidad.js"></script>
+    
+    <div ng-controller="solicitudBajaController"  data-ng-init="inicio();">
+        <div class="col-md-12"><br>
+            <div class="ibox-content" id="caja">
+                <div class="row"><br>
+                    <div class="col-sm-12">
+                        <div class="ibox-title">
+                            <h5>LISTADO DE LICENCIAS DE PUBLICIDAD VIGENTES</h5>
+                        </div>
+                    </div>
+                </div><br><br>
+                <div class="row">
+                    <div class="col-sm-12 b-r">
+                        <div class="table-responsive">
+                            <table ng-table="tblLicencias" class="table  table-hover" >
+                                <tr style="cursor: pointer;" ng-repeat="publicidad in $data  | filter:query " ng-style="publicidad.idPublicidad==idpublicidad && {'background-color':'#C1F4F7','font-color':'#A2D5AE'}">                                            
+                                    <td data-title="'ID Publicidad'"> {{publicidad.idPublicidad}}</td>
+                                    <td data-title="'ID Licencia'"> {{publicidad.idLicencia}}</td>
+                                    <td data-title="'Categoría'"> {{publicidad.categoria}}</td>
+                                    <td data-title="'Tipo'"> {{publicidad.tipo}}</td>
+                                    <td data-title="'Dirección/Placa'">{{publicidad.direccionPlaca}}</td>
+                                    <td data-title="'Superficie'"> {{publicidad.superficie}}</td>
+                                    <td data-title="'Fecha de Emision'"> {{publicidad.emision | date:'d/M/yy'}}</td>
+                                    <td data-title="'Fecha de Vencimiento'"> {{publicidad.vencimiento | date:'d/M/yy'}}</td>
+                                    <td data-title="'Ver Licencias'" style="text-align:center">                           
+                                        <button type="button" class="btn btn-primary btn-circle" ng-click="verLicencia(publicidad)" tooltip="Imprimir">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+</body>

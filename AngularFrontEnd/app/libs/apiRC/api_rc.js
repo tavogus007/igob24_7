@@ -2042,3 +2042,74 @@ rcTramitesAtmId.prototype.obtTramitesAtmId = function (functionResp)
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
 }
 
+
+
+//*************************AGENTES DE INFORMACION*******************************/
+function formularioDatos(){
+  this.idTramite;
+  this.enviado;
+  this.codigo;
+  this.idusuario;
+  this.datos;
+};
+
+formularioDatos.prototype.actualizaFormularioDatos = function (functionResp)
+{
+  urlComp = "/actualizarFormProcesos";
+  typeCall = "post";
+  dataParams = {
+    "idTramite": this.idTramite,
+    "enviado": this.enviado,
+    "codigo": this.codigo,
+    "idusuario": this.idusuario,
+    "datos": this.datos
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+}
+function buscarAgentes(){
+  this.oid;
+  this.mes;
+  this.gestion;
+};
+
+buscarAgentes.prototype.buscarRegistroAgentes = function (functionResp)
+{
+  urlComp = "/buscarRegistroAgentes";
+  typeCall = "post";
+  dataParams = {
+    "oid": this.oid,
+    "mes": this.mes,
+    "gestion": this.gestion
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+}
+
+datosFormularios.prototype.logFallecidosCementerio=function(tipo_ingreso,resultado,parametros,functionResp){
+  try{
+    urlComp = "/addlogsFallecidosCementerio";
+    typeCall = "post";
+    dataParams= {
+        "tipo_ingreso" : tipo_ingreso,
+        "resultado" : JSON.stringify(resultado),
+        "parametros" : JSON.stringify(parametros)
+    };
+    console.log(dataParams,resultado,parametros);
+    ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+  } catch(ex){
+    console.log(ex);
+  }
+};
+
+//******************************VALIDAR ENVIO*******************************//
+function validacionTramite(){
+  this.nroTramite;
+}
+
+validacionTramite.prototype.validacionEnvioTramite = function (functionResp){
+  urlComp = "/validacionEnvioTramite"
+  typeCall = "post";
+  dataParams = {
+    "nroTramite": this.nroTramite
+  };
+  ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};

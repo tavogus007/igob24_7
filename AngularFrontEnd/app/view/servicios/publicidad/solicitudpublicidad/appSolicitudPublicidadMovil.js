@@ -1,4 +1,4 @@
-function solicitudPublicidadController($scope,sessionService, CONFIG,ngTableParams, $filter, $location,$http) {
+function solicitudPublicidadController($scope,sessionService, CONFIG,ngTableParams, $filter, $location,$http,fileUpload1) {
   $scope.fechaActual = "";
   $scope.idTramite = 0;
   $scope.datos = {};
@@ -118,41 +118,51 @@ function verificarKeyPress(captch) {
 }
 /***********************************FIN CAPTCHA**********************/
   $scope.guardarSolicitud = function(datos){
-      if ($scope.validarCamposLlenos()) {         
+      if ($scope.validarCamposLlenos()) {   
+        $.blockUI({ css: { 
+                      border: 'none', 
+                      padding: '10px', 
   
-      //$.blockUI();    
-      datos.origen_solicitud = "igob";     
-      datos.listamoviles=$scope.inputs;
-      var creaSolicitud = new adicionaRegistroSolicitud();
-      creaSolicitud.cod_servicio = 'PUB-M';
-      creaSolicitud.id_usuario = 3;
-      creaSolicitud.data_formulario = JSON.stringify($scope.datos);
-      creaSolicitud.enviado = "SI";   
-      //creaSolicitud.vfrm_ser_dataformulario.listamoviles;    
-      console.log($scope.datos); 
-      try {
-          creaSolicitud.adicionaRegistroSolicitudServicio(function(res){
-              var respuesta = (JSON.parse(res)).success;
-              console.log("RESPUESTA:",respuesta);
-              if(respuesta.length  > 0){                  
-                  sessionService.set('IDTRAMITE', respuesta[0].vfrm_ser_id);
-                  sessionService.set('CODTRAMITE', respuesta[0].vfrm_ser_codigo_servicio);   
-                  swal("Señor(a) Ciudadano(a) su solicitud fue registrado correctamente.", "Número de registro: " + respuesta[0].vfrm_ser_codigo_servicio + ". Imprima y firme el formulario para su presentación en Oficinas de Publicidad, adjuntando documentación requerida, en un folder amarillo con fastenes, foliadas de la última a la primera página.");                    
-                  $scope.limpiaCampos();
-                  $scope.generarPDFmovil(respuesta[0]);
-                  $scope.mostrarPdf = true;
-                  $scope.formVisible = false;
-                }
-              else{
-                  $.unblockUI();         
-              }
-          })
-      } catch (error) {
-          swal('','Ocurrio un error....','error')
-          console.error('Ocurrió un error:', error);
-          $.unblockUI();
-      } 
-  }
+                      backgroundColor: '#000', 
+                      '-webkit-border-radius': '10px', 
+                      '-moz-border-radius': '10px', 
+                      opacity: .5, 
+                      color: '#fff' 
+                  },message: "Espere un momento por favor ..." }); 
+          setTimeout(function(){
+            datos.origen_solicitud = "igob";     
+            datos.listamoviles=$scope.inputs;
+            var creaSolicitud = new adicionaRegistroSolicitud();
+            creaSolicitud.cod_servicio = 'PUB-M';
+            creaSolicitud.id_usuario = 3;
+            creaSolicitud.data_formulario = JSON.stringify($scope.datos);
+            creaSolicitud.enviado = "SI";   
+            //creaSolicitud.vfrm_ser_dataformulario.listamoviles;    
+            console.log($scope.datos); 
+            try {
+                creaSolicitud.adicionaRegistroSolicitudServicio(function(res){
+                    var respuesta = (JSON.parse(res)).success;
+                    console.log("RESPUESTA:",respuesta);
+                    if(respuesta.length  > 0){                  
+                        sessionService.set('IDTRAMITE', respuesta[0].vfrm_ser_id);
+                        sessionService.set('CODTRAMITE', respuesta[0].vfrm_ser_codigo_servicio);   
+                        swal("Señor(a) Ciudadano(a) su solicitud fue registrado correctamente. ", "Número de registro: " + respuesta[0].vfrm_ser_codigo_servicio + ". Imprima y firme el formulario para su presentación en Oficinas de Publicidad, adjuntando documentación requerida, en un folder amarillo con fastenes, foliadas de la última a la primera página.");                    
+                        $scope.limpiaCampos();
+                        generarPDFmovil(respuesta[0]);
+                        $scope.formVisible = false;
+                        
+                      }
+                    else{
+                        $.unblockUI();         
+                    }
+                })
+            } catch (error) {
+                swal('','Ocurrio un error....','error')
+                console.error('Ocurrió un error:', error);
+                $.unblockUI();
+            }
+          }, 3000); 
+      }
   }    
   //**********************************            
   $scope.limpiaCampos = function(){
@@ -213,134 +223,288 @@ $scope.eliminarInput = function(index) {
     }
     return true;
   };
-   //********************************************** */
-$scope.generarPDFmovil = function(solicitud) {
+//********************************************** */
+async function  generarPDFmovil(solicitud) {
+  try {
+    // Obtener los datos de la variable JSON
+    var datosTabla = $scope.datos.listamoviles;
+    var tipo_via = "";
+    var cel_contacto = "";
+    var nombre = "";
+    var numDocumento = "";
+    // Crear el contenido de la tabla
+    var contenidoTabla = [];
+    // Encabezado de la tabla
+    var encabezado = [
+      { text: '#', style: 'tablaEncabezado' ,alignment: 'center'},  
+      { text: 'Tipo letrero', style: 'tablaEncabezado',alignment: 'center' },
+      { text: 'Característica', style: 'tablaEncabezado',alignment: 'center' },    
+      { text: 'Marca', style: 'tablaEncabezado',alignment: 'center' },
+      { text: 'Placa', style: 'tablaEncabezado' ,alignment: 'center'},
+      { text: 'Vistas', style: 'tablaEncabezado' ,alignment: 'center'},
+      { text: 'Superficie en m2', style: 'tablaEncabezado',alignment: 'center' }
+    ];
+    contenidoTabla.push(encabezado);
+    
+    // Filas de la tabla
+    datosTabla.forEach(function(dato, index) {
 
-  // Obtener los datos de la variable JSON
-  var datosTabla = $scope.datos.listamoviles;
-  var tipo_via = "";
-  var cel_contacto = "";
-  var nombre = "";
-  var numDocumento = "";
-  // Crear el contenido de la tabla
-  var contenidoTabla = [];
-   // Encabezado de la tabla
-  var encabezado = [
-    { text: '#', style: 'tablaEncabezado' ,alignment: 'center'},  
-    { text: 'Tipo letrero', style: 'tablaEncabezado',alignment: 'center' },
-    { text: 'Característica', style: 'tablaEncabezado',alignment: 'center' },    
-    { text: 'Marca', style: 'tablaEncabezado',alignment: 'center' },
-    { text: 'Placa', style: 'tablaEncabezado' ,alignment: 'center'},
-    { text: 'Vistas', style: 'tablaEncabezado' ,alignment: 'center'},
-    { text: 'Superficie en m2', style: 'tablaEncabezado',alignment: 'center' }
-  ];
-  contenidoTabla.push(encabezado);
-  
-// Filas de la tabla
-datosTabla.forEach(function(dato, index) {
-
-  var fila = [
-    { text: (index + 1).toString(), alignment: 'center' }, // Numeración de las filas
-     dato.categoria.descripcion,
-     dato.idTipoLetrero.caracteristica,  
-     dato.marca,
-     dato.placa,
-     dato.vistas.toString(),
-     dato.superficie.toString()      
-  ];
-  contenidoTabla.push(fila);
-});
-  var fechaact = new Date();
-  var dia=fechaact.getDate();
-  var mes=fechaact.getMonth()+1;
-  var anio=fechaact.getFullYear();
-  var fechaActual = dia.toString().padStart(2, '0') + '/' + mes.toString().padStart(2, '0') + '/' + anio;
-  if($scope.datos.f01_cel_contacto) cel_contacto = ' - '+ $scope.datos.f01_cel_contacto; else cel_contacto = "";
-  if($scope.datos.tipoPersona == 'JURIDICO') {
-    nombre =$scope.datos.nombreRepresentante +' '+  $scope.datos.primerApRepresentante +' '+  $scope.datos.secundoApRepresentante;
-    numDocumento = $scope.datos.documentoRepresentante;  
-    numExpedido = $scope.datos.expedidoRepresentante;
+      var fila = [
+        { text: (index + 1).toString(), alignment: 'center' }, // Numeración de las filas
+        dato.categoria.descripcion,
+        dato.idTipoLetrero.caracteristica,  
+        dato.marca,
+        dato.placa,
+        dato.vistas.toString(),
+        dato.superficie.toString()      
+      ];
+      contenidoTabla.push(fila);
+    });
+    var fechaact = new Date();
+    var dia=fechaact.getDate();
+    var mes=fechaact.getMonth()+1;
+    var anio=fechaact.getFullYear();
+    var fechaActual = dia.toString().padStart(2, '0') + '/' + mes.toString().padStart(2, '0') + '/' + anio;
+    if($scope.datos.f01_cel_contacto) cel_contacto = ' - '+ $scope.datos.f01_cel_contacto; else cel_contacto = "";
+    if($scope.datos.tipoPersona == 'JURIDICO') {
+      nombre =$scope.datos.nombreRepresentante +' '+  $scope.datos.primerApRepresentante +' '+  $scope.datos.secundoApRepresentante;
+      numDocumento = $scope.datos.documentoRepresentante;  
+      numExpedido = $scope.datos.expedidoRepresentante;
     }
     else {
       nombre = $scope.datos.nombres + ' ' + $scope.datos.primerApellido+' '+ $scope.datos.segundoApellido;
       numDocumento = $scope.datos.documento;
       numExpedido = $scope.datos.expedido;
     }
-  // Crear el documento PDF
-  var docDefinition = {
-		pageSize: 'letter',
-		pageMargins: [ 50, 90, 50, 100 ],
-		header: [        
-           {image: headerImage,width: 390},  	 
-            //{text: 'GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ',alignment: 'center',margin: [0,0]},
-            {canvas: [{ type: 'line', x1: 50, y1: 1, x2: 595-2*30, y2: 1, lineWidth: 1 }]}
-          ],
-    footer: {
-           columns: [
-			     {text: 'Unidad de Publicidad – DCI - SMDE - GAMLP\nCalle Chichas – Edif. Espra, Piso 5, Miraflores.\n(Saliendo del puente de las Américas)\nTelf. 2650715', alignment: 'left',fontSize: 8 ,margin: [50, 10, 0, 0] },
-			     {image: footerImage,width: 130},              
-            ],          
-          },
-    content: [
-      { text: 'FORMULARIO DE SOLICITUD DE PUBLICIDAD MÓVIL', fontSize: 11, alignment: 'center', bold: true },
-      { text: 'Código: ' + solicitud.vfrm_ser_codigo_servicio +  '      Fecha: ' + fechaActual, fontSize: 11, alignment: 'center', bold: true },
-      $scope.datos.tipoPersona === 'JURIDICO' ? [
-        { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
+    // Crear el documento PDF
+    var docDefinition = {
+      pageSize: 'letter',
+      pageMargins: [ 50, 90, 50, 100 ],
+      header: [        
+            {image: headerImage,width: 390},  	 
+              //{text: 'GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ',alignment: 'center',margin: [0,0]},
+              {canvas: [{ type: 'line', x1: 50, y1: 1, x2: 595-2*30, y2: 1, lineWidth: 1 }]}
+            ],
+      footer: {
+            columns: [
+            {text: 'Unidad de Publicidad – DCI - SMDE - GAMLP\nCalle Chichas – Edif. Espra, Piso 5, Miraflores.\n(Saliendo del puente de las Américas)\nTelf. 2650715', alignment: 'left',fontSize: 8 ,margin: [50, 10, 0, 0] },
+            {image: footerImage,width: 130},              
+              ],          
+            },
+      content: [
+        { text: 'FORMULARIO DE SOLICITUD DE PUBLICIDAD MÓVIL', fontSize: 11, alignment: 'center', bold: true },
+        { text: 'Código: ' + solicitud.vfrm_ser_codigo_servicio +  '      Fecha: ' + fechaActual, fontSize: 11, alignment: 'center', bold: true },
+        $scope.datos.tipoPersona === 'JURIDICO' ? [
+          { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
+          {
+            columns: [
+              { width: 150, text: 'NIT:', fontSize: 9, bold: true },
+              { width: '*', text: $scope.datos.nit, fontSize: 9 }
+            ]
+          },    
+          {
+            columns: [
+              { width: 150, text: 'Razón social:', fontSize: 9, bold: true },
+              { width: '*', text: $scope.datos.razonSocial, fontSize: 9 }
+            ]
+          }
+        ] : "",
+        { text: '\nDatos del solicitante', fontSize: 11, bold: true },
+        { columns: [
+          { width: 150, text: 'Nombre del solicitante:', fontSize: 9, bold: true },
+          { width: '*', text: nombre, fontSize: 9 }
+        ]},
+        { columns: [
+          { width: 150, text: 'Cédula de identidad:', fontSize: 9, bold: true },
+          { width: '*', text: numDocumento, fontSize: 9 }
+        ]},
+        { columns: [
+          { width: 150, text: 'Correo electrónico:', fontSize: 9, bold: true },
+          { width: '*', text: $scope.datos.correo, fontSize: 9 }
+        ]},
+        { columns: [
+          { width: 150, text: 'Teléfono o Celular:', fontSize: 9, bold: true },
+          { width: '*', text: $scope.datos.celular, fontSize: 9 }
+        ]},
+        { text: '\nElementos moviles a registrar', fontSize: 9, bold: true },
         {
-          columns: [
-            { width: 150, text: 'NIT:', fontSize: 9, bold: true },
-            { width: '*', text: $scope.datos.nit, fontSize: 9 }
-          ]
-        },    
-        {
-          columns: [
-            { width: 150, text: 'Razón social:', fontSize: 9, bold: true },
-            { width: '*', text: $scope.datos.razonSocial, fontSize: 9 }
-          ]
+          style: 'tabla',
+          table: {
+            headerRows: 1,
+            widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
+            body: contenidoTabla
+          },fontSize: 9
+        },
+        { text: '\nDECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO',fontSize: 11, bold: true },
+        { text: '\nYo ' + nombre + ', con Carnet de Identidad N° ' + numDocumento + ' expedido en ' + numExpedido + ', declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la Ley Municipal Autónoma N° 206/2016, los Decretos Municipales N° 007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, artículo 78 de la Ley 2492 del Código Tributario.' ,alignment: 'justify',fontSize: 9},      
+        { columns: [
+          { width: 300,text: '\n\n\n\n\n\n_____________________________________\nFirma del solicitante',fontSize: 9 },
+          { width: '*', text: '\nSELLO DE REGISTRO EN EL SISTEMA\n\n\n\n\n_________________________________________\n\nFecha de registro: ______/______/________',fontSize: 9 },
+        ]},
+        { text: '\n',fontSize: 11, bold: true },
+        { text: '\n',fontSize: 11, bold: true },
+        { text: '\nFOTOGRAFIAS ADJUNTAS',fontSize: 11, bold: true }
+      ]
+    };
+    for(var i=0;i < datosTabla.length ;i++)
+    {
+      console.log("datosTabla ",i,datosTabla[i]);
+      var url = '';
+      alert(3333);
+      console.log("datosTabla[i].adjuntos",datosTabla[i].adjuntos);
+      if(datosTabla[i].adjuntos != undefined){
+        docDefinition.content.push(
+          [   { text: '\nFOTOGRAFÍA PUBLICIDAD ' + (i+1)+'\n',fontSize: 11, bold: true },
+        ]);
+        for (let index = 0; index < datosTabla[i].adjuntos.length; index++) {
+          if(datosTabla[i].adjuntos[index].url != undefined){
+            url = datosTabla[i].adjuntos[index].url;
+            docDefinition.content.push(
+            [   { text: '\n',fontSize: 11, bold: true },
+                {image: await getBase64ImageFromURL(url),width: 180,height: 180}
+            ]);
+          }
         }
-      ] : "",
-      { text: '\nDatos del solicitante', fontSize: 11, bold: true },
-      { columns: [
-        { width: 150, text: 'Nombre del solicitante:', fontSize: 9, bold: true },
-        { width: '*', text: nombre, fontSize: 9 }
-      ]},
-      { columns: [
-        { width: 150, text: 'Cédula de identidad:', fontSize: 9, bold: true },
-        { width: '*', text: numDocumento, fontSize: 9 }
-      ]},
-      { columns: [
-        { width: 150, text: 'Correo electrónico:', fontSize: 9, bold: true },
-        { width: '*', text: $scope.datos.correo, fontSize: 9 }
-      ]},
-      { columns: [
-        { width: 150, text: 'Teléfono o Celular:', fontSize: 9, bold: true },
-        { width: '*', text: $scope.datos.celular, fontSize: 9 }
-      ]},
-      { text: '\nElementos moviles a registrar', fontSize: 9, bold: true },
-      {
-        style: 'tabla',
-        table: {
-          headerRows: 1,
-          widths: ['auto', 'auto', 'auto', 'auto', 'auto', 'auto', 'auto'],
-          body: contenidoTabla
-        },fontSize: 9
-      },
-      { text: '\nDECLARACIÓN DE VERACIDAD DE LA INFORMACIÓN DEL PRESENTE FORMULARIO',fontSize: 11, bold: true },
-      { text: '\nYo ' + nombre + ', con Carnet de Identidad N° ' + numDocumento + ' expedido en ' + numExpedido + ', declaro la veracidad de los datos expresados en el presente formulario, conforme a lo establecido en la Ley Municipal Autónoma N° 206/2016, los Decretos Municipales N° 007/2007-014/2018 y Reglamento de Publicidad Urbana (REPU), el presente formulario cuenta con calidad de Declaración Jurada conforme a parágrafo I, artículo 78 de la Ley 2492 del Código Tributario.' ,alignment: 'justify',fontSize: 9},      
-      { columns: [
-      { width: 300,text: '\n\n\n\n\n\n_____________________________________\nFirma del solicitante',fontSize: 9 },
-      { width: '*', text: '\nSELLO DE REGISTRO EN EL SISTEMA\n\n\n\n\n_________________________________________\n\nFecha de registro: ______/______/________',fontSize: 9 },
-    ]},
-    ]
-  };
+      }
+      console.log(i,docDefinition);
+    }    
     // Generar el documento en formato PDF
     var pdfDocGenerator = pdfMake.createPdf(docDefinition);
-    pdfDocGenerator.getDataUrl(function(dataUrl) {
-      // Actualizar el origen del iframe con el URL del PDF
-      var iframe = document.getElementById('viewPdf');
-      iframe.src = dataUrl;
-  
-      
+    console.log("pdfDocGenerator",pdfDocGenerator);
+    pdfDocGenerator.download("solicitudRegistroMovil");
+    $.unblockUI(); 
+    window.location.href = "#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudpublicidad/indexSolicitudPublicidad.html";
+   // $location.url("#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudpublicidad/indexSolicitudPublicidad.html");
+
+  } catch (error) {
+    console.log("error",error);    
+  }
+};
+
+  function getBase64ImageFromURL(url) { 
+    return new Promise((resolve, reject) => {
+      var img = new Image();
+      img.setAttribute("crossOrigin", "anonymous");
+      img.onload = () => {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        console.log("dataURL11",dataURL);
+        resolve(dataURL);
+      };
+      img.onerror = error => {
+        reject(error);
+      };
+      img.src = url;
+    });
+  }
+
+  $scope.abrirModalAdjunto = function(index,posicion){
+    $scope.pos = posicion;
+    console.log("index",index,"dettt",$scope.pos);
+    setTimeout(function(){
+      iniciarLoadFyle();
+    }, 1000);
+    if(index.adjuntos){
+      $scope.adjuntos = index.adjuntos;
+    }else{
+      $scope.adjuntos = [{"nombre":"Fotografía 1"},{"nombre":"Fotografía 2"},{"nombre":"Fotografía 3"}]
+    }
+    $('#modalAdjunto').modal('show');
+  }
+
+  $scope.guardarAdjuntos = function(adj){
+    var count = 0;
+    for(var i=0;i<adj.length;i++){
+      if(adj[i].url != undefined && adj[i].url != ""){
+        count++;
+      }  
+    }  
+    if(count > 0){
+      $scope.inputs[$scope.pos].adjuntos = adj;
+      $('#modalAdjunto').modal('hide');
+      swal("","Se registro correcto las fotografías","success");    
+    }else{
+      $('#modalAdjunto').modal('show');
+      swal("Error","Debe adjuntar por lo menos una fotografía","error");    
+    }  
+  }
+ ////////////////////////////////////////////////////////
+  //////////////////////IMAGENES/////////////////////////
+  $scope.ejecutarFile = function(idfile,idInput){
+    var sid =   document.getElementById(idfile);
+    $scope.idAdjunto = idInput;
+    if(sid){
+        document.getElementById(idfile).click();
+    }else{
+        alert("Error ");
+    }
+  };
+
+  $scope.cambiarFile = function(obj, valor){
+    $scope.datos[obj.name] = valor;
+    $scope.subirRequisitos(obj, valor);
+  };
+
+  $scope.subirRequisitos  =   function(sobj, svalor){
+    var rMisDocs = new Array();
+    var idFiles = new Array();
+    if(sobj.files[0]){
+      rMisDocs.push(sobj.files[0]);
+      var idFile = sobj.name;
+      var tam = idFile.length;
+      idFile = parseInt(idFile.substring(10,tam));
+      idFiles.push(idFile);
+      $scope.almacenarRequisitos(rMisDocs,idFiles);
+    }
+  };
+
+  $scope.almacenarRequisitos = function(aArchivos,idFiles){
+    var fechaNueva = "";
+    var fechaserver = new fechaHoraServer(); 
+    fechaserver.fechahora(function(resp){
+        var sfecha = JSON.parse(resp);
+        var fechaServ = (sfecha.success.fecha).split(' ');
+        var fecha_ = fechaServ[0].split('-');
+        var hora_ = fechaServ[1].split(':');
+        fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
+    });
+    $scope.oidCiudadano = "57798e472f59181eb286f642";//sessionService.get('IDCIUDADANO'); CAMBIAR AL SUBIR A PRODUCCION
+    $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano + "/PUBLICIDAD";
+    var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/";
+    $.blockUI();
+    angular.forEach(aArchivos, function(archivo, key) {
+      var descDoc = "caras_" + ($scope.idAdjunto+1);
+      if(typeof(archivo) != 'undefined'){
+          var imagenNueva = archivo.name.split('.');
+          var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
+          if (archivo.size <= 5000000) {
+            if (imagenNueva[imagenNueva.length-1].toLowerCase() == 'png' || imagenNueva[imagenNueva.length-1].toLowerCase() == 'jpg' || imagenNueva[imagenNueva.length-1].toLowerCase() == 'jpeg' || imagenNueva[imagenNueva.length-1].toLowerCase() == 'bmp' || imagenNueva[imagenNueva.length-1].toLowerCase() == 'gif') {
+              var urlDoc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + nombreFileN + "?app_name=todoangular";
+              fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
+              setTimeout(function(){
+                console.log($scope.adjuntos[$scope.idAdjunto],"12222",$scope.idAdjunto);
+                $scope.adjuntos[$scope.idAdjunto].url = urlDoc;
+                $scope.adjuntos[$scope.idAdjunto].nombre_adjunto = nombreFileN;
+                $scope.$apply();
+              }, 1000);
+              $.unblockUI();
+            } else{
+              $.unblockUI();
+              swal('Advertencia', 'El archivo  no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+            };
+          };
+          if (archivo.size > 5000000) {
+              $.unblockUI();
+              swal('Advertencia', 'El tamaño del archivo es muy grande', 'error');
+          };
+      }else{
+        swal('Advertencia', 'No se encontro ninguna imagen', 'error');
+      }
     });
   };
+
 }

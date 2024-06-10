@@ -84,13 +84,53 @@
             $('html,body').scrollTop(0);
             $('#guia').trigger('click');
         });
+        function iniciarLoadFyle(){
+            $('.custom-upload input[type=file]').change(function(){
+            $(this).next().find('input').val($(this).val());
+            angular.element(this).scope().cambiarFile(this, $(this).val());
+            });
+        }
     </script>
     <script src="../../libs/loading/loadingoverlay.js"></script>
-    <script src="../../libs/js/pdfmake.js"></script>
-    <script src="../../libs/js/vfs_fonts.js"></script>
     <script type="text/javascript" src="../../view/servicios/publicidad/solicitudBajaPublicidad/solicitudBaja.js"></script>
     
     <div ng-controller="solicitudBajaController"  data-ng-init="inicio();">
+        <div id="modalAdjunto" class="modal fade" role="dialog">
+            <div class="modal-dialog">  
+            <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Fotografías de Publicidad</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div ng-repeat="adjunto in adjuntos">
+                                    <div class="form-group custom-upload">
+                                        <label>{{adjunto.nombre}}</label>
+                                        <input type="file" id="f01_upload_publicidad_{{$index +1}}" name="f01_upload_publicidad_{{$index +1}}" accept="image/*"  style="display: none;">
+                                        <div class="input-group">
+                                            <input id="txt_f01_upload_publicidad_{{$index +1}}" name="txt_f01_upload_publicidad_{{$index +1}}" ng-model="adjunto.nombre_adjunto"  type="text"  class="form-control" disabled required>
+                                            <span class="input-group-btn">
+                                                <a id="href_f01_upload_publicidad_{{$index +1}}" ng-show="adjunto.url" href="{{adjunto.url}}" target="_blank">
+                                                    <button id="btn_f01_upload_{{$index +1}}" class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                </a>
+                                                <button id="btn_f01_upload_{{$index +1}}"  ng-click="ejecutarFile('f01_upload_publicidad_' + ($index+1),$index,'movil')" class="btnupload browse btn btn-primary " type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                            </span>
+                                        </div>
+                                    </div><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="guardarAdjuntos(adjuntos)">Guardar Fotografias</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>  
+            </div>
+        </div>
         <div class="col-md-12"><br>
             <div class="ibox-content" id="caja">
                 <div class="row"><br>
@@ -148,8 +188,8 @@
                                         {{tramite.vfrm_ser_registrado | date:'dd/MM/yy' }} 
                                     </td>
                                     <td data-title="'Imprimir formulario'" style="text-align:center">                           
-                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPdfBaja(tramite.vfrm_ser_dataformulario,tramite.vfrm_ser_codigo_servicio)" tooltip="Imprimir">
-                                            <i class="fa fa-print"></i>
+                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPdfBajaDoc(tramite.vfrm_ser_dataformulario,tramite.vfrm_ser_codigo_servicio)" tooltip="Descargar">
+                                            <i class="fa fa-download"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -159,9 +199,11 @@
                     <div class="col-md-12">
                         <br>
                     </div>
-
-                    <div class="col-md-12" ng-show="mostrarFormulario == true">
-                        <div class="col-md-12 row principal ">
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 b-r" ng-show="mostrarFormulario == true">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-10  principal ">
                             <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
                                 <h4><b>REGISTRO DE SOLICITUD BAJA DE PUBLICIDAD</b></h4><br>
                             </div>  
@@ -365,6 +407,20 @@
                                                 <td data-title="'Dirección'" sortable="'zona'" filter="{'zona':'text'}">Zona {{cooporativa.zona}} {{cooporativa.claseVia}} {{cooporativa.via}} {{cooporativa.numero}}</td>
                                                 <td data-title="'Caras'" sortable="'caras'" filter="{'caras':'text'}">{{cooporativa.caras}}</td>
                                                 <td data-title="'Superficie'" sortable="'superficie'" filter="{'superficie':'text'}">{{cooporativa.superficie}}</td>
+                                                <td data-title="'Fotografía'">
+                                                    <div class="form-group custom-upload">
+                                                        <input type="file" id="f01_upload_publicidad_{{$index + 1}}" name="f01_upload_publicidad_{{$index + 1}}" accept="image/*"  style="display: none;">
+                                                        <div class="input-group">
+                                                            <input id="txt_f01_upload_publicidad_{{$index + 1}}" name="txt_f01_upload_publicidad_{{$index + 1}}" ng-model="cooporativa.adjunto"  type="text" placeholder="{{input.descripcion}}" class="form-control" disabled required>
+                                                            <span class="input-group-btn">
+                                                                <a id="href_f01_upload_publicidad_{{$index + 1}}" ng-show="cooporativa.url" href="{{cooporativa.url}}" target="_blank">
+                                                                    <button id="btn_f01_upload_{{$index + 1}}" class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                </a>
+                                                                <button id="btn_f01_upload_{{$index + 1}}"  ng-click="ejecutarFile('f01_upload_publicidad_' + ($index + 1),cooporativa.idPublicidad,'coorporativa')" class="btnupload browse btn btn-primary " type="button"><i class="glyphicon glyphicon-upload"></i> </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td data-title="'Seleccione Publicidad para baja'" style="text-align:center" filter="{'':'icono'}">
                                                     <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Baja" ng-model="cooporativa.solicitudBaja">
                                                 </td>
@@ -387,6 +443,13 @@
                                                 <td data-title="'Caracteristicas'" sortable="'caracteristica'" filter="{'caracteristica':'text'}">{{movil.caracteristica}}</td>
                                                 <td data-title="'Placa'" sortable="'placa'" filter="{'placa':'text'}">{{movil.placa}}</td>
                                                 <td data-title="'Superficie'" sortable="'superficie'" filter="{'superficie':'text'}">{{movil.superficie}}</td>
+                                                <td data-title="'Fotografía'">
+                                                    <center>
+                                                        <button type="button" class="btn btn-primary btn-circle"  ng-click="abrirModalAdjunto(movil)" tooltip="Subir Fotografias">
+                                                            <i class="fa fa-upload"></i>
+                                                        </button>
+                                                    </center>
+                                                </td>
                                                 <td data-title="'Seleccione Publicidad para baja'" style="text-align:center"  filter="{'':'icono'}">
                                                     <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Baja" ng-model="movil.solicitudBaja">
                                                 </td>
@@ -470,9 +533,10 @@
                                 <br><br>
                             </div>
                         </div>
+                        <div class="col-md-1"></div>
                     </div>    
                 </div>
-             </div>
+            </div>
         </div>
         <!-- Modal requisitos-->
         <div class="modal fade" id="verRequisitos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

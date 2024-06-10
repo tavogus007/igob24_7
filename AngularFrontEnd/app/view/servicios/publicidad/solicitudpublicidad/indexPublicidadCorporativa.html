@@ -15,7 +15,14 @@
     <script type="text/javascript" src="../../libs/Librerias/busqueda/nombre_lugares.js"></script>
     <script type="text/javascript" src="../../libs/Librerias/reqwest-master/src/reqwest.js"></script>
     <script type="text/javascript" src="../../libs/Librerias/busqueda/mapa_ae.js"></script>
-
+    <script type="text/javascript">
+        function iniciarLoadFyle(){
+            $('.custom-upload input[type=file]').change(function(){
+            $(this).next().find('input').val($(this).val());
+            angular.element(this).scope().cambiarFile(this, $(this).val());
+            });
+        }
+    </script>
     <style>
         input:required:invalid {
             border: 1px solid red;
@@ -106,11 +113,7 @@
   </div>
  <!--/ Modal --> 
 
-    <br>
-    <div id="pdfContainer" ng-show="mostrarPdf">
-        <p align="justify">Para realizar el trámite, es necesario imprimir el formulario y adjuntar los requisitos correspondientes. Posteriormente, el formulario deberá ser presentado en las oficinas de la Unidad de Publicidad, ubicadas en la Calle Chichas – Edif. Espra, Piso 5, Miraflores. Estas oficinas se encuentran justo después de salir del puente de las Américas. Si necesitas contactarnos, puedes hacerlo a través del teléfono 2650715.</p>
-        <iframe id="viewPdf" name="viewPdf" width="100%" height="800"></iframe>
-    </div>        
+    <br>       
         <div class="row">           
                 <div class="col-md-12">
                     <div class="panel panel-info"  ng-show="formVisible">
@@ -460,25 +463,39 @@
                                         <div class="col-xs-2">
                                         <h4>&nbsp;</h4>
                                         </div>
-                                    </div>                                  
+                                    </div>                             
                                     <div ng-repeat="input in inputs" class="row">
                                         <div class="col-xs-1">
-                                        <h4>Cara {{$index + 1}}</h4>
+                                            <h4>Cara {{$index + 1}}</h4>
                                         </div>
                                         <div class="col-xs-4">
-                                        <div class="form-group" ng-class="{'has-error': input.descripcion.$invalid && input.descripcion.$dirty}">
-                                            <input ng-model="input.descripcion" id="descripcion{{$index}}" type="text" maxlength="200" class="form-control"style="text-transform:uppercase;"  required />                                          
-                                        </div>
-                                        </div>
-                                        <div class="col-xs-3">
-                                        <div class="form-group" ng-class="{'has-error': input.superficie.$invalid && input.superficie.$dirty}">
-                                            <input ng-model="input.superficie" id="superficie{{$index}}" type="number" step="0.01" min="0.1" max="99999" class="form-control"style="text-transform:uppercase;"  required />                                           
-                                        </div>
+                                            <div class="form-group" ng-class="{'has-error': input.descripcion.$invalid && input.descripcion.$dirty}">
+                                                <input ng-model="input.descripcion" id="descripcion{{$index}}" type="text" maxlength="200" class="form-control"style="text-transform:uppercase;"  required />                                          
+                                            </div>
                                         </div>
                                         <div class="col-xs-2">
-                                        <button ng-if="$index > 0" ng-click="eliminarInput($index)" class="btn btn-danger">
-                                            <span class="glyphicon glyphicon-remove"></span> Eliminar
-                                        </button>
+                                            <div class="form-group" ng-class="{'has-error': input.superficie.$invalid && input.superficie.$dirty}">
+                                                <input ng-model="input.superficie" id="superficie{{$index}}" type="number" step="0.01" min="0.1" max="99999" class="form-control"style="text-transform:uppercase;"  required />                                           
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <div class="form-group custom-upload">
+                                                <input type="file" id="f01_upload_cara_{{$index + 1}}" name="f01_upload_cara_{{$index + 1}}" accept="image/*"  style="display: none;">
+                                                <div class="input-group">
+                                                    <input id="txt_f01_upload_cara_{{$index + 1}}" name="txt_f01_upload_cara_{{$index + 1}}" ng-model="input.adjunto"  type="text" placeholder="{{input.descripcion}}" class="form-control" disabled required>
+                                                    <span class="input-group-btn">
+                                                        <a id="href_f01_upload_cara_{{$index + 1}}" ng-show="input.url" href="{{input.url}}" target="_blank">
+                                                            <button id="btn_f01_upload_{{$index + 1}}" class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                        </a>
+                                                        <button id="btn_f01_upload_{{$index + 1}}"  ng-click="ejecutarFile('f01_upload_cara_' + ($index + 1),$index)" class="btnupload browse btn btn-primary " type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <button ng-if="$index > 0" ng-click="eliminarInput($index)" class="btn btn-danger">
+                                                <span class="glyphicon glyphicon-remove"></span> Eliminar
+                                            </button>
                                         </div>
                                     </div>
                                     <div class="row">

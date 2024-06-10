@@ -541,6 +541,11 @@ textarea::-webkit-scrollbar-thumb {
                               <button   id="ra2"  type="button" class="btn btn-success"><i class="fa fa-download"></i> FORMULARIO RUAT</button>
                               </a>
                             </div>
+                            <div ng-show = "data.obj_constancia != null">
+                              <a href="{{data.obj_constancia}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar la Constancia">
+                              <button   id="ra2"  type="button" class="btn btn-success"><i class="fa fa-download"></i> CONSTANCIA DE ENVIO</button>
+                              </a>
+                            </div>							
                             <div ng-show ="(data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA' && data.obj_url !='noSitram')||(data.serdv_descripcion=='CORRESPONDENCIA CIUDADANA CM DIGITAL' && data.obj_url !='noSitram') ||(data.serdv_descripcion=='DENUNCIAS TRANSPARENCIA' && data.obj_url !='noSitram')">
                               <a href="{{data.obj_url}}" target="_blank"  data-toggle="tooltip" data-placement="left"  title="Ver/Descargar">
                               <button   id="btnSitram"  type="button" class="btn btn-success"><i class="fa fa-download"></i> DESCARGAR</button>

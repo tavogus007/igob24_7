@@ -335,7 +335,8 @@
     <script type="text/javascript" src="../../../libs/components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="../../../libs/js/angular-bootstrap-calendar-tpls.min.js"></script>
     <script type="text/javascript" src="../../../controller/autenticacion/config.js"></script>
-    
+    <script type="text/javascript" src="../../../libs/login/login.js"></script>
+    <script type="text/javascript" src="../../../libs/apiRC/api_rc.js"></script>
     <script type="text/javascript" src="../../../libs/js/pdfmake.js"></script>
     <script type="text/javascript" src="../../../libs/js/vfs_fonts.js"></script>
 
@@ -436,7 +437,7 @@
                     <div class="col-sm-6">
                         <span style="font-weight: bold;font-size: large;">Nro. CI.:</span>
                         <div class="input-group-btn">
-                            <input id="ciblq" type="text" class="form-control" placeholder="" ng-model="ci_txt"
+                            <input id="ciblq" type="number" class="form-control" placeholder="" ng-model="ci_txt"
                                 ng-keyup="bloqBuscarDatos()" value="">
                         </div>
                     </div>

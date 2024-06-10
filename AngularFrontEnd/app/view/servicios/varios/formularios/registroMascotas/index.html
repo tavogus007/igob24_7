@@ -408,8 +408,7 @@
                                                                                 <center>
                                                                                     <input ng-model="datos.eutanasia"
                                                                                         value="eutanasia" type="radio"
-                                                                                        name="eutanasia"
-                                                                                        ng-blur="verElim(datos.eutanasia,datos.fallecido)">
+                                                                                        name="eliminacion_mascota">
                                                                                     EUTANASIA
                                                                                 </center>
                                                                             </h3>
@@ -420,9 +419,8 @@
                                                                             <h3>
                                                                                 <center>
                                                                                     <input ng-model="datos.fallecido"
-                                                                                        value="fallecido" type="radio"
-                                                                                        name="fallecido"
-                                                                                        ng-blur="verElim(datos.eutanasia,datos.fallecido)">
+                                                                                        value="fallecimiento" type="radio"
+                                                                                        name="eliminacion_mascota">
                                                                                     FALLECIMIENTO
                                                                                 </center>
                                                                             </h3>
@@ -486,10 +484,16 @@
                             aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title" id="mcModalTitulo">CARNET DE LA MASCOTA</h4>
                 </div>
-                <div class="modal-body">
+                <!--div class="modal-body">
                     <object data="{{resultsCert}}" width="100%" height="600">
                     </object>
+                </div!-->				
+				<div class="modal-body" id="carnetPDF">
+                    <object data="" type="application/pdf" width="100%" height="600">
+                    </object>
                 </div>
+				
+				
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning" data-dismiss="modal">Cerrar</button>
                 </div>

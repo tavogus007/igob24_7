@@ -161,9 +161,12 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
               value.xmascota_data = JSON.parse(value.xmascota_data);
               $scope.xmascota_imagen_urlM = value.xmascota_imagen_url;
               $scope.convertirUrl = $scope.xmascota_imagen_urlM.split("files");
-              if (($scope.convertirUrl[0] == 'http://40.117.46.159//rest/') || ($scope.convertirUrl[0] == 'https://40.117.46.159//rest/')) {
+			  var sip_ant = '40.117.46.159';
+			  var sip_act = '192.168.6.216';
+              //if (($scope.convertirUrl[0] === 'http://40.117.46.159//rest/') || ($scope.convertirUrl[0] === 'https://40.117.46.159//rest/') || ($scope.convertirUrl[0] === 'https://192.168.6.216/rest/') || ($scope.convertirUrl[0] === 'https://192.168.6.216:80/rest/')) {
+			  if ($scope.convertirUrl[0].includes(sip_ant) || $scope.convertirUrl[0].includes(sip_act)) {
                 value.xmascota_imagen_url = CONFIG.APIURL + '/files' + $scope.convertirUrl[1];
-              } else {
+			  } else {
                 value.xmascota_imagen_url = value.xmascota_imagen_url;
               }
             });
@@ -1144,57 +1147,51 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     });
   };
 
-  $scope.verElim = function (eut, fal) {
-    if (eut == 'eutanasia' && fal == 'fallecido') {
-      swal('Error', 'Debe elegir solo una opción', 'error');
-      $scope.datos.eutanasia = '';
-      $scope.datos.fallecido = '';
-    }
-    if (eut == 'eutanasia') {
-      $scope.datos.fallecido = '';
-    } if (fal == 'fallecido') {
-      $scope.datos.eutanasia = '';
-    };
-
-  }
 
   $scope.llamModEli = function (dato) {
     id_mas_luz = dato;
   }
-
+  
   $scope.eliminarMascota = function (dato, eut, fal) {
     cargando();
     $scope.datos.eutanasia = '';
     $scope.datos.fallecido = '';
-    if ((eut == undefined && fal == undefined) || (eut == 'undefined' && fal == 'undefined') || (eut == '' && fal == '')) {
+    if(eut == undefined && fal == undefined){
       swal('Error', 'Debe elegir una opción', 'error');
-    } else {
-      if ((eut == 'eutanasia' && fal == undefined) || (eut == 'eutanasia' && fal == 'undefined') || (eut == 'eutanasia' && fal == '')) {
-        luzz = 'eutanasia';
-      }
-      if ((eut == undefined && fal == 'fallecido') || (eut == 'undefined' && fal == 'fallecido') || (eut == '' && fal == 'fallecido')) {
-        luzz = 'fallecido';
-      };
       $.LoadingOverlay("hide");
     }
-    var usr_id = sessionService.get('CICIUDADANO');
-    var eliMascota = new reglasnegocioM();
-    eliMascota.identificador = 'SISTEMA_VALLE-CM-2052';
-    eliMascota.parametros = '{"xmascota_id":' + id_mas_luz + ',"xmascota_tipo":"' + luzz + '","xmascota_usr_id":' + usr_id + '}';
-    eliMascota.llamarregla(function (results) {
-      results1 = JSON.parse(results);
-      if (results.length > 0) {
-        $scope.eliMascota = results1;
-        $scope.tablaTramites.reload();
-        $scope.$apply();
-        $scope.listarMascotasXci(usr_id);
-        alertify.success('Datos de la Mascota fue dada de baja');
-      } else {
-
+    else{
+      if(eut == '' && fal == ''){
+        swal('Error', 'Debe elegir una opción', 'error');
+        $.LoadingOverlay("hide");
       }
-    });
-
+      else{
+        if(eut == ''){
+          luzz = 'fallecido';
+        }
+        else{
+          luzz = 'eutanasia';
+        }
+        console.log("selecciono....",luzz);
+        $.LoadingOverlay("hide");
+        var usr_id = sessionService.get('CICIUDADANO');
+        var eliMascota = new reglasnegocioM();
+        eliMascota.identificador = 'SISTEMA_VALLE-CM-2052';
+        eliMascota.parametros = '{"xmascota_id":' + id_mas_luz + ',"xmascota_tipo":"' + luzz + '","xmascota_usr_id":' + usr_id + '}';
+        eliMascota.llamarregla(function (results) {
+          results1 = JSON.parse(results);
+          if (results.length > 0) {
+            $scope.eliMascota = results1;
+            $scope.tablaTramites.reload();
+            $scope.$apply();
+            $scope.listarMascotasXci(usr_id);
+            alertify.success('Datos de la Mascota fue dada de baja');
+          }
+        });
+      }
+    }
   }
+  //BAJA DE MASCOTA  
   //BAJA DE MASCOTA
 
   $scope.validarEnvioVacunas = function (data) {
@@ -1551,12 +1548,24 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
     })
   }
 
-
+function convertBase64ToPDF(base64) {
+    var base64String = base64; 
+    var decodedData = atob(base64String);
+    var uint8Array = new Uint8Array(decodedData.length);
+    for (var i = 0; i < decodedData.length; i++) {
+        uint8Array[i] = decodedData.charCodeAt(i);
+    }
+    var blob = new Blob([uint8Array], { type: "application/pdf" });
+    var pdfURL = URL.createObjectURL(blob);
+    $timeout(function () {
+      $('#carnetPDF object').attr('data', pdfURL);
+    }, 150);
+  }
 
   $scope.verCertificado = function (dato) {
     cargando();
     $scope.certMascota = '';
-    $("#modalCErt").modal("show");
+   
     $scope.resultsCert = "data:application/pdf;base64,";
 
     var datosMascota = new reglasnegocioM();
@@ -1566,13 +1575,24 @@ function registroMascotasController($scope, $q, $timeout, CONFIG, $window, $root
       try {
         cargando();
         if (results !== '"[{ }]"' && results !== '"[{}]"') {
-          setTimeout(function () {
+          /*setTimeout(function () {
+			$("#modalCErt").modal("show");
             $scope.certMascota = JSON.parse(results)[0].dataCert;
             $scope.resultsCert = "data:application/pdf;base64," + $scope.certMascota;
             $scope.$apply();
-
+            $.LoadingOverlay("hide");
+          }, 1000);*/
+		  	  
+		  setTimeout(function () {
+            $scope.certMascota = JSON.parse(results)[0].dataCert;
+            $("#modalCErt").modal("show");
+            $('#carnetPDF object').attr('data', null);
+            convertBase64ToPDF($scope.certMascota);
+            $scope.$apply();
             $.LoadingOverlay("hide");
           }, 1000);
+		  
+		  
         }
         else {
           swal('Estimado Ciudadano', 'Hubo un problema al desplegar el Carnet, intente mas tarde por favor.', 'error');

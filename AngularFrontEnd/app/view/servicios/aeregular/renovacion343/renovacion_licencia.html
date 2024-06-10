@@ -49,6 +49,13 @@
         angular.element(this).scope().cambiarFile(this, $(this).val());
         });
     }
+    function iniciarLoadFyleViae(){
+        $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        console.log("entra aqui111");
+        angular.element(this).scope().subirViae(this, $(this).val());
+        });
+    }
     $('.clockpicker').clockpicker();
 </script>
 <script type="text/javascript">
@@ -1016,7 +1023,7 @@
                 </div>
                 <div  class="col-md-12">
                     <div ng-repeat="data in docArray">
-                        <div class="form-group">
+                        <div class="form-group" ng-show="(data.desNom != 'viae_1' && data.desNom != 'viae_2') || fileArRequisitos['f01_upload'+data.resid].url != undefined">
                             <div ng-show = "data.estado" class="col-md-12">
                                 <div class="col-md-6">
                                     <label id="lbl_f01_upload{{data.resid}}">{{data.resvalor}}</label>
@@ -1028,11 +1035,35 @@
                                             <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
                                             <input id="txt_f01_upload{{data.resid}}" name="txt_f01_upload{{data.resid}}"  ng-model="datos['txt_f01_upload{{data.resid}}']"  type="text" placeholder="{{data.resvalor}}" class="form-control input-lg" disabled required>
                                             <span class="input-group-btn">
-                                                <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
+                                                <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url || data.idnro == 1 || data.idnro == 2" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
                                                 {{rmostrarviae}}
                                                     <button id="btn_f01_upload{{data.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                 </a>
-                                                <button id="btn_f01_upload{{data.resid}}" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado" ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                <button id="btn_f01_upload{{data.resid}}" ng-disabled="data.idnro == 1 || data.idnro == 2 || desabilitado || data.desNom == 'viae_1' || data.desNom == 'viae_2'" ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-repeat="viaes_adj in datos.adjuntoViae">
+                        <div class="form-group">
+                            <div ng-show = "viaes_adj.estado" class="col-md-12">
+                                <div class="col-md-6">
+                                    <label id="lbl_f01_upload{{viaes_adj.resid}}">{{viaes_adj.resvalor}}</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group custom-upload">
+                                        <input type="file" id="f01_upload{{viaes_adj.resid}}" name="f01_upload{{viaes_adj.resid}}" accept="image/*"  style="display: none;">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                            <input id="txt_f01_upload{{viaes_adj.resid}}" name="txt_f01_upload{{viaes_adj.resid}}"  ng-model="datos.fileArRequisitosViae['f01_upload'+viaes_adj.resid].campo"  type="text" placeholder="{{viaes_adj.resvalor}}" class="form-control input-lg" disabled required>
+                                            <span class="input-group-btn">
+                                                <a id="href_f01_upload{{viaes_adj.resid}}"  ng-show="datos.fileArRequisitosViae['f01_upload'+viaes_adj.resid].url" href="{{datos.fileArRequisitosViae['f01_upload'+viaes_adj.resid].url}}" target="_blank">
+                                                    <button id="btn_f01_upload{{viaes_adj.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                </a>
+                                                <button id="btn_f01_upload{{viaes_adj.resid}}" ng-disabled="viaes_adj.idnro == 1 || viaes_adj.idnro == 2 " ng-click="ejecutarFileViae('f01_upload' + viaes_adj.resid, 'viaes_adj' + $viaes_adj.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                             </span>
                                         </div>
                                     </div>

@@ -36,6 +36,13 @@
         angular.element(this).scope().cambiarFile(this, $(this).val());
         });
     }
+    function iniciarLoadFyleViae(){
+        $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        console.log("entra aqui111");
+        angular.element(this).scope().subirViae(this, $(this).val());
+        });
+    }
     $('.clockpicker').clockpicker();
 </script>
 <script type="text/javascript">
@@ -116,636 +123,636 @@
         </div>
         <div class="ibox-content">
             <form name="signupForm"  ng-controller="serviciosController" class="form-horizontal" role="form" novalidate>
-                <div ng-show = "formulario != null">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <legend>Tipo trámite : NUEVO</legend>
-                            </div>                                            
-                        </div>
-                    </div>
-                    <div class="col-md-12" ng-show="mostrarMsgActividadTrue">
-                        <div class="form-group" >
-                            <label class="col-sm-12 control-label no-padding-right" for="url" ><font color="#FF0000" size="5px"></font></label>
-                            <div class="col-sm-12" align="left">
-                                <div class="alert alert-success fade in">
-                                    <a href="" class="close" data-dismiss="alert">&times;</a>
-                                        {{translateMensajes.txt_12_05}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12" ng-show="mostrarMsgActividadFalse">
-                        <div class="form-group" >
-                            <label class="col-sm-12 control-label no-padding-right" for="url" ></label>
-                            <div class="col-sm-12" align="left">
-                                <div class="alert alert-danger fade in">
-                                    <a href="" class="close" data-dismiss="alert">&times;</a>
-                                    {{txtMsgDataRenovacion}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>                 
-                    <div>
+                <div class="row">
+                    <div ng-show = "formulario != null">
                         <div class="col-md-12">
-                            <legend>DATOS PERSONA JURÍDICA</legend>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <legend>Tipo trámite : NUEVO</legend>
+                                </div>                                            
+                            </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-12" ng-show="mostrarMsgActividadTrue">
                             <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_22}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_num_doc_per_jur" id="f01_num_doc_per_jur" name="f01_num_doc_per_jur" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_23}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_raz_soc_per_jur" id="f01_raz_soc_per_jur" name="f01_raz_soc_per_jur" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <!--<div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_24}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod" class="form-control" onkeyUp="checkInput(this);"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>-->
-
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_24}}:</label>
-                                <div class="controls">
-                                    <div class="col-md-12">                
-                                        <div class="col-md-5">
-                                            <input  ng-model="datos.f01_num_pod_leg" name="f01_num_pod_leg" id="f01_num_pod_leg" class="form-control" placeholder="Sin dato" onkeyUp="return valNumero(this);" ng-disabled="true" required>
-                                        </div>
-                                        <div class="col-md-2">
-                                            /
-                                        </div>
-                                        <div class="col-md-5">
-                                            <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod" class="form-control" onkeyUp="checkInput(this)"ng-disabled="true" required/>
-                                        </div>
-                                    </div>                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_25}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>                       
-                        <div class="col-md-4" ng-show="false">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                    <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                                <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
-                                    <span class="error" ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="col-md-4" ng-show ="false" >
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_16}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc" name="f01_distrito_desc" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                    <input  type="hidden"  ng-model="datos.f01_distrito" id="f01_distrito" name="f01_distrito" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                    <input  type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_tipo_viarep" id="f01_tipo_viarep" name="f01_tipo_viarep" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_nom_via_rep" id="f01_nom_via_rep" name="f01_nom_via_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_20}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_num_rep" id="f01_num_rep" name="f01_num_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <legend>{{translateTitulos.lbl_12_26}}</legend>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_pri_nom_rep" id="f01_pri_nom_rep" name="f01_pri_nom_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_ape_pat_rep" id="f01_ape_pat_rep" name="f01_ape_pat_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_ape_mat_rep" id="f01_ape_mat_rep" name="f01_ape_mat_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_30}}:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_ape_cas_rep" id="f01_ape_cas_rep" name="f01_ape_cas_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >Número de documento:</label>
-                                <div class="controls">
-                                    <input ng-model="datos.f01_num_doc_rep" id="f01_num_doc_rep" name="f01_num_doc_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url">Expedido:</label>
-                                <div class="controls">
-                                    <select id="f01_expedido_rep" name="f01_expedido_rep" placeholder="expedido" ng-model="datos.f01_expedido_rep" class="form-control" ng-disabled="true" required>
-                                        <option value="">--Seleccione--</option>
-                                        <option value="LPZ">LA PAZ</option>
-                                        <option value="CBB">COCHABAMBA</option>
-                                        <option value="SCZ">SANTA CRUZ</option>
-                                        <option value="CHQ">CHUQUISACA</option>
-                                        <option value="TJA">TARIJA</option>
-                                        <option value="PTS">POTOSI</option>
-                                        <option value="ORU">ORURO</option>
-                                        <option value="BNI">BENI</option>
-                                        <option value="PND">PANDO</option>
-                                        <option value="EXP">EXPEDIDO</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <!--div class="col-md-4">
-                            <div class="form-group" >
-                                <label for="url" >{{translateTitulos.lbl_12_31}}:</label>
-                                <div class="controls">
-                                    <p class="input-group"><input name="INT_RL_FEC_NACIMIENTO" id="INT_RL_FEC_NACIMIENTO" type="text" class="form-control" ng-model="datos.INT_RL_FEC_NACIMIENTO" is-open="startDateOpened2" close-text="Close" ng-disabled="true" required>
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="startDateOpen2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div-->                        
-                    </div>                    
-                    <div class="col-md-12">
-                        <legend>{{translateTitulos.lbl_12_32}}:</legend>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>
-                            <label for="url" >{{translateTitulos.lbl_12_33}}:</label>
-                            <div class="controls">
-                                <input type="text" ng-model="datos.f01_raz_soc" id="f01_raz_soc" name="f01_raz_soc" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>
-                            <label for="url" >{{translateTitulos.lbl_12_34}}: </label>
-                            <div class="controls">
-                                <input type="text" ng-model="datos.f01_sup" id="f01_sup" name="f01_sup" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" ng-change="verificarSuperficie(datos.f01_sup);calcularCapacidad(datos.f01_sup);" onkeyUp=" vsuperficie(this)" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>                                             
-                            <label for="url" >{{translateTitulos.lbl_12_36}}:</label>
-                            <div class="input-group clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true" placeholder="HORA INICIO ATENCION">
-                                <input  ng-model="datos.f01_de_hor" id="f01_de_hor" name="f01_de_hor" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>                                             
-                            <label for="url" >{{translateTitulos.lbl_12_37}}:</label>
-                            <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
-                                <input  ng-model="datos.f01_a_hor" id="f01_a_hor" name="f01_a_hor" class="form-control" type="text" class="form-control" ng-disabled="true" required>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <font color="#FF0000" size="4px"> * </font>
-                            <label for="url" >{{translateTitulos.lbl_12_38}}:</label>
-                            <div class="controls">
-                                <select id="f01_estab_es" class="form-control" ng-model="datos.f01_estab_es"  name="f01_estab_es" ng-disabled="desabilitado" ng-change="validarRequisitosForm();" required>
-                                    <option value="">--Seleccionar--</option>
-                                    <option value="PROPIO"> PROPIO </option>
-                                    <option value="ALQUILADO"> ALQUILADO </option>
-                                    <option value="ANTICRETICO"> ANTICRÉTICO </option>
-                                    <option value="OTRO"> OTRO </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>
-                            <label for="url" >Descripción del Servicio Prestado:</label>
-                            <div class="controls">
-                                <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-change="verificarEstablecimiento(datos.f01_productosElaborados)" ng-disabled="desabilitado" required/>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true">
-                </div>
-                <div class="col-md-12">
-                    <div class="form-group" >
-                        <div class="col-md-12">
-                            <legend> Tipo Licencia: </legend>
-                        </div>
-                        <div class="col-md-6"  ng-show="false">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Tipo de Actividad:</label>
-                                <div class="controls">
-                                    <select id="f01_tip_act" name="f01_tip_act" ng-disabled="desabilitado"  ng-model="datos.f01_tip_act"  class="form-control" required>
-                                        <option value="">--Seleccionar--</option>
-                                        <option value="MA"> MATRIZ  </option>
-                                        <option value="SU"> SUCURSAL  </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>  
-                <div class="col-md-12">
-                    <div class="alert alert-success fade in ng-binding" ng-show="datos.habilitaEmpredimiento=='true'">
-                        <strong>Sr. Ciudadano le Informamos:</strong><br>
-                        El tipo de "Actividad Desarrollada" que seleccionó se encuentra beneficiada con la exención de la Pantente de Funcionamiento Anual conforme Ley Municipal Autonómica Nº 482/2022.<br>
-                    </div>
-                </div>  
-                <!--div class="col-md-12">
-                    <div class="alert alert-warning fade in ng-binding" ng-show="datos.habilitaEmpredimiento=='false'">
-                        <strong>Sr. Ciudadano le Informamos:</strong><br>
-                        El tipo de "Actividad Desarrollada" que seleccionó <strong>NO</strong> se encuentra beneficiada con la exención de la Pantente de Funcionamiento Anual conforme Ley Municipal Autonómica Nº 482/2022.<br>
-                    </div>
-                </div--> 
-                <div class="col-md-12">
-                    <div class="form-group" >   
-                        <div class="col-md-6">
-                            <label for="url" >Tipo de Actividad Desarrollada: </label>
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> </font>
-                                <select class="js-example-basic-single form-control"
-                                    ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividad | orderBy:['nombre','descripcion343']"
-                                    ng-model="datos.f01_categoria_descrip"
-                                    id="f01_categoria_descrip"
-                                    name="f01_categoria_descrip"
-                                    ng-disabled="desabilitado"
-                                    ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup);"
-                                    required>
-                                    <option value="">--Seleccionar--</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-12" ng-show="sCategoria">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <font color="#FF0000" size="4px"> * </font>
-                                    <label for="url" >Tipo de Categoria:</label>
-                                    <div class="controls">
-                                        <input id="f01_categoria_agrupada_descrip" name="f01_categoria_agrupada_descrip" ng-model="datos.f01_categoria_agrupada_descrip" class="form-control" ng-disabled="true" required >
-                                    </div>   
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <font color="#FF0000" size="4px"> * </font>
-                                    <label for="url" >Tipo de Licencia:</label>
-                                    <div class="controls">
-                                        <input id="f01_tipo_lic_descrip" name="f01_tipo_lic_descrip" placeholder="-- Seleccione --" ng-model="datos.f01_tipo_lic_descrip" class="form-control" ng-disabled="true" required >
+                                <label class="col-sm-12 control-label no-padding-right" for="url" ><font color="#FF0000" size="5px"></font></label>
+                                <div class="col-sm-12" align="left">
+                                    <div class="alert alert-success fade in">
+                                        <a href="" class="close" data-dismiss="alert">&times;</a>
+                                            {{translateMensajes.txt_12_05}}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!--TIPO DE LICENCIA MULTIPLE-->
-                <div ng-show="smultiservicios">
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><b>Múltiple por Servicios:</b></div>
-                                <div class="panel-body">
-                                    <form id="myLicenciaMultiple" name="myLicenciaMultiple">
-                                        <div class="col-md-4">
-                                            <font color="#FF0000" size="4px">*</font>
-                                            <label for="url" >Detalle de la Actividad Desarrollada para Multiservicios: </label>
-                                            <div class="form-group" >
-                                                <select class="js-example-basic-single form-control"
-                                                    ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
-                                                    ng-model="multiple.f01_act_desarrolladamid"
-                                                    id="f01_act_desarrolladamid"
-                                                    name="f01_act_desarrolladamid"
-                                                    ng-disabled="desabilitado"
-                                                    ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
-                                                    required>
-                                                    <option value="">--Seleccionar--</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <font color="#FF0000" size="4px"> * </font>
-                                                <label for="url" >Tipo de Categoria:</label>
-                                                <div class="controls">
-                                                    <input
-                                                        id="f01_cat_agrupadamdescrip"
-                                                        name="f01_cat_agrupadamdescrip"
-                                                        ng-model="multiple.f01_cat_agrupadamdescrip"
-                                                        class="form-control"
-                                                        ng-disabled="true"
-                                                        required />
-                                                </div>
-                                                <span style="color:red" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">
-                                                    <span class="error" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">{{translateMensajes.txt_12_15}}</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <font color="#FF0000" size="4px"> * </font>
-                                                <label for="url" >Tipo de Licencia:</label>
-                                                <div class="controls">
-                                                    <input
-                                                        id="f01_tipo_licmdescrip"
-                                                        name="f01_tipo_licmdescrip"
-                                                        ng-model="multiple.f01_tipo_licmdescrip"
-                                                        class="form-control"
-                                                        ng-disabled="true"
-                                                        required/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" ng-model="multiple.f01_act_principal" id="f01_act_principal" name="f01_act_principal" class="form-control" />
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <div class="col-md-3">
-                                                        <a class="btn btn-primary" ng-click="guardarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
-                                                        </a>
-                                                        <a class="btn btn-primary" ng-click="modificarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
-                                                            <i class="glyphicon glyphicon-plus-sign"></i>Modificar
-                                                        </a>
-                                                    </div>
-                                                    <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
-                                                        <tr style="cursor: pointer;" ng-repeat="lic in datos.licenciam" ng-style="lic.id==MultipleSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}" ><!--cambios-->
-                                                          <td align="center" data-title="'Opciones'">
-                                                              <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                                                              <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic); GetValueActividadesCatDesarrollada();" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
-                                                            </td>
-                                                            <td data-title="'NRO'" ng-click="SeleccionaPrioridad(lic)">{{$index+1}}</td>
-                                                            <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_tipo_licmdescrip}}</td>
-                                                            <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_cat_agrupadamdescrip}}</td>
-                                                            <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_act_desarrolladamdescrip}}</td>
-                                                        </tr>
-                                                    </table>
-                                            <!-- fin de la tabla -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
+                        <div class="col-md-12" ng-show="mostrarMsgActividadFalse">
+                            <div class="form-group" >
+                                <label class="col-sm-12 control-label no-padding-right" for="url" ></label>
+                                <div class="col-sm-12" align="left">
+                                    <div class="alert alert-danger fade in">
+                                        <a href="" class="close" data-dismiss="alert">&times;</a>
+                                        {{txtMsgDataRenovacion}}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                      <!--TERMINA TIPO DE LICENCIA MULTIPLE-->
-                    </div>
-                    <!--PARA FOOD TRUCK-->
-                    <div ng-show = "false">
-                    <!--div ng-show = "datos.f01_categoria_descrip==211 || datos.f01_categoria_descrip=='211'"-->
+                        </div>                 
+                        <div>
+                            <div class="col-md-12">
+                                <legend>DATOS PERSONA JURÍDICA</legend>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_22}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_num_doc_per_jur" id="f01_num_doc_per_jur" name="f01_num_doc_per_jur" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_23}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_raz_soc_per_jur" id="f01_raz_soc_per_jur" name="f01_raz_soc_per_jur" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_24}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod" class="form-control" onkeyUp="checkInput(this);"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>-->
+
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_24}}:</label>
+                                    <div class="controls">
+                                        <div class="col-md-12">                
+                                            <div class="col-md-5">
+                                                <input  ng-model="datos.f01_num_pod_leg" name="f01_num_pod_leg" id="f01_num_pod_leg" class="form-control" placeholder="Sin dato" onkeyUp="return valNumero(this);" ng-disabled="true" required>
+                                            </div>
+                                            <div class="col-md-2">
+                                                /
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input ng-model="datos.f01_ges_vig_pod" id="f01_ges_vig_pod" name="f01_ges_vig_pod" class="form-control" onkeyUp="checkInput(this)"ng-disabled="true" required/>
+                                            </div>
+                                        </div>                                    
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_25}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_num_notaria" id="f01_num_notaria" name="f01_num_notaria" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>                       
+                            <div class="col-md-4" ng-show="false">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_14}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_macro_des" id="f01_macro_des" name="f01_macro_des" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                    <span style="color:red" ng-show="signupForm.f01_macro.$invalid">
+                                        <span class="error" ng-show="signupForm.f01_macro.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-show ="false" >
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_16}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_distrito_desc" id="f01_distrito_desc" name="f01_distrito_desc" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        <input  type="hidden"  ng-model="datos.f01_distrito" id="f01_distrito" name="f01_distrito" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_17}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                        <input  type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_18}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_tipo_viarep" id="f01_tipo_viarep" name="f01_tipo_viarep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_nom_via_rep" id="f01_nom_via_rep" name="f01_nom_via_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="url" >{{translateTitulos.lbl_12_20}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_num_rep" id="f01_num_rep" name="f01_num_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <legend>{{translateTitulos.lbl_12_26}}</legend>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_27}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_pri_nom_rep" id="f01_pri_nom_rep" name="f01_pri_nom_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_28}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_ape_pat_rep" id="f01_ape_pat_rep" name="f01_ape_pat_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_29}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_ape_mat_rep" id="f01_ape_mat_rep" name="f01_ape_mat_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_30}}:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_ape_cas_rep" id="f01_ape_cas_rep" name="f01_ape_cas_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >Número de documento:</label>
+                                    <div class="controls">
+                                        <input ng-model="datos.f01_num_doc_rep" id="f01_num_doc_rep" name="f01_num_doc_rep" class="form-control"  width="30%" height="30" ng-disabled="true">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url">Expedido:</label>
+                                    <div class="controls">
+                                        <select id="f01_expedido_rep" name="f01_expedido_rep" placeholder="expedido" ng-model="datos.f01_expedido_rep" class="form-control" ng-disabled="true" required>
+                                            <option value="">--Seleccione--</option>
+                                            <option value="LPZ">LA PAZ</option>
+                                            <option value="CBB">COCHABAMBA</option>
+                                            <option value="SCZ">SANTA CRUZ</option>
+                                            <option value="CHQ">CHUQUISACA</option>
+                                            <option value="TJA">TARIJA</option>
+                                            <option value="PTS">POTOSI</option>
+                                            <option value="ORU">ORURO</option>
+                                            <option value="BNI">BENI</option>
+                                            <option value="PND">PANDO</option>
+                                            <option value="EXP">EXPEDIDO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--div class="col-md-4">
+                                <div class="form-group" >
+                                    <label for="url" >{{translateTitulos.lbl_12_31}}:</label>
+                                    <div class="controls">
+                                        <p class="input-group"><input name="INT_RL_FEC_NACIMIENTO" id="INT_RL_FEC_NACIMIENTO" type="text" class="form-control" ng-model="datos.INT_RL_FEC_NACIMIENTO" is-open="startDateOpened2" close-text="Close" ng-disabled="true" required>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="startDateOpen2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div-->                        
+                        </div>                    
                         <div class="col-md-12">
-                            <legend>Datos del Vehículo o Remolque:</legend>
+                            <legend>{{translateTitulos.lbl_12_32}}:</legend>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Tipo de Vehículo:</label>
+                                <label for="url" >{{translateTitulos.lbl_12_33}}:</label>
                                 <div class="controls">
-                                    <select id="f01_vehiculo_ft" name="f01_vehiculo_ft" ng-disabled="desabilitado" ng-change="validarRequisitosForm()" ng-model="datos.f01_vehiculo_ft"  class="form-control" required>
+                                    <input type="text" ng-model="datos.f01_raz_soc" id="f01_raz_soc" name="f01_raz_soc" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" >{{translateTitulos.lbl_12_34}}: </label>
+                                <div class="controls">
+                                    <input type="text" ng-model="datos.f01_sup" id="f01_sup" name="f01_sup" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" ng-change="verificarSuperficie(datos.f01_sup);calcularCapacidad(datos.f01_sup);" onkeyUp=" vsuperficie(this)" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <font color="#FF0000" size="4px"> * </font>                                             
+                                <label for="url" >{{translateTitulos.lbl_12_36}}:</label>
+                                <div class="input-group clockpicker pull-center" data-placement="left" data-align="top" data-autoclose="true" placeholder="HORA INICIO ATENCION">
+                                    <input  ng-model="datos.f01_de_hor" id="f01_de_hor" name="f01_de_hor" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <font color="#FF0000" size="4px"> * </font>                                             
+                                <label for="url" >{{translateTitulos.lbl_12_37}}:</label>
+                                <div class="input-group clockpicker pull-center" data-placement="right" data-align="top" data-autoclose="true" placeholder="HORA FIN ATENCION">
+                                    <input  ng-model="datos.f01_a_hor" id="f01_a_hor" name="f01_a_hor" class="form-control" type="text" class="form-control" ng-disabled="true" required>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" >{{translateTitulos.lbl_12_38}}:</label>
+                                <div class="controls">
+                                    <select id="f01_estab_es" class="form-control" ng-model="datos.f01_estab_es"  name="f01_estab_es" ng-disabled="desabilitado" ng-change="validarRequisitosForm();" required>
                                         <option value="">--Seleccionar--</option>
-                                        <option value="VEHICULO"> VEHÍCULO  </option>
-                                        <option value="REMOLQUE"> REMOLQUE  </option>
+                                        <option value="PROPIO"> PROPIO </option>
+                                        <option value="ALQUILADO"> ALQUILADO </option>
+                                        <option value="ANTICRÉTICO"> ANTICRÉTICO </option>
+                                        <option value="OTRO"> OTRO </option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3" ng-show="datos.f01_vehiculo_ft=='REMOLQUE'">
+                        <div class="col-md-4">
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Otorgado:</label>
+                                <label for="url" >Descripción del Servicio Prestado:</label>
                                 <div class="controls">
-                                    <select id="f01_otorgado_ft" name="f01_otorgado_ft" ng-disabled="desabilitado" ng-model="datos.f01_otorgado_ft" class="form-control" required>
-                                        <option value="">--Seleccionar--</option>
-                                        <option value="PROPIO"> PROPIO  </option>
-                                        <option value="ARRENDADO"> ARRENDADO  </option>
-                                        <option value="OTRO"> OTRO  </option>
-                                    </select>
+                                    <input type="text" ng-model="datos.f01_productosElaborados" id="f01_productosElaborados" name="f01_productosElaborados" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30"  ng-change="verificarEstablecimiento(datos.f01_productosElaborados)" ng-disabled="desabilitado" required/>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="true">
+                        <div class="col-md-12">
                             <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Clase:</label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_clase_ft" id="f01_clase_ft" name="f01_clase_ft" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                <div class="col-md-12">
+                                    <legend> Tipo Licencia: </legend>
+                                </div>
+                                <div class="col-md-6"  ng-show="false">
+                                    <div class="form-group" >
+                                        <font color="#FF0000" size="4px"> * </font>
+                                        <label for="url" >Tipo de Actividad:</label>
+                                        <div class="controls">
+                                            <select id="f01_tip_act" name="f01_tip_act" ng-disabled="desabilitado"  ng-model="datos.f01_tip_act"  class="form-control" required>
+                                                <option value="">--Seleccionar--</option>
+                                                <option value="MA"> MATRIZ  </option>
+                                                <option value="SU"> SUCURSAL  </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="col-md-12">
+                            <div class="alert alert-success fade in ng-binding" ng-show="datos.habilitaEmpredimiento=='true'">
+                                <strong>Sr. Ciudadano le Informamos:</strong><br>
+                                El tipo de "Actividad Desarrollada" que seleccionó se encuentra beneficiada con la exención de la Pantente de Funcionamiento Anual conforme Ley Municipal Autonómica Nº 482/2022.<br>
+                            </div>
+                        </div>  
+                        <!--div class="col-md-12">
+                            <div class="alert alert-warning fade in ng-binding" ng-show="datos.habilitaEmpredimiento=='false'">
+                                <strong>Sr. Ciudadano le Informamos:</strong><br>
+                                El tipo de "Actividad Desarrollada" que seleccionó <strong>NO</strong> se encuentra beneficiada con la exención de la Pantente de Funcionamiento Anual conforme Ley Municipal Autonómica Nº 482/2022.<br>
+                            </div>
+                        </div--> 
+                        <div class="col-md-12">
+                            <div class="form-group" >   
+                                <div class="col-md-6">
+                                    <label for="url" >Tipo de Actividad Desarrollada: </label>
+                                    <div class="form-group" >
+                                        <font color="#FF0000" size="4px"> </font>
+                                        <select class="js-example-basic-single form-control"
+                                            ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividad | orderBy:['nombre','descripcion343']"
+                                            ng-model="datos.f01_categoria_descrip"
+                                            id="f01_categoria_descrip"
+                                            name="f01_categoria_descrip"
+                                            ng-disabled="desabilitado"
+                                            ng-change="GetValueCategoria();LicenciaXCategoriaA(datos.f01_categoria_descrip, datos.f01_sup);"
+                                            required>
+                                            <option value="">--Seleccionar--</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" ng-show="sCategoria">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <font color="#FF0000" size="4px"> * </font>
+                                            <label for="url" >Tipo de Categoria:</label>
+                                            <div class="controls">
+                                                <input id="f01_categoria_agrupada_descrip" name="f01_categoria_agrupada_descrip" ng-model="datos.f01_categoria_agrupada_descrip" class="form-control" ng-disabled="true" required >
+                                            </div>   
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <font color="#FF0000" size="4px"> * </font>
+                                            <label for="url" >Tipo de Licencia:</label>
+                                            <div class="controls">
+                                                <input id="f01_tipo_lic_descrip" name="f01_tipo_lic_descrip" placeholder="-- Seleccione --" ng-model="datos.f01_tipo_lic_descrip" class="form-control" ng-disabled="true" required >
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px">  </font>
-                                <label for="url" >Marca:</label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_marca_ft" id="f01_marca_ft" name="f01_marca_ft" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
+                        <!--TIPO DE LICENCIA MULTIPLE-->
+                        <div ng-show="smultiservicios">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>Múltiple por Servicios:</b></div>
+                                    <div class="panel-body">
+                                        <form id="myLicenciaMultiple" name="myLicenciaMultiple">
+                                            <div class="col-md-4">
+                                                <font color="#FF0000" size="4px">*</font>
+                                                <label for="url" >Detalle de la Actividad Desarrollada para Multiservicios: </label>
+                                                <div class="form-group" >
+                                                    <select class="js-example-basic-single form-control"
+                                                        ng-options="dato.idActividadDesarrollada343 as dato.descripcion343 for dato in datosActividadMul | orderBy:['nombre','descripcion343']"
+                                                        ng-model="multiple.f01_act_desarrolladamid"
+                                                        id="f01_act_desarrolladamid"
+                                                        name="f01_act_desarrolladamid"
+                                                        ng-disabled="desabilitado"
+                                                        ng-change="LicenciaXCategoriaM(multiple.f01_act_desarrolladamid, datos.f01_sup);"
+                                                        required>
+                                                        <option value="">--Seleccionar--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <font color="#FF0000" size="4px"> * </font>
+                                                    <label for="url" >Tipo de Categoria:</label>
+                                                    <div class="controls">
+                                                        <input
+                                                            id="f01_cat_agrupadamdescrip"
+                                                            name="f01_cat_agrupadamdescrip"
+                                                            ng-model="multiple.f01_cat_agrupadamdescrip"
+                                                            class="form-control"
+                                                            ng-disabled="true"
+                                                            required />
+                                                    </div>
+                                                    <span style="color:red" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">
+                                                        <span class="error" ng-show="myLicenciaMultiple.f01_act_desarrolladamid.$invalid">{{translateMensajes.txt_12_15}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <font color="#FF0000" size="4px"> * </font>
+                                                    <label for="url" >Tipo de Licencia:</label>
+                                                    <div class="controls">
+                                                        <input
+                                                            id="f01_tipo_licmdescrip"
+                                                            name="f01_tipo_licmdescrip"
+                                                            ng-model="multiple.f01_tipo_licmdescrip"
+                                                            class="form-control"
+                                                            ng-disabled="true"
+                                                            required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" ng-model="multiple.f01_act_principal" id="f01_act_principal" name="f01_act_principal" class="form-control" />
+                                            <div class="col-md-12">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="col-md-3">
+                                                            <a class="btn btn-primary" ng-click="guardarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-class="{'disabled': myLicenciaMultiple.$invalid}" ng-show="botonm=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonm=='upd'" >Adicionar
+                                                            </a>
+                                                            <a class="btn btn-primary" ng-click="modificarLicencia(multiple); GetValueActividadesCatDesarrollada();" ng-disabled="desabilitadoO || desabilitado" ng-show="botonm=='upd'" ng-hide="botonm=='new'">
+                                                                <i class="glyphicon glyphicon-plus-sign"></i>Modificar
+                                                            </a>
+                                                        </div>
+                                                        <table ng-table="tablaRoles" show-filter="true" class="table table-striped table-bordered">
+                                                            <tr style="cursor: pointer;" ng-repeat="lic in datos.licenciam" ng-style="lic.id==MultipleSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}" ><!--cambios-->
+                                                            <td align="center" data-title="'Opciones'">
+                                                                <a class="btn btn-default btn-circle" ng-click="modificarLic(lic)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                                                                <a class="btn btn-default btn-circle" ng-hide="editm[lic.idm]" ng-click="eliminarLic(lic); GetValueActividadesCatDesarrollada();" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                                </td>
+                                                                <td data-title="'NRO'" ng-click="SeleccionaPrioridad(lic)">{{$index+1}}</td>
+                                                                <td data-title="'TIPO DE LICENCIA'" sortable="'INT_TIPO_LIC'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_tipo_licmdescrip}}</td>
+                                                                <td data-title="'TIPO DE CATEGORIA'" sortable="'INT_TIPO_CAT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_cat_agrupadamdescrip}}</td>
+                                                                <td data-title="'TIPO DE ACTIVIDAD'" sortable="'INT_TIPO_ACT'" ng-click="SeleccionaPrioridad(lic)">{{lic.f01_act_desarrolladamdescrip}}</td>
+                                                            </tr>
+                                                        </table>
+                                                <!-- fin de la tabla -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
-                        </div> 
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Tipo:</label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_tipo_ft" id="f01_tipo_ft" name="f01_tipo_ft" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
+                        <!--TERMINA TIPO DE LICENCIA MULTIPLE-->
+                        </div>
+                        <!--PARA FOOD TRUCK-->
+                        <div ng-show = "datos.f01_categoria_descrip==211 || datos.f01_categoria_descrip=='211'">
+                            <div class="col-md-12">
+                                <legend>Datos del Vehículo o Remolque:</legend>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Tipo de Vehículo:</label>
+                                    <div class="controls">
+                                        <select id="f01_vehiculo_ft" name="f01_vehiculo_ft" ng-disabled="desabilitado" ng-change="validarRequisitosForm()" ng-model="datos.f01_vehiculo_ft"  class="form-control" required>
+                                            <option value="">--Seleccionar--</option>
+                                            <option value="VEHICULO"> VEHÍCULO  </option>
+                                            <option value="REMOLQUE"> REMOLQUE  </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-show="datos.f01_vehiculo_ft=='REMOLQUE'">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Otorgado:</label>
+                                    <div class="controls">
+                                        <select id="f01_otorgado_ft" name="f01_otorgado_ft" ng-disabled="desabilitado" ng-model="datos.f01_otorgado_ft" class="form-control" required>
+                                            <option value="">--Seleccionar--</option>
+                                            <option value="PROPIO"> PROPIO  </option>
+                                            <option value="ARRENDADO"> ARRENDADO  </option>
+                                            <option value="OTRO"> OTRO  </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Clase:</label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_clase_ft" id="f01_clase_ft" name="f01_clase_ft" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px">  </font>
+                                    <label for="url" >Marca:</label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_marca_ft" id="f01_marca_ft" name="f01_marca_ft" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Tipo:</label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_tipo_ft" id="f01_tipo_ft" name="f01_tipo_ft" class="form-control" style="text-transform:uppercase;" value=""  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Subtipo:</label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_subtipo_ft" id="f01_subtipo_ft" name="f01_subtipo_ft" class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Modelo:</label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_modelo_ft" id="f01_modelo_ft" name="f01_modelo_ft" class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Nº Motor:</label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_motor_ft" id="f01_motor_ft" name="f01_motor_ft" class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Nº Chasis: </label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_chasis_ft" id="f01_chasis_ft" name="f01_chasis_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Servicio: </label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_servicio_ft" id="f01_servicio_ft" name="f01_servicio_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Color: </label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_color_ft" id="f01_color_ft" name="f01_color_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Radicatoria: </label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_radicatoria_ft" id="f01_radicatoria_ft" name="f01_radicatoria_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Documento Legal: </label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_doclegal_ft" id="f01_doclegal_ft" name="f01_doclegal_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" >
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url" >Nº Documento Legal: </label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_numdoclegal_ft" id="f01_numdoclegal_ft" name="f01_numdoclegal_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <font color="#FF0000" size="4px"> * </font>
+                                    <label for="url">Ubicación del lugar donde se Efectuará la Inspección del Vehículo o Remolque: </label>
+                                    <div class="controls">
+                                        <input type="text" ng-model="datos.f01_lugar_ft" id="f01_lugar_ft" name="f01_lugar_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Subtipo:</label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_subtipo_ft" id="f01_subtipo_ft" name="f01_subtipo_ft" class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Modelo:</label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_modelo_ft" id="f01_modelo_ft" name="f01_modelo_ft" class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Nº Motor:</label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_motor_ft" id="f01_motor_ft" name="f01_motor_ft" class="form-control" style="text-transform:uppercase;" value="" width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Nº Chasis: </label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_chasis_ft" id="f01_chasis_ft" name="f01_chasis_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Servicio: </label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_servicio_ft" id="f01_servicio_ft" name="f01_servicio_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Color: </label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_color_ft" id="f01_color_ft" name="f01_color_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Radicatoria: </label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_radicatoria_ft" id="f01_radicatoria_ft" name="f01_radicatoria_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Documento Legal: </label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_doclegal_ft" id="f01_doclegal_ft" name="f01_doclegal_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group" >
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url" >Nº Documento Legal: </label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_numdoclegal_ft" id="f01_numdoclegal_ft" name="f01_numdoclegal_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <font color="#FF0000" size="4px"> * </font>
-                                <label for="url">Ubicación del lugar donde se Efectuará la Inspección del Vehículo o Remolque: </label>
-                                <div class="controls">
-                                    <input type="text" ng-model="datos.f01_lugar_ft" id="f01_lugar_ft" name="f01_lugar_ft" class="form-control"  width="30%" height="30" ng-disabled="desabilitado" required/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    
-                    <div class="col-md-12">
-                        <legend>{{translateTitulos.lbl_12_54}}: </legend>
-                    </div>
-                    <label class="col-sm-4" type ="hidden"> UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
-                    <!-- +++++++++++++++++++++++++++++   MAPA ++++++++++++++++++++++++++++++++++++++-->
-                    <div class="col-md-12" >
-                        <div class="col-md-1" >
-                            <font color="#FF0000" size="4px" align="center"> * </font>
+                        
+                        <div class="col-md-12">
+                            <legend>{{translateTitulos.lbl_12_54}}: </legend>
                         </div>
-                        <div class="col-md-10">                                    
-                            <!--<div id="mapActividad" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>-->
-                            <div id="map_principal" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
-                        </div>
+                        <label class="col-sm-4" type ="hidden"> UBICACIÓN DE LA ACTIVIDAD ECONÓMICA</label>
+                        <!-- +++++++++++++++++++++++++++++   MAPA ++++++++++++++++++++++++++++++++++++++-->
+                        <div class="col-md-12" >
+                            <div class="col-md-1" >
+                                <font color="#FF0000" size="4px" align="center"> * </font>
+                            </div>
+                            <div class="col-md-10">                                    
+                                <!--<div id="mapActividad" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>-->
+                                <div id="map_principal" ng-disabled="desabilitado"  style="height: 600px; width:auto; margin: 10px 5px 5px 5px"></div>
+                            </div>
 
-                         <div class="form-group">
-                            <div class="col-sm-6">
-                                <input  name="busqueda_p" id="busqueda_p" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA">
-                            </div>
-                            <div class="col-sm-6">
-                                <span class="input-group-btn"><br>
-                                  <button class="btn btn-info" type="button" ng-click="buscar_ubicacion_p();"><i class="fa fa-search">Buscar</i></button>
-                                </span>
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <input  name="busqueda_p" id="busqueda_p" class="form-control" type="text" placeholder=" INTRODUZCA NOMBRE DE ZONA">
+                                </div>
+                                <div class="col-sm-6">
+                                    <span class="input-group-btn"><br>
+                                    <button class="btn btn-info" type="button" ng-click="buscar_ubicacion_p();"><i class="fa fa-search">Buscar</i></button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <input ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" type="hidden" readonly>
-                    <input ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" type="hidden" readonly>
-                    <div class="col-md-12">
-                        <legend>{{translateTitulos.lbl_12_39}}:</legend>
-                    </div>
-                    <div class="col-md-6">                           
+                        <input ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control" type="hidden" readonly>
+                        <input ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control" type="hidden" readonly>
+                        <div class="col-md-12">
+                            <legend>{{translateTitulos.lbl_12_39}}:</legend>
+                        </div>
+                        <div class="col-md-6">                           
                             <div class="form-group" >
                                 <font color="#FF0000" size="4px"> * </font>
                                 <label for="url" >Macrodistrito:</label>
@@ -827,262 +834,289 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="col-md-4" ng-show="datos.f01_num_act == 'NINGUNO'">
-                        <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>
-                            <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
-                            <div class="controls">
-                              <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required>
+                        <div class="col-md-4" ng-show="datos.f01_num_act == 'NINGUNO'">
+                            <div class="form-group" >
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" >{{translateTitulos.lbl_12_19}}:</label>
+                                <div class="controls">
+                                <input type="text" ng-model="datos.f01_num_act_n" id="f01_num_act_n" name="f01_num_act_n" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado" required>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div ng-show="datos.f01_num_act == 'OTRO'">
+                        <div ng-show="datos.f01_num_act == 'OTRO'">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
+                                    <div class="controls">
+                                    <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4" ng-show="false">
+                            <div class="form-group" ng-show="divOcultarJuegos">
+                                <label for="url" >Tipo Trayecto:</label>
+                                <div class="controls">
+                                    <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="url" >{{translateTitulos.lbl_12_40}} :</label>
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" >{{translateTitulos.lbl_12_41}}:</label>
                                 <div class="controls">
-                                  <input type="text" ng-model="datos.OTRO_VIA" id="OTRO_VIA" name="OTRO_VIA" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required>
+                                    <input ng-model="datos.f01_num_act1" id="f01_num_act1" name="f01_num_act1" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" required>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4" ng-show="false">
-                        <div class="form-group" ng-show="divOcultarJuegos">
-                            <label for="url" >Tipo Trayecto:</label>
-                            <div class="controls">
-                                <input type="text" ng-model="datos.f01_factor" id="f01_factor" name="f01_factor" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitadoO || desabilitado"  required>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <font color="#FF0000" size="4px"></font>
+                                <label for="url" >{{translateTitulos.lbl_12_42}}:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_edificio_act" id="f01_edificio_act" name="f01_edificio_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <font color="#FF0000" size="4px"> * </font>
-                            <label for="url" >{{translateTitulos.lbl_12_41}}:</label>
-                            <div class="controls">
-                                <input ng-model="datos.f01_num_act1" id="f01_num_act1" name="f01_num_act1" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado" required>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <font color="#FF0000" size="4px"></font>
+                                <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
+                                <div class="controls">
+                                    <input id="f01_bloque_act" name="f01_bloque_act" ng-model="datos.f01_bloque_act" class="form-control" ng-disabled="desabilitado" style="text-transform:uppercase;" width="30%" height="30">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <font color="#FF0000" size="4px"></font>
+                                <label for="url">{{translateTitulos.lbl_12_44}}:</label>
+                                <div class="controls">
+                                    <input id="f01_piso_act" name="f01_piso_act" class="form-control" ng-model="datos.f01_piso_act" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
                             <font color="#FF0000" size="4px"></font>
-                            <label for="url" >{{translateTitulos.lbl_12_42}}:</label>
-                            <div class="controls">
-                                <input ng-model="datos.f01_edificio_act" id="f01_edificio_act" name="f01_edificio_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado">
+                            <label for="url">{{translateTitulos.lbl_12_45}}:</label>
+                                <div class="controls">
+                                    <input id="f01_dpto_of_loc" name="f01_dpto_of_loc" class="form-control" ng-model="datos.f01_dpto_of_loc" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado">
+                                </div> 
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <font color="#FF0000" size="4px"></font>
-                            <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
-                            <div class="controls">
-                                <input id="f01_bloque_act" name="f01_bloque_act" ng-model="datos.f01_bloque_act" class="form-control" ng-disabled="desabilitado" style="text-transform:uppercase;" width="30%" height="30">
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                            <font color="#FF0000" size="4px">*</font>
+                                <label for="url" size="4px">Tel&eacute;fono/Celular:</label>
+                                <div class="controls">
+                                    <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" class="form-control" width="30%" height="30" onkeyUp="soloNumerico(this);"  ng-disabled="desabilitado" required>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <font color="#FF0000" size="4px"></font>
-                            <label for="url">{{translateTitulos.lbl_12_44}}:</label>
-                            <div class="controls">
-                                <input id="f01_piso_act" name="f01_piso_act" class="form-control" ng-model="datos.f01_piso_act" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado">
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <font color="#FF0000" size="4px"> * </font>
+                                <label for="url" size="4px">Referencia de la Dirección de la Actividad Económica para mayor presición:</label>
+                                <div class="controls">
+                                    <input id="f01_casilla" name="f01_casilla"  class="form-control" ng-model="datos.f01_casilla" width="30%" height="30" ng-disabled="desabilitado" required>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                          <font color="#FF0000" size="4px"></font>
-                           <label for="url">{{translateTitulos.lbl_12_45}}:</label>
-                            <div class="controls">
-                                <input id="f01_dpto_of_loc" name="f01_dpto_of_loc" class="form-control" ng-model="datos.f01_dpto_of_loc" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado">
-                            </div> 
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                          <font color="#FF0000" size="4px"></font>
-                            <label for="url" size="4px">Tel&eacute;fono/Celular:</label>
-                            <div class="controls">
-                                <input ng-model="datos.f01_tel_act1" id="f01_tel_act1" maxlength="7" name="f01_tel_act1" class="form-control" width="30%" height="30" onkeyUp="soloNumerico(this);"  ng-disabled="desabilitado">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group" >
-                            <font color="#FF0000" size="4px"> * </font>
-                            <label for="url" size="4px">Referencia de la Dirección de la Actividad Económica para mayor presición:</label>
-                            <div class="controls">
-                                <input id="f01_casilla" name="f01_casilla"  class="form-control" ng-model="datos.f01_casilla" width="30%" height="30" ng-disabled="desabilitado" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <legend>Elementos de Identificación de la Actividad Económica (Letreros):</legend>
-                    </div>
-                    <div class="col-md-12" align="left">
-                        <div class="form-group" class="col-md-12">
-                            <div class="controls">
-                                <font color="#FF0000" size="4px">*  </font>
-                                <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" id="CON_VIAE" value="CON_VIAE" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Con Elementos Publicitarios
-                                <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" id="SIN_VIAE" value="SIN_VIAE" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Sin Elementos Publicitarios
-                            </div>
-                        </div>
-                    </div>
-                    <div ng-show="licenciaToogle4==true">
-                    <div class="col-md-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><b>{{translateTitulos.lbl_12_71}}:</b></div>
-                                <div class="panel-body">
-                                    <form id="myPublicidad" name="myPublicidad">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="url" >Tipo</label>
-                                                <div class="controls">
-                                                    <select id="INT_TIPO_LETRE" name="INT_TIPO_LETRE"  placeholder="Tipo de Letrero" ng-model="publi.INT_TIPO_LETRE"  class="form-control"
-                                                    ng-options="tletre.p_descripcion as tletre.p_descripcion for tletre in TipoLetrero"  ng-change="actulizarTipoLetrero();ltCaracteristica(publi.INT_TIPO_LETRE);" ng-disabled="desabilitadoO || desabilitado"required>
-                                                        <option value=""></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group" >
-                                                <label for="url" >Caracteristica:</label>
-                                                <div class="controls">
-                                                    <select id="INT_CARA" name="INT_CARA"  placeholder="Distrito - Zona" ng-model="publi.INT_CARA"  class="form-control" ng-options="tletr.p_caracteristica as tletr.p_caracteristica for tletr in lCaracteristica" ng-change="actulizarCaracteristica();" ng-disabled="desabilitadoO || desabilitado" required>
-                                                        <option value=""></option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4" ng-show="false">
-                                            <div class="form-group" >
-                                                <label for="url" >Caras:</label>
-                                                <div class="controls">
-                                                    <input id="INT_NRO_CARA" type="number" min="1" max="1500" name="INT_NRO_CARA"  placeholder="Número de caras" ng-model="publi.INT_NRO_CARA"  class="form-control"ng-disabled="desabilitadoO || desabilitado" required>
-                                                    <span style="color:red" ng-show="formularioRegistro.INT_NRO_CARA.$invalid">
-                                                        <span ng-show="formularioRegistro.INT_NRO_CARA.$error.required">Es requerido.
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading"><b>Expresado en metros.</b>
-                                                    <!--br>
-                                                    <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular<br-->
-                                                </div>
-                                                <div class="panel-body">
-                                                    <table class="table table-responsive">
-                                                        <tr>
-                                                        <th>
-                                                            <input class="form-control" type="text"  id="INT_DESC" name="INT_DESC" placeholder="Descripción" ng-model="publi.INT_DESC" ng-disabled="desabilitadoO || desabilitado" required onkeyUp="return conMayusculas(this);">
-                                                        </th>
-                                                        <th ng-show="especial==null">
-                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_ALTO" name="INT_ALTO" ng-blur ="validaSuperficie(publi);" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="desabilitadoO || desabilitado" required>
-                                                            <span style="color:red" ng-show="formularioRegistro.INT_ALTO.$invalid">
-                                                                <span ng-show="formularioRegistro.INT_ALTO.$error.required">Es requerido.
-                                                                </span>
-                                                            </span>
-                                                        </th>
-                                                        <th ng-show="especial==null">
-                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_ANCHO" name="INT_ANCHO" ng-blur ="validaSuperficie(publi);" placeholder="Ancho" ng-model="publi.INT_ANCHO"ng-disabled="desabilitadoO || desabilitado" required>
-                                                            <span style="color:red" ng-show="formularioRegistro.INT_ANCHO.$invalid">
-                                                                <span ng-show="formularioRegistro.INT_ANCHO.$error.required">Es requerido.
-                                                                </span>
-                                                            </span>
-                                                        </th>
-                                                        <th ng-show="especial!=null">
-                                                            <input class="form-control" type="number" min="0" max="1500" id="INT_SUPERFICIE" name="INT_SUPERFICIE" placeholder="Superficie M2" ng-model="publi.INT_SUPERFICIE" ng-disabled="desabilitadoO || desabilitado" required>
-                                                            <span style="color:red" ng-show="formularioRegistro.INT_SUPERFICIE.$invalid">
-                                                                <span ng-show="formularioRegistro.INT_SUPERFICIE.$error.required">Es requerido.
-                                                                </span>
-                                                            </span>
-                                                        </th>
-                                                    </tr>
-                                                </table>
-                                                <div class="col-md-3">
-                                                    <a class="btn btn-primary" ng-click="guardarpublicidad(publi)" ng-class="{'disabled': myForm.$invalid}" ng-show="botonn=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonn=='upd'" >
-                                                        Adicionar
-                                                    </a>
-                                                    <a class="btn btn-primary" ng-click="modificarpublicidad(publi)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonn=='upd'" ng-hide="botonn=='new'">
-                                                        <i class="glyphicon glyphicon-plus-sign"></i>Modificar
-                                                    </a>
-                                                </div>
-                                           <!-- inicio de la tabla -->
-                                                <table ng-table="tablaRoles" class="table table-striped table-bordered">
-                                                    <tr ng-repeat="pup in datos.publicidad" >
-                                                        <td align="center" data-title="'Opciones'">
-                                                            <a class="btn btn-default btn-circle" ng-click="modificarPlubli(pup)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
-                                                            <a class="btn btn-default btn-circle" ng-hide="edit[pup.id]" ng-click="eliminarPubli(pup)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
-                                                        </td>
-                                                        <td data-title="'VIAE'">{{$index+1}}</td>
-                                                        <td data-title="'TIPO'" sortable="'INT_TIPO_LETRE'">{{pup.INT_TIPO_LETRE}}</td>
-                                                        <td data-title="'CARACTERÍSTICA'" sortable="'INT_CARA'">{{pup.INT_CARA}}</td>
-                                                        <!--td data-title="'CARAS'" sortable="'CARAS'">{{pup.INT_NRO_CARA}}</td--> 
-                                                        <td data-title="'DESCRIPCIÓN'" sortable="'INT_DESC'">{{pup.INT_DESC}}</td>
-                                                        <td data-title="'ALTO'" sortable="'INT_ALTO'">{{pup.INT_ALTO}}</td>
-                                                        <td data-title="'ANCHO'" sortable="'INT_ANCHO'">{{pup.INT_ANCHO}}</td>
-                                                        <td data-title="'SUPERFICIE'" sortable="'INT_SUP'">{{pup.INT_SUP}}</td>
-                                                    </tr>
-                                                </table>
-                                           <!-- fin de la tabla -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" ng-model="publi.idcate" id="idcate" name="idcate" class="form-control"/>
-                                    <input type="hidden" ng-model="publi.idcarac" id="idcarac" name="idcarac" class="form-control"/>
-                                    <input type="hidden" ng-model="publi.id_cara" id="id_cara" name="id_cara" class="form-control"/>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                    <br><br><br></div> 
-                    </div>
-                    <div ng-show = "mostrarzonasegura">
                         <div class="col-md-12">
-                            <div class="col-md-12">
-                                <legend>Zona Segura: </legend>
+                            <legend>Elementos de Identificación de la Actividad Económica (Letreros):</legend>
+                        </div>
+                        <div class="col-md-12" align="left">
+                            <div class="form-group" class="col-md-12">
+                                <div class="controls">
+                                    <font color="#FF0000" size="4px">*  </font>
+                                    <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" id="CON_VIAE" value="CON_VIAE" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Con Elementos Publicitarios
+                                    <input type="radio" ng-model="datos.rdTipoTramite1" name="rdTipoTramite1" id="SIN_VIAE" value="SIN_VIAE" ng-change="cambioToggle1(datos.rdTipoTramite1); validarRequisitosForm();" ng-disabled="desabilitado" required>Sin Elementos Publicitarios
+                                </div>
                             </div>
-                            <div class="col-md-12" align="left">
-                                <div class="form-group" class="col-md-12">
-                                    <div class="controls">
-                                        <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="ZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado" >Es Zona Segura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="NOZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado">No es Zona Segura
-                                        <br>
+                        </div>
+                        <div ng-show="licenciaToogle4==true">
+                            <div class="col-md-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><b>{{translateTitulos.lbl_12_71}}:</b></div>
+                                        <div class="panel-body">
+                                            <form id="myPublicidad" name="myPublicidad">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="url" >Tipo</label>
+                                                        <div class="controls">
+                                                            <select id="INT_TIPO_LETRE" name="INT_TIPO_LETRE"  placeholder="Tipo de Letrero" ng-model="publi.INT_TIPO_LETRE"  class="form-control"
+                                                            ng-options="tletre.p_descripcion as tletre.p_descripcion for tletre in TipoLetrero"  ng-change="actulizarTipoLetrero();ltCaracteristica(publi.INT_TIPO_LETRE);" ng-disabled="desabilitadoO || desabilitado"required>
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Caracteristica:</label>
+                                                        <div class="controls">
+                                                            <select id="INT_CARA" name="INT_CARA"  placeholder="Distrito - Zona" ng-model="publi.INT_CARA"  class="form-control" ng-options="tletr.p_caracteristica as tletr.p_caracteristica for tletr in lCaracteristica" ng-change="actulizarCaracteristica();" ng-disabled="desabilitadoO || desabilitado" required>
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4" ng-show="false">
+                                                    <div class="form-group" >
+                                                        <label for="url" >Caras:</label>
+                                                        <div class="controls">
+                                                            <input id="INT_NRO_CARA" type="number" min="1" max="1500" name="INT_NRO_CARA"  placeholder="Número de caras" ng-model="publi.INT_NRO_CARA"  class="form-control"ng-disabled="desabilitadoO || desabilitado" required>
+                                                            <span style="color:red" ng-show="formularioRegistro.INT_NRO_CARA.$invalid">
+                                                                <span ng-show="formularioRegistro.INT_NRO_CARA.$error.required">Es requerido.
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading"><b>Expresado en metros.</b>
+                                                            <!--br>
+                                                            <input type="checkbox" id="INT_CHECK_VIAE" ng-model="publi.INT_CHECK_VIAE" ng-disabled="desabilitadoO || desabilitado" ng-click="verSuperficie(publi.INT_CHECK_VIAE)"> Superficie Irregular<br-->
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <table class="table table-responsive">
+                                                                <tr>
+                                                                <th>
+                                                                    <input class="form-control" type="text"  id="INT_DESC" name="INT_DESC" placeholder="Descripción" ng-model="publi.INT_DESC" ng-disabled="desabilitadoO || desabilitado" required onkeyUp="return conMayusculas(this);">
+                                                                </th>
+                                                                <th ng-show="especial==null">
+                                                                    <input class="form-control" type="number" min="0" max="1500" id="INT_ALTO" name="INT_ALTO" ng-blur ="validaSuperficie(publi);" placeholder="Alto" ng-model="publi.INT_ALTO" ng-disabled="desabilitadoO || desabilitado" required>
+                                                                    <span style="color:red" ng-show="formularioRegistro.INT_ALTO.$invalid">
+                                                                        <span ng-show="formularioRegistro.INT_ALTO.$error.required">Es requerido.
+                                                                        </span>
+                                                                    </span>
+                                                                </th>
+                                                                <th ng-show="especial==null">
+                                                                    <input class="form-control" type="number" min="0" max="1500" id="INT_ANCHO" name="INT_ANCHO" ng-blur ="validaSuperficie(publi);" placeholder="Ancho" ng-model="publi.INT_ANCHO"ng-disabled="desabilitadoO || desabilitado" required>
+                                                                    <span style="color:red" ng-show="formularioRegistro.INT_ANCHO.$invalid">
+                                                                        <span ng-show="formularioRegistro.INT_ANCHO.$error.required">Es requerido.
+                                                                        </span>
+                                                                    </span>
+                                                                </th>
+                                                                <th ng-show="especial!=null">
+                                                                    <input class="form-control" type="number" min="0" max="1500" id="INT_SUPERFICIE" name="INT_SUPERFICIE" placeholder="Superficie M2" ng-model="publi.INT_SUPERFICIE" ng-disabled="desabilitadoO || desabilitado" required>
+                                                                    <span style="color:red" ng-show="formularioRegistro.INT_SUPERFICIE.$invalid">
+                                                                        <span ng-show="formularioRegistro.INT_SUPERFICIE.$error.required">Es requerido.
+                                                                        </span>
+                                                                    </span>
+                                                                </th>
+                                                            </tr>
+                                                        </table>
+                                                        <div class="col-md-3">
+                                                            <a class="btn btn-primary" ng-click="guardarpublicidad(publi)" ng-class="{'disabled': myForm.$invalid}" ng-show="botonn=='new'" ng-disabled="desabilitadoO || desabilitado" ng-hide="botonn=='upd'" >
+                                                                Adicionar
+                                                            </a>
+                                                            <a class="btn btn-primary" ng-click="modificarpublicidad(publi)" ng-disabled="desabilitadoO || desabilitado" ng-show="botonn=='upd'" ng-hide="botonn=='new'">
+                                                                <i class="glyphicon glyphicon-plus-sign"></i>Modificar
+                                                            </a>
+                                                        </div>
+                                                <!-- inicio de la tabla -->
+                                                        <table ng-table="tablaRoles" class="table table-striped table-bordered">
+                                                            <tr ng-repeat="pup in datos.publicidad" >
+                                                                <td align="center" data-title="'Opciones'">
+                                                                    <a class="btn btn-default btn-circle" ng-click="modificarPlubli(pup)"><i class="fa fa-pencil" style="color:#249FE6"></i></a>
+                                                                    <a class="btn btn-default btn-circle" ng-hide="edit[pup.id]" ng-click="eliminarPubli(pup)" ><i class="fa fa-trash-o" style="color:#249FE6"></i></a>
+                                                                </td>
+                                                                <td data-title="'VIAE'">{{$index+1}}</td>
+                                                                <td data-title="'TIPO'" sortable="'INT_TIPO_LETRE'">{{pup.INT_TIPO_LETRE}}</td>
+                                                                <td data-title="'CARACTERÍSTICA'" sortable="'INT_CARA'">{{pup.INT_CARA}}</td>
+                                                                <!--td data-title="'CARAS'" sortable="'CARAS'">{{pup.INT_NRO_CARA}}</td--> 
+                                                                <td data-title="'DESCRIPCIÓN'" sortable="'INT_DESC'">{{pup.INT_DESC}}</td>
+                                                                <td data-title="'ALTO'" sortable="'INT_ALTO'">{{pup.INT_ALTO}}</td>
+                                                                <td data-title="'ANCHO'" sortable="'INT_ANCHO'">{{pup.INT_ANCHO}}</td>
+                                                                <td data-title="'SUPERFICIE'" sortable="'INT_SUP'">{{pup.INT_SUP}}</td>
+                                                            </tr>
+                                                        </table>
+                                                <!-- fin de la tabla -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" ng-model="publi.idcate" id="idcate" name="idcate" class="form-control"/>
+                                            <input type="hidden" ng-model="publi.idcarac" id="idcarac" name="idcarac" class="form-control"/>
+                                            <input type="hidden" ng-model="publi.id_cara" id="id_cara" name="id_cara" class="form-control"/>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-12">
-                        <legend>Requisitos Documentales:</legend>
-                    </div>                
-                    <div  ng-show="divJuridico != null">
-                        <!-- PERSONA JURIDICA -->
-                        <div ng-show="datos.f01_tipo_per == 'JURIDICO' || datos.f01_tipo_per == 'J'">
-                            <div  class="col-md-12">
-                                <div ng-repeat="data in docArray">
+                        <br><br>
+                        <div ng-show = "mostrarzonasegura">
+                            <div class="col-md-12">
+                                <div class="col-md-12">
+                                    <legend>Zona Segura: </legend>
+                                </div>
+                                <div class="col-md-12" align="left">
+                                    <div class="form-group" class="col-md-12">
+                                        <div class="controls">
+                                            <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="ZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado" >Es Zona Segura &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" ng-model="datos.chkzonasegura" name="chkzonasegura" value="NOZONASEGURA" ng-change="cambioZona(datos.chkzonasegura);validarRequisitosForm();" ng-disabled="desabilitado">No es Zona Segura
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <legend>Requisitos Documentales:</legend>
+                        </div>                
+                        <div  ng-show="divJuridico != null">
+                            <!-- PERSONA JURIDICA -->
+                            <div ng-show="datos.f01_tipo_per == 'JURIDICO' || datos.f01_tipo_per == 'J'">
+                                <div  class="col-md-12">
+                                    <div ng-repeat="data in docArray">
+                                        <div class="form-group"  ng-show="(data.desNom != 'viae_1' && data.desNom != 'viae_2') || fileArRequisitos['f01_upload'+data.resid].url != undefined">
+                                            <div ng-show = "data.estado" class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label id="lbl_f01_upload{{data.resid}}">{{data.resvalor}}</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group custom-upload">
+                                                        <input type="file" id="f01_upload{{data.resid}}" name="f01_upload{{data.resid}}" accept="image/*"  style="display: none;">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                            <input id="txt_f01_upload{{data.resid}}" name="txt_f01_upload{{data.resid}}" ng-model="datos['txt_f01_upload{{data.resid}}']"  type="text" placeholder="{{data.resvalor}}" class="form-control input-lg" disabled required>
+                                                            <span class="input-group-btn">
+                                                                <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url || data.idnro == 1 || data.idnro == 2 || data.idnro == 6 || data.idnro == 7 || data.idnro == 8 || data.idnro == 9" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
+                                                                {{rmostrarviae}}
+                                                                    <button id="btn_f01_upload{{data.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                                </a>
+                                                                <button id="btn_f01_upload{{data.resid}}" ng-disabled="data.idnro == 1 || data.idnro == 2 || data.idnro == 6 || data.idnro == 7 || data.idnro == 8 || data.idnro == 9 || desabilitado || data.desNom == 'viae_1' || data.desNom == 'viae_2'" ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12"><hr></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-repeat="viaes_adj in datos.adjuntoViae">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <div ng-show = "data.estado" class="col-md-12">
+                                        <div ng-show = "viaes_adj.estado" class="col-md-12">
                                             <div class="col-md-6">
-                                                <label id="lbl_f01_upload{{data.resid}}">{{data.resvalor}}</label>
+                                                <label id="lbl_f01_upload{{viaes_adj.resid}}">{{viaes_adj.resvalor}}</label>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group custom-upload">
-                                                    <input type="file" id="f01_upload{{data.resid}}" name="f01_upload{{data.resid}}" accept="image/*"  style="display: none;">
+                                                    <input type="file" id="f01_upload{{viaes_adj.resid}}" name="f01_upload{{viaes_adj.resid}}" accept="image/*"  style="display: none;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
-                                                        <input id="txt_f01_upload{{data.resid}}" name="txt_f01_upload{{data.resid}}" ng-model="datos['txt_f01_upload{{data.resid}}']"  type="text" placeholder="{{data.resvalor}}" class="form-control input-lg" disabled required>
+                                                        <input id="txt_f01_upload{{viaes_adj.resid}}" name="txt_f01_upload{{viaes_adj.resid}}"  ng-model="datos.fileArRequisitosViae['f01_upload'+viaes_adj.resid].campo"  type="text" placeholder="{{viaes_adj.resvalor}}" class="form-control input-lg" disabled required>
                                                         <span class="input-group-btn">
-                                                            <a id="href_f01_upload{{data.resid}}" ng-show="fileArRequisitos['f01_upload'+data.resid].url || data.idnro == 1 || data.idnro == 2 || data.idnro == 6 || data.idnro == 7 || data.idnro == 8 || data.idnro == 9" href="{{fileArRequisitos['f01_upload'+data.resid].url}}" target="_blank">
-                                                            {{rmostrarviae}}
-                                                                <button id="btn_f01_upload{{data.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                            <a id="href_f01_upload{{viaes_adj.resid}}"  ng-show="datos.fileArRequisitosViae['f01_upload'+viaes_adj.resid].url" href="{{datos.fileArRequisitosViae['f01_upload'+viaes_adj.resid].url}}" target="_blank">
+                                                                <button id="btn_f01_upload{{viaes_adj.resid}}" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
                                                             </a>
-                                                            <button id="btn_f01_upload{{data.resid}}" ng-disabled="data.idnro == 1 || data.idnro == 2 || data.idnro == 6 || data.idnro == 7 || data.idnro == 8 || data.idnro == 9 " ng-click="ejecutarFile('f01_upload' + data.resid, 'data' + $data.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                            <button id="btn_f01_upload{{viaes_adj.resid}}" ng-disabled="viaes_adj.idnro == 1 || viaes_adj.idnro == 2 || desabilitado" ng-click="ejecutarFileViae('f01_upload' + viaes_adj.resid, 'viaes_adj' + $viaes_adj.resvalor)" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -1091,143 +1125,206 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <!--PAGO ANTICIPADO -->
-                    <div ng-show="false">
-                        <div class="col-md-12">
-                            <legend>Datos Pago Anticipado:</legend>
-                        </div>
-                        <div class = "col-md-12" class="form-control">
-                            <div class = "col-md-6" class="form-control">
-                                <label for="Pago_Anticipado">
-                                Desea realizar el Pago por Adelantado?
-                                Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
-                                </label>
-                            </div>
-                        </div>
-                        <div ng-show="IsVisible==true">
-                            <div class = "col-md-6" class="form-control">
-                                <div class="form-group">
-                                <legend>Gestiones a Pagar:</legend>
-                                    <div class="controls">
-                                        <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges">
-                                            <option value="">--Seleccionar--</option>
-                                            <option value="2"> 2 </option>
-                                            <option value="4"> 4 </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12" class="form-control" ng-show="IsVisible">
-                                <div class="form-group" >
-                                    <label class="col-sm-12 control-label no-padding-right" for="url"></label>
-                                    <div class="col-sm-12" align="left">
-                                        <div class="alert alert-danger fade in">
-                                            <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
-                                            Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
-                                            <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                            <div class="col-md-12"><hr></div>
+                            <div class="ibox-content" ng-show="(datos.f01_tipo_lic == 18 && (datos.f01_categoria_agrupada == 3419 || datos.f01_categoria_agrupada == 3420 || datos.f01_categoria_agrupada == 3421 || datos.f01_categoria_agrupada == 3422)) || datos.mostrarPersonal == true"">
+                                <div class="row">                                
+                                    <div class="col-md-12">
+                                        <legend>Lista del personal que cuenta con carnet de manipulación vigente.</legend>
+                                    </div> 
+                                    <div class="col-md-12">  
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="url" >Introduzca el carnet de identidad:</label>
+                                                            <div class="controls">
+                                                                <input id="ci_empleado" type="text" min="60" max="1500" name="ci_empleado"  placeholder="Carnet de Identidad" ng-model="ci_empleado"  class="form-control" ng-disabled="desabilitadoO || desabilitado" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="url" > &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</label>
+                                                            <div class="controls">
+                                                                <button type="button" ng-click="buscarCiudadano(ci_empleado)" ng-disabled="desabilitadoO || desabilitado"   class="btn btn-primary"><i class="fa fa-search"></i> &nbsp; &nbsp;Buscar</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="url" >Nombre Completo:</label>
+                                                            <div class="controls">
+                                                                <input id="nombre_completo_emp" type="text" min="60" max="1500" name="nombre_completo_emp"  placeholder="Nombre Completo" ng-model="empleados.nombre_completo_emp"  class="form-control" ng-disabled="true" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group" >
+                                                            <label for="url" >Dirección:</label>
+                                                            <div class="controls">
+                                                                <input id="direccion_emp" type="text" min="60" max="1500" name="direccion_emp"  placeholder="Dirrección" ng-model="empleados.direccion_emp"  class="form-control" ng-disabled="true" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" style="float: right;">
+                                                        <a class="btn btn-primary" ng-click="guardarListaEmpleados()" ng-disabled="desabilitadoO || desabilitado">
+                                                            Adicionar
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-12"><br><br></div>
+                                                    <div class="col-md-12"> 
+                                                        <table ng-table="listaEmpleado" class="table table-striped table-bordered">
+                                                            <tr ng-repeat="emp in datos.listadoEmpleados" >
+                                                                <td data-title="'#'">{{$index+1}}</td>
+                                                                <td data-title="'NOMBRE COMPLETO'" >{{emp.nombre_completo_emp}}</td>
+                                                                <td data-title="'CÉDULA DE IDENTIDAD'">{{emp.ci_emp}}</td>
+                                                                <td align="center" data-title="'Opciones'">
+                                                                    <a class="btn btn-danger btn-circle" ng-hide="edit[emp.id]" ng-click="eliminarEmpleado(emp)" ><i class="fa fa-trash-o"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    </br>
-                    </br>
-                    <div class="col-md-12">
-                        <input type="hidden" ng-model="datos.f01_tipo_lic" id="f01_tipo_lic" name="f01_tipo_lic">
-                        <input type="hidden" ng-model="datos.f01_categoria_agrupada" id="f01_categoria_agrupada" name="f01_categoria_agrupada">
-                        <input type="hidden" ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control">
-                        <input type="hidden" ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control">
-                        <input type="hidden" ng-model="datos.ARCHIVOS_MULTIPLES_MAPA" id="ARCHIVOS_MULTIPLES_MAPA" name="ARCHIVOS_MULTIPLES_MAPA">
-                        <input type="hidden" ng-model="datos.INT_AC_direccionImagenmapa" id="INT_AC_direccionImagenmapa" name="INT_AC_direccionImagenmapa">
-                        <input type="hidden" ng-model="datos.f01_zona_rep" id="f01_zona_rep" name="f01_zona_rep" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_tip_doc_rep" id="f01_tip_doc_rep" name="f01_tip_doc_rep" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_seg_nom_rep" id="f01_seg_nom_rep" name="f01_seg_nom_rep" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_ter_nom_rep" id="f01_ter_nom_rep" name="f01_ter_nom_rep" class="form-control">
-                        <input type="hidden" ng-model="datos.INT_AC_MACRO" id="INT_AC_MACRO" name="INT_AC_MACRO" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_requisitos_actividad_economica" id="f01_requisitos_actividad_economica" name="f01_requisitos_actividad_economica">
-                        <input type="hidden" ng-model="datos.f01_requisitos_tecnicos" id="f01_requisitos_tecnicos" name="f01_requisitos_tecnicos">
-                        <input type="hidden" ng-model="datos.f01_cap_aprox" id="f01_cap_aprox" name="f01_cap_aprox">
-                        <input type="hidden" ng-model="datos.f01_seg_nom_rep" id="f01_seg_nom_rep" name="f01_seg_nom_rep">
-                        <input type="hidden" ng-model="datos.f01_ter_nom_rep" id="f01_ter_nom_rep" name="f01_ter_nom_rep">
-                        <input type="hidden" ng-model="datos.INT_AC_DISTRITO" id="INT_AC_DISTRITO" name="INT_AC_DISTRITO" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_dist_act" id="f01_dist_act" name="f01_dist_act" class="form-control" />
-                        <input type="hidden" ng-model="datos.INT_AC_ID_ZONA" id="INT_AC_ID_ZONA" name="INT_AC_ID_ZONA" class="form-control">
-                        <input type="hidden" ng-model="datos.INT_ID_ZONA" id="INT_ID_ZONA" name="INT_ID_ZONA" class="form-control">
-                        <input type="hidden" ng-model="datos.INT_AC_MACRO_ID" id="INT_AC_MACRO_ID" name="INT_AC_MACRO_ID" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30">
-                        <input type="hidden" ng-model="datos.INT_ACTIVIDAD_DESCRIPCION" name="INT_ACTIVIDAD_DESCRIPCION" id="INT_ACTIVIDAD_DESCRIPCION">
-                        <input type="hidden" ng-model="datos.f01_id_representante_legal" id="f01_id_representante_legal" name="f01_id_representante_legal" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_num_pmc" id="f01_num_pmc" name="f01_num_pmc" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_nro_orden" id="f01_nro_orden" name="f01_nro_orden" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_id_contribuyente" id="f01_id_contribuyente" name="f01_id_contribuyente" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_id_actividad_economica" id="f01_id_actividad_economica" name="f01_id_actividad_economica" class="form-control" />
-                        <input type="hidden" name="f01_categoria_agrupada_dem" ng-model="datos.f01_categoria_agrupada_dem" class="form-control" >
-                        <input type="hidden" ng-model="datos.f01_categoria_agrupada_descripcion" id="f01_categoria_agrupada_descripcion" name="f01_categoria_agrupada_descripcion" class="form-control" />
-                        <input type="hidden" ng-model="datos.f01_categoria_descripcion" id="f01_categoria_descripcion" name="f01_categoria_descripcion" class="form-control" />
-                        <input type="hidden" ng-model="datos.f01_categoria_descrip2" id="f01_categoria_descrip2" name="f01_categoria_descrip2" class="form-control" />
-                        <input type="hidden" ng-model="datos.f01_categoria" id="f01_categoria" name="f01_categoria" class="form-control" />
-                        <input type="hidden" ng-model="datos.f01_actividadesDesarrolladasc" id="f01_actividadesDesarrolladasc" name="f01_actividadesDesarrolladasc" class="form-control">
-                         <input type="hidden" ng-model="datos.xf01_idcat_multi_principal" id="xf01_idcat_multi_principal" name="xf01_idcat_multi_principal" class="form-control" />
-                        <input type="hidden" ng-model="datos.xf01_descat_multi_principal" id="xf01_descat_multi_principal" name="xf01_descat_multi_principal" class="form-control" />
-                        <input type="hidden" ng-model="datos.mulact_principal" id="mulact_principal" name="mulact_principal" class="form-control" />
-                        <input type="hidden" ng-model="datos.Licenmul_grilla" id="Licenmul_grilla" name="Licenmul_grilla" class="form-control" />
-                        <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" />
-                        <input type="hidden" ng-model="datos.f01_actividad_principal_array" id="f01_actividad_principal_array" name="f01_actividad_principal_array" class="form-control" />
-                        <input type="hidden" ng-model="datos.f01_zona_act_descrip" id="f01_zona_act_descrip" name="f01_zona_act_descrip" class="form-control">
-                        <input type="hidden" ng-model="datos.FILE_CI" id="datos.FILE_CI" name="datos.FILE_CI" class="form-control" />
-                        <input type="hidden" ng-model="datos.fileArchivosAd" id="datos.fileArchivosAd" name="datos.fileArchivosAd" class="form-control" />
-                        <input type="hidden" ng-model="datos.f01_nro_frm" id="f01_nro_frm" name="f01_nro_frm" class="form-control" />
-                        <input type="hidden" ng-model="datos.IDTRAMITE" id="IDTRAMITE" name="IDTRAMITE" class="form-control" />                        
-                        <input type="hidden" ng-model="datos.f01_actividadesCAAD" id="f01_actividadesCAAD" name="f01_actividadesCAAD" class="form-control">
-                        <input type="hidden" ng-model="datos.f01_categorias_multi" id="f01_categorias_multi" name="f01_categorias_multi" class="form-control" />
-                    </div>
-                    <div class="col-md-12">
-                        <legend></legend>
-                    </div>
-                </div>
-                <div class="col-md-6" align="center" ng-show = "botones != null">
-                   <!-- GNERADOR DE CAPCHA -->
-                    <div class="col-md-12" align="center" >
-                        <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
-                            <tr class="color">
-                                <div style="background: #ffffff;" >
-                                    <div class="box2">
-                                        <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
-                                    </div>
-                                    <div class="box2">
-                                        <img class="img-responsive" src="{{imageLNGG}}"  title="Palabra en CASTELLANO">
+                        <!--PAGO ANTICIPADO -->
+                        <div ng-show="false">
+                            <div class="col-md-12">
+                                <legend>Datos Pago Anticipado:</legend>
+                            </div>
+                            <div class = "col-md-12" class="form-control">
+                                <div class = "col-md-6" class="form-control">
+                                    <label for="Pago_Anticipado">
+                                    Desea realizar el Pago por Adelantado?
+                                    Si <input type="radio" name="pago_adel" value = "SI" ng-model="datos.pago_adel" ng-change="ShowPa('SI')" ng-disabled="desabilitado" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    No <input type="radio" name="pago_adel" value = "NO" ng-model="datos.pago_adel" ng-change="ShowPa('NO')" ng-disabled="desabilitado" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div ng-show="IsVisible==true">
+                                <div class = "col-md-6" class="form-control">
+                                    <div class="form-group">
+                                    <legend>Gestiones a Pagar:</legend>
+                                        <div class="controls">
+                                            <select id="nro_ges" class="form-control" ng-model="datos.nro_ges" name="nro_ges">
+                                                <option value="">--Seleccionar--</option>
+                                                <option value="2"> 2 </option>
+                                                <option value="4"> 4 </option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </tr>
-                            <tr class="color">
-                                <td class="color22" colspan="3" width="70"  align="center">
-                                    <input id="resultadoCC"  name="resultadoCC" type="text" style="border: 0px !important;" class="form-control"  placeholder="{{palabraT}}" ng-model="resultadoCC" ng-keyup="VerificarCapchaa()"/>
-                                    <span  ng-show="formulario.palabraT.$invalid">
-                                        <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
-                                    </span>
-                                    <label >{{palabraT}}</label>
-                                </td>
-                                <td class="color2" width="30"  align="center">
-                                    <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasXX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        </table>
-                        <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
-                        <b><font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font></b>
-                        <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+                                <div class="col-md-12" class="form-control" ng-show="IsVisible">
+                                    <div class="form-group" >
+                                        <label class="col-sm-12 control-label no-padding-right" for="url"></label>
+                                        <div class="col-sm-12" align="left">
+                                            <div class="alert alert-danger fade in">
+                                                <bold>Estimado Ciudadano:</bold> Seleccione esta opción sólo, si desea realizar un pago por adelantado de su Licencia de Funcionamiento.<br>
+                                                Ud. puede verificar en su cuenta iGob dentro de 48 hrs. la generación del documento, que le permitirá realizar el pago en las entidades finanicieras autorizadas.<br>
+                                                <br>NOTA: En caso de NO realizar el pago, dentro del plazo estipulado (48 hrs), no será posible emitir su LICENCIA DE FUNCIONAMIENTO.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                        </br>
+                        <div class="col-md-12">
+                            <input type="hidden" ng-model="datos.f01_tipo_lic" id="f01_tipo_lic" name="f01_tipo_lic">
+                            <input type="hidden" ng-model="datos.f01_categoria_agrupada" id="f01_categoria_agrupada" name="f01_categoria_agrupada">
+                            <input type="hidden" ng-model="datos.INT_AC_latitud" id="INT_AC_latitud" name="INT_AC_latitud" class="form-control">
+                            <input type="hidden" ng-model="datos.INT_AC_longitud" id="INT_AC_longitud" name="INT_AC_longitud" class="form-control">
+                            <input type="hidden" ng-model="datos.ARCHIVOS_MULTIPLES_MAPA" id="ARCHIVOS_MULTIPLES_MAPA" name="ARCHIVOS_MULTIPLES_MAPA">
+                            <input type="hidden" ng-model="datos.INT_AC_direccionImagenmapa" id="INT_AC_direccionImagenmapa" name="INT_AC_direccionImagenmapa">
+                            <input type="hidden" ng-model="datos.f01_zona_rep" id="f01_zona_rep" name="f01_zona_rep" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_tip_doc_rep" id="f01_tip_doc_rep" name="f01_tip_doc_rep" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_seg_nom_rep" id="f01_seg_nom_rep" name="f01_seg_nom_rep" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_ter_nom_rep" id="f01_ter_nom_rep" name="f01_ter_nom_rep" class="form-control">
+                            <input type="hidden" ng-model="datos.INT_AC_MACRO" id="INT_AC_MACRO" name="INT_AC_MACRO" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_requisitos_actividad_economica" id="f01_requisitos_actividad_economica" name="f01_requisitos_actividad_economica">
+                            <input type="hidden" ng-model="datos.f01_requisitos_tecnicos" id="f01_requisitos_tecnicos" name="f01_requisitos_tecnicos">
+                            <input type="hidden" ng-model="datos.f01_cap_aprox" id="f01_cap_aprox" name="f01_cap_aprox">
+                            <input type="hidden" ng-model="datos.f01_seg_nom_rep" id="f01_seg_nom_rep" name="f01_seg_nom_rep">
+                            <input type="hidden" ng-model="datos.f01_ter_nom_rep" id="f01_ter_nom_rep" name="f01_ter_nom_rep">
+                            <input type="hidden" ng-model="datos.INT_AC_DISTRITO" id="INT_AC_DISTRITO" name="INT_AC_DISTRITO" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_dist_act" id="f01_dist_act" name="f01_dist_act" class="form-control" />
+                            <input type="hidden" ng-model="datos.INT_AC_ID_ZONA" id="INT_AC_ID_ZONA" name="INT_AC_ID_ZONA" class="form-control">
+                            <input type="hidden" ng-model="datos.INT_ID_ZONA" id="INT_ID_ZONA" name="INT_ID_ZONA" class="form-control">
+                            <input type="hidden" ng-model="datos.INT_AC_MACRO_ID" id="INT_AC_MACRO_ID" name="INT_AC_MACRO_ID" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_macro" id="f01_macro" name="f01_macro" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_zona" id="f01_zona" name="f01_zona" class="form-control"  width="30%" height="30">
+                            <input type="hidden" ng-model="datos.INT_ACTIVIDAD_DESCRIPCION" name="INT_ACTIVIDAD_DESCRIPCION" id="INT_ACTIVIDAD_DESCRIPCION">
+                            <input type="hidden" ng-model="datos.f01_id_representante_legal" id="f01_id_representante_legal" name="f01_id_representante_legal" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_num_pmc" id="f01_num_pmc" name="f01_num_pmc" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_nro_orden" id="f01_nro_orden" name="f01_nro_orden" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_id_contribuyente" id="f01_id_contribuyente" name="f01_id_contribuyente" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_id_actividad_economica" id="f01_id_actividad_economica" name="f01_id_actividad_economica" class="form-control" />
+                            <input type="hidden" name="f01_categoria_agrupada_dem" ng-model="datos.f01_categoria_agrupada_dem" class="form-control" >
+                            <input type="hidden" ng-model="datos.f01_categoria_agrupada_descripcion" id="f01_categoria_agrupada_descripcion" name="f01_categoria_agrupada_descripcion" class="form-control" />
+                            <input type="hidden" ng-model="datos.f01_categoria_descripcion" id="f01_categoria_descripcion" name="f01_categoria_descripcion" class="form-control" />
+                            <input type="hidden" ng-model="datos.f01_categoria_descrip2" id="f01_categoria_descrip2" name="f01_categoria_descrip2" class="form-control" />
+                            <input type="hidden" ng-model="datos.f01_categoria" id="f01_categoria" name="f01_categoria" class="form-control" />
+                            <input type="hidden" ng-model="datos.f01_actividadesDesarrolladasc" id="f01_actividadesDesarrolladasc" name="f01_actividadesDesarrolladasc" class="form-control">
+                            <input type="hidden" ng-model="datos.xf01_idcat_multi_principal" id="xf01_idcat_multi_principal" name="xf01_idcat_multi_principal" class="form-control" />
+                            <input type="hidden" ng-model="datos.xf01_descat_multi_principal" id="xf01_descat_multi_principal" name="xf01_descat_multi_principal" class="form-control" />
+                            <input type="hidden" ng-model="datos.mulact_principal" id="mulact_principal" name="mulact_principal" class="form-control" />
+                            <input type="hidden" ng-model="datos.Licenmul_grilla" id="Licenmul_grilla" name="Licenmul_grilla" class="form-control" />
+                            <input type="hidden" ng-model="datos.f01_actividadesSecundarias" id="f01_actividadesSecundarias" name="f01_actividadesSecundarias" class="form-control" />
+                            <input type="hidden" ng-model="datos.f01_actividad_principal_array" id="f01_actividad_principal_array" name="f01_actividad_principal_array" class="form-control" />
+                            <input type="hidden" ng-model="datos.f01_zona_act_descrip" id="f01_zona_act_descrip" name="f01_zona_act_descrip" class="form-control">
+                            <input type="hidden" ng-model="datos.FILE_CI" id="datos.FILE_CI" name="datos.FILE_CI" class="form-control" />
+                            <input type="hidden" ng-model="datos.fileArchivosAd" id="datos.fileArchivosAd" name="datos.fileArchivosAd" class="form-control" />
+                            <input type="hidden" ng-model="datos.f01_nro_frm" id="f01_nro_frm" name="f01_nro_frm" class="form-control" />
+                            <input type="hidden" ng-model="datos.IDTRAMITE" id="IDTRAMITE" name="IDTRAMITE" class="form-control" />                        
+                            <input type="hidden" ng-model="datos.f01_actividadesCAAD" id="f01_actividadesCAAD" name="f01_actividadesCAAD" class="form-control">
+                            <input type="hidden" ng-model="datos.f01_categorias_multi" id="f01_categorias_multi" name="f01_categorias_multi" class="form-control" />
+                        </div>
+                        <div class="col-md-12">
+                            <legend></legend>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-12" align="right" ng-show = "botones != null">
-                    <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little fa-lg" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"><!--{{translateTitulos.lbl_016_29}}--></button><!--cambios-->                         
-                    <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario"><!--{{translateTitulos.lbl_016_30}}--></button><!--cambios-->
-                    <!--button type="button" class="btn btn-success" id="Formulario401" data-toggle="modal" data-target="#declaracionJ" ng-click="formulario401(datos);generarDocumentoPhp();">Formulario 401 - 402</button-->
-                </div> 
+                    <div class="col-md-6" align="center" ng-show = "botones != null">
+                    <!-- GNERADOR DE CAPCHA -->
+                        <div class="col-md-12" align="center" >
+                            <table width="50%" border="0" cellspacing="0" cellpadding="2"  class="one">
+                                <tr class="color">
+                                    <div style="background: #ffffff;" >
+                                        <div class="box2">
+                                            <img class="img-responsive" src="{{imageCSTT}}" title="{{toltipT}}">
+                                        </div>
+                                        <div class="box2">
+                                            <img class="img-responsive" src="{{imageLNGG}}"  title="Palabra en CASTELLANO">
+                                        </div>
+                                    </div>
+                                </tr>
+                                <tr class="color">
+                                    <td class="color22" colspan="3" width="70"  align="center">
+                                        <input id="resultadoCC"  name="resultadoCC" type="text" style="border: 0px !important;" class="form-control"  placeholder="{{palabraT}}" ng-model="resultadoCC" ng-keyup="VerificarCapchaa()"/>
+                                        <span  ng-show="formulario.palabraT.$invalid">
+                                            <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
+                                        </span>
+                                        <label >{{palabraT}}</label>
+                                    </td>
+                                    <td class="color2" width="30"  align="center">
+                                        <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal" ng-click="getCaptchasXX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072" title="Actualizar"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <b><font SIZE=3 color="red"> {{ErrorCapchasXX}}</font></b>
+                            <b><font SIZE=3 color="red"> {{ErrorCapchasXX2}}</font></b>
+                            <b><font SIZE=2 color="green"> {{SuccesCapchasxx}}</font></b>
+                        </div>
+                    </div>
+                    <div class="col-md-12" align="right" ng-show = "botones != null">
+                        <button id="miFormGuardar"  ng-click="ultimoArrayAdjunto();verificarCamposInternet(datos);getCaptchasXX();" type="button" class="btn btn-success1 fa fab fa-save shake-little fa-lg" name="formEnviar" ng-disabled="habGuardar1" tooltip="Guardar Formulario"><!--{{translateTitulos.lbl_016_29}}--></button><!--cambios-->                         
+                        <button id="btnFormLicencia"  ng-click="validarEnvio(datos);" data-dismiss="modal" type="button" class="btn btn-success1 fa fab fa-mail-forward shake-little fa-lg" ng-disabled="btnEnviarFormLinea" tooltip="Enviar Formulario"><!--{{translateTitulos.lbl_016_30}}--></button><!--cambios-->
+                        <!--button type="button" class="btn btn-success" id="Formulario401" data-toggle="modal" data-target="#declaracionJ" ng-click="formulario401(datos);generarDocumentoPhp();">Formulario 401 - 402</button-->
+                    </div> 
                 </div>
             </form>
         </div>  

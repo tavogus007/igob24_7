@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de imagen o documento</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #canvas-container {
+            display: none;
+            width: 400px;
+            height: 300px;
+            max-width: 400px;
+            max-height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #canvas {
+            display: block;
+            width: 100%;
+            /* Ajusta el ancho al 100% del contenedor */
+            height: 100%;
+            /* Ajusta el alto al 100% del contenedor */
+            object-fit: contain;
+            /* Escala la imagen para que se ajuste dentro del lienzo */
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #btn-guardar {
+            background-color: #00b3ba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #titulo {
+            background-color: #00b3ba;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #tituloDiv {
+            background-color: #00b3ba;
+            width: 100%;
+            color: white;
+        }
+
+        #btn-img {
+            display: none;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            margin-bottom: 10px;
+            background-color: #00b3ba;
+            color: white;
+            border-radius: 5px;
+        }
+
+        #btn-doc {
+            display: none;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            margin-bottom: 10px;
+            background-color: #00b3ba;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .custom-file-button.selected {
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tituloDiv">
+        <h1 id="titulo"></h1>
+    </div>
+    <br>
+    <div id="canvas-container"><canvas id="canvas"></canvas></div>
+    <label id="file-name-label" style="display: none;"></label>
+    <br>
+    <label for="file-input-image" id="btn-img">Seleccionar Imagen</label>
+    <input type="file" id="file-input-image" accept="image/*" style="display: none;">
+    <label for="file-input-pdf" id="btn-doc">Seleccionar Documento</label>
+    <input type="file" id="file-input-pdf" accept="application/pdf" style="display: none;">
+    <button id="btn-guardar" style="display: none;">Guardar</button>
+    <script>
+        const btnimg = document.getElementById('btn-img');
+        const btndoc = document.getElementById('btn-doc');
+        const fileInputImage = document.getElementById('file-input-image');
+        const fileInputPdf = document.getElementById('file-input-pdf');
+        const btnGuardar = document.getElementById('btn-guardar');
+        const canvas = document.getElementById('canvas');
+        const canvasContainer = document.getElementById('canvas-container');
+        const context = canvas.getContext('2d');
+
+        // Función para enviar datos a la API
+        function enviarDatosAServidor(oid, imgb64) {
+            const apiUrl = 'http://131.0.0.17:8009/wsRCPG/subirArchivoAndroidv13';
+            const data = {
+                soid: oid,
+                imgb64: imgb64
+            };
+
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                    // Aquí puedes manejar la respuesta del servidor si es necesario
+                    setTimeout(() => {
+                        // Redirigir a otra URL después de guardar
+                        window.location.href = 'cerrar'; // Cambia la URL de destino según necesites
+                    }, 1000);
+                })
+                .catch(error => {
+                    console.error('Error al enviar los datos:', error);
+                    alert("El peso de la imagen es demasiado grande, intente de nuevo porfavor");
+                });
+        }
+
+        // Captura el parámetro de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const parametro = urlParams.get('parametro');
+        const oid = urlParams.get('oid');
+        console.log('Parámetro recibido:', parametro);
+        console.log('OID recibido:', oid);
+        // Cambiar título según el parámetro
+        const titulo = document.getElementById('titulo');
+        if (parametro === 'doc') {
+            titulo.textContent = 'Selección de Documento';
+            fileInputImage.style.display = 'none';
+            btnimg.style.display = 'none';
+            btndoc.style.display = 'block';
+        } else if (parametro === 'img') {
+            titulo.textContent = 'Selección de imagen';
+            fileInputPdf.style.display = 'none';
+            btnimg.style.display = 'block';
+            btndoc.style.display = 'none';
+        }
+
+        fileInputImage.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function (readerEvent) {
+                const image = new Image();
+                image.onload = function () {
+                    // Mostrar la imagen en su resolución original
+                    canvas.width = image.width;
+                    canvas.height = image.height;
+                    context.drawImage(image, 0, 0);
+                    canvasContainer.style.display = 'block';
+                    // Convertir a base64 con calidad 70%
+                    const imageDataURL = canvas.toDataURL('image/jpeg', 0.1);
+                    console.log('Base64 de la imagen:', imageDataURL);
+                    // Mostrar el botón "Guardar"
+                    btnGuardar.style.display = 'block';
+                    // Agregar evento click al botón "Guardar"
+                    btnGuardar.addEventListener('click', function () {
+                        // Enviar datos a la API
+                        enviarDatosAServidor(oid, imageDataURL);
+                    });
+                };
+                image.src = readerEvent.target.result;
+            };
+            reader.readAsDataURL(file);
+            updateFileName(this);
+        });
+
+        fileInputPdf.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+
+            const maxSize = 800 * 1024; // Tamaño máximo permitido en bytes (800 KB)
+
+            // Verificar el tamaño del archivo PDF
+            if (file.size > maxSize) {
+                alert('El archivo PDF excede el tamaño máximo permitido de 800 KB.');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function () {
+                const base64Text = reader.result.split(',')[1];
+                console.log('Base64 del pdf:', base64Text);
+
+                // Mostrar la imagen predeterminada en el canvas
+                const defaultDocumentImageBase64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEJUlEQVR4nO2a/UtTURjH979tGZpaUSJobz8UiYTk2y+KGkJYRPTyS0kgiD+YFogghISBYG3q1Ey3mstS8yXzpalT13T3G89z3XIokd12d87pfOAwz9313MtnzznPOedeh0Oj0Wg0f4zb6YSI5Y3T6ZbiZ0y3KLfsEuM3KwruvfvxHDsW/7vPITKiClx5+jQhUehIFFUgAgE5JIosEDJIFF0gRJcog0CILFEWgRBVokwCIaJE2QRCNIkyCoRIEmUVCFEkyiwQIkiUXSDSLVEFgUinRFUEIl0SVRKIdEgUVaD7HxUt0KkFpoX/NgL/FVqgRbRAiygjMBoKwVdWhv6sLPgqKrhuB8oI/FBdnTSt+PTgAexACYG74TBPain6Nicn+TqDp0/DDpQQGJ6Y4LbfFRVxnURSPRaJINWoITAY/CXQMODJyIDb5YKxu4tUo4TAH8vL3Lb3zBlOHtyFT52CHSghEIaBgexs81WN3l7+HLt2DXaghkAAvvJybn/8+nUzC9+7BztQRuBsS0vSNGbxxQvYgTICw3uZOF4iCwuwA2UEEiMXLvA1Rs6fh10oJTB46xZfg1YldqGMQCMWg/fsWb6G5/hxntrYgTICQ15v0hg49fgx7EAZgZN37nD7gdpaXoXQci66soJUo4TAWCSCwZMnuf2tmRlTIs0F799HqlFC4GJXV9LqY2t6msdB2qGh6U0qkV+gYeDtpUvc9vKrV4nDU42NptTiYhg7O0gV0gtcdbu53eGCgqTdl93NTQwXFvJ3M01NSBXSC/SVlXG788+fH/hufWyMuzGV0OAgUoHUAsN7y7eB3FyOuMP40txsnpOTg4WODsy3t/Ox6SdP+JPq1PV5rDSM/0tgYC/b0nhH7Kyvc5cmOe+rqnhspGSyf374u+LNy2OhRxEprcD18fHEzQdu3MDo5cs8/ztMzFB+Pq+P43Xa8pprbeUdnKlHjzBRX5/0/aeHD9UVGItE8K27O5F595f+zEz4Sks5aaz09WHz8+fEcxHKxCSKz3W5MHn37oHlXmhoKDEkKCcwurrKXZW26uNt0bMPf2UlRxMljFg0+vtGDANzbW0sOv7/H2pqeCz82tmJj7dvm89Wrl5VR2AsGuWI6j9x4kDELfX04G+g1Urw5s1Dx0c69t3jUUPg9twcP2mLd7tAXR2Gz53jOkWeVSiq6UegCKRxjyJ5e3b2SG0IK3BnbS0hizZKN/x+zLe1cZ26cWRxESIgrMBgQ4OZMUtKeI639PKlmWVdLqy+fg1REFbgQG4un0+ZlMbA+PvI88+eQSSEFThy8WLy4J6RwRlUNIQVuOH3Y/TKFfN1tfJyrouIsAJlQQu0iBZoES3QIlqgRbRAi2iBFtECLaIFWkQLtIgWaBEt0CJaoEW0QNkEqlocWqBTbIEajUbjUIefjCNQ+RitnVAAAAAASUVORK5CYII=';
+                const image = new Image();
+                image.onload = function () {
+                    canvas.width = image.width;
+                    canvas.height = image.height;
+                    context.drawImage(image, 0, 0);
+                    canvasContainer.style.display = 'block';
+                    // Mostrar el botón "Guardar"
+                    btnGuardar.style.display = 'block';
+                    // Agregar evento click al botón "Guardar"
+                    btnGuardar.addEventListener('click', function () {
+                        // Enviar datos a la API
+                        enviarDatosAServidor(oid, base64Text);
+                    });
+                };
+                // Verifica si hay una imagen predeterminada para mostrar
+                if (defaultDocumentImageBase64) {
+                    image.src = defaultDocumentImageBase64;
+                } else {
+                    // Si no hay imagen predeterminada, muestra el canvas vacío
+                    canvasContainer.style.display = 'none';
+                }
+            };
+            reader.readAsDataURL(file);
+            updateFileName(this);
+        });
+
+   
+        // Dentro del evento change de fileInputImage y fileInputPdf
+        function updateFileName(input) {
+            const fileName = input.files[0].name;
+            const fileNameLabel = document.getElementById('file-name-label');
+            fileNameLabel.textContent = fileName;
+            fileNameLabel.style.display = 'block'; // Mostrar el label
+        }
+    </script>
+</body>
+
+</html>

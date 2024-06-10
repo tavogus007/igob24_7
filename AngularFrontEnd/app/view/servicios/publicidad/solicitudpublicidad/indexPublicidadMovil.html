@@ -36,9 +36,53 @@
         text-align: left !important;
     }
 </style>
+<script type="text/javascript">
+    function iniciarLoadFyle(){
+        $('.custom-upload input[type=file]').change(function(){
+        $(this).next().find('input').val($(this).val());
+        angular.element(this).scope().cambiarFile(this, $(this).val());
+        });
+    }
+</script>
 </head>
 <body>   
 <div  ng-controller="solicitudPublicidadController" data-ng-init="iniSolicitud();">    
+    <div id="modalAdjunto" class="modal fade" role="dialog">
+        <div class="modal-dialog">  
+        <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Fotografías de Publicidad</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div ng-repeat="adjunto in adjuntos">
+                                <div class="form-group custom-upload">
+                                    <label>{{adjunto.nombre}}</label>
+                                    <input type="file" id="f01_upload_cara_{{$index}}" name="f01_upload_cara_{{$index}}" accept="image/*"  style="display: none;">
+                                    <div class="input-group">
+                                        <input id="txt_f01_upload_cara_{{$index}}" name="txt_f01_upload_cara_{{$index}}" ng-model="adjunto.nombre_adjunto"  type="text"  class="form-control" disabled required>
+                                        <span class="input-group-btn">
+                                            <a id="href_f01_upload_cara_{{$index}}" ng-show="adjunto.url" href="{{adjunto.url}}" target="_blank">
+                                                <button id="btn_f01_upload_{{$index}}" class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                            </a>
+                                            <button id="btn_f01_upload_{{$index}}"  ng-click="ejecutarFile('f01_upload_cara_'+$index,$index)" class="btnupload browse btn btn-primary " type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                        </span>
+                                    </div>
+                                </div><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>            
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="guardarAdjuntos(adjuntos)">Guardar Fotografias</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>  
+        </div>
+    </div>
     <div id="mostrar" class="ibox-title">
         <h5>Solicitud de Publicidad Móvil</h5>
     </div>
@@ -78,6 +122,7 @@
       </div>  
     </div>
 </div>
+
  <!--/ Modal --> 
 <br>   
 <div id="pdfContainer" ng-show="mostrarPdf">
@@ -267,68 +312,80 @@
                 </div>               
                 <div class="row">     
                     <div class="col-xs-1 col-sm-1 numeracion">
-                       <label>#</label>
-                     </div> 
-                     <div class="col-sm-2">
-                       <label><font color="#FF0000" size="4px">*</font> Tipo de letrero</label>
-                     </div>
-                     <div class="col-sm-2">
-                       <label><font color="#FF0000" size="4px">*</font> Caracteristica</label>
-                     </div>
-                     <div class="col-sm-2">
-                       <label><font color="#FF0000" size="4px">*</font> Marca / Modelo / Caracteristica particular</label>
-                     </div>
-                     <div class="col-sm-2">
-                       <label><font color="#FF0000" size="4px">*</font> Placa / Número de unidad</label>
-                     </div>
-                     <div class="col-sm-1">
+                        <label>#</label>
+                    </div> 
+                    <div class="col-sm-2">
+                        <label><font color="#FF0000" size="4px">*</font> Tipo de letrero</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label><font color="#FF0000" size="4px">*</font> Caracteristica</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label><font color="#FF0000" size="4px">*</font> Marca / Modelo / Caracteristica particular</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label><font color="#FF0000" size="4px">*</font> Placa / Número de unidad</label>
+                    </div>
+                    <div class="col-sm-1">
                         <label><font color="#FF0000" size="4px">*</font> Vistas</label>
-                      </div>                     
-                     <div class="col-sm-2">
-                       <label><font color="#FF0000" size="4px">*</font> Superficie en m&sup2;</label>
-                     </div>
+                    </div>                     
+                    <div class="col-sm-1">
+                        <label><font color="#FF0000" size="4px">*</font> Superficie en m&sup2;</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label><font color="#FF0000" size="4px">*</font> Fotografías</label>
+                    </div>
+                    <div class="col-sm-1">
+                        
+                    </div>
                 </div>
                
                    <div ng-repeat="input in inputs" class="row plomo-intercalado">
-                     <div class="col-xs-1 col-dm-1 numeracion espacio">
-                       <div>{{$index + 1}})</div>
-                     </div>
-               
-                     <div class="col-md-2">
-                        <select id="categoria{{$index}}" ng-model="input.categoria" ng-options="cat.descripcion for cat in input.categorias track by cat.idTipoLetrero" ng-change="cargarCaracteristicas(input)" class="form-control" required>
-                            <option value="">--Seleccionar--</option>
-                        </select>
-                      </div>
-                      <div class="col-md-2">
-                        <select id="idTipoLetrero{{$index}}" ng-model="input.idTipoLetrero" ng-options="caract.caracteristica for caract in input.caracteristicas track by caract.idCaracteristica"class="form-control" required>
-                            <option value="">--Seleccionar--</option>
-                        </select>
-                      </div>
-                     <div class="col-md-2">
-                       <div class="form-group espacio">
-                         <input id="marca{{$index}}" ng-model="input.marca" type="text" class="form-control input-sm" minlength="3" maxlength="20" ng-model-options="{ updateOn: 'blur' }" ng-change="input.marca = input.marca.toUpperCase()" required />
-                       </div>
-                     </div>
-                     <div class="col-md-2">
-                       <div class="form-group espacio">
-                         <input id="placa{{$index}}" ng-model="input.placa" type="text" class="form-control input-sm" minlength="3" maxlength="15" ng-model-options="{ updateOn: 'blur' }" ng-change="input.placa = input.placa.toUpperCase()" required />
-                       </div>
-                     </div>
-                     <div class="col-md-1">
-                        <div class="form-group espacio">
-                            <input id="vistas{{$index}}" ng-model="input.vistas" type="number" step="1" min="1" max="999" class="form-control input-sm" required />          
+                        <div class="col-xs-1 col-dm-1 numeracion espacio">
+                        <div>{{$index + 1}}</div>
                         </div>
-                      </div>                     
-                     <div class="col-md-1">
-                       <div class="form-group espacio">
-                         <input id="superficie{{$index}}" ng-model="input.superficie" type="number" step="0.01" min="0.1" max="1000" class="form-control input-sm" required />
-                       </div>
-                     </div>
-                     <div class="col-md-1 espacio">
-                       <button ng-if="$index > 0" ng-click="eliminarInput($index)" class="btn btn-danger btn-xs">
-                         <span class="glyphicon glyphicon-remove"></span> Eliminar
-                       </button>
-                     </div>
+                
+                        <div class="col-md-2">
+                            <select id="categoria{{$index}}" ng-model="input.categoria" ng-options="cat.descripcion for cat in input.categorias track by cat.idTipoLetrero" ng-change="cargarCaracteristicas(input)" class="form-control" required>
+                                <option value="">--Seleccionar--</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="idTipoLetrero{{$index}}" ng-model="input.idTipoLetrero" ng-options="caract.caracteristica for caract in input.caracteristicas track by caract.idCaracteristica"class="form-control" required>
+                                <option value="">--Seleccionar--</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                        <div class="form-group espacio">
+                            <input id="marca{{$index}}" ng-model="input.marca" placeholder="marca"  type="text" class="form-control input-sm" minlength="3" maxlength="20" ng-model-options="{ updateOn: 'blur' }" ng-change="input.marca = input.marca.toUpperCase()" required />
+                        </div>
+                        </div>
+                        <div class="col-md-1">
+                        <div class="form-group espacio">
+                            <input id="placa{{$index}}" ng-model="input.placa" placeholder="placa"  type="text" class="form-control input-sm" minlength="3" maxlength="15" ng-model-options="{ updateOn: 'blur' }" ng-change="input.placa = input.placa.toUpperCase()" required />
+                        </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group espacio">
+                                <input id="vistas{{$index}}" ng-model="input.vistas" type="number" placeholder="vistas" step="1" min="1" max="999" class="form-control input-sm" required />          
+                            </div>
+                        </div>                     
+                        <div class="col-md-1">
+                        <div class="form-group espacio">
+                            <input id="superficie{{$index}}" ng-model="input.superficie" placeholder="Superficie" type="number" step="0.01" min="0.1" max="1000" class="form-control input-sm" required />
+                        </div>
+                        </div>
+                        <div class="col-md-1 espacio">
+                            <button type="button" class="btn btn-primary btn-circle"  ng-click="abrirModalAdjunto(input,$index)" tooltip="Subir Fotografias">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-1 espacio">
+                        <button ng-if="$index > 0" ng-click="eliminarInput($index)" class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-remove"></span> Eliminar
+                        </button>
+                        </div>
+                        
                    </div>
                
                    <button ng-click="agregarInput()" class="btn btn-primary btn-xs">

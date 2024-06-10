@@ -89,6 +89,8 @@ app.directive('modelformatoSercat', ['$filter', function ($filter) {
 
 function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad,$timeout,$window) 
 {
+    $scope.sucursalTerritorio=170; //desarrollo y prod
+    $scope.usuarioIgob=354;	//desarrollo y prod
     $scope.flujo ={
         pasos:{
             paso0 : 'listaSolicitudes',
@@ -198,18 +200,16 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
         restricciones : 0,
         pendienteVia : null
     }
+    $scope.obtenerArrayCorreoInvalido=function () {
+        var conf = new dataSITOL();
+        conf.catObtenerParam("IgobArrayCorreoInvalido",function(resultado){
+            var resApi = JSON.parse(resultado);
+            $scope.listaCorreosInvalidos = JSON.parse(resApi.success.dataSql[0].valorParametro);
+        });    
+    }
 
     $scope.srcTutorial="../territorio/img/TramitePermisoConstruccion.png";
-    
-    /*$scope.inicio = function () 
-    {
-        $scope.setDatosSolicitante();
-        $scope.getSolicitudes();
-        $scope.getListaTipoTramite();
-        $scope.getListaArquitectos();
-        $scope.loginPagoEnLinea();
-    }*/
-
+    $scope.obtenerArrayCorreoInvalido();
     $scope.inicio = function () 
     { 
         $.blockUI({ css: {
@@ -229,6 +229,8 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
                 $scope.getListaTipoTramite();
                 $scope.getListaArquitectos();
                 $scope.getDireccionesSucursales();
+                $scope.recuperarDatosRegistro();
+                
                 //$scope.loginPagoEnLinea();
             }catch(e)
             {
@@ -311,6 +313,97 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
             
         }
    
+    };
+
+    var aReg = { "cedula": "","complemento": "","celular":"","correo":"","direccion":"","estado_civil":"",
+    "fecha_nacimiento":"","materno":"","nombre":"","ocupacion":"","paterno":"","sexo":"","telefono":"",
+    "cedula2": "","nit2": "","complemento2": "","repLegal": "","nroDocumento": "","nroNotaria": "",
+    "nit": "","razonSocial": "","tipoP": "","cestcivil_id": "","expedido":""};
+
+    $scope.recuperarDatosRegistro = function(){
+        var datosCiudadano=new rcNatural();
+        datosCiudadano.oid=sessionService.get('IDCIUDADANO');
+        datosCiudadano.datosCiudadanoNatural(function(resultado){
+            var response = JSON.parse(resultado);
+            if (response.length > 0) {
+                var results = response;
+                if ($scope.validarCorreo(results[0].dtspsl_correo)) {
+                    $scope.correoInvalido=true;
+                } else {
+                    $scope.correoInvalido=false;
+                }
+                tipoPersona = results[0].dtspsl_tipo_persona;
+                if (tipoPersona == 'NATURAL') {
+                    $scope.datospersonaNatural = null;
+                    $scope.datospersonaJuridica = "ocultar";
+                    aReg.nombre = results[0].dtspsl_nombres;
+                    aReg.paterno = results[0].dtspsl_paterno;
+                    aReg.materno = results[0].dtspsl_materno;
+                    aReg.cedula = results[0].dtspsl_ci;
+                    aReg.expedido = results[0].dtspsl_expedido;
+                    aReg.sexo=(results[0].dtspsl_sexo=='M')?'MASCULINO':'FEMENINO';
+                    aReg.fecha_nacimiento = results[0].dtspsl_fec_nacimiento;
+                    aReg.ocupacion = results[0].dtspsl_ocupacion;
+                    aReg.direccion = results[0].dtspsl_direccion;
+                    aReg.correo = results[0].dtspsl_correo;
+                    aReg.telefono = results[0].dtspsl_telefono;
+                    aReg.celular = results[0].dtspsl_movil;
+                    angelNatural = aReg;
+                }
+                else{
+                    $scope.datospersonaJuridica = null;
+                    $scope.datospersonaNatural = "ocultar";
+                    aReg.nombre = results[0].dtspsl_nombres;
+                    aReg.paterno = results[0].dtspsl_paterno;
+                    aReg.materno = results[0].dtspsl_materno;
+                    aReg.cedula = results[0].dtspsl_ci;
+                    aReg.repLegal = results[0].dtspsl_poder_replegal;
+                    aReg.nroNotaria = results[0].dtspsl_nro_notaria;
+                    aReg.nroDocumento = results[0].dtspsl_nro_documento;
+                    //DATOS INICIALES REGISTRO CIUDADANO
+                    aReg.razonSocial   = results[0].dtspsl_razon_social;
+                    aReg.telefono      = results[0].dtspsl_telefono;
+                    aReg.celular       = results[0].dtspsl_movil;
+                    aReg.correo        = results[0].dtspsl_correo;
+                    aReg.nit           = results[0].dtspsl_nit;
+                    aReg.direccion     = results[0].dtspsl_direccion;
+                    aReg.nrocasa       = results[0].dtspsl_numero_casa;
+                    aReg.nrooficina    = results[0].dtspsl_oficina;
+                }
+                switch(aReg.expedido) {
+                    case '1':
+                        aReg.expedido = 'CHQ';
+                        break;
+                    case '2':
+                        aReg.expedido = 'LPZ';
+                        break;
+                    case '3':
+                        aReg.expedido = 'CBB';
+                        break;
+                    case '4':
+                        aReg.expedido = 'ORU';
+                        break;
+                    case '5':
+                        aReg.expedido = 'PTS';
+                        break;
+                    case '6':
+                        aReg.expedido = 'TJA';
+                        break;
+                    case '7':
+                        aReg.expedido = 'SCZ';
+                        break;
+                    case '8':
+                        aReg.expedido = 'BNI';
+                        break;
+                    case '9':
+                        aReg.expedido = 'PND';
+                        break;
+                }
+            }
+            else{
+                console.log("No se encontraron los datos del ciudadano!!", sessionService.get('IDCIUDADANO'));
+            }
+        });
     };
 
     $scope.mostarO = function(){
@@ -552,17 +645,17 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
     {
         var solicitud = new dataSITOL();
         solicitud.pcSolicitudActFumPagado(objFum.idFichaTecnica, function(resultado){
-                var resApi = JSON.parse(resultado);
-                if(resApi.success)
-                {
-                    $scope.getSolicitudesUnico();
-                }
-                else
-                {
-                    swal('', 'Error al Activar Fum pagado', 'error');
-                    console.log("Error al act fum pagado",resApi.error.message,resApi.error.code);
-                }
-            });
+            var resApi = JSON.parse(resultado);
+            if(resApi.success)
+            {
+                $scope.getSolicitudesUnico();
+            }
+            else
+            {
+                swal('', 'Error al Activar Fum pagado', 'error');
+                console.log("Error al act fum pagado",resApi.error.message,resApi.error.code);
+            }
+        });
     };
     $scope.tablaSolicitudes = new ngTableParams({
         page: 1,
@@ -603,7 +696,7 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
     $scope.BuscarArquitecto = function () {
         $scope.RegistroItem = $filter('filter')($scope.listaArquitectos, {registroNacionalCAB:parseInt($scope.solicitud.arquitectoRegistroNacionalCAB)}, true)[0];
         //console.log($scope.RegistroItem);
-		$scope.arquitectoCompleto = $scope.RegistroItem.arquitectoNombre;
+        $scope.arquitectoCompleto = $scope.RegistroItem.arquitectoNombre;
         $scope.solicitud.arquitectoNombre=$scope.RegistroItem.arquitectoNombre;
         $scope.solicitud.arquitectoTelefono=$scope.RegistroItem.telefonoCelular;
         $scope.solicitud.arquitectoEmail=$scope.RegistroItem.correoElectronico;
@@ -619,7 +712,6 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
             if(resApi.success)
             {
                 $scope.listaArquitectos = resApi.success.dataSql;
-
                 var data = resApi.success.dataSql;//grabamos la respuesta para el paginado
                 $scope.tablaListaArquitectos.reload();
             }
@@ -733,16 +825,52 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
 
     //Acciones - Inicio
     $scope.accionDescargarSolicitud = function (sol) {
-        var urlFum = CONFIG.SERVICE_SITOLextgen + 'Territorio/GenerarSolicitudPDF?d=' + sol.pisol;
+        var urlFum = CONFIG.SERVICE_SITOLextgen + 'Reportes/solicitudPCv2.ashx?idPCv2=' + sol.idPCv2Solicitud;
         window.open(urlFum,"_blank");
     }
-	
-    $scope.accionDescargarInformeObs = function () {        
-        var urlFum = CONFIG.SERVICE_SITOLextgen + 'PermisoConstruccionV2/downloadDocumento?idInsFlujo=' + $scope.idInsFlujoRepo+'&idDocumento=438';//oficial
-        window.open(urlFum,"_blank");
+
+    $scope.accionEnviarCorreoArquitecto = function(sol) {
+        swal({   
+            title: "¿Desea reenviar el correo al Arquitecto?",   
+            text: "El correo se enviara al arquitecto "+sol.arquitectoNombre+", con la ruta de acceso al formulario de solicitud del tramite "+sol.idPCv2Solicitud+ ". La fecha límite para que el arquitecto ingrese a este formulario y registre los datos de la solicitud es "+ new Date(sol.fechaExpiracion).toLocaleDateString('en-GB'),   
+            type: "warning", 
+            showCancelButton: true,   
+            confirmButtonColor: "#23c6c8",   
+            confirmButtonText: "SI, ENVIAR",
+            cancelButtonText: "CANCELAR", 
+            closeOnConfirm: false 
+        },function(isConfirm){
+            if (isConfirm) {
+                $scope.sendCorreoDelegado2(sol.pisol, sol.arquitectoNombre);
+            }
+        });
     };
 
-	
+    $scope.accionAbrirLink = function(sol) {
+        var url = CONFIG.SERVICE_SITOLextgen + 'PermisoConstruccionV2/PCv2Solicitud?d='+sol.pisol;
+        window.open(url,"_blank");
+    };
+
+    $scope.accionDescargarInformeObs = function () {
+        $scope.varSpin = true;
+        var Infdoc = 438;
+        var url = CONFIG.SERVICE_SITOLext + 'vccg?idDocumento='+Infdoc+'&idInsFlujo='+$scope.idInsFlujoRepo+'&tipo=1';
+        window.open(url,"_blank");
+        console.log(url);
+        $('#visorFum object').attr("data",url);
+        $timeout(function(){$scope.varSpin=false}, 1000);
+    };
+
+    $scope.accionDescargarInformeObs1 = function (sol) {
+        $scope.varSpin = true;
+        var Infdoc = 438; // oficial 438
+        var url = CONFIG.SERVICE_SITOLext + 'vccg?idDocumento='+Infdoc+'&idInsFlujo='+sol.idInsFlujo+'&tipo=1';
+        window.open(url,"_blank");
+        console.log(url);
+        $('#visorFum object').attr("data",url);
+        $timeout(function(){$scope.varSpin=false}, 1000);
+    };
+
     //Pago
     $scope.accionImprimirProforma = function (sol) {
         $scope.varSpin = true;
@@ -750,7 +878,9 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
             registrado:'OK',
             mensaje:''
         };
+        var docFum = 433;
         var urlFum = CONFIG.SERVICE_SITOLextgen + 'ApiTerritorio/DocumentoFum?q=' + sol.piif;
+        window.open(urlFum,"_blank");
         $('#visorFum object').attr("data",urlFum);
         $timeout(function(){$scope.varSpin=false}, 1000);
     };
@@ -782,26 +912,27 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
         window.location.href = "#servicios|epagos";
     };
 
-
     $scope.accionSeguimientoFlujoA = function(sol){
-        $scope.idPCTramite = sol.idPCTramite;
-        $scope.idInsFlujoRepo = sol.idInsFlujo;
+        console.log("idInsFlujo...",sol.idInsFlujo);
         $.blockUI();
-        var sit = new dataSIT();
-        sit.seguimientoFlujoPCv2(sol.idInsFlujo, function(resultado){
+        var solicitud = new dataSITOL();
+        solicitud.getUltimaTarea(sol.idInsFlujo, function(resultado){
+            $.unblockUI();
             var resApi = JSON.parse(resultado);
-            //console.log("sssssssssssss",resApi);
-            if(resApi.success.dataSql.length>0){
-                $scope.listaSeguimientoTareas = resApi.success.dataSql;
-                $('#divPopupSeguimiento').modal('show');
-                $.unblockUI();
+            console.log("Data", resApi);
+            if(resApi.success)
+            {
+                console.log("sss", resApi);
+                $scope.listaSeguimientoSitram = resApi.success.dataSql;
+                $('#divPopupSeguimientofsa').modal('show');
             }
-            else{
-                $.unblockUI();
+            else
+            {
+                console.log("Error al obtener data",resApi.error.message,resApi.error.code);
             }
         });
     };
-	
+
     $scope.accionSeguimientoFlujo= function (sol) {
         $.blockUI();
         if(sol.piif)
@@ -815,12 +946,12 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
             }).success(function (data, status, headers, config) {
                 if(data.res)
                 {
-                    swal('', 'Error al consultar seguimiento de trámite', 'error');
+                    swal('','Error al consultar seguimiento de trámite', 'error');
                     console.log("Error al consultar seguimiento de trámite", data);
                 }
                 else{
-                    $('#seguimientoNroSolicitud').val(sol.idFichaTecnica);
-                    $('#seguimientoTipoTramite').val('PERMISOS CONSTRUCCIÓN');
+                    $('#seguimientoNroSolicitud').val(sol.idPCv2Solicitud);
+                    $('#seguimientoTipoTramite').val('LICENCIA AGIL');
                     $scope.listaSeguimientoTareas = data;
                     $('#divPopupSeguimiento').modal('show');
                 }
@@ -914,7 +1045,9 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
         texto:null
     }
     $scope.visorIframeCambiarModelo = function (superficie,anchoVia, nroPlantas) {
-        $scope.visorIframe.url = "https://sitservicios.lapaz.bo/sit/LUSU/modelo_lusu2.html?pisos=xpisos&anchoVia=xanchovia&superficie=xsuperficie";//produccion
+       
+        $scope.visorIframe.url = "https://sitservicios.lapaz.bo/sit/LUSU/modelo_lusu2.html?pisos=xpisos&anchoVia=xanchovia&superficie=xsuperficie";//desarrollo
+        //$scope.visorIframe.url = "https://sitservicios.lapaz.bo/sit/LUSU/modelo_lusu2.html?pisos=xpisos&anchoVia=xanchovia&superficie=xsuperficie";//produccion
         $scope.visorIframe.url = $scope.visorIframe.url.replace("xpisos",nroPlantas).replace("xanchovia",anchoVia).replace("xsuperficie",superficie)
         $scope.visorIframe.titulo = "Modelo 3D";
         $scope.visorIframe.texto = "Modelo generado en función a la superficie del predio y número máximo de plantas. <b style='color: red'>Modelo Referencial</b>";
@@ -924,8 +1057,7 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
     }
     $scope.visorIframeCambiarMapa = function (codigoCatastral) {
         //$scope.visorIframe.url = "http://gmlpsr0038:8080/Proyectos2017/LUSU/MapaLUSU.html?codcat=xcodcat";
-        //$scope.visorIframe.url = "http://sitservicios.lapaz.bo/sit/LUSU/MapaLUSU.html?codcat=xcodcat";
-		$scope.visorIframe.url = "https://sitservicios.lapaz.bo/sit/LUSU/MapaLUSU.html?codcat=xcodcat";
+        $scope.visorIframe.url = "https://sitservicios.lapaz.bo/sit/LUSU/MapaLUSU.html?codcat=xcodcat";
         $scope.visorIframe.url = $scope.visorIframe.url.replace("xcodcat",codigoCatastral);
         window.open($scope.visorIframe.url, "_blank");
 
@@ -994,10 +1126,12 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
 
     //Paso 1.5 funciones (Seleccion de predio)
     $scope.setPredioSeleccionado = function (objPredio) {
-        var solicitud = new dataSITOL();
-        solicitud.pcv2EnviosArquitecto(
-            objPredio.CodigoCatastral
-            , function(resultado){
+        let text = objPredio.CodigoCatastral;
+        let result = text.slice(11,15);
+        if(result == '0000'){
+            var solicitud1 = new dataSITOL();
+            solicitud1.pcv2EnviosArquitecto(objPredio.CodigoCatastral,
+            function(resultado){
                 var resApi = JSON.parse(resultado);
                 if(resApi.success.dataSql[0].sw == 0){
                     var sit = new dataSIT();
@@ -1007,26 +1141,117 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
                             swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
                         }
                         else{
-                            $scope.predioSeleccionado = objPredio;
-                            $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                            var solicitud2 = new dataSITOL();
+                            solicitud2.pcv2GetIdPCSolicitud(objPredio.CodigoCatastral,
+                            function(resultado){
+                                var resApi = JSON.parse(resultado);
+                                if(resApi.success.dataSql.length > 0)
+                                {
+                                    $scope.idPCv2SolicitudAUX = resApi.success.dataSql[0].idPCv2Solicitud;
+                                    var solicitud3 = new dataSITOL();
+                                    solicitud3.pcv2VerifcaSolicitudEnCurso(resApi.success.dataSql[0].idPCv2Solicitud,
+                                    function(resultado){
+                                        var resApi = JSON.parse(resultado);
+                                        if(resApi.success.dataSql[0].idInsFlujo != null)
+                                        {
+                                            //swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
+                                            $scope.predioSeleccionado = objPredio;
+                                            $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                                        }
+                                        else{
+                                            var solicitud4 = new dataSITOL();
+                                            solicitud4.pcv2GetIdEncript($scope.idPCv2SolicitudAUX,
+                                            function(resultado){
+                                                var resApi = JSON.parse(resultado);
+                                                swal({   
+                                                    title: "¿Desea enviar el correo al Arquitecto?",   
+                                                    //text: "¿Desea enviar el correo al Arquitecto?",   
+                                                    type: "warning",   
+                                                    showCancelButton: true,   
+                                                    confirmButtonColor: "#23c6c8",   
+                                                    confirmButtonText: "SI, ENVIAR",
+                                                    cancelButtonText: "CANCELAR", 
+                                                    closeOnConfirm: false 
+                                                },function(isConfirm){
+                                                    if (isConfirm) {
+                                                        $scope.sendCorreoDelegado2(resApi.success.dataSql[0].pisol, resApi.success.dataSql[0].arquitectoNombre);
+                                                    }
+                                                });
+                                            });
+                                        }    
+                                    });
+                                }
+                                else{
+                                    $scope.predioSeleccionado = objPredio;
+                                    $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                                }   
+                            });
                         }
                     });
-                    //$scope.predioSeleccionado = objPredio;
-                    //$scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
                 }
                 else{
-                    var solicitud = new dataSITOL();
-                    solicitud.nroEnviosArquitectoPCv2(
-                        function(resultado){
-                            var resApi = JSON.parse(resultado);
-                            swal('', 'Solo se puede delegar '+  resApi.success.dataSql[0].nro +' solicitud por día, para este predio.', 'error');
+                    var sit = new dataSIT();
+                    sit.tramitesEnCurso(objPredio.CodigoCatastral, function(resultado){
+                        var resApi = JSON.parse(resultado);
+                        if(resApi.success.dataSql.length>0){
+                            swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
+                        }
+                        else{
+                            var solicitud2 = new dataSITOL();
+                            solicitud2.pcv2GetIdPCSolicitud(objPredio.CodigoCatastral,
+                            function(resultado){
+                                var resApi = JSON.parse(resultado);
+                                if(resApi.success.dataSql.length > 0)
+                                {
+                                    $scope.idPCv2SolicitudAUX = resApi.success.dataSql[0].idPCv2Solicitud;
+                                    var solicitud3 = new dataSITOL();
+                                    solicitud3.pcv2VerifcaSolicitudEnCurso(resApi.success.dataSql[0].idPCv2Solicitud,
+                                    function(resultado){
+                                        var resApi = JSON.parse(resultado);
+                                        if(resApi.success.dataSql[0].idInsFlujo != null)
+                                        {
+                                            //swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
+                                            $scope.predioSeleccionado = objPredio;
+                                            $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                                        }
+                                        else{
+                                            var solicitud4 = new dataSITOL();
+                                            solicitud4.pcv2GetIdEncript($scope.idPCv2SolicitudAUX,
+                                                function(resultado){
+                                                    var resApi = JSON.parse(resultado);
+                                                    swal({   
+                                                        title: "¿Desea enviar el correo al Arquitecto?",   
+                                                        //text: "¿Desea enviar el correo al Arquitecto?",   
+                                                        type: "warning",   
+                                                        showCancelButton: true,   
+                                                        confirmButtonColor: "#23c6c8",   
+                                                        confirmButtonText: "SI, ENVIAR",
+                                                        cancelButtonText: "CANCELAR", 
+                                                        closeOnConfirm: false 
+                                                    },function(isConfirm){
+                                                        if (isConfirm) {
+                                                            $scope.sendCorreoDelegado2(resApi.success.dataSql[0].pisol, resApi.success.dataSql[0].arquitectoNombre);
+                                                        }
+                                                    });
+                                            });
+                                        }    
+                                    });
+                                }
+                                else{
+                                    $scope.predioSeleccionado = objPredio;
+                                    $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                                }   
+                            });
+                        }
                     });
                 }
-        });
+            });
+        }
+        else{
+            swal('', 'El predio seleccionado es una unidad.', 'error');
+        }
     }
     
-
-	
     $scope.getPredio = function (codCat) {
         $.blockUI();
         $('html, body').animate({ scrollTop: 800 }, 1750);
@@ -1111,7 +1336,7 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
                 console.log("Error al recuperar datos predios",resApi.error.message,resApi.error.code);
             }
         });
-    };	
+    };
 
     $scope.setSolicitudDatosPredio = function (data) {
         $scope.solicitud.codigoCatastral = data.codigoCatastral;
@@ -1171,8 +1396,8 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
         {
             $scope.solicitud.restricciones = 1;
         }
-        $scope.configCartilla.patron = $scope.solicitud.lusu;        
-		$scope.configCartilla.url = $scope.configCartilla.urlTemplate.replace('{distrito}',data.distritoUSPA).replace('{patron}',data.patronLusu);
+        $scope.configCartilla.patron = $scope.solicitud.lusu;
+        $scope.configCartilla.url = $scope.configCartilla.urlTemplate.replace('{distrito}',data.distritoUSPA).replace('{patron}',data.patronLusu);
         $scope.getAlturasMaximas($scope.solicitud.idPCCartilla,$scope.solicitud.anchoVia);
     }
 
@@ -1215,8 +1440,6 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
                 console.log("Error al obtener las alturas maximas", resApi.error.message);
             }
         });
-
-
     };
 
     //Paso 2 funciones
@@ -1336,7 +1559,6 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
         {
             $scope.solicitud.idEstado = 1; //registro de tramite
         }
-
         if($scope.solicitud.arquitectoNombre == undefined)
             $scope.solicitud.arquitectoNombre = "";
         if($scope.solicitud.arquitectoRegistroNacionalCAB == undefined)
@@ -1448,6 +1670,42 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
         });
     };
 
+    $scope.sendCorreoDelegado2 = function (param,arquitectoCompleto) {
+        $.blockUI({ 
+            css: {
+                border: 'none',
+                padding: '10px',
+                backgroundColor: '#000','-webkit-border-radius': '10px','-moz-border-radius': '10px',
+                opacity: .5,
+                color: '#fff'
+            },
+            message: "Espere un momento porfavor..." 
+        });
+        var p = {q: param};
+        $http({
+            method: 'POST',
+            url: CONFIG.SERVICE_SITOLextgen + 'PermisoConstruccionV2/PCv2EnvioCorreo',
+            data: Object.toparams(p),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).success(function (data, status, headers, config) {
+            $.unblockUI();
+            if(data.res == "OK")
+            {
+                $scope.getSolicitudes();
+                $scope.registrarIGOB(param);
+                swal('', 'Se envió un correo electrónico al arquitecto ' + arquitectoCompleto + ', con la ruta de acceso al formulario de solicitud. La solicitud será atendida por el GAMLP una vez que el arquitecto envíe el formulario con todos los datos y requisitos requeridos.', 'success');
+            }
+            else
+            {
+                swal('', 'Error al enviar correo', 'error');
+                console.log("Error al enviar correo",data);
+            }
+        }).error(function (data, status, headers, config) {
+            swal('', 'Error al enviar correo', 'error');
+            console.log("Error al enviar correo",data, status, headers, config);
+        });
+    };
+
     $scope.cambiarTextoBtnSolicitud = function () {
         if($scope.solicitud.arquitectoNombre != null & $scope.solicitud.arquitectoNombre != "")
         {
@@ -1537,8 +1795,6 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
         });
     };
     // ******FIN DE CAPCHA****************
-
-
 
     //No utilizadas
     $scope.getPredioRiesgo = function (wkt) {
@@ -1955,4 +2211,10 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
         });
 
     }
+    $scope.validarCorreo=function (correo) {
+		texto = correo.toLowerCase();
+		return $scope.listaCorreosInvalidos.some(function(item) {
+			return texto.includes(item.toLowerCase());
+		});
+	}
 }

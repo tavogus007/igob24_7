@@ -135,7 +135,7 @@ app.controller('authCtrl' , function ($scope, $rootScope, $routeParams, $locatio
     }
 	
     $scope.sesionTokenCem=function(){
-        var urlToken = CONFIG.CONEXION_CARONTE + "/apiLogin";
+        var urlToken = CONFIG.CONEXION_API_CEMENTERIO + "api/gntkn";
         $.ajax({
             dataType: "json",
             type: "POST",

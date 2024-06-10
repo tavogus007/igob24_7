@@ -560,7 +560,7 @@ app.config(['$routeProvider',
         
         function TimeOut_Resetter(e)
         {
-            console.log('' + e);
+            //console.log('' + e);
        
             
             /// Stop the pending timeout
@@ -673,7 +673,6 @@ function PagesController($scope, $http, $route, $routeParams, $compile, sessionS
 }
 
 PagesController.$inject = ['$scope', '$http', '$route', '$routeParams', '$compile', 'sessionService', '$location'];
-
 
 app.filter('replace', [function () {
     return function (input, from, to) {

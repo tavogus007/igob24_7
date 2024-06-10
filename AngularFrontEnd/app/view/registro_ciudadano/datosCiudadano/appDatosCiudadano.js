@@ -708,6 +708,45 @@ function datosCiudadanoController($scope,$q, $rootScope, $routeParams, $location
                     }
                     datoObjectNotiFinal[i] = datoObjectNoti;
                     $scope.myObj = datoObjectNotiFinal; //aNotif.success;
+                }else if((aNotif.success[i].obs_tra_actividad == 'AGENTES INFORMACION') ){     //CASO DE NOTIFICACIONES DE ANTENAS LOTUS a IGOB
+                    datoObjectNoti = new Object();
+                    var mensaje = aNotif.success[i].obs_tra_observaciones;
+                    var res = mensaje.split("&#34");
+                    var mensajeIgob = res[0].split("&#34");
+                    $scope.res1 = res[1];
+                    
+                    datoObjectNoti.frm_tra_id_ciudadano = aNotif.success[i].frm_tra_id_ciudadano;
+                    var codigoANTT = (aNotif.success[i].frm_tra_if_codigo).substr(0,2);//RB  GM
+                        datoObjectNoti.frm_tra_if_codigo = aNotif.success[i].frm_tra_if_codigo;
+                    
+                    datoObjectNoti.obs_tra_actividad = aNotif.success[i].obs_tra_actividad;
+                    datoObjectNoti.obs_tra_id = aNotif.success[i].obs_tra_id;
+                    datoObjectNoti.obs_tra_id_tramite = aNotif.success[i].obs_tra_id_tramite;
+                    datoObjectNoti.obs_tra_id_lotus = aNotif.success[i].obs_tra_id_lotus;
+                    datoObjectNoti.obs_tra_leido = aNotif.success[i].obs_tra_leido;
+                    datoObjectNoti.obs_tra_observaciones = mensajeIgob[0];
+                    //datoObjectNoti.obs_tra_registrado = aNotif.success[i].obs_tra_registrado;
+                    datoObjectNoti.obs_tra_registrado = fecharegistro.toLocaleDateString("es-ES", options);
+                    datoObjectNoti.obs_tra_sistema = aNotif.success[i].obs_tra_sistema;
+                    datoObjectNoti.obs_tra_usuario = aNotif.success[i].obs_tra_usuario;
+                    datoObjectNoti.serdv_descripcion = aNotif.success[i].serdv_descripcion;
+                    datoObjectNoti.mensajeIgob = mensajeIgob[0];
+                    datoObjectNoti.obj_constancia = $scope.res1;
+                        if ((aNotif.success[i].obs_tra_tipo_resp) == 'A'){
+                        datoObjectNoti.obs_tra_tipo_resp = aNotif.success[i].obs_tra_tipo_resp;
+                    }
+                    
+                    if ($scope.res1 == undefined){
+                        datoObjectNoti.obj_url_costancia = "noAdjunto";
+                    }else{
+                        if(res.length > 1){
+                            datoObjectNoti.obj_constancia = $scope.res1;
+                        }else{
+                            datoObjectNoti.obj_constancia = $scope.res1;
+                        }
+                    }
+                    datoObjectNotiFinal[i] = datoObjectNoti;
+                    $scope.myObj = datoObjectNotiFinal; //aNotif.success;
                 }else if((aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA')||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'CORRESPONDENCIA CIUDADANA CM DIGITAL') ||(aNotif.success[i].obs_tra_sistema == 'SITR@M 247' && aNotif.success[i].serdv_descripcion == 'DENUNCIAS TRANSPARENCIA')){
                         datoObjectNoti = new Object();
                         $scope.notSitram = aNotif.success[i];

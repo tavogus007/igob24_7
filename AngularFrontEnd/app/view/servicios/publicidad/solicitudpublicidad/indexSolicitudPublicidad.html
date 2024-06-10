@@ -2,8 +2,6 @@
     <html lang="en" ng-app="myApp">
     <head>
         <script type="text/javascript" src="../../view/servicios/publicidad/solicitudpublicidad/appSolicitudPublicidad.js"></script>
-        <script src="../../libs/js/pdfmake.js"></script>
-        <script src="../../libs/js/vfs_fonts.js"></script>
     </head>
     
     <body>
@@ -168,8 +166,8 @@
                                     <td data-title="'Tipo de letrero'" class="header column.class">{{tramite.vfrm_ser_dataformulario.f01_tipo_letrero.descripcion}}</td>                                       
                                     <td data-title="'Caracteristica'" class="header column.class">{{tramite.vfrm_ser_dataformulario.f01_caracteristica.caracteristica}}</td>                    
                                     <td data-title="'Imprimir formulario'" style="text-align:center">                           
-                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPDFcorporativo(tramite)" tooltip="Imprimir">
-                                            <i class="fa fa-print"></i>
+                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPDFcorporativo(tramite)" tooltip="Descargar">
+                                            <i class="fa fa-download"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -189,8 +187,8 @@
                                     <!--td data-title="'Tipo de solicitud'">{{tramite.vdescripcion}}</td-->
                                     <td data-title="'Detalle'">{{tramite.vfrm_ser_dataformulario.listamoviles.length}} registros</td>
                                     <td data-title="'Imprimir formulario'" style="text-align:center">
-                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPDFmovil(tramite)" tooltip="Imprimir">
-                                            <i class="fa fa-print"></i>
+                                        <button type="button" class="btn btn-primary btn-circle" ng-click="generarPDFmovil(tramite)" tooltip="Descargar">
+                                            <i class="fa fa-download"></i>
                                         </button>
                                     </td>
                                 </tr>

@@ -1,4 +1,4 @@
-app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
+﻿app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
     $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     var fecha= new Date();
@@ -45,7 +45,6 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
         { name: 'Renovación de Licencias de Funcionamiento', id:'14'}, 
         { name: 'Emisión de Licencias de Funcionamiento', id:'13'} 
     ];
-
     $scope.btnEnviarForm = true;
     $scope.datosGuardados = false;
     $scope.habGuardar1 = true;
@@ -154,14 +153,12 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
         if((datos.dtspsl_zona_desc == '' || datos.dtspsl_zona == '')){
             datosfaltantes.push(' ZONA');
         }
-        //if(datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0'){
-		if(datos.dtspsl_tipo_via == '' || datos.dtspsl_tipo_via == '0'){
+        if(datos.dtspsl_tipo_via == '' || datos.dtspsl_tipo_via == '0'){
             datosfaltantes.push(' TIPO DE VIA');
-        }
-		if(datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0'){
+        }if(datos.dtspsl_nombre_via == '' || datos.dtspsl_nombre_via == '0'){
             datosfaltantes.push(' NOMBRE DE VIA');
         }
-        if(datos.dtspsl_numero_casa == '' || datos.dtspsl_numero_casa == '0'){
+        if(datos.dtspsl_numero_casa == '' || datos.dtspsl_nombre_via == '0'){
             datosfaltantes.push(' NUMERO DE DOMICILIO');
         }
         if(datos.dtspsl_file_fotocopia_ci == '' || datos.dtspsl_file_fotocopia_ci == ' ' ){
@@ -693,11 +690,25 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
     
     /*SELECCCIONAR TRAMITE CIUDADANO*/
     $scope.seleccionarTramite = function (tramite) {
-        $scope.template =   "";
-        setTimeout(function(){
-           $.blockUI(); 
-        },500);
-        $scope.seleccionarTramiteRender(tramite);      
+        console.log("tramite",tramite);
+        if(tramite.vcodigo == null){
+            $scope.template =   "";
+            setTimeout(function(){
+               $.blockUI(); 
+            },500);
+            $scope.seleccionarTramiteRender(tramite);      
+        }else{
+            if(tramite.vcodigo.includes('MOD-LF')){
+                swal('', "Tipo de trámite solo habilitado mediante plataforma institucional GAMLP", 'warning');
+            }else{
+                $scope.template =   "";
+                setTimeout(function(){
+                $.blockUI(); 
+                },500);
+                $scope.seleccionarTramiteRender(tramite);      
+            }
+        }
+      
     }
     ///////////////////****MAPA GIS*****/////////////////////////
 
@@ -797,22 +808,18 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                               }
                             );
 
-
-
-                    var url_zonas_seguras = zonas_seguras_udit.getSource().getGetFeatureInfoUrl(
-                              evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
-                                'INFO_FORMAT': 'application/json',
-                                'propertyName': 'id'
-                              }
-                            );
-
                     var url_vias = vias_udit.getSource().getGetFeatureInfoUrl(
                               evt.coordinate,$scope.map.getView().getResolution(),$scope.map.getView().getProjection(),{
                                 'INFO_FORMAT': 'application/json',
                                 'propertyName': 'nombrevia,tipovia'
                               }
                             );
-
+                    var url_zonas_seguras = zonas_seguras_udit.getSource().getGetFeatureInfoUrl(
+                        evt.coordinate, $scope.map.getView().getResolution(), $scope.map.getView().getProjection(), {
+                            'INFO_FORMAT': 'application/json',
+                            'propertyName': 'id'
+                        }
+                    );
                     reqwest({
                         url: url_zonas_tributarias,
                         type: 'json',
@@ -822,6 +829,58 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                         var cod = feature.properties;
                         var codigo_zona_tributaria = parseInt(cod.grupovalor.replace("-",""));
                         $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
+                    });
+
+                    reqwest({
+                        url: url_zonas_seguras,
+                        type: 'json',
+                    }).then(function (data) {
+                        var feature = data.features[0];
+                        ///////////////////////////////////////////////////////////
+                        if (feature != undefined) {
+                            var cod = feature.properties;
+                            var id = cod.id;
+                            switch (id) {
+                                case 1:
+                                    id_zona_segura = 3;
+                                    //CALACOTO
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                case 2:
+                                    id_zona_segura = 5;
+                                    //VILLA FATIMA ID
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                case 3:
+                                    id_zona_segura = 1;
+                                    //SAN SEBASTIAN
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    //EL ROSARIO ID
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                case 4:
+                                    id_zona_segura = 2;
+                                    //14 DE SEPTIEMBRE
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    //CAYAMPAYA
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                case 6:
+                                    id_zona_segura = 4;
+                                    //SOPOCACHI
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                default:
+                            }
+                        } else {
+                            id_zona_segura = 0;
+                            //NO ES ZONA SEGURA ID
+                            $scope.GetZonaSeguraV(id_zona_segura);
+                        }
+                        ///////////////////////////////////////////////////////////
                     });
 
                     reqwest({
@@ -929,6 +988,9 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                         if ($scope.datos.f01_zona_act_descrip === "BARRIO GRÁFICO") {
                             $scope.datos.f01_zona_act_descrip = "BARRIO GRAFICO";
                         }
+                        if ($scope.datos.f01_zona_act_descrip === "CALLAMPAYA") {
+                            $scope.datos.f01_zona_act_descrip = "CALLAMPAYA MAX PAREDES";
+                        }
                         ////////////////////////////////////////////////
                         //$("#f01_zona_act_descrip").val(zona);
                         var listarZonasJ = [$scope.distritoZonas(idMacrodistrito)];
@@ -947,7 +1009,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                                 }
                                 else{
                                     var nombre_via = "NINGUNO";
-									var tipo_via = null;
+                                    var tipo_via = null;
                                 }
                                 var listarZonas = [$scope.distritoZonas($scope.datos.f01_macro_act)];
                                 $q.all(listarZonas).then(function (resp) { //AE - Validar Envio Licencia
@@ -1128,6 +1190,12 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                                 'propertyName': 'nombrevia,tipovia'
                               }
                             );
+                    var url_zonas_seguras = zonas_seguras_udit.getSource().getGetFeatureInfoUrl(
+                        evt.coordinate, $scope.mapa.getView().getResolution(), $scope.mapa.getView().getProjection(), {
+                            'INFO_FORMAT': 'application/json',
+                            'propertyName': 'id'
+                        }
+                    );
 
                   reqwest({
                     url: url_zonas_tributarias,
@@ -1141,6 +1209,58 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                     $scope.datos.f01_idCodigoZona = codigo_zona_tributaria;
                     
                   });
+
+                    reqwest({
+                        url: url_zonas_seguras,
+                        type: 'json',
+                    }).then(function (data) {
+                        var feature = data.features[0];
+                        ///////////////////////////////////////////////////////////
+                        if (feature != undefined) {
+                            var cod = feature.properties;
+                            var id = cod.id;
+                            switch (id) {
+                                case 1:
+                                    id_zona_segura = 3;
+                                    //CALACOTO
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                case 2:
+                                    id_zona_segura = 5;
+                                    //VILLA FATIMA ID
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                case 3:
+                                    id_zona_segura = 1;
+                                    //SAN SEBASTIAN
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    //EL ROSARIO ID
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                case 4:
+                                    id_zona_segura = 2;
+                                    //14 DE SEPTIEMBRE
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    //CAYAMPAYA
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                case 6:
+                                    id_zona_segura = 4;
+                                    //SOPOCACHI
+                                    $scope.GetZonaSeguraV(id_zona_segura);
+                                    alert("Usted selecciono una Zona Segura...");
+                                    break;
+                                default:
+                            }
+                        } else {
+                            id_zona_segura = 0;
+                            //NO ES ZONA SEGURA ID
+                            $scope.GetZonaSeguraV(id_zona_segura);
+                        }
+                        ///////////////////////////////////////////////////////////
+                    });
                   reqwest({
                     url: url_zonas,
                     type: 'json',
@@ -1739,10 +1859,12 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
                             }
                         }
                         else{
+                            swal("Estimado Usuario", "Ud. no cuenta con Actividades Economicas registradas", "warning");
                         }
                     })                        
-                } else{
-                    swal("Estimado Usuario", "Ud. no cuenta con Actividades Economicas registradas", "warning")
+                }
+                 else{
+                    swal("Estimado Usuario", "Ud. no cuenta con Actividades Economicas registradas", "warning");
                 };                       
             }
             
@@ -1756,6 +1878,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
 
 
     $scope.crearTramiteAE = function() {
+        console.log("$scope.procesoSeleccionado",$scope.procesoSeleccionado,"$scope.renovacion",$scope.renovacion);
         if($scope.procesoSeleccionado != ''){
             if($scope.procesoSeleccionado == 10){
 
@@ -2249,6 +2372,32 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
         $scope.acepta = "NO";
     }
 
+    $scope.GetZonaSeguraV = function (idzonasegura) {
+        console.log("idzonasegura",idzonasegura,"$rootScope.mostrarzonasegura",$rootScope.mostrarzonasegura);
+        if (idzonasegura != 0 || idzonasegura != '0') {
+            if ($rootScope.mostrarzonasegura == true || $rootScope.mostrarzonasegura == 'true') {
+                $scope.datos.chkzonasegura = 'ZONASEGURA';
+                $scope.datos.id_zona_segura = idzonasegura;
+                $scope.datos.f01_zon_seg = 'SI';
+            } else {
+                if ($rootScope.mostrarzonasegura == false || $rootScope.mostrarzonasegura == 'false') {
+                    $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                    $scope.datos.id_zona_segura = id_zona_segura;
+                    $scope.datos.f01_zon_seg = 'NO';
+                } else {
+                    $scope.datos.chkzonasegura = 'NOZONASEGURA';
+                    $scope.datos.id_zona_segura = id_zona_segura;
+                }
+
+            }
+            $rootScope.$broadcast('reqZonaSegura','');
+        } else {
+            $scope.datos.chkzonasegura = 'NOZONASEGURA';
+            $scope.datos.id_zona_segura = 0;
+        }
+
+    }
+
     $scope.generarDocumentoPhp = function (){
         $.blockUI();
         var tipoPersona = '';
@@ -2266,6 +2415,7 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
             datosCiudadano  = (sessionService.get('US_NOMBRE')+' '+sessionService.get('US_PATERNO')+' '+sessionService.get('US_MATERNO'));
             datosci         = sessionService.get('CICIUDADANO');
             datosexpedido   = sessionService.get('CIEXPEDIDO');
+            console.log("$rootScope.datosForm401",$rootScope.datosForm401);
             datoForm4 = JSON.stringify($rootScope.datosForm401);
             $.ajax({
                 url:CONFIG.API_URL_DMS_2+'elaborarPdf/elaborar/elaborarDocPdf401_402.php',
@@ -2343,6 +2493,9 @@ app.controller('serviciosController343', function ($scope, $rootScope ,$routePar
         catch (e) { console.log("error", e); }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     });
+
+
+    
 
 //Boton de confirmacion
 app.directive("confirmButton", function($document, $parse) {

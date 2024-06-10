@@ -1,4 +1,4 @@
-function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $filter) {
+function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $filter,fileUpload1) {
     $scope.tblSolicitudes       =   {};
     $scope.solicitudes          =   [];
     $scope.mostrarFormulario    = false;
@@ -152,6 +152,7 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
                         $scope.pubCoorporativa = true;
                         $scope.tblPublicidadCoorporativa.reload();
                     }
+                    
                 }else{
                     $.unblockUI();   
                     swal('', "Usted no cuenta con publicidades!!!", 'warning');
@@ -181,6 +182,9 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
             $scope.publicidadCoorporativa;
             params.total($scope.publicidadCoorporativa.length);
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            setTimeout(function(){
+                iniciarLoadFyle();
+            }, 1000);
         }
     });
 
@@ -275,55 +279,82 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
     }
     /***********************************FIN CAPTCHA**********************/
     $scope.guardarSolicitud =  function(data){
-        $.blockUI(); 
-        $scope.publicidades = [];
-        data.publicidadesBaja = [];
-        if(data.tipoPublicidad == 'Coorporativa'){
-            $scope.publicidades = $scope.publicidadCoorporativa;
-        }else if(data.tipoPublicidad == 'Movil'){
-            $scope.publicidades = $scope.publicidadMovil;
-        }
-        for(var i = 0;i < $scope.publicidades.length; i++){
-            if($scope.publicidades[i].solicitudBaja){
-                data.publicidadesBaja.push($scope.publicidades[i]);
+        $.blockUI({ css: { 
+                        border: 'none', 
+                        padding: '10px', 
+    
+                        backgroundColor: '#000', 
+                        '-webkit-border-radius': '10px', 
+                        '-moz-border-radius': '10px', 
+                        opacity: .5, 
+                        color: '#fff' 
+                    },message: "Espere un momento por favor ..." }); 
+        setTimeout(function(){
+            $scope.publicidades = [];
+            data.publicidadesBaja = [];
+            if(data.tipoPublicidad == 'Coorporativa'){
+                $scope.publicidades = $scope.publicidadCoorporativa;
+            }else if(data.tipoPublicidad == 'Movil'){
+                $scope.publicidades = $scope.publicidadMovil;
             }
-        }
-        if (data.publicidadesBaja.length>0) {       
-            data.origen_solicitud = "igob";   
-            var creaSolicitud = new adicionaRegistroSolicitud();
-            creaSolicitud.cod_servicio = 'PUB-B';
-            creaSolicitud.id_usuario = 3;
-            creaSolicitud.data_formulario = JSON.stringify(data);
-            creaSolicitud.enviado = "SI";       
-            try {
-                creaSolicitud.adicionaRegistroSolicitudServicio(function(res){
-                    var respuesta = (JSON.parse(res)).success;
-                    if(respuesta.length  > 0){                  
-                        sessionService.set('IDTRAMITE', respuesta[0].vfrm_ser_id);
-                        sessionService.set('CODTRAMITE', respuesta[0].vfrm_ser_codigo_servicio);   
-                        swal("Señor(a) Ciudadano(a) su solicitud fue registrado correctamente.", "Número de registro: " + respuesta[0].vfrm_ser_codigo_servicio + ". Imprima y firme el formulario para su presentación en Oficinas de Publicidad, adjuntando documentación requerida, en un folder amarillo con fastenes, foliadas de la última a la primera página.");                    
-                        $scope.generarPdfBaja(data,respuesta[0].vfrm_ser_codigo_servicio);
-                        $scope.mostrarPdf = true;
-                        $scope.mostrarFormulario = false;
-                        $scope.listarSolicitudes();
-                        $.unblockUI();   
-                    }
-                    else{
-                        $.unblockUI();         
-                    }
-                })
-            } catch (error) {
-                console.log("error",error);
-                swal('','Ocurrio un error','error');
-                $.unblockUI();
-            }  
-        }else{
-            $.unblockUI();   
-            swal('','No se selecciono ninguna publicidad para baja','error');
-        }
+            for(var i = 0;i < $scope.publicidades.length; i++){
+                if($scope.publicidades[i].solicitudBaja){
+                    data.publicidadesBaja.push($scope.publicidades[i]);
+                }
+            }
+            if (data.publicidadesBaja.length>0) {       
+                data.origen_solicitud = "igob";   
+                var creaSolicitud = new adicionaRegistroSolicitud();
+                creaSolicitud.cod_servicio = 'PUB-B';
+                creaSolicitud.id_usuario = 3;
+                creaSolicitud.data_formulario = JSON.stringify(data);
+                creaSolicitud.enviado = "SI";       
+                try {
+                    creaSolicitud.adicionaRegistroSolicitudServicio(function(res){
+                        var respuesta = (JSON.parse(res)).success;
+                        if(respuesta.length  > 0){                  
+                            sessionService.set('IDTRAMITE', respuesta[0].vfrm_ser_id);
+                            sessionService.set('CODTRAMITE', respuesta[0].vfrm_ser_codigo_servicio);   
+                            generarPdfBaja(data,respuesta[0].vfrm_ser_codigo_servicio);
+                            swal("Señor(a) Ciudadano(a) su solicitud fue registrado correctamente.", "Número de registro: " + respuesta[0].vfrm_ser_codigo_servicio + ". Imprima y firme el formulario para su presentación en Oficinas de Publicidad, adjuntando documentación requerida, en un folder amarillo con fastenes, foliadas de la última a la primera página.");                    
+                            $scope.mostrarPdf = true;
+                            $scope.mostrarFormulario = false;
+                            $scope.listarSolicitudes();  
+                        }
+                        else{
+                            $.unblockUI();         
+                        }
+                    })
+                } catch (error) {
+                    console.log("error",error);
+                    swal('','Ocurrio un error','error');
+                    $.unblockUI();
+                }  
+            }else{
+                $.unblockUI();   
+                swal('','No se selecciono ninguna publicidad para baja','error');
+            }
+        }, 5000); 
     }
+
+
     /*******************************GUARDAR PDF**************************/
-    $scope.generarPdfBaja = function(dataBaja,nroTramite) {
+    $scope.generarPdfBajaDoc = function(dataBaja,nroTramite) {
+        $.blockUI({ css: { 
+                    border: 'none', 
+                    padding: '10px', 
+
+                    backgroundColor: '#000', 
+                    '-webkit-border-radius': '10px', 
+                    '-moz-border-radius': '10px', 
+                    opacity: .5, 
+                    color: '#fff' 
+                },message: "Espere un momento por favor ..." }); 
+        setTimeout(function(){
+            generarPdfBaja(dataBaja,nroTramite);
+        }, 1000);
+    }
+    async function generarPdfBaja(dataBaja,nroTramite) {
         console.log("dataBaja",dataBaja);
         var datosTabla = dataBaja.publicidadesBaja;
         var cel_contacto = "";
@@ -480,19 +511,202 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
                         { width: '*', text: '\nSELLO DE REGISTRO EN EL SISTEMA\n\n\n\n\n_________________________________________\n\nFecha de registro: ______/______/________',fontSize: 9 },
                     ]
                 },
+                { text: '\nFOTOGRAFIAS ADJUNTAS',fontSize: 11, bold: true }
             ]
         };
+        if(dataBaja.tipoPublicidad == 'Coorporativa'){
+            for(var i=0;i < datosTabla.length ;i++)
+            {
+                console.log("datosTabla[i].adjuntos[0].url",datosTabla[i]);
+                if(datosTabla[i].url != undefined){
+                    docDefinition.content.push(
+                    [   { text: '\nFOTOGRAFÍA PUBLICIDAD ' + (i+1)+'\n',fontSize: 11, bold: true },
+                        { text: '\n',fontSize: 11, bold: true },
+                        {image: await getBase64ImageFromURL(datosTabla[i].url),width: 180,height: 180}
+                    ]);
+                }
+            }    
+        }else if(dataBaja.tipoPublicidad == 'Movil'){
+            console.log("datosTabla",datosTabla,1111,datosTabla.length);
+            for(var i=0;i < datosTabla.length ;i++)
+            {
+                var url = '';
+                console.log("datosTabla[i].adjuntos[0].url",datosTabla[i]);
+                if(datosTabla[i].adjuntos != undefined){
+                    docDefinition.content.push(
+                        [   { text: '\nFOTOGRAFÍA PUBLICIDAD ' + (i+1)+'\n',fontSize: 11, bold: true },
+                    ]);
+                    for (let index = 0; index < datosTabla[i].adjuntos.length; index++) {
+                        if(datosTabla[i].adjuntos[index].url != undefined){
+                            url = datosTabla[i].adjuntos[index].url;
+                            docDefinition.content.push(
+                            [   { text: '\n',fontSize: 11, bold: true },
+                                {image: await getBase64ImageFromURL(url),width: 180,height: 180}
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
         console.log("docDefinition",docDefinition);
         var pdfDocGenerator = pdfMake.createPdf(docDefinition);
-        pdfDocGenerator.getDataUrl(function(dataUrl) {
-            $('#declaracion').modal('show');
-            var iframe = document.getElementById('viewPdf');
-            iframe.src = dataUrl;
-        });
+        pdfDocGenerator.download("solicitudBaja"+dataBaja.tipoPublicidad);
+        $.unblockUI(); 
     };
+
+    function getBase64ImageFromURL(url) { 
+        return new Promise((resolve, reject) => {
+          var img = new Image();
+          img.setAttribute("crossOrigin", "anonymous");
+          img.onload = () => {
+            var canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            var dataURL = canvas.toDataURL("image/png");
+            resolve(dataURL);
+          };
+          img.onerror = error => {
+            reject(error);
+          };
+          img.src = url;
+        });
+    }
 
     $scope.cancelar = function(){
         $scope.mostrarFormulario = false;
     }
+
+    ///////////////////////ADJUNTOS MOVIL//////////////////
+    $scope.adjuntos = [];
+    $scope.abrirModalAdjunto = function(movil){
+        console.log("movil",movil);
+        $scope.idPublicidad = movil.idPublicidad;
+        setTimeout(function(){
+            iniciarLoadFyle();
+        }, 1000);
+        if(movil.adjuntos){
+            $scope.adjuntos = movil.adjuntos;
+        }else{
+            $scope.adjuntos = [{"nombre":"Fotografía 1"},{"nombre":"Fotografía 2"},{"nombre":"Fotografía 3"}];
+            console.log("$scope.adjuntos",$scope.adjuntos);
+        }
+        $('#modalAdjunto').modal('show');
+    }
+
+    $scope.guardarAdjuntos = function(adj){
+        var count = 0;
+        for(var i=0;i<adj.length;i++){
+            if(adj[i].url != undefined && adj[i].url != ""){
+            count++;
+            }  
+        }  
+        if(count > 0){
+            let index = $scope.publicidadMovil.findIndex(x => x.idPublicidad ===  $scope.idPublicidad);
+            $scope.publicidadMovil[index].adjuntos = adj;
+            $scope.tblPublicidadMovil.reload();
+            $('#modalAdjunto').modal('hide');
+            swal("","Se registro correcto las fotografías","success");    
+        }else{
+            $('#modalAdjunto').modal('show');
+            swal("Error","Debe adjuntar por lo menos una fotografía","error");    
+        }  
+    }
+    //////////////////////IMAGENES/////////////////////////
+    $scope.ejecutarFile = function(idfile,idInput,tipo){
+        console.log("idfile",idfile);
+        console.log("idInput",idInput);
+        console.log("tipo",tipo);
+        var sid =   document.getElementById(idfile);
+        $scope.idPub = idInput;
+        $scope.tipoPub = tipo;
+        if(sid){
+            document.getElementById(idfile).click();
+        }else{
+            alert("Error ");
+        }
+    };
+
+    $scope.cambiarFile = function(obj, valor){
+        $scope.datos[obj.name] = valor;
+        /*setTimeout(function(){
+            $rootScope.leyenda1 = obj.name;
+        }, 500);/
+        /*REQUISITOS2018*/
+        $scope.subirRequisitos(obj, valor);
+    };
+
+    $scope.subirRequisitos  =   function(sobj, svalor){
+        var rMisDocs = new Array();
+        var idFiles = new Array();
+        if(sobj.files[0]){
+        rMisDocs.push(sobj.files[0]);
+        var idFile = sobj.name;
+        var tam = idFile.length;
+        idFile = parseInt(idFile.substring(10,tam));
+        idFiles.push(idFile);
+        $scope.almacenarRequisitos(rMisDocs,idFiles);
+            //$scope.adicionarArrayDeRequisitos(sobj,idFile);
+        }
+    };
+
+    $scope.almacenarRequisitos = function(aArchivos,idFiles){
+        console.log(123456789,$scope.adjuntos);
+        var fechaNueva = "";
+        var fechaserver = new fechaHoraServer(); 
+        fechaserver.fechahora(function(resp){
+            var sfecha = JSON.parse(resp);
+            var fechaServ = (sfecha.success.fecha).split(' ');
+            var fecha_ = fechaServ[0].split('-');
+            var hora_ = fechaServ[1].split(':');
+            fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
+        });
+        $scope.oidCiudadano = "57798e472f59181eb286f642";//sessionService.get('IDCIUDADANO'); CAMBIAR AL SUBIR A PRODUCCION
+        $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano + "/PUBLICIDAD";
+        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/";
+        $.blockUI();
+        angular.forEach(aArchivos, function(archivo, key) {
+            console.log(2222,archivo,1111, key, 8888, $scope.idAdjunto);
+            var descDoc = "pub_" + ($scope.idPub);
+            if(typeof(archivo) != 'undefined'){
+                var imagenNueva = archivo.name.split('.');
+                var nombreFileN = descDoc + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
+                if (archivo.size <= 5000000) {
+                if (imagenNueva[imagenNueva.length-1].toLowerCase() == 'png' || imagenNueva[imagenNueva.length-1].toLowerCase() == 'jpg' || imagenNueva[imagenNueva.length-1].toLowerCase() == 'jpeg' || imagenNueva[imagenNueva.length-1].toLowerCase() == 'bmp' || imagenNueva[imagenNueva.length-1].toLowerCase() == 'gif') {
+                    var urlDoc = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + nombreFileN + "?app_name=todoangular";
+                    fileUpload1.uploadFileToUrl1(archivo, uploadUrl, nombreFileN);
+                    setTimeout(function(){
+                        console.log("$scope.tipo",$scope.tipo)
+                        if($scope.tipoPub == 'coorporativa'){
+                            let index = $scope.publicidadCoorporativa.findIndex(x => x.idPublicidad ===  $scope.idPub);
+                            $scope.publicidadCoorporativa[index].url = urlDoc;
+                            $scope.publicidadCoorporativa[index].adjunto = nombreFileN;
+                            $scope.tblPublicidadCoorporativa.reload();
+                        }
+                        if($scope.tipoPub == 'movil'){
+                            $scope.adjuntos[$scope.idPub].url = urlDoc;
+                            $scope.adjuntos[$scope.idPub].nombre_adjunto = nombreFileN;
+                            console.log(1111,$scope.idPub,2222,$scope.adjuntos);
+                            $scope.$apply();
+                        }
+                    }, 1000);
+                    console.log("$scope.inputs",$scope.inputs);
+                    $scope.$apply();
+                    $.unblockUI();
+                } else{
+                    $.unblockUI();
+                    swal('Advertencia', 'El archivo  no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+                };
+                };
+                if (archivo.size > 5000000) {
+                    $.unblockUI();
+                    swal('Advertencia', 'El tamaño del archivo es muy grande', 'error');
+                };
+            }else{
+            swal('Advertencia', 'No se encontro ninguna imagen', 'error');
+            }
+        });
+    };
       
 };

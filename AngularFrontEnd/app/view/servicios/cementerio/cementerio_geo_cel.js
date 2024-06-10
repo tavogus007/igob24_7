@@ -1,12 +1,13 @@
 var app = angular.module('myApp', ['ngAnimate', 'ui.bootstrap']);
 app.service('servicios', function ($http, $q) {
     this.tkn = function () {
-        var params = Object();
-        params.usr_usuario = "adminCaronte";
-        params.usr_clave = "caronteFeel";
+
+        jsonURLS.CREDENCIAL_CARONTE
+        var params = jsonURLS.CREDENCIAL_CARONTE;
+        // params.usr_usuario = "adminCaronte";
+        // params.usr_clave = "caronteFeel";
         var deferred = $q.defer();
-        $http.post(jsonURLS.CONEXION_CARONTE + "/apiLogin", JSON.stringify(params)).success(function (data) {
-            
+        $http.post(jsonURLS.CONEXION_CARONTE + "/gntkn", JSON.stringify(params)).success(function (data) {
             //sessionService.set('tkn_caronte',data.token);
             deferred.resolve(data);
         })
@@ -618,7 +619,7 @@ app.controller('cementerioGeoController', function ($scope, $rootScope, $http, s
                     if (cantidad >= 50) {
                         swal('Atención', 'Se encontraron más de 50 coincidencias, por favor especifique su búsqueda.', 'warning');
                     }
-                    if (data.length > 0) {
+                    if (cantidad > 0) {
                         $scope.listado = true;
                         angular.forEach(data, function (item) {
                             //console.log(item, JSON.parse(item.ydata_fll));
@@ -636,6 +637,7 @@ app.controller('cementerioGeoController', function ($scope, $rootScope, $http, s
                         //$.unblockUI();
                         //$scope.$apply();
                     }
+                    $scope.logBusqueda(cantidad);
                     //$scope.mapa.acciones.buscarContenedorCrear(lista);
                 }, function (reject) {
                     $.unblockUI();
@@ -648,6 +650,27 @@ app.controller('cementerioGeoController', function ($scope, $rootScope, $http, s
                 $rootScope.notificacionError("Error al listar bloque");
             });
         }
+    }
+
+    $scope.logBusqueda=function (cantidadObtenida) {
+        var obj={};
+        obj.ci=$scope.ci_txt;
+        obj.nombres=$scope.nombre_txt;
+        obj.paterno=$scope.paterno_txt;
+        obj.materno=$scope.materno_txt;
+        obj.casada = $scope.casada_txt;
+        obj.idf=$scope.idf_txt;
+        //console.log(obj);
+        //console.log(cantidadObtenida);
+        let objRes = {};
+        objRes.cantidad=cantidadObtenida;
+        let tipoIngreso = "MOVIL";
+        JSON.stringify(objRes)
+        var dFormularios  = new datosFormularios();
+        dFormularios.logFallecidosCementerio(tipoIngreso,JSON.stringify(objRes),JSON.stringify(obj),function(results){
+            //console.log(results);
+            results = JSON.parse(results);
+        });
     }
     ////////////////////////////////////////////////////////////////////////
     $scope.buscarDatosIdf = function (id) {

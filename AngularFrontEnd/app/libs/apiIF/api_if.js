@@ -93,6 +93,18 @@ gCrearCaso.prototype.crearCasoAeLinea = function (functionResp) {
     ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
 };
 
+gCrearCaso.prototype.crearCasoAeLineaBebidas = function (functionResp) {
+    urlComp = "/crearTramiteAe";
+    typeCall = "post";
+    dataParams = {
+      "usr_id" : this.usr_id,
+      "datos" : this.datos,
+      "procodigo" : this.procodigo
+    };
+    ejecutarAjaxIF(urlComp, typeCall, dataParams, functionResp);
+};
+
+
 function gCrearCasoLinea() {
     this.usr_id;
     this.datos;

@@ -29,10 +29,10 @@
             $('#caja').slideUp();
         });    
         
-        $('.custom-upload input[type=file]').change(function(){
+        /*$('.custom-upload input[type=file]').change(function(){
             $(this).next().find('input').val($(this).val());
             angular.element(this).scope().cambiarFile(this, $(this).val());
-        });
+        });*/
         function iniciarLoadFyle(){
             $('.custom-upload input[type=file]').change(function(){
             $(this).next().find('input').val($(this).val());
@@ -66,19 +66,35 @@
                                     </div>
                                 </div>
                             </form>
-                            <table ng-table="tablaTramites" class="table table-striped">
-                                <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
-                                    ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
-                                    <td data-title="'Código'" ng-click="seleccionarTramite(tramite)">
-                                        {{tramite.vcodigo}}</td>
-                                    <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite)">
-                                        {{tramite.vdescripcion}}</td>
-                                    <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)">
-                                        {{tramite.vfecha}} </td>
-                                    <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)">
-                                        {{tramite.venviado}}</td>
-                                </tr>
-                            </table>
+                            <div class="table-responsive">
+                                <table ng-table="tablaTramites" class="table table-striped">
+                                    <tr style="cursor: pointer;" ng-repeat="tramite in $data  | filter:query "
+                                        ng-style="tramite.vtra_id==tramiteSeleccionado && {'background-color':'rgb(0, 185, 194 ,0.2)','font-color':'#A2D5AE'}">
+                                        <td data-title="'Código'" ng-click="seleccionarTramite(tramite)">
+                                            {{tramite.vcodigo}}</td>
+                                        <td data-title="'Tipo de Trámite'" ng-click="seleccionarTramite(tramite)">
+                                            {{tramite.vdescripcion}}</td>
+                                        <td data-title="'Tipo de Solicitud'" ng-click="seleccionarTramite(tramite)">
+                                            {{tramite.datos.RECEP_TIPO}} </td>
+                                        <td data-title="'Mes de Declaracion'" ng-click="seleccionarTramite(tramite)">
+                                            {{tramite.datos.RECEP_MES_DECLARACION}} </td>
+                                        <td data-title="'Fecha'" ng-click="seleccionarTramite(tramite)">
+                                            {{tramite.vfecha}} </td>
+                                        <td data-title="'Enviado'" ng-click="seleccionarTramite(tramite)">
+                                            {{tramite.venviado}} </td>
+                                        <td data-title="'Rectificacion'">
+                                            <div ng-show="tramite.datos.RECEP_HAB_RECTIFICACION && tramite.venviado=='SI'" class="text-center">
+                                                <button type="button" class="btn btn-danger btn-circle" tooltip="Rectificar Solicitud"  ng-click="crearTramiteRectificacion(tramite)">
+                                                    <i class="fa fa-refresh"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td data-title="'Tramite Rectificado'" ng-click="seleccionarTramite(tramite)">
+                                            {{tramite.datos.RECEP_NRO_TRAMITE_RECT}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -87,7 +103,7 @@
                 <div class="col-md-12 row principal ">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title cafeSuave" style="border-bottom: solid 0px #E2E2E2 !important;">
-                            <h4>REGISTRO DE AGENTES DE INFORMACIÓN DE VEHICULOS</h4>
+                            <h4>REGISTRO DE AGENTES DE INFORMACIÓN DE VEHICULOS </h4><h4 ng-show="datos.RECEP_TIPO =='RECTIFICADO'"> RECTIFICADO</h4>
                         </div>
                         <br><br>
                         <form name="signupForm" >
@@ -296,6 +312,28 @@
                                     <legend>Declaración Mensual</legend>
                                 </div>
                                 <div class="col-md-3">
+                                    <label>Mes de Declaración:</label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="form-group custom-upload">
+                                        <select id="RECEP_MES_DECLARACION" name="RECEP_MES_DECLARACION" placeholder="Mes de Declaración" ng-model="datos.RECEP_MES_DECLARACION" class="form-control" ng-disabled="true" required>
+                                            <option value="">--Seleccione--</option>
+                                            <option value="ENERO">ENERO</option>
+                                            <option value="FEBRERO">FEBRERO</option>
+                                            <option value="MARZO">MARZO</option>
+                                            <option value="ABRIL">ABRIL</option>
+                                            <option value="MAYO">MAYO</option>
+                                            <option value="JUNIO">POTOSI</option>
+                                            <option value="JULIO">JULIO</option>
+                                            <option value="AGOSTO">AGOSTO</option>
+                                            <option value="SEPTIEMBRE">SEPTIEMBRE</option>
+                                            <option value="OCTUBRE">OCTUBRE</option>
+                                            <option value="NOVIEMBRE">NOVIEMBRE</option>
+                                            <option value="DICIEMBRE">DICIEMBRE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <label>Adjuntar Archivo de Declaración:</label>
                                 </div>
                                 <div class="col-md-9">
@@ -372,6 +410,31 @@
                             </button>
                             <br><br>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="constancia" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow-y: scroll;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: #00b3ba;">
+                        <h2 class="modal-title " id="exampleModalLongTitle1" align="center">CONSTANCIA DE ENVIÓ DE DECLARACIÓN MENSUAL
+                        </h2>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <form name="formulario" readOnly="true" novalidate>
+                                <div class="row">
+                                <div id="msgformulario">
+                                    {{msgformulario}}
+                                </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btncerrarmodal" type="button" class="btn btn-primary" ng-click="cerrarConstancia();"
+                            data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>

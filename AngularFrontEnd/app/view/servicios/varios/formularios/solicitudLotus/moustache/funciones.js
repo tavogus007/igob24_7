@@ -25,7 +25,7 @@ function validarFormularioRender() {
         swal("CAMPOS OBLIGATORIOS", campos, "error");
     }
 }
-function guardarData () {    
+function guardarData () {
     $.blockUI();
     setTimeout(function(){
         var dataFrm = document.frmCiudadano.elements;
@@ -52,7 +52,7 @@ function guardarData () {
                             quitarComillas = new RegExp('"', "g");
                             valorCampo = valorCampo.replace(quitarComillas,"'");
                         }
-                    } 
+                    }
                     if (nombreCampo && tipo != 'button'){
                         if(tipo == 'select-one'){
                             var campoSelect = document.getElementById(nombreCampo);
@@ -74,9 +74,9 @@ function guardarData () {
                     Parametros.frm_tra_id_usuario = 1;
                     Parametros.frm_idTramite = idTramite;
                     Parametros.sp_crear_datos_formulario_sitram(function(results){
-                        $.unblockUI();                        
+                        $.unblockUI();
                         results = JSON.parse(results);
-                        results = results.success;                    
+                        results = results.success;
                         if(results.length > 0){
                             alertify.success("Formulario almacenado");
                             //swal("¡Bien!", "Formulario almacenado", "success");
@@ -85,36 +85,44 @@ function guardarData () {
                             swal("ERROR ", "Formulario NO almacenado", "error");
                         }
                         try{
-                            $('[data-toggle="tooltip"]').tooltip('hide').attr('data-original-title', "Enviar Formulario").tooltip('fixTitle').tooltip('Enviar Formulario'); 
+                            $('[data-toggle="tooltip"]').tooltip('hide').attr('data-original-title', "Enviar Formulario").tooltip('fixTitle').tooltip('Enviar Formulario');
                         }catch(e){}
-                    }); 
+                    });
                 } catch(e) {
                     console.log("Error..",e);
-                    $.unblockUI();                     
+                    $.unblockUI();
                 }
             }
         } catch(e) {
-            console.log('error', e); 
+            console.log('error', e);
             $.unblockUI();
         }
     }, 500);
 }
-function validarFrmProcesos (){      
+function validarFrmProcesos (){   
+    var datosSerializados = JSON.stringify(dataIgob);
+    var datosTipoTramite = JSON.parse(datosSerializados); 
+    var nroTipoTramite =  sessionStorage.getItem('NROTIPOTRAMITE');
+    var contrasenia = sessionStorage.getItem('TRACONTRASENIA');
     var idTramite = sessionStorage.getItem('IDTRAMITE');
     idUsuario = sessionStorage.getItem('IDUSUARIO');
     nroTramiteEnviado = sessionStorage.getItem('NROTRAMITE');
     idUsuario = 4;
     try {
-        var idTramite = sessionStorage.getItem('IDTRAMITE');
         nroTramiteEnviado = sessionStorage.getItem('NROTRAMITE');
-        idUsuario = 4; 
+        if (datosTipoTramite.POC_TIPO_TRAMITE == 'CCCMD') {
+            nroTramiteEnviado = sessionStorage.getItem('NROTIPOTRAMITE');
+        }
+        var idTramite = sessionStorage.getItem('IDTRAMITE');
+   
+        idUsuario = 4;
         var tramiteIgob = new datosFormularios();
         tramiteIgob.frm_idTramite = idTramite;
         tramiteIgob.frm_tra_enviado = 'SI';
         tramiteIgob.frm_tra_if_codigo = nroTramiteEnviado;
         tramiteIgob.frm_tra_id_usuario = idUsuario;
-        tramiteIgob.validarFormProcesos(function(resultado){            
-            swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente", "Su número de Trámite es: " + nroTramiteEnviado + "\n", "success");
+        tramiteIgob.validarFormProcesos(function(resultado){ 
+            swal("Señor(a) Ciudadano(a) su trámite fue registrado correctamente", "Su número de Trámite es: " + nroTramiteEnviado +"\n Contraseña Trámite: "+ contrasenia + "\n", "success");
             angular.element(document.getElementById("id_serviciosLotusController")).scope().tramitesCiudadano();
             $('#botones').hide();
             document.getElementById("senddata").disabled = true;
@@ -126,23 +134,119 @@ function validarFrmProcesos (){
     }
 };
 function validarEnvioTramite (){
-        swal({
-            title: 'CONFIRMAR',
-            text: 'El envío de la presente solicitud es una Declaración Jurada, generará todos los derechos y obligaciones establecidas por ley.\n¿Se encuentra seguro de realizar el envío?',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#DD6B55',
-            confirmButtonText: 'SI',
-            cancelButtonText: 'NO',
-            closeOnConfirm: false
-        }, function() {
-            swal.close();
-            setTimeout(function(){
-                enviarData();
-            }, 300);
-        });
+    swal({
+        title: 'CONFIRMAR',
+        text: 'El envío de la presente solicitud es una Declaración Jurada, generará todos los derechos y obligaciones establecidas por ley.\n¿Se encuentra seguro de realizar el envío?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#DD6B55',
+        confirmButtonText: 'SI',
+        cancelButtonText: 'NO',
+        closeOnConfirm: false
+    }, function() {
+        swal.close();
+        setTimeout(function(){
+           //enviarData();
+           enviarDataEsitram();
+        }, 300);
+    });
 };
-function enviarData() {   
+
+function enviarDataEsitram() {
+    $.blockUI();
+    setTimeout(function () {
+        nroDatos = JSON.stringify(dataIgob).length;
+        if (nroDatos > 2) {
+            var datosSerializados = JSON.stringify(dataIgob);
+            var datosTipoTramite = JSON.parse(datosSerializados); 
+            var tipo_tramite_ee = datosTipoTramite.POC_TIPO_TRAMITE;
+            if (datosTipoTramite.POC_TIPO_TRAMITE == 'TD') {
+                quitarComillas = new RegExp('id=\'tinymce\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('class=\'mce-content-body \'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('data-id=\'POC_DESCRIB\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('contenteditable=\'true\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('spellcheck=\'false\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '&#39;');
+                var idProcodigo = 'SITR@M-';
+                var crearCaso = new crearTramiteESitram();
+                crearCaso.datos = datosSerializados;
+                crearCaso.sub_tipotramite_id = 41; //modificado
+                crearCaso.hoja_asunto = document.getElementById('POC_ASUNTO').value;
+                crearCaso.desc_fojas = "0";
+                crearCaso.fojas = 0;
+                crearCaso.usuario = 'pac.digital';  //usuariooo
+                crearCaso.sistema_origen_id = 2;
+            }
+            if (datosTipoTramite.POC_TIPO_TRAMITE == 'CCCMD') {
+                quitarComillas = new RegExp('id=\'tinymce\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('class=\'mce-content-body \'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('data-id=\'POC_DESCRIB\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('contenteditable=\'true\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('spellcheck=\'false\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '');
+                quitarComillas = new RegExp('\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas, '&#39;');
+                var idProcodigo = 'SITR@M-';
+                var crearCaso = new crearTramiteESitram();
+                crearCaso.datos = datosSerializados;
+                //crearCaso.tipo_tramite = "CCCMD";
+                crearCaso.sub_tipotramite_id = 136;  //modificado
+                crearCaso.hoja_asunto = document.getElementById('POC_ASUNTO').value;
+                crearCaso.desc_fojas = "0";
+                crearCaso.fojas = 0;
+                crearCaso.usuario = 'cm.digital';     //'Ciudadano';
+                crearCaso.sistema_origen_id = 2;
+            }
+
+            crearCaso.crearCasoEnLineaEsitram(function (response) {
+                try {
+                    response = JSON.parse(response);
+                    var results = response.success.data[0];  
+                    indice = 0;
+                    datosIF2 = results.tramite_nro_copia;
+                    nrotramitec = results.nro_tramite_sigla;
+                    sessionStorage.setItem('NROTRAMITE', nrotramitec);
+                    sessionStorage.setItem('NROTRAMITEID', datosIF2);
+                    sessionStorage.setItem('IDPROCESO', results.procid);
+                    var idTramite1 = sessionStorage.getItem('NROTRAMITEID');
+
+                    sessionStorage.setItem('TRACONTRASENIA', results.tramite_contrasenia);
+                    sessionStorage.setItem('NROTIPOTRAMITE',results.nro_tipo_tramite)
+                    
+                    dataIgob['POC_UIDHISTO'] = results.tramite_uid;
+                    $.unblockUI();
+                    guardarData();
+                    ocultarFormulario();
+                    try {
+                        validarFrmProcesos();
+                    } catch (e) {
+                        $.unblockUI();
+                        console.log("falla (1): ", error);
+                        swal("ERROR", "Conexion fallida.", "error");
+                    }
+                } catch (error) {
+                    $.unblockUI();
+                    console.log("falla (2): ", error);
+                    swal("ERROR", "Conexion fallida ", "error");
+                }
+            });
+        } else {
+            $.unblockUI();
+            swal("ERROR", "Formulario sin datos ", "error");
+        }
+    }, 400);
+}
+function enviarData() {
     $.blockUI();
     setTimeout(function(){
         nroDatos = JSON.stringify(dataIgob).length;
@@ -179,34 +283,34 @@ function enviarData() {
             }
             if (datosTipoTramite.POC_TIPO_TRAMITE == 'CCCMD'){
                 quitarComillas = new RegExp('id=\'tinymce\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('class=\'mce-content-body \'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('data-id=\'POC_DESCRIB\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('contenteditable=\'true\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('spellcheck=\'false\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'');
-            quitarComillas = new RegExp('\'', "g");
-            datosSerializados = datosSerializados.replace(quitarComillas,'&#39;');
-            var idProcodigo = 'SITR@M-';
-            var crearCaso   =   new gCrearCasoSitramEnLinea();
-            crearCaso.datos             = datosSerializados;
-            crearCaso.tipo_tramite      = "CCCMD";
-            crearCaso.sub_tipo_tramite  = 0;
-            crearCaso.tipo_hr           = "EXTERNA";
-            crearCaso.correlativo        = 0;
-            crearCaso.hoja_asunto       = document.getElementById('POC_ASUNTO').value;
-            crearCaso.desc_fojas        = "0";
-            crearCaso.fojas             = 0;
-            crearCaso.nodo_origen       = 2979;
-            crearCaso.nodo_id           = 2979;
-            crearCaso.usuario           = 'Ciudadano';
-            crearCaso.estado            = "ACTIVO";
+                datosSerializados = datosSerializados.replace(quitarComillas,'');
+                quitarComillas = new RegExp('class=\'mce-content-body \'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas,'');
+                quitarComillas = new RegExp('data-id=\'POC_DESCRIB\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas,'');
+                quitarComillas = new RegExp('contenteditable=\'true\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas,'');
+                quitarComillas = new RegExp('spellcheck=\'false\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas,'');
+                quitarComillas = new RegExp('\'', "g");
+                datosSerializados = datosSerializados.replace(quitarComillas,'&#39;');
+                var idProcodigo = 'SITR@M-';
+                var crearCaso   =   new gCrearCasoSitramEnLinea();
+                crearCaso.datos             = datosSerializados;
+                crearCaso.tipo_tramite      = "CCCMD";
+                crearCaso.sub_tipo_tramite  = 0;
+                crearCaso.tipo_hr           = "EXTERNA";
+                crearCaso.correlativo        = 0;
+                crearCaso.hoja_asunto       = document.getElementById('POC_ASUNTO').value;
+                crearCaso.desc_fojas        = "0";
+                crearCaso.fojas             = 0;
+                crearCaso.nodo_origen       = 2979;
+                crearCaso.nodo_id           = 2979;
+                crearCaso.usuario           = 'Ciudadano';
+                crearCaso.estado            = "ACTIVO";
             }
-          
-            crearCaso.crearCasoEnLineaSitram(function(response){                
+
+            crearCaso.crearCasoEnLineaSitram(function(response){   
                 try {
                     response    =   JSON.parse(response);
                     var results = response.success.data[0];
@@ -218,18 +322,18 @@ function enviarData() {
                     sessionStorage.setItem('IDPROCESO', results.procid);
                     var idTramite1 =  sessionStorage.getItem('NROTRAMITEID') ;
                     dataIgob['POC_UIDHISTO'] = results.tramite_uid;
-                    $.unblockUI(); 
-                    guardarData(); 
+                    $.unblockUI();
+                    guardarData();
                     ocultarFormulario();
                     try{
                         validarFrmProcesos();
-                    }catch(e){ 
+                    }catch(e){
                         $.unblockUI();
                         console.log("falla (1): ", error);
-                        swal("ERROR", "Conexion fallida.", "error");                        
+                        swal("ERROR", "Conexion fallida.", "error");
                     }
-                } catch(error){    
-                    $.unblockUI();                         
+                } catch(error){
+                    $.unblockUI();
                     console.log("falla (2): ", error);
                     swal("ERROR", "Conexion fallida ", "error");
                 }
@@ -241,7 +345,7 @@ function enviarData() {
     }, 400);
 }
 function ocultarFormulario(id){
-    frm = document.forms['frmCiudadano']; 
+    frm = document.forms['frmCiudadano'];
     for(i=0; ele=frm.elements[i]; i++) {
         ele.disabled=true;
     }

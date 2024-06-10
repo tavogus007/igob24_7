@@ -23,9 +23,8 @@
         <link rel="stylesheet" href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/estilosFormularios.min.css"/>
         <link rel="stylesheet" href="../servicios/varios/formularios/solicitudLotus/moustache/bootstrap/csshake.min.css"/>
         <link rel="stylesheet" href="../../../nuevoIgob/css/iconos_flotantes.css"/> 
-
-
-
+        <script src="../../libs/js/pdfmake.min.js"></script>
+        <script src="../../libs/js/vfs_fonts.js"></script>
 
 
 
@@ -274,9 +273,12 @@
 	<!--APLICANDO DIRECTIVAS MODAL CAMBIO CONTRASEÑA -->
 	<div>
 		<actualizacion-clave></actualizacion-clave>
-	</div>	
+	</div>		
    <div id="authCtrlForm" ng-controller="authCtrl">
       <div id="wrapper" style="position: relative;top: -15px;">
+	    <div>
+            <actualizacion-soporte></actualizacion-soporte>
+        </div>
          <div >
             <div id="menuIzqui" style="display: none;">
                   <nav class="navbar-default navbar-static-side" >
@@ -290,6 +292,10 @@
                                   <i class="fa fa-th-large blanco animated bounce"></i><span class="nav-label">{{translateTitulos.lbl_04_03}}</span><span class="fa arrow blanco"></span>
                                 </a>
                                 <ul class="nav nav-second-level" >
+								
+																	<li>
+										<a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/camposDeportivos/alquileres.html" >Campos Deportivos<span class="fa arrow"></span></a>
+                                    </li>
 
                                   <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexLotus.html">Correspondencia Ciudadana</a></li>
                                   <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#registro_ciudadano|servicios|indexTransparencia.html">Denuncias Transparencia</a></li>
@@ -349,10 +355,12 @@
 										<ul class="nav nav-third-level">
 										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#catastro|registro">Registro Catastral</a></li>
 										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#catastro|registroAct">Actualización de Registro Catastral</a></li>
-										<!-- <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click="" href="#catastro|duplicado">{{translateTitulos.lbl_04_06}}</a> -->
+																				
+										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click=""
+											href="#catastro|duplicado">{{translateTitulos.lbl_04_06}}</a>
+										</li>				
+										
                                         <!-- desactibado temporal Salud 31012023-->
-                                            
-										</li>
 										</ul>
 																	
                                 </li>
@@ -363,12 +371,14 @@
 									  </a-->
 									  <a><i class="fa fa-caret-right blanco"></i>Territorio<span class="fa arrow"></span></a>
                                       <ul class="nav nav-third-level">
-                                        <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|PC">Permisos de Construcción 3D</a></li>
+                                        <!--li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|PC">Permisos de Construcción 3D</a></li-->
                                         <!--li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|AsbuiltFracCercat">Planos As Built, Fraccionamiento PH y Certificación Catastral</a></li>
                                         <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|FracCercat">Fraccionamiento PH y Certificación Catastral</a></li>
                                         <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|Asbuilt">Planos As Built</a></li-->
                                         <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|autorizacionesMenores">Autorizaciones Menores</a></li>
-										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|Regularizacion">Ley 467-Regularización de Edificaciones Fuera de Norma<div style="color: #ff0000;font-size:9px;">(Nuevo)</div></a></li>
+										<li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#territorio|Regularizacion">Ley 467-Regularización de Edificaciones Fuera de Norma</a></li>
+										<!--<div style="color: #ff0000;font-size:9px;">(Nuevo)</div>-->
+										<li><a href="#territorio|PCv2">Permiso de Construcción - Licencia Agil <div style="color: #ff0000;font-size:9px;">(Nuevo)</div></a></li>
                                       </ul>
                                   </li>
 
@@ -385,8 +395,13 @@
                                           <a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudDelevery/solicitudDelevery.html'">Registro Transitorio Delivery <div style="color:#FF0000;">(Nuevo)</div></a>
                                       </li-->
 									  
-										<!--li ng-if="vid == '57798df82f59181eb2856b8f' || vid == '6304f91855fb4a7a3f0002ad' || vid == '63120985ff9bd2d3ee00009f'"><a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permisos de Circulación<div style="color: #ff0000;">(Nuevo)</div></a>
-										</li-->									  
+									  <li ng-if="vid == '57798ca52f59181eb27d656d' || vid == '57798db52f59181eb283f770' || vid == '57798ca52f59181eb27d656d'"><a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudTransitorioCirculacion/solicitudTransitorioCirculacion.html'">Permiso dia del peaton<div style="color: #ff0000;">(Nuevo)</div></a>
+										</li>										
+
+										<li ng-show="stiporol == '4' || stiporol == '5'">
+											<a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/movilidad/solicitudPermisoCirculacionARV/solicitudPermisoCirculacionARV.html'">Permiso de Circulación ARV<div style="color: #ff0000;font-size:9px;">(Nuevo)</div></a>
+                                        </li>
+										
                                     </ul>
                                 </li>
 
@@ -400,9 +415,13 @@
                                       </ul>
                                   </li-->
 
-                                  <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/solicitudViajes/index.html'">{{translateTitulos.lbl_04_09}}</a></li>
-                                  <!-- <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/citaMedica/citaMedica.html'"> {{translateTitulos.lbl_04_10}} </a></li> -->
+                                  <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/solicitudViajes/index.html'">Permisos de Viaje</a></li>
+								  
+								  
+                                  <li ng-show="(stiporol == '4' || stiporol == '5') && sservicios  == 'SI'"><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/citaMedica/citaMedica.html'"> {{translateTitulos.lbl_04_10}} </a></li>
+								  
                                   <!-- desactibado temporal Salud 31012023-->
+								  
                                   <li ng-show="stiporol == '4' || stiporol == '5'"><a  href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/fichas/fichas.html'">{{translateTitulos.lbl_04_11}}</a></li>
                                   <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/sigueTuTramite/sigueTuTramite.html'">{{translateTitulos.lbl_04_12}}</a></li>
                                   <!-- RODOLFO opcion para la  visualizacion de antenas><-->
@@ -423,6 +442,9 @@
 
                                   <li><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroMascotas/index.html'">Registro de Animales de Compañia</a></li>
                                   
+ <li><a
+                                    href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroVoluntariosIndependientes/index.html'">Registro de Organizaciones Protectoras de Animales</a>
+									</li>
 
 
                                     <li ng-show="mostrarMenuMascota == 'SI'">
@@ -438,12 +460,59 @@
                                                 <li ng-show="stiporol == '5' && sservicios  == 'SI'"><a href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/registroVoluntarios/index.html'">Registro de Voluntarios</a></li>
                                             </ul>
                                     </li>
+									
+									<!--li ng-show="(stiporol == '4' || stiporol == '5')">
+										<a ng-click=""
+											href="#servicios|varios|index.html?url='app/view/servicios/cementerio/cementerio_clv.html'">Cementerios de La Paz</a>
+									</li-->                                    
+									
+									<li ng-show="(stiporol == '4' || stiporol == '5')">
+                                                <a>
+                                                    <i class="fa fa-caret-right blanco">
+                                                    </i>Cementerios de La Paz
+                                                    <span class="fa arrow blanco"></span>
+                                                </a>
+                                                <ul class="nav nav-third-level">
+                                                    <li>
+                                                        <a href="#servicios|varios|index.html?url='app/view/servicios/cementerio/cementerio_clv.html'">Pago de Servicios
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="../servicios/cementerio/index.html">Georreferenciación</a>
+                                                    </li>
+                                                </ul>
+                                    </li>
+									
+                                    <li ng-show="sservicios  == 'SI'">
+                                        <a>
+                                            <i class="fa fa-caret-right blanco"> </i>Publicidad
+                                            <span class="fa arrow blanco"></span>
+                                        </a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudpublicidad/indexSolicitudPublicidad.html">Solicitud de Registro Publicidad
+                                                </a>
+                                            </li>   
+                                            <li>
+                                                <a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudBajaPublicidad/indexSolicutudBaja.html">Solicitud de Baja de Publicidad
+                                                </a>
+                                            </li>   
+											<li>
+                                                <a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudSuspencioPublicidad/indexSolicitudSuspencion.html">Solicitud de Suspención de Publicidad
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a ng-click="" href="#servicios|varios|index.html?url='app/view/servicios/publicidad/solicitudRenovacionPublicidad/indexSolicutudRenovacion.html">Solicitud de Renovación de Publicidad
+                                                </a>
+                                            </li>                                                                           
+                                        </ul>
+                                    </li>									
 
                                 </ul>
                             </li>
 
                                 <!--ATM -------- ATM-->
-                                <li ng-show="mostrarMenuMascota == 'SI'" style=" font-size:12px;">
+                                <li style=" font-size:12px;">
                                     <a data-toggle="ATM"><i class="fa fa-newspaper-o"></i><span class="nav-label">Trámites
                                             Administración Tributaria Municipal</span></a>
                                     <ul class="nav nav-second-level">
@@ -460,8 +529,15 @@
                                                 Tributaria Municipal - Vehículos
                                             </a>
                                         </li>
+										<li ng-show="mostrarMenuMascota == 'SI'">
+											<a href="#servicios|varios|index.html?url='app/view/servicios/atm/recepcionEmpresas/index.html">
+											   Agentes de Información Vehiculos
+											</a>
+										</li>										
                                     </ul>
-                                </li>      
+                                </li>    
+								
+								
 							<!--PARTICIPACION CIUDADANA-->
 							<!--li ng-show="(stiporol == '5' && sservicios  == 'SI') || vid == '5bb2773b398e617fc30015cb'" style=" font-size:12px;">
                               <a><i class="fa fa-users blanco animated bounce"></i><span class="nav-label">{{translateTitulos.lbl_04_13}}.</span><span class="fa arrow blanco"></span></a>
@@ -480,7 +556,10 @@
                             </li>
                             <li style=" font-size:12px;">
                               <a href="#servicios|varios|index.html?url='app/view/registro_ciudadano/documentos_Apk/descargas.html"> <i class="fa fa-download animated bounce"></i> <span class="nav-label">{{translateTitulos.lbl_04_17_1}}APK </span></a>
-                            </li>
+                            </li>							
+							<li ng-if="(stiporol == '5' && sservicios  == 'SI') && (vid == '57798df82f59181eb2856b8f' || vid == '5bf41aa5b64dff00000003b6' || vid == '63e54f4e9fd6d73fa8000350' || vid == '609c8cd3ff74dbb8490003c6' || vid == '57798d3b2f59181eb28196d4' || vid == '57798c952f59181eb27cc25d')" style=" font-size:12px;">
+                                <a ng-click = "solicitarSoporteIgob();" href=""> <i class="fa fa-cog"></i> <span class="nav-label">SOPORTE</span></a>
+                            </li>							
                         </ul>
                      </div>
                   </nav>
@@ -702,10 +781,14 @@
     <script src="../../libs/apiIF/api_if.js"></script><!--IGOBXXXX-->
     <script src="../../libs/apiSitram/api_sitram.js"></script>    
     <script src="../../libs/apiAE/api_ae.js"></script><!--IGOBXXXX-->
+	<script src="../../libs/api_Atm/api_atm.js"></script>
     <script src="../../libs/api/apiPago.js"></script><!--IGOBXXXX-->
     <script src="../../libs/api_mascotas/api_mascotas.js"></script><!--IGOBXXXX-->
     <script src="../../libs/apiProducto/apiProducto.js"></script>
     <!--script src="../../libs/apiSierra/api_sierra.js"></script-->
+    <!--CEMENTERIO--->
+    <script src="../../libs/api_cementerio/api_Cementerio.js"></script>
+    	
     <!--controladores-->
     <script src="../../controller/registro_ciudadano/servicios/appServicios.js"></script>
     <script src="../../controller/registro_ciudadano/servicios/appServicios343.js"></script>    
@@ -732,10 +815,11 @@
     <script src="../../controller/catastro/actualizaciones/jspdf.debug.js"></script>
     <script src="../../view/catastro/duplicado/appDuplicado.js?v=20211014"></script>
     <script src="../../view/catastro/actualizaciones/appAct.js"></script>
-	<script src="../../view/catastro/registro/appRegistro.js?v=20210915"></script>
+	<script src="../../view/catastro/registro/appRegistro.js?v=20240418"></script>
     <script src="../../view/catastro/registroAct/appRegistroAct.js?v=20210915"></script>	
     <script src="../../view/catastro/general/appCatastroGeneral.js"></script>    
     <script src="../../view/territorio/PC/appPC.js?v=20190606"></script>
+	<script src="../../view/territorio/PCv2/appPCv2.js?v=20240418"></script>
     <script src="../../view/territorio/AsbuiltFracCercat/appAsbuiltFracCercat.js"></script>
     <script src="../../view/territorio/FracCercat/appFracCercat.js"></script>
     <script src="../../view/territorio/Asbuilt/appAsbuilt.js"></script>
@@ -881,6 +965,14 @@
             callback(response);
         });
     };
+</script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "m19kxahc79");
 </script>
 
 </body>

@@ -41,7 +41,6 @@ app.filter("FormatoFecha", function(){
 	}
 });
 
-
 app.directive('vaCombo', function() {
 	return {
 		require: 'ngModel',
@@ -116,6 +115,13 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 							console.log("Error al obtener datos",resApi.error.message,resApi.error.code);
 							//$.unblockUI();
 						}
+					});
+				},
+				obtenerArrayCorreoInvalido:function () {
+					var conf = new dataSITOL();
+					conf.catObtenerParam("IgobArrayCorreoInvalido",function(resultado){
+						var resApi = JSON.parse(resultado);
+						$scope.listaCorreosInvalidos = JSON.parse(resApi.success.dataSql[0].valorParametro);
 					});
 				}
 			}
@@ -299,10 +305,8 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.solicitud.wkt= null;
 				$scope.solicitud.idTipoRegimen= null; //PU o PH
 				$scope.solicitud.idCatastroTipoTramite= null; //1 nuevo; 2 actualziacion 3 reingreso
-
 				//$scope.solicitud.idCatastroTipoServicio = null; //1	CATASTRO MASIVO, 2	SERVICIO MUNICIPAL,3	CATASTRO EXTERNO
 				//$scope.solicitud.idCatastroTipoRegistro = null; // 1 nuevo, 2 actualizacion
-
 				//$scope.solicitud.oid = null;
 				//$scope.solicitud.solicitante= null;
 				//$scope.solicitud.idTipoDocumento= null;
@@ -311,12 +315,10 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				//$scope.solicitud.telefonoSolicitante= null;
 				//$scope.solicitud.emailSolicitante= null;
 				//$scope.solicitud.tipoPersona = null;
-
 				$scope.solicitud.profesionalNombre=null;
 				$scope.solicitud.profesionalEmail=null;
 				$scope.solicitud.profesionalTelefono=null;
 				$scope.solicitud.profesionalCab=null;
-
 				$scope.solicitud.idMacrodistrito= null;
 				$scope.solicitud.iddistritoMunicipal= null;
 				$scope.solicitud.codigoCatastral= null;
@@ -326,19 +328,16 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.solicitud.sector= null;
 				$scope.solicitud.edificio= null;
 				$scope.solicitud.bloque= null;
-
 				$scope.solicitud.riesgo= null;
 				$scope.solicitud.idCodPlanimetria= null;
 				$scope.solicitud.descPlanimetria= null;
 				$scope.solicitud.idTipoLote= null;
-
 				$scope.solicitud.numeroPisos= null;
 				$scope.solicitud.numeroBloques= null;
 				$scope.solicitud.tieneSotano= null;
 				$scope.solicitud.numeroInmueble= null;
 				$scope.solicitud.pmc= null;
 				$scope.solicitud.fotoFachada= null;
-
 				$scope.solicitud.carTerrPendiente= null;
 				$scope.solicitud.carViaPendiente= null;
 				$scope.solicitud.serBasAlcantarillado= null;
@@ -350,25 +349,20 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 				$scope.solicitud.supTotalConstruida= null;
 				$scope.solicitud.supSegunLevantamiento= null;
 				$scope.solicitud.supSegunTestimonio= null;
-
 				$scope.solicitud.archivo1= null;
 				$scope.solicitud.archivo2= null;
 				$scope.solicitud.archivo3= null;
 				$scope.solicitud.archivo4= null;
-
 				$scope.solicitud.idRequisitos= null;
 				$scope.solicitud.conCertificado= null;
 				$scope.solicitud.FUMCertificado= null;
-
 				$scope.solicitud.idEstado= null;
 				$scope.solicitud.idTipoAcceso= null;
 				$scope.solicitud.correosProcesamiento= null;
 				$scope.solicitud.tieneMensura = null;
 				$scope.solicitud.idInsFlujoAnterior = null;
-
 				$scope.profesinalExterno.encontrado = null;
 				$scope.solicitud.msgReqLevantamiento = null;
-
 				$scope.solicitud.idTramiteIGOB = null;
 
 			},
@@ -402,16 +396,20 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 
 			},
 			establecerDatosSolicitante:function () {
-
-				$scope.solicitud.idCatastroTipoServicio = 3; //1	CATASTRO MASIVO, 2	SERVICIO MUNICIPAL,3	CATASTRO EXTERNO
 				$scope.solicitud.idCatastroTipoRegistro = 1; // 1 nuevo, 2 actualizacion
-
+				$scope.solicitud.idCatastroTipoServicio = 3; //1	CATASTRO MASIVO, 2	SERVICIO MUNICIPAL,3	CATASTRO EXTERNO
 				var datosCiudadano = new rcNatural();
 				datosCiudadano.oid = sessionService.get('IDCIUDADANO');
 				datosCiudadano.datosCiudadanoNatural(function(resultado){
 					var response = JSON.parse(resultado);
 					if (response.length > 0) {
 						var results = response;
+						//console.log("obtener datos ciudadano: "+results[0].dtspsl_correo);
+						if ($scope.validarCorreo(results[0].dtspsl_correo)) {
+							$scope.correoInvalido=true;
+						} else {
+							$scope.correoInvalido=false;
+						}
 						$scope.solicitud.oid = sessionService.get('IDCIUDADANO');
 						var tipoPersona = results[0].dtspsl_tipo_persona;
 						$scope.solicitud.idExpedido = '11';
@@ -679,6 +677,41 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 					$.unblockUI();
 				});
 			},
+			delegarProfesional2:function (param, profesional) { //FSA
+				var p = {q: param};
+				$.blockUI();
+				$http({
+					method: 'POST',
+					url: CONFIG.SERVICE_SITOLextgen + 'Catastro/DelegarSolicitud',
+					data: Object.toparams(p),
+					headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+				}).success(function (data, status, headers, config) {
+					$.unblockUI();
+					if(data.res == "OK")
+					{
+						$scope.solicitud.acciones.listarExterno();
+						swal('', 'Su solicitud fue delegada al profesional '+ profesional +'. \nUsted deberá coordinar con él, para el seguimiento de su trámite.', 'success');
+						$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
+						$.unblockUI();
+					}
+					else
+					{
+						console.log("error email",data);
+						$scope.solicitud.acciones.reset();
+						$scope.solicitud.acciones.listarExterno();
+						$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
+						swal('', 'Error al enviar correo', 'error');
+						$.unblockUI();
+					}
+				}).error(function (data, status, headers, config) {
+					console.log("error email conexion",data, status, headers, config);
+					$scope.solicitud.acciones.reset();
+					$scope.solicitud.acciones.listarExterno();
+					$scope.servicioCatastral.acciones.seleccionarVista($scope.servicioCatastral.seleccionado.vistas.tramites);
+					swal('', 'Error al enviar correo', 'error');
+					$.unblockUI();
+				});
+			},
 			registrarIGOB:function (param,idTramiteIGOB) {
 				var p = {q: param};
 				$.blockUI();
@@ -892,8 +925,7 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			obtener:function (idCatastroTramiteOL, accion) {
 				$.blockUI();
 				var solicitud = new dataSITOL();
-				solicitud.catObtenerSolicitud(idCatastroTramiteOL
-					, function(resultado){
+				solicitud.catObtenerSolicitud(idCatastroTramiteOL, function(resultado){
 						$.unblockUI();
 						var resApi = JSON.parse(resultado);
 						console.log("Data", resApi);
@@ -1100,9 +1132,58 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 						$rootScope.notificacionError("Error al descargar archivo");
 					});
 			},
+			SendEmailPE : function (sol) { //FSA
+				swal({   
+					title: "¿Desea reenviar el correo al Arquitecto?",   
+					text: "El correo se enviara al arquitecto "+sol.profesionalNombre+", con la ruta de acceso al formulario de solicitud del tramite Nro. "+sol.idCatastroTramiteOL+ ".",   
+					type: "warning", 
+					showCancelButton: true,   
+					confirmButtonColor: "#23c6c8",   
+					confirmButtonText: "SI, ENVIAR",
+					cancelButtonText: "CANCELAR", 
+					closeOnConfirm: false 
+				},function(isConfirm){
+					if (isConfirm) {
+						$scope.solicitud.acciones.delegarProfesional2(sol.clave,sol.profesionalNombre);
+					}
+				});
+			},
+			openLink : function (sol) {//FSA
+				console.log(sol);
+				var url = CONFIG.SERVICE_SITOLextgen + 'Catastro/Registro?d='+sol.clave;
+        		window.open(url,"_blank");
+			},
+			descargarInfOBS : function (sol) {//FSA
+				$scope.varSpin = true;
+				var Infdoc = 438; // oficial 438
+				var url = CONFIG.SERVICE_SITOLext + 'vccg?idDocumento='+Infdoc+'&idInsFlujo='+sol.idInsFlujo+'&tipo=1';
+				window.open(url,"_blank");
+				console.log(url);
+				$('#visorFum object').attr("data",url);
+				$timeout(function(){$scope.varSpin=false}, 1000);
+			},
+			seguimientoFlujoSIT:function (sol) {//FSA
+				console.log("idInsFlujo...",sol.idInsFlujo);
+				$.blockUI();
+				var solicitud = new dataSITOL();
+				solicitud.getUltimaTarea(sol.idInsFlujo
+					, function(resultado){
+						$.unblockUI();
+						var resApi = JSON.parse(resultado);
+						console.log("Data", resApi);
+						if(resApi.success)
+						{
+							console.log("sss", resApi);
+							$scope.listaSeguimientoSitram = resApi.success.dataSql;
+							$('#divPopupSeguimientofsa').modal('show');
+						}
+						else
+						{
+							console.log("Error al obtener data",resApi.error.message,resApi.error.code);
+						}
+					});
 
-			
-			
+			},			
 		}
 	}
 
@@ -1124,28 +1205,16 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 	});
 
 	$scope.inicio = function () {
-		//$("#results").dialog({ autoOpen: false, width: 880, height: 605, zIndex: 3000, modal: true, title: "Ventana Resultados" });
-		/*
-		 $.blockUI({ css: {
-		 border: 'none',
-		 padding: '10px',
-
-		 backgroundColor: '#000',
-		 '-webkit-border-radius': '10px',
-		 '-moz-border-radius': '10px',
-		 opacity: .5,
-		 color: '#fff'
-		 },message: "Espere un momento porfavor..." });
-		 */
-
-		//$('html, body').animate({scrollTop:0}, 'slow');
-
+		// $.blockUI({ css: {border: 'none',padding: '10px',backgroundColor: '#000','-webkit-border-radius': '10px','-moz-border-radius': '10px',opacity: .5,
+		// 	color: '#fff'},message: "Espere un momento porfavor..." });
+		
 		setTimeout(function()
 		{
 			try{
 				//$scope.mapa.acciones.iniciar();
 				//$scope.srcTutorial="../Catastro/img/RegistroCatastralNuevoInfograma.png";
 				$scope.configParametros.documentoSolicitud.acciones.obtener();
+				$scope.configParametros.documentoSolicitud.acciones.obtenerArrayCorreoInvalido();
 				$scope.configParametros.tasas.acciones.obtener();
 				$scope.solicitud.acciones.listarExterno();
 				$scope.solicitud.acciones.establecerDatosSolicitante();
@@ -1615,8 +1684,14 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 		}
 	}
 
-
-	//Mapa - Se utiizara en el servicio municipal
+	$scope.validarCorreo=function (correo) {
+		texto = correo.toLowerCase();
+		return $scope.listaCorreosInvalidos.some(function(item) {
+			return texto.includes(item.toLowerCase());
+		});
+	}
+	
+	//Mapa - Se utiizará en el servicio municipal
 	$scope.mapa = {
 		estado:null,
 		estadoView:null,
@@ -2649,7 +2724,6 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 							console.log("Sin resultados de vias ");
 							$.unblockUI();
 							$scope.$apply();
-							
 						}
 						$scope.mapa.acciones.buscarContenedorCrear(lista);
 					},
@@ -2660,6 +2734,4 @@ function RegistrocatastralController($scope, $rootScope, $routeParams, $location
 			},
 		}
 	}
-
-
 }

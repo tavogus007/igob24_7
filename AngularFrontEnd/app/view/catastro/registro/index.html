@@ -287,8 +287,6 @@
 </script>
 
 <link href="../../libs/sit-map/OpenLayers-5.3.0/ol.css" rel="stylesheet" type="text/css" />
-
-<!--<link href="../../libs/sit-map/ol-ext/v3.1.0/ol-ext.css" rel="stylesheet" type="text/css" />-->
 <link href="../../libs/sit-map/ol-ext/ol-ext.css" rel="stylesheet" type="text/css" />
 <link href="../../libs/sit-map/sitOL/sit-search.css" rel="stylesheet" type="text/css" />
 <script src="../../libs/sit-map/OpenLayers-5.3.0/ol.js" type="text/javascript"></script>
@@ -305,7 +303,7 @@
 
 
 <div ng-controller="RegistrocatastralController" ng-init="inicio();">
-    <div class="col-lg-12">
+    <div class="col-lg-12" >
 	    <div class="ibox float-e-margins">
             <!--Pantalla de Inicio-->
             <div ng-show="servicioCatastral.seleccionado == null">
@@ -313,7 +311,6 @@
                     <h2 ><strong>REGISTRO CATASTRAL</strong></h2>
                 </div>
                 <div class="ibox-content-cat">
-
                     <div class="row">
                         <div class="col-sm-12">
                             <p class="txtSubtitulo">
@@ -359,11 +356,8 @@
                                 </div>
                                 <div class="col-sm-2"></div>
                             </div>
-
-
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -883,13 +877,20 @@
                                             <td data-title="'Código Catastral'" sortable="'codigoCatastral'">{{sol.codigoCatastral | FormatoSercat}}</td>
                                             <td data-title="'Fecha de registro'" sortable="'fechaRegistro'" >{{sol.fechaRegistro | FormatoFecha }} </td>
                                             <td data-title="'Profesional Externo'" sortable="'profesionalNombre'" >{{sol.profesionalNombre}}</td>
-                                            <td data-title="'Estado'" sortable="'estado'" >{{sol.estado}}</td>
+                                            <td data-title="'Estado'" sortable="'estado'" ng-show="sol.finalizado==false">{{sol.estado}}</td>
+                                            <td data-title="'Estado'" sortable="'estado'" ng-show="sol.finalizado!=false">FINALIZADO</td>
+                                            
                                             <td data-title="'Acciones'">
-                                                <div   >
-                                                    <button class="btn btn-success" ng-show="sol.idInsFlujo != null && sol.idInsFlujo != undifined && sol.idInsFlujo != ''" ng-click="tmpSitram=sol.sitramNro;tmpSitramPwd=sol.sitramContrasena; solicitud.acciones.seguimientoSitram(tmpSitram,tmpSitramPwd)"><span class="glyphicon glyphicon-info-sign"></span> Seguimiento</button>
-                                                    <button class="btn btn-success" ng-show="sol.idEstado == 4" ng-click="solicitud.acciones.descargar(sol.piif)"><span class="glyphicon glyphicon-cloud-download"></span> Descargar Solicitud</button>
-                                                    <button class="btn btn-success" ng-show="(sol.idEstado == 1 || sol.idEstado == 2) && sol.idInsFlujo == null" ng-click="solicitud.acciones.obtener(sol.idCatastroTramiteOL,'delegar')"><span class="glyphicon glyphicon-share-alt"></span> Delegar solicitud</button>
-                                                    <button class="btn btn-danger" ng-show="(sol.idEstado == 1 || sol.idEstado == 2) && sol.idInsFlujo == null" ng-click="solicitud.acciones.anularConfirm(sol.idCatastroTramiteOL,sol.clave)"><span class="glyphicon glyphicon-remove"></span> Anular solicitud</button>
+                                                <div >
+                                                    <!--button class="btn btn-success" ng-show="sol.idInsFlujo != null && sol.idInsFlujo != undifined && sol.idInsFlujo != ''" ng-click="tmpSitram=sol.sitramNro;tmpSitramPwd=sol.sitramContrasena; solicitud.acciones.seguimientoSitram(tmpSitram,tmpSitramPwd)"><span class="glyphicon glyphicon-info-sign"></span> Seguimiento</button-->
+                                                    <button class="btn btn-success" ng-show="sol.idInsFlujo != null && sol.idInsFlujo != undifined && sol.idInsFlujo != ''" ng-click="tmpSitram=sol.sitramNro;tmpSitramPwd=sol.sitramContrasena; solicitud.acciones.seguimientoFlujoSIT(sol)"><span class="glyphicon glyphicon-info-sign"></span> Seguimiento</button>
+                                                    <button class="btn btn-success" ng-show="sol.idEstado == 4 && sol.finalizado == false" ng-click="solicitud.acciones.descargar(sol.piif)"><span class="glyphicon glyphicon-cloud-download"></span> Descargar Solicitud</button>
+                                                    <!--button class="btn btn-success" ng-show="(sol.idEstado == 1 || sol.idEstado == 2) && sol.idInsFlujo == null" ng-click="solicitud.acciones.obtener(sol.idCatastroTramiteOL,'delegar')"><span class="glyphicon glyphicon-share-alt"></span> Delegar solicitud</button-->
+                                                    <!--button class="btn btn-danger" ng-show="(sol.idEstado == 1 || sol.idEstado == 2) && sol.idInsFlujo == null" ng-click="solicitud.acciones.anularConfirm(sol.idCatastroTramiteOL,sol.clave)"><span class="glyphicon glyphicon-remove"></span> Anular solicitud</button-->
+                                                    <button class="btn btn-danger" ng-show="(sol.estado1 == 'EXPIRADO') && sol.idInsFlujo == null" ng-click=""><span class="glyphicon glyphicon"></span> EXPIRADO</button>
+                                                    <button class="btn btn-success" ng-show="(sol.estado1 == 'VIGENTE') && sol.idInsFlujo == null" ng-click="solicitud.acciones.SendEmailPE(sol)"><span class="glyphicon glyphicon-envelope" title="Enviar correo al Profesional Externo."></span> Correo Profesional Ext.</button>
+                                                    <button class="btn btn-success" ng-show="(sol.estado1 == 'VIGENTE') && sol.idInsFlujo == null" ng-click="solicitud.acciones.openLink(sol)"><span class="glyphicon glyphicon-link" title="Ir formulario de solicitud."></span></button>
+                                                    <button class="btn btn-success" ng-show="(sol.finalizado == true) && sol.idInsFlujo != null && sol.resultado == 'OBSERVADO'" ng-click="solicitud.acciones.descargarInfOBS(sol)"><span class="glyphicon glyphicon-file" title="Descargar Informe de Observación."></span></button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -906,164 +907,175 @@
                             <div>
                                 <div >
                                     <form name = "frmSolicitud">
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <p class="txtParrafo txtParrafoResaltado">Para iniciar esta solicitud, usted debe coordinar con el profesional contratado, antes de iniciar su trámite por este medio.</p>
-                                            </div>
+                                        <div ng-show="correoInvalido">
+                                            <p class="txtSubtitulo">
+                                                <a  class="txtSubtituloIcon">
+                                                    <span class="glyphicon glyphicon-info-sign txtSubtituloIcon"></span>
+                                                </a>
+                                                Correo no valido para la solicitud
+                                            </p>
+                                            <p class="txtParrafo">
+                                                Sr(a). <strong class="txtResaltado">{{solicitud.solicitante}}</strong>: El correo <span style="color: red;"><strong >{{solicitud.emailSolicitante}}</strong> no es válido</span>. Por favor, actualice esta información para proceder con su solicitud.
+                                             </p>
                                         </div>
-
-                                        <br>
-                                        <div class="row">
-                                            <div class="col-sm-9">
-                                                <div >
-                                                    <button type="button" class="btn btn-primary btn-circle btn-lg">1<span style="font-size: 12px;">er</span></button><strong class="txtResaltado"> PASO. Ubicación del predio.</strong> &nbsp;<span class="glyphicon glyphicon-play txtParrafoResaltado"></span> <span class="txtParrafoResaltado"> Introduzca la dirección referencial de su predio:</span>
+                                        <div ng-hide="correoInvalido">
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <p class="txtParrafo txtParrafoResaltado">Para iniciar esta solicitud, usted debe coordinar con el profesional contratado, antes de iniciar su trámite por este medio.</p>
                                                 </div>
-                                                <div class="ibox-content">
-                                                    <div class="row">
-                                                        <div class="col-sm-8">
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <div >
+                                                        <button type="button" class="btn btn-primary btn-circle btn-lg">1<span style="font-size: 12px;">er</span></button><strong class="txtResaltado"> PASO. Ubicación del predio.</strong> &nbsp;<span class="glyphicon glyphicon-play txtParrafoResaltado"></span> <span class="txtParrafoResaltado"> Introduzca la dirección referencial de su predio:</span>
+                                                    </div>
+                                                    <div class="ibox-content">
+                                                        <div class="row">
+                                                            <div class="col-sm-8">
+                                                                <div class="row">
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group"  >
+                                                                            <label>Zona</label>
+                                                                            <div class="controls" ng-class="{'has-error': solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='' }">
+                                                                                <input  ng-model="solicitud.zona" class="form-control" type="text" name="zona" required >
+                                                                            </div>
+                                                                            <span class="help-block" style="color:red" ng-if="solicitud.zona==null || solicitud.zona==undefined || solicitud.zona==''">Requerido.</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-5">
+                                                                        <div class="form-group">
+                                                                            <label>Avenida/Calle/otros.</label>
+                                                                            <div class="controls" ng-class="{'has-error': solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='' }">
+                                                                                <input  ng-model="solicitud.direccion" class="form-control" type="text" name="direccion" required >
+                                                                            </div>
+                                                                            <span class="help-block" style="color:red" ng-if="solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion==''">Requerido.</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label>Nº de puerta</label>
+                                                                            <div class="controls" >
+                                                                                <input  ng-model="solicitud.nroPuerta" class="form-control" name="nroPuerta"  >
+                                                                            </div>
+                                                                            <!--<span class="help-block" style="color:red" ng-if="solicitud.nroPuerta==null || solicitud.nroPuerta==undefined || solicitud.nroPuerta==''">Requerido.</span>-->
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12" style="text-align: right; ">
+                                                                            <button type="button" class="btn btn-success" ng-click="flujoSolicitud.acciones.paso5()" ng-disabled="(solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='') || (solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='')">Continuar <span class="glyphicon glyphicon-arrow-right"></span> </button>
+                                                                            &nbsp;&nbsp;&nbsp;
+                                                                        </div>
+                                                                    </div>
+                                                                    -->
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-sm-4"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="alert alert-success">
+                                                        <strong>AYUDA</strong> Antes de iniciar su trámite, usted debe solicitar al profesional contratado, su número de registro nacional de colegiado.
+                                                    </div>
+                                                    <div class="alert alert-danger"> 
+                                                        <strong> <font color="#ed5565">ATENCIÓN.-</font></strong> Antes de realizar una solicitud, debe estar en la cuenta del titular del predio, caso contrario su trámite saldrá observado. 
+
+                                                    </div>														
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div >
+                                                        <button type="button" class="btn btn-primary btn-circle btn-lg">2<span style="font-size: 12px;">do</span></button><strong class="txtResaltado"> PASO. Delegar solicitud a profesional externo.</strong> &nbsp;<span class="glyphicon glyphicon-play txtParrafoResaltado"></span> <span class="txtParrafoResaltado"> Introduzca el número de registro del profesional elegido:</span>
+                                                    </div>
+                                                    <div class="ibox-content">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group" class="col-md-12">
+                                                                    <label>Nº de Registro Nacional CAB</label>
+                                                                    <div class="controls">
+                                                                        <div class="input-group" ng-class="{'has-error': frmSolicitud.cab.$error.required }">
+                                                                            <input type="text" class="form-control" ng-model="profesionalCab" placeholder="Buscar por Registro CAB" name="cab" required >
+                                                                            <div class="input-group-btn">
+                                                                                <button type="button" style="width: 200px" class="btn btn-info" title="Buscar profesional externo" ng-click="profesinalExterno.acciones.buscarPorNro(profesionalCab)">
+                                                                                    <span class="glyphicon glyphicon-search"></span> Buscar profesional
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.cab.$error.required">Requerido.</span>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-8">
+                                                                <div class="col-md-12" align="left">
+                                                                    <div class="form-group" class="col-md-12">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="alert alert-danger" ng-show="profesinalExterno.encontrado == false">
+                                                            No se encontró al profesional, verifique el Nº Nacional de Registro que introdujo. De estar correcto el Nº Nacional de Registro, el profesional no está registrado en el sistema, por lo que, él debe apersonarse a cualquier Plataforma Integral de Atención Ciudadana (PIAC) presentando su carnet de colegiado.
+                                                        </div>
+                                                        <div  ng-hide="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail ==''">
                                                             <div class="row">
+                                                                <div class="col-md-2">
+                                                                    <div class="form-group">
+                                                                        <label>Nº Registro Nacional CAB</label>
+                                                                        <div class="controls" >
+                                                                            <input  ng-model="solicitud.profesionalCab" class="form-control" type="text" required readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <div class="col-md-4">
                                                                     <div class="form-group"  >
-                                                                        <label>Zona</label>
-                                                                        <div class="controls" ng-class="{'has-error': solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='' }">
-                                                                            <input  ng-model="solicitud.zona" class="form-control" type="text" name="zona" required >
+                                                                        <label>Nombre del Profesional</label>
+                                                                        <div class="controls" ng-class="{'has-error': frmSolicitud.arquitecto.$error.required }">
+                                                                            <input  ng-model="solicitud.profesionalNombre" class="form-control" type="text" name="arquitecto" required readonly>
                                                                         </div>
-                                                                        <span class="help-block" style="color:red" ng-if="solicitud.zona==null || solicitud.zona==undefined || solicitud.zona==''">Requerido.</span>
+                                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitecto.$error.required">Requerido.</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-5">
+                                                                <div class="col-md-2">
                                                                     <div class="form-group">
-                                                                        <label>Avenida/Calle/otros.</label>
-                                                                        <div class="controls" ng-class="{'has-error': solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='' }">
-                                                                            <input  ng-model="solicitud.direccion" class="form-control" type="text" name="direccion" required >
+                                                                        <label>Teléfono Celular</label>
+                                                                        <div class="controls" ng-class="{'has-error': frmSolicitud.arquitectoFono.$error.required }">
+                                                                            <input  ng-model="solicitud.profesionalTelefono" class="form-control" type="text" name="arquitectoFono" required readonly>
                                                                         </div>
-                                                                        <span class="help-block" style="color:red" ng-if="solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion==''">Requerido.</span>
+                                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitectoFono.$error.required">Requerido.</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-3">
+                                                                <div class="col-md-4">
                                                                     <div class="form-group">
-                                                                        <label>Nº de puerta</label>
-                                                                        <div class="controls" >
-                                                                            <input  ng-model="solicitud.nroPuerta" class="form-control" name="nroPuerta"  >
+                                                                        <label>Correo Electrónico</label>
+                                                                        <div class="controls" ng-class="{'has-error': frmSolicitud.email.$error.required }">
+                                                                            <input  ng-model="solicitud.profesionalEmail" class="form-control" type="email" name="email" required readonly>
                                                                         </div>
-                                                                        <!--<span class="help-block" style="color:red" ng-if="solicitud.nroPuerta==null || solicitud.nroPuerta==undefined || solicitud.nroPuerta==''">Requerido.</span>-->
-                                                                    </div>
-                                                                </div>
-                                                                <!--
-                                                                <div class="row">
-                                                                    <div class="col-sm-12" style="text-align: right; ">
-                                                                        <button type="button" class="btn btn-success" ng-click="flujoSolicitud.acciones.paso5()" ng-disabled="(solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='') || (solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='')">Continuar <span class="glyphicon glyphicon-arrow-right"></span> </button>
-                                                                        &nbsp;&nbsp;&nbsp;
-                                                                    </div>
-                                                                </div>
-                                                                -->
-                                                            </div>
+                                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$error.required">Requerido.</span>
+                                                                        <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$invalid">Formato no valido.</span>
 
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
                                                         </div>
-                                                        <div class="col-sm-4"></div>
+
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <div class="alert alert-success">
-                                                    <strong>AYUDA</strong> Antes de iniciar su trámite, usted debe solicitar al profesional contratado, su número de registro nacional de colegiado.
-                                                </div>
-												<div class="alert alert-danger"> 
-                                                    <strong> <font color="#ed5565">ATENCIÓN.-</font></strong> Antes de realizar una solicitud, debe estar en la cuenta del titular del predio, caso contrario su trámite saldrá observado. 
-
-                                                </div>														
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div >
-                                                    <button type="button" class="btn btn-primary btn-circle btn-lg">2<span style="font-size: 12px;">do</span></button><strong class="txtResaltado"> PASO. Delegar solicitud a profesional externo.</strong> &nbsp;<span class="glyphicon glyphicon-play txtParrafoResaltado"></span> <span class="txtParrafoResaltado"> Introduzca el número de registro del profesional elegido:</span>
-                                                </div>
-                                                <div class="ibox-content">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="form-group" class="col-md-12">
-                                                                <label>Nº de Registro Nacional CAB</label>
-                                                                <div class="controls">
-                                                                    <div class="input-group" ng-class="{'has-error': frmSolicitud.cab.$error.required }">
-                                                                        <input type="text" class="form-control" ng-model="profesionalCab" placeholder="Buscar por Registro CAB" name="cab" required >
-                                                                        <div class="input-group-btn">
-                                                                            <button type="button" style="width: 200px" class="btn btn-info" title="Buscar profesional externo" ng-click="profesinalExterno.acciones.buscarPorNro(profesionalCab)">
-                                                                                <span class="glyphicon glyphicon-search"></span> Buscar profesional
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.cab.$error.required">Requerido.</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <div class="col-md-12" align="left">
-                                                                <div class="form-group" class="col-md-12">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="alert alert-danger" ng-show="profesinalExterno.encontrado == false">
-                                                        No se encontró al profesional, verifique el Nº Nacional de Registro que introdujo. De estar correcto el Nº Nacional de Registro, el profesional no está registrado en el sistema, por lo que, él debe apersonarse a cualquier Plataforma Integral de Atención Ciudadana (PIAC) presentando su carnet de colegiado.
-                                                    </div>
-                                                    <div  ng-hide="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail ==''">
-                                                        <div class="row">
-                                                            <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                    <label>Nº Registro Nacional CAB</label>
-                                                                    <div class="controls" >
-                                                                        <input  ng-model="solicitud.profesionalCab" class="form-control" type="text" required readonly>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group"  >
-                                                                    <label>Nombre del Profesional</label>
-                                                                    <div class="controls" ng-class="{'has-error': frmSolicitud.arquitecto.$error.required }">
-                                                                        <input  ng-model="solicitud.profesionalNombre" class="form-control" type="text" name="arquitecto" required readonly>
-                                                                    </div>
-                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitecto.$error.required">Requerido.</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                                <div class="form-group">
-                                                                    <label>Teléfono Celular</label>
-                                                                    <div class="controls" ng-class="{'has-error': frmSolicitud.arquitectoFono.$error.required }">
-                                                                        <input  ng-model="solicitud.profesionalTelefono" class="form-control" type="text" name="arquitectoFono" required readonly>
-                                                                    </div>
-                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.arquitectoFono.$error.required">Requerido.</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-4">
-                                                                <div class="form-group">
-                                                                    <label>Correo Electrónico</label>
-                                                                    <div class="controls" ng-class="{'has-error': frmSolicitud.email.$error.required }">
-                                                                        <input  ng-model="solicitud.profesionalEmail" class="form-control" type="email" name="email" required readonly>
-                                                                    </div>
-                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$error.required">Requerido.</span>
-                                                                    <span class="help-block" style="color:red" ng-if="frmSolicitud.email.$invalid">Formato no valido.</span>
-
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-
+                                            <div class="row">
+                                                <div class="col-sm-12" style="padding: 12px;text-align: right;" >
+                                                    <button type="button" class="btn btn-info" ng-disabled="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail =='' || solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='' || solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='' " ng-click="solicitud.acciones.validarProfesionalyPropietario()"><span class="glyphicon glyphicon-envelope"></span> Delegar soliditud al profesional externo</button>
+                                                    &nbsp;
+                                                    <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12" style="padding: 12px;text-align: right;" >
-                                                <button type="button" class="btn btn-info" ng-disabled="solicitud.profesionalEmail == null || solicitud.profesionalEmail == undefined || solicitud.profesionalEmail =='' || solicitud.zona==null || solicitud.zona==undefined || solicitud.zona=='' || solicitud.direccion==null || solicitud.direccion==undefined || solicitud.direccion=='' " ng-click="solicitud.acciones.validarProfesionalyPropietario()"><span class="glyphicon glyphicon-envelope"></span> Delegar soliditud al profesional externo</button>
-                                                &nbsp;
-                                                <button type="button" class="btn btn-info" ng-click="servicioCatastral.seleccionado=null;"><span class="glyphicon glyphicon-home"></span> Volver al inicio</button>
-                                            </div>
-                                        </div>
-
                                     </form>
 
                                 </div>
@@ -1566,6 +1578,42 @@
                                         <tr><td style="width: 150px; font-weight: bold;">#</td><td>{{$index + 1}}</td></tr>
                                         <tr><td style="width: 150px;">UBICACIÓN</td><td>{{item.tno}}</td></tr>
                                         <tr><td style="width: 150px;">FECHA REMISION</td><td>{{item.tsd}}</td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Seguimiento Flujo FSA-->
+    <div id="divPopupSeguimientofsa" class="modal fade" tabindex="-1" data-focus-on="input:first" role="dialog">
+        <div class="modal-dialog" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title"> Seguimiento del Trámite</h3>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="table-responsive" ng-show="listaSeguimientoSitram.length>0">
+                        <br>
+
+                        <strong>ESTADO DEL TRÁMITE</strong>
+                        <hr>
+                        <table class="table table-bordered table-hover table-responsive table-striped">
+                            <tr ng-repeat="item in listaSeguimientoSitram">
+                                <td>
+                                    <table>
+                                        <tr><td style="width: 250px; font-weight: bold;"><b>NRO. SITRAM :</b></td><td>{{item.NumSitram}}</td></tr>
+                                        <tr><td style="width: 250px;"><b>FECHA CREACIÓN :</b></td><td>{{item.fechaInicio | FormatoFecha}}</td></tr>
+                                        <tr><td style="width: 250px;"><b>NODO :</b></td><td style="text-transform:uppercase">{{item.tarea}}</td></tr>
+                                        <tr><td style="width: 250px;"><b>RESULTADO :</b></td><td style="text-transform:uppercase">{{item.resultadoTramite}}</td></tr>
                                     </table>
                                 </td>
                             </tr>

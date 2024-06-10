@@ -37,22 +37,22 @@ function ejecutarAjaxSalud(vurlCompSalud, vTypeCall, vDataCall, vFunctionResp) {
 
 /*///////////////////////////////////////////////// NATURAL /////////////////////////////////////////////////*/
 function dataSalud(){
-    this.ci
-    this.idHospital
+    this.ci,
+    this.idHospital,
     this.genero,
     this.idTipoPaciente,
-    this.fechaNacimiento
+    this.fechaNacimiento,
     this.idServicio,
     this.fechaDisponible,
-    this.idTurno
-    this.nroFicha
+    this.idTurno,
+    this.nroFicha,
     this.idDoctor,
     this.idPaciente,
     this.habilitacion,
     this.idMedico,
     this.codigoFicha,
     this.horaInicio,
-    this.horaFinal
+    this.horaFinal,
     this.fechaSql,
     this.cuaCodigo,
     this.codigoMedicoSice,
@@ -83,7 +83,17 @@ function dataSalud(){
     this.vcancelo,
     this.vnro_fila,
     this.vhistoria_sice,
-    this.vcentro_salud
+    this.vcentro_salud,
+
+    this.id_hsp,
+    this.esp_siis,
+    this.id_mod,
+    this.id_cat,
+    this.fechaini,
+    this.id_pres,
+    this.id_paciente,
+    this.id_turno,
+    this.tfecha
 };
 
 dataSalud.prototype.reservarFichaInternet = function (functionResp)
@@ -580,7 +590,7 @@ dataSalud.prototype.verificaFichas = function (functionResp)
     ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
 };
 
-dataSalud.prototype.pacienteFicha = function (functionResp)
+/*dataSalud.prototype.pacienteFicha = function (functionResp)
 {
     urlCompSalud = "/pacienteFicha";
     typeCall = "post";
@@ -591,10 +601,7 @@ dataSalud.prototype.pacienteFicha = function (functionResp)
       "fechaDisponible":  this.fechaDisponible
     };
     ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
-};
-
-
-
+};*/
 
 dataSalud.prototype.guardarFicha = function (functionResp)
 {
@@ -726,4 +733,75 @@ dataDinamic.prototype.SqlDinamic = function (functionResp) {
     } catch(e){
         console.log("Error de conexion : ", e);
     }
+};
+
+
+
+/*****  NUEVOS SERVICIOS  ********/
+
+dataSalud.prototype.hojasReferenciaRechazadas = function (functionResp)
+{
+    urlCompSalud = "/hojasReferenciaRechazadas";
+    typeCall = "post";
+    dataParams = {
+      "ci":  this.ci
+    };
+
+    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
+};
+
+
+dataSalud.prototype.listaDatosServicio = function (functionResp)
+{
+    urlCompSalud = "/listaDatosServicio";
+    typeCall = "post";
+    dataParams = {
+      "id_hsp":    this.id_hsp,
+      "esp_siis":  this.esp_siis,
+      "id_mod":    this.id_mod
+    };
+
+    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
+};
+
+
+dataSalud.prototype.listaFechasFichaIgob = function (functionResp)
+{
+    urlCompSalud = "/listaFechasFichaIgob";
+    typeCall = "post";
+    dataParams = {
+      "id_cat":  this.id_cat,
+      "id_hsp":  this.id_hsp
+    };
+
+    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
+};
+
+
+dataSalud.prototype.listaFechasDoctor = function (functionResp)
+{
+    urlCompSalud = "/listaFechasDoctor";
+    typeCall = "post";
+    dataParams = {
+      "id_hsp":    this.id_hsp,
+      "fechaini":  this.fechaini,
+      "id_pres":   this.id_pres
+    };
+
+    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
+};
+
+
+dataSalud.prototype.pacienteFicha = function (functionResp)
+{
+    urlCompSalud = "/pacienteFicha";
+    typeCall = "post";
+    dataParams = {
+      "id_hsp":       this.id_hsp,
+      "id_paciente":  this.id_paciente,
+      "id_turno":     this.id_turno,
+      "tfecha":       this.tfecha
+    };
+
+    ejecutarAjaxSalud(urlCompSalud, typeCall, dataParams, functionResp);
 };

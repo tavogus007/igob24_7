@@ -249,7 +249,8 @@
                   </div>
                 </div>
                 <div class="ibox-content">
-                  <h5>Buscar por:</h5>
+                  <h5>Buscar por:</h5>             
+                  <br>
                   <div class="row">
                     <div class="col-sm-12 col-md-2">
                       <button type="button" class="btn btn-primary" id="1" ng-click="mostrarCaptcha(1)">Código de Ubicación</button>
@@ -262,7 +263,7 @@
                       <button type="button" class="btn btn-primary" id="1" ng-click="mostrarCaptcha(2)">Datos Personales</button>
                     </div>
                     <div class="col-sm-12 col-md-9"><p>Realice la búsqueda con los datos personales del fallecido.</p></div>
-                  </div>
+					</div>
                 </div>
               </div>
             </div>
@@ -306,7 +307,8 @@
                   <div class="col-sm-12 col-md-6">
                     <div>
                       <a class="btn btn-redondo" tooltip="Buscar Por Código" ng-click="datosUbicacion();">
-                        <div class="shake-slow">
+                        
+						<div class="shake-slow">
                           <i class="glyphicon glyphicon-search blanco">
                           </i>
                         </div>
@@ -324,7 +326,7 @@
                   </div>
                 </div>
               </form>
-            </div>
+          </div>
           </div>
         </div>
       </div>
@@ -574,7 +576,7 @@
 
           <div id="idventanabusquedaDatosFallecido">
             <div class="row">
-              <div class="col-md-12">
+              <!--<div class="col-md-12">
                 <label class="col-md-3 control-label ng-binding">Nro. CI.:</label>
                 <div class="form-group col-md-3">
                   <input id="idCif" name="idCif" type="number" class="form-control" placeholder="CI."
@@ -603,7 +605,7 @@
                 <div class="form-group col-md-3">
                   <input id="idApCasF" name="idApCasF" type="text" class="form-control" placeholder="Apellido Casada"
                     ng-keyup="bloqBuscarDatos()">
-                </div>
+                </div>-->
                 <label class="col-md-3 control-label ng-binding">IDF:</label>
                 <div class="form-group col-md-3">
                   <input id="idIdfF" name="idIdfF" type="number" class="form-control" placeholder="Id. Fallecido"
@@ -653,64 +655,6 @@
     </div>
   </div>
 
-
-
-<!--
-  <div ng-show="idLlamarCaptcha">
-
-    <div class="col-lg-12">
-      <div class="col-lg-10">
-        <div id="mostrar1" class="ibox-title">
-          <h5 class="ng-binding">Escriba las palabras para continuar
-          </h5>
-        </div>
-      </div>
-      <div class="col-lg-2"></div>
-      <right>
-        <button class="btn btn-info btn-history" tooltip="Regresar" ng-click="principioI();">
-          <i class="fa fa-history" aria-hidden="true"></i>&nbsp;Inicio
-        </button>
-      </right>
-    </div>
-    <div class="col-md-12" align="center">
-
-      <table width="50%" border="0" cellspacing="0" cellpadding="2" class="one">
-        <tr class="color">
-          <div style="background: #ffffff;">
-            <div class="box2">
-              <img class="img-responsive" src="{{imageCST}}" title="{{toltipT}}">
-            </div>
-            <div class="box2">
-              <img class="img-responsive" src="{{imageLNG}}" title="Palabra en CASTELLANO">
-            </div>
-          </div>
-        </tr>
-        <tr class="color">
-          <td class="color22" colspan="3" width="70" align="center">
-            <input id="resultadoC" name="resultadoC" type="text" style="border: 0px !important;" class="form-control"
-              placeholder="{{palabraT}}" ng-model="resultadoC" ng-keyup="VerificarCapcha()" required />
-            <label>{{palabraT}}</label>
-            <span ng-show="formulario.palabraT.$invalid">
-              <span ng-show="formulario.palabraT.$error.required">{{palabraT}}.</span>
-            </span>
-          </td>
-          <td class="color2" width="30" align="center">
-            <a type="button" class="btn btn-default btn-circle" data-toggle="modal" data-target="modal"
-              ng-click="getCaptchasX();"><i class="fa fa-refresh fa-lg" aria-hidden="true" style="color:#6F7072"
-                title="Actualizar"></i>
-            </a>
-          </td>
-        </tr>
-      </table>
-      <b>
-        <font SIZE=3 color="red"> {{ErrorCapchasXX}}</font>
-      </b>
-      <b>
-        <font SIZE=2 color="green"> {{SuccesCapchasxx}}</font>
-      </b>
-    </div>
-  </div>
--->
 
 
 

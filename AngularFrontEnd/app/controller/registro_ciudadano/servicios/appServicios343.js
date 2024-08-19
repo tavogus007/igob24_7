@@ -1,4 +1,4 @@
-﻿app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
+app.controller('serviciosController343', function ($scope, $rootScope ,$routeParams, $location, $http, Data, sessionService,CONFIG, LogGuardarInfo, $element, sweet, ngTableParams, $filter, registroLog, filterFilter,FileUploader, fileUpload, obtFechaActual,wsRgistrarPubliciadad, $q) {
     $scope.imageCST = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     $scope.imageLNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAFCAIAAADtz9qMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAbSURBVBhXY3growJHIM5/GIBy0GWgHCiSUQEAe00iZYBvZ5oAAAAASUVORK5CYII=";
     var fecha= new Date();
@@ -2229,6 +2229,7 @@
     });
 
     $scope.inicioServicios343 = function () {
+	    swal('Advertencia', "EL GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ, A TRAVÉS DE LA SECRETARIA MUNICIPAL DE DESARROLLO ECONÓMICO, SOLICITA A TODOS LOS ADMINISTRADOS DE ACTIVIDADES ECONÓMICAS, ACTUALIZAR SUS DATOS PERSONALES: DIRECCIÓN, TELÉFONO Y CORREO ELECTRÓNICO, INSUMOS QUE SERVIRÁN PARA BRINDAR UNA MEJOR ATENCIÓN POR LAS PLATAFORMAS HABILITADAS.", 'warning');
         $scope.tramitesCiudadano();
         $scope.recuperandoDatosInicialesCiudadano();
         $scope.recuperandoDatosGenesis();

@@ -114,14 +114,15 @@
             </div>
 
             <div id="pnlListaSolicitudes" > <!--ng-show="flujo.paso == flujo.pasos.paso0"-->
-                <div class="container-fluid">
+                <!-- <div class="container-fluid">
                     Si desea solicitar una Autorización Menor para su inmueble, presione el bot&oacute;n INICIAR SOLICITUD
                     <br>
                     Para m&aacute;s informaci&oacute;n presione el bot&oacute;n GU&Iacute;A DE SOLICITUD
-                </div>
+                </div> -->
                 <br>
                 <div>
-                    <button class="btn btn-primary" ng-click="cambiarPaso(flujo.pasos.paso1)" data-dismiss="modal" data-toggle="modal" data-target="#ModalTramite"><span class="glyphicon glyphicon-plus"></span>&nbsp;Iniciar solicitud</button> <!---->
+                    <div class="alert alert-info" style="font-size: larger;">Para realizar la solicitud de la autorización, por favor apersonarse a la plataforma <b>SERMAT</b> de Centro o Sur.</div>
+                    <!-- <button class="btn btn-primary" ng-click="cambiarPaso(flujo.pasos.paso1)" data-dismiss="modal" data-toggle="modal" data-target="#ModalTramite"><span class="glyphicon glyphicon-plus"></span>&nbsp;Iniciar solicitud</button>  -->
                     <!--<button class="btn btn-info" data-toggle="modal" data-target="#ModalGuiaTramite"><span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="Guía"></span>&nbsp;Guía de trámite</button>-->
                     <!--<button class="btn btn-info" ng-cligenerarProformaorma()">proforma</button>-->
                 </div>
@@ -442,7 +443,7 @@
                     <br><br>
                     <div class="ibox-title" style="background-color: #f3f0f0;">
                         <a class="">
-                            <h5>
+                            <h5>
                                 Imprimir la solicitud en l&iacute;nea.
                             </h5>
                         </a>

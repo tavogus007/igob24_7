@@ -340,6 +340,7 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
 
     /*******************************GUARDAR PDF**************************/
     $scope.generarPdfBajaDoc = function(dataBaja,nroTramite) {
+        console.log("dataBaja",dataBaja);
         $.blockUI({ css: { 
                     border: 'none', 
                     padding: '10px', 
@@ -354,7 +355,8 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
             generarPdfBaja(dataBaja,nroTramite);
         }, 1000);
     }
-    async function generarPdfBaja(dataBaja,nroTramite) {
+    async function generarPdfBaja(dataB,nroTramite) {
+        var dataBaja = dataB.vfrm_ser_dataformulario;
         console.log("dataBaja",dataBaja);
         var datosTabla = dataBaja.publicidadesBaja;
         var cel_contacto = "";
@@ -409,11 +411,7 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
                 contenidoTabla.push(fila);
             });
         }
-        var fechaact = new Date();
-        var dia=fechaact.getDate();
-        var mes=fechaact.getMonth()+1;
-        var anio=fechaact.getFullYear();
-        var fechaActual = dia.toString().padStart(2, '0') + '/' + mes.toString().padStart(2, '0') + '/' + anio;
+       
         if(dataBaja.celular) cel_contacto = ' - '+ dataBaja.celular; else cel_contacto = "";
         if(dataBaja.tipoPersona == 'JURIDICO') {
             nombre = (dataBaja.nombreRepresentante).trim() +' '+  (dataBaja.primerApRepresentante).trim() +' '+  (dataBaja.secundoApRepresentante).trim();
@@ -425,7 +423,7 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
             numDocumento = dataBaja.documento;
             numExpedido = dataBaja.expedido;
         }
-        console.log("contenidoTabla",contenidoTabla);
+        var fechaSolicitud =  $filter('date')(new Date(dataB.vfrm_ser_registrado ), 'dd/MM/yyyy');
         var docDefinition = {
             pageSize: 'letter',
             pageMargins: [ 50, 90, 50, 100 ],
@@ -441,7 +439,7 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
             },
             content: [
                 { text: 'FORMULARIO DE SOLICITUD DE BAJA DE PUBLICIDAD '+ (dataBaja.tipoPublicidad).toUpperCase(), fontSize: 11, alignment: 'center', bold: true },
-                { text: 'Código: ' + nroTramite +  '      Fecha: ' + fechaActual, fontSize: 11, alignment: 'center', bold: true },
+                { text: 'Código: ' + nroTramite +  '      Fecha: ' + fechaSolicitud, fontSize: 11, alignment: 'center', bold: true },
                 dataBaja.tipoPersona === 'JURIDICO' ? [
                     { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
                     {
@@ -662,7 +660,7 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
             var hora_ = fechaServ[1].split(':');
             fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
         });
-        $scope.oidCiudadano = "57798e472f59181eb286f642";//sessionService.get('IDCIUDADANO'); CAMBIAR AL SUBIR A PRODUCCION
+        $scope.oidCiudadano = sessionService.get('IDCIUDADANO'); 
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano + "/PUBLICIDAD";
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/";
         $.blockUI();

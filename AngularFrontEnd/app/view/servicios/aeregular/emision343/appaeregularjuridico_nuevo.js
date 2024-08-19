@@ -1402,6 +1402,19 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                             });
                             datosNeXO['File_Adjunto'] = $rootScope.FileAdjuntos.concat(decjuradaN);
                         }
+                        var adjuntos = [];
+                        for(var i=0;i<datosNeXO.File_Adjunto.length;i++){
+                            if(datosNeXO.File_Adjunto[i] != undefined && datosNeXO.File_Adjunto[i] != null && datosNeXO.File_Adjunto[i] != ''){
+                                adjuntos.push(datosNeXO.File_Adjunto[i]);
+                            }
+                        }
+                        datosNeXO.File_Adjunto = adjuntos;
+                        if(paramForm.f01_upload_carnet_manipulacion != undefined){
+                            var carnets = datosNeXO.File_Adjunto.find(x => x.nombre == 'Carnets de manipulación vigente');
+                            if(carnets == undefined){
+                                datosNeXO.File_Adjunto.push({"url":paramForm.f01_upload_carnet_manipulacion,"campo": paramForm.f01_nombre_carnet_manipulacion ,"nombre":'Carnets de manipulación vigente'});
+                            }
+                        }
                         //datosNeXO['File_Adjunto'] =  $rootScope.FileAdjuntos;
                         datosNeXO['FILE_FOTOCOPIA_CI'] = paramForm.FILE_FOTOCOPIA_CI;
                         datosNeXO['FILE_FOTOCOPIA_CI_R'] = paramForm.FILE_FOTOCOPIA_CI_R;
@@ -1490,14 +1503,14 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
                             datosNeXO['INT_ID_ACTIVIDAD_ECONOMICA'] = paramForm.INT_TRAMITE_RENOVA;
                         }
                     }  
-                    if(paramForm.listadoEmpleados != undefined){
+                    /*if(paramForm.listadoEmpleados != undefined){
                         var grillaEmpleados = [{"tipo": "GRD","campos": "nroEmpl|nombre_completo_emp|ci_emp", "titulos": "Nro.|Nombre Completo|Cédula de Identidad","impresiones": "true|true"}];
                         for(var i=0;i<paramForm.listadoEmpleados.length;i++){
                             grillaEmpleados.push({"nroEmpl":(i+1),"nombre_completo_emp":paramForm.listadoEmpleados[i].nombre_completo_emp,"ci_emp":paramForm.listadoEmpleados[i].ci_emp});
                         }
                         datosNeXO['listadoEmpleados'] = paramForm.listadoEmpleados;
                         datosNeXO['grillaEmpleados'] = grillaEmpleados;
-                    }      
+                    } */     
                     var sMacroR         =   datosNeXO['f01_macro_des'];
                     //var sDistritoR      =   datosNeXO['INT_DISTRITO'];
                     var sZonaR          =   datosNeXO['INT_ZONA'];
@@ -1657,8 +1670,12 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             var tam = idFile.length;
             idFile = parseInt(idFile.substring(10,tam));
             idFiles.push(idFile);
-            $scope.almacenarRequisitos(rMisDocs,idFiles);
-            $scope.adicionarArrayDeRequisitos(sobj,idFile);
+            if(sobj.name == 'f01_carnet_manipulacion'){
+                $scope.almacenarCarnetsManipulacion(rMisDocs,idFiles);
+            }else{  
+                $scope.almacenarRequisitos(rMisDocs,idFiles);
+                $scope.adicionarArrayDeRequisitos(sobj,idFile);
+            }
         }
     };
 
@@ -3479,7 +3496,41 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
     }
 
     //****************************************LISTADO EMPLEADOS*****************************************************//
-    $scope.guardarListaEmpleados = function(){
+    $scope.almacenarCarnetsManipulacion = function(aArchivos,idFiles){
+        console.log("aArchivos",aArchivos);
+        var descDoc = "";
+        var fechaNueva = "";
+        var fechaserver = new fechaHoraServer();
+        fechaserver.fechahora(function(resp){
+            var sfecha = JSON.parse(resp);
+            var fechaServ = (sfecha.success.fecha).split(' ');
+            var fecha_ = fechaServ[0].split('-');
+            var hora_ = fechaServ[1].split(':');
+            fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
+        });
+        $scope.oidCiudadano = sessionService.get('IDSOLICITANTE');
+        var sDirTramite = sessionService.get('IDTRAMITE');
+        $scope.direccionvirtual = "RC_CLI/" +  $scope.oidCiudadano;
+        var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/";
+        var imagenNueva = aArchivos[0].name.split('.');
+        var nombreFileN = 'carnets_manipulacion' + '_'+fechaNueva+'.'+imagenNueva[imagenNueva.length-1];
+        if (aArchivos[0].size <= 15000000) {
+            if (imagenNueva[imagenNueva.length-1] == 'png' || imagenNueva[imagenNueva.length-1] == 'jpg' || imagenNueva[imagenNueva.length-1] == 'jpeg' || imagenNueva[imagenNueva.length-1] == 'bmp' || imagenNueva[imagenNueva.length-1] == 'gif' || imagenNueva[imagenNueva.length-1] == 'pdf' || imagenNueva[imagenNueva.length-1] == 'docx' || imagenNueva[imagenNueva.length-1] == 'docxlm' || imagenNueva[imagenNueva.length-1] == 'PNG' || imagenNueva[imagenNueva.length-1] == 'JPG' || imagenNueva[imagenNueva.length-1] == 'JPEG' || imagenNueva[imagenNueva.length-1] == 'BMP' || imagenNueva[imagenNueva.length-1] == 'GIF' || imagenNueva[imagenNueva.length-1] == 'PDF' || imagenNueva[imagenNueva.length-1] == 'DOCX' || imagenNueva[imagenNueva.length-1] == 'DOCXLM') {
+                var urlDeclaracion = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/" + sDirTramite + "/" + nombreFileN + "?app_name=todoangular";
+                fileUpload1.uploadFileToUrl1(aArchivos[0], uploadUrl, nombreFileN);
+                $scope.datos.f01_nombre_carnet_manipulacion = nombreFileN;
+                $scope.datos.f01_upload_carnet_manipulacion = urlDeclaracion;
+            } else{
+                swal('Advertencia', 'El archivo  no es valido, seleccione un archivo de tipo imagen, o documentos en formato doc o pdf', 'error');
+            };
+        };
+        if (aArchivos[0].size > 15000000) {
+            swal('Advertencia', 'Tamaño de Archivo no soportado', 'error');
+        };
+        $scope.declaracionJurada = '';
+    };
+
+    /*$scope.guardarListaEmpleados = function(){
       
         if($.isEmptyObject($scope.empleados) == true){
             swal('Advertencia', 'No se registro ningun dato', 'error');
@@ -3523,7 +3574,7 @@ function regularjuridicoNuevoController($scope,$timeout, $rootScope, $routeParam
             swal('Advertencia', 'No se registro el número de carnet', 'error');
 
         }
-    }
+    }*/
 
     var requisitosZonaSegura = $rootScope.$on('reqZonaSegura', function(){
         $scope.validarRequisitosForm();

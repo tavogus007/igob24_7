@@ -303,7 +303,12 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
                         sessionService.set('IDTRAMITE', respuesta[0].vfrm_ser_id);
                         sessionService.set('CODTRAMITE', respuesta[0].vfrm_ser_codigo_servicio);   
                         swal("Señor(a) Ciudadano(a) su solicitud fue registrado correctamente.", "Número de registro: " + respuesta[0].vfrm_ser_codigo_servicio + ". Imprima y firme el formulario para su presentación en Oficinas de Publicidad, adjuntando documentación requerida, en un folder amarillo con fastenes, foliadas de la última a la primera página.");                    
-                        $scope.generarPdfRenovacion(data,respuesta[0].vfrm_ser_codigo_servicio);
+                        var fechaact = new Date();
+                        var dia=fechaact.getDate();
+                        var mes=fechaact.getMonth()+1;
+                        var anio=fechaact.getFullYear();
+                        var fechaActual = dia.toString().padStart(2, '0') + '/' + mes.toString().padStart(2, '0') + '/' + anio;
+                        $scope.generarPdfRenovacion(data,respuesta[0].vfrm_ser_codigo_servicio,fechaActual);
                         $scope.mostrarPdf = true;
                         $scope.mostrarFormulario = false;
                         $scope.listarSolicitudes();
@@ -324,8 +329,8 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
         }
     }
     /*******************************GUARDAR PDF**************************/
-    $scope.generarPdfRenovacion = function(dataRenovacion,nroTramite) {
-        console.log("dataBaja",dataRenovacion);
+    $scope.generarPdfRenovacion = function(dataRenovacion,nroTramite,fechaRegistro) {
+        console.log("dataBaja",dataRenovacion,"fechaRegistro",fechaRegistro.split("T"));
         var datosTabla = dataRenovacion.publicidadesBaja;
         var cel_contacto = "";
         var nombre = "";
@@ -379,11 +384,6 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
                 contenidoTabla.push(fila);
             });
         }
-        var fechaact = new Date();
-        var dia=fechaact.getDate();
-        var mes=fechaact.getMonth()+1;
-        var anio=fechaact.getFullYear();
-        var fechaActual = dia.toString().padStart(2, '0') + '/' + mes.toString().padStart(2, '0') + '/' + anio;
         if(dataRenovacion.celular) cel_contacto = ' - '+ dataRenovacion.celular; else cel_contacto = "";
         if(dataRenovacion.tipoPersona == 'JURIDICO') {
             nombre = (dataRenovacion.nombreRepresentante).trim() +' '+  (dataRenovacion.primerApRepresentante).trim() +' '+  (dataRenovacion.secundoApRepresentante).trim();
@@ -396,6 +396,11 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
             numExpedido = dataRenovacion.expedido;
         }
         console.log("contenidoTabla",contenidoTabla);
+        var fechaAct = fechaRegistro.split("T");
+        console.log("fechaAct",fechaAct.length,"fechaAct",fechaAct);
+        if(fechaAct.length>1){
+            fechaRegistro =  $filter('date')(new Date(fechaRegistro), 'dd/MM/yyyy');
+        }
         var docDefinition = {
             pageSize: 'letter',
             pageMargins: [ 50, 90, 50, 100 ],
@@ -411,7 +416,7 @@ function solicitudBajaController($scope,sessionService, CONFIG,ngTableParams, $f
             },
             content: [
                 { text: 'FORMULARIO DE SOLICITUD DE RENOVACIÓN DE PUBLICIDAD '+ (dataRenovacion.tipoPublicidad).toUpperCase(), fontSize: 11, alignment: 'center', bold: true },
-                { text: 'Código: ' + nroTramite +  '      Fecha: ' + fechaActual, fontSize: 11, alignment: 'center', bold: true },
+                { text: 'Código: ' + nroTramite +  '      Fecha: ' + fechaRegistro, fontSize: 11, alignment: 'center', bold: true },
                 dataRenovacion.tipoPersona === 'JURIDICO' ? [
                     { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
                     {

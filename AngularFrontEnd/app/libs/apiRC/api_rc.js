@@ -139,6 +139,30 @@ function ejecutarAjaxMServicio(vUrlComp, vTypeCall, vDataCall, vFunctionResp,tok
   return dataResp;
 };
 
+function ejecutarAjaxMServicioIa(vUrlComp, vTypeCall, vDataCall, vFunctionResp,token) {
+  var headers = {};
+  $.ajax({
+    url: "http://34.170.64.224:3000/igob-image/validar-anverso",
+    data: vDataCall,
+    type:"POST",
+    dataType: "json",
+    headers: {
+      'authorization': token
+    },
+    success: function(response) {
+      dataResp = JSON.stringify(response);
+      vFunctionResp(dataResp);
+    },
+    error: function (response, status, error) {
+      dataResp = "{\"error\":{\"message\":\""+response+"\",\"code\":700}}";
+      console.log("error",dataResp);
+      vFunctionResp(dataResp);
+    }
+  });
+  return dataResp;
+};
+
+
 ///////////////////////modifica imagen///////////////////////////
 function modificaPerfil(){
   this.URL;
@@ -2112,4 +2136,19 @@ validacionTramite.prototype.validacionEnvioTramite = function (functionResp){
     "nroTramite": this.nroTramite
   };
   ejecutarAjax1(urlComp, typeCall, dataParams, functionResp);
+};
+
+
+
+function validarDocumentosIA(){
+  this.url;
+} 
+
+validarDocumentosIA.prototype.validardocumentos_ia = function (functionResp){
+  urlComp = "/validardocumentos_ia"
+  typeCall = "post";
+  dataParams = {
+    "url": this.url
+  };
+  ejecutarAjaxMServicioIa(urlComp, typeCall, dataParams, functionResp);
 };

@@ -337,7 +337,7 @@ function solicitudSuspencionController($scope,sessionService, CONFIG,ngTablePara
         }, 4000);
     }
 
-    $scope.generarPdfSuspencionDoc = function(dataSuspencion,nroTramite) {
+    $scope.generarPdfSuspencionDoc = function(dataSusp,nroTramite) {
         $.blockUI({ css: { 
                     border: 'none', 
                     padding: '10px', 
@@ -349,12 +349,13 @@ function solicitudSuspencionController($scope,sessionService, CONFIG,ngTablePara
                     color: '#fff' 
                 },message: "Espere un momento por favor ..." }); 
         setTimeout(function(){
-            generarPdfSuspencion(dataSuspencion,nroTramite);
+            generarPdfSuspencion(dataSusp,nroTramite);
         }, 1000);
     }
 
-    async function  generarPdfSuspencion(dataSuspencion,nroTramite) {
+    async function  generarPdfSuspencion(dataSusp,nroTramite) {
         $.blockUI();
+        var dataSuspencion = dataSusp.vfrm_ser_dataformulario;
         var datosTabla = dataSuspencion.publicidadesSuspencion;
         var cel_contacto = "";
         var nombre = "";
@@ -388,12 +389,7 @@ function solicitudSuspencionController($scope,sessionService, CONFIG,ngTablePara
             contenidoTabla.push(fila);
             console.log("dato",dato);
         });
-        console.log("imagenes",imagenes);
-        var fechaact = new Date();
-        var dia=fechaact.getDate();
-        var mes=fechaact.getMonth()+1;
-        var anio=fechaact.getFullYear();
-        var fechaActual = dia.toString().padStart(2, '0') + '/' + mes.toString().padStart(2, '0') + '/' + anio;
+        var fechaSolicitud =  $filter('date')(new Date(dataSusp.vfrm_ser_registrado ), 'dd/MM/yyyy');;
         if(dataSuspencion.celular) cel_contacto = ' - '+ dataSuspencion.celular; else cel_contacto = "";
         if(dataSuspencion.tipoPersona == 'JURIDICO') {
             nombre = (dataSuspencion.nombreRepresentante).trim() +' '+  (dataSuspencion.primerApRepresentante).trim() +' '+  (dataSuspencion.secundoApRepresentante).trim();
@@ -420,7 +416,7 @@ function solicitudSuspencionController($scope,sessionService, CONFIG,ngTablePara
             },
             content: [
                 { text: 'FORMULARIO DE SOLICITUD DE SUSPENCIÓN TEMPORAL DE PATENTE DE PUBLICIDAD', fontSize: 11, alignment: 'center', bold: true },
-                { text: 'Código: ' + nroTramite +  '      Fecha: ' + fechaActual, fontSize: 11, alignment: 'center', bold: true },
+                { text: 'Código: ' + nroTramite +  '      Fecha: ' + fechaSolicitud, fontSize: 11, alignment: 'center', bold: true },
                 dataSuspencion.tipoPersona === 'JURIDICO' ? [
                     { text: '\nDatos persona jurídica', fontSize: 11, bold: true },
                     {
@@ -636,7 +632,7 @@ function solicitudSuspencionController($scope,sessionService, CONFIG,ngTablePara
             var hora_ = fechaServ[1].split(':');
             fechaNueva = fecha_[0] + fecha_[1]+fecha_[2]+'_'+hora_[0]+hora_[1];
         });
-        $scope.oidCiudadano = "57798e472f59181eb286f642";//sessionService.get('IDCIUDADANO'); CAMBIAR AL SUBIR A PRODUCCION
+        $scope.oidCiudadano = sessionService.get('IDCIUDADANO'); 
         $scope.direccionvirtual = "RC_CLI/" + $scope.oidCiudadano + "/PUBLICIDAD";
         var uploadUrl = CONFIG.APIURL + "/files/" + $scope.direccionvirtual + "/";
         $.blockUI();

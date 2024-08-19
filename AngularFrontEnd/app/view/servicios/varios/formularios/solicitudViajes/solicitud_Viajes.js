@@ -989,7 +989,8 @@ function solicitudViajesController($scope,$timeout,CONFIG,$window,$rootScope,ses
         sparametros.parametros ='{"idTramite":"' + $scope.idTramite + '","enviado":"SI","codigo":"' + datosForm + '","id_usuario":4}';
         sparametros.llamarregla(function(results){
             $.unblockUI();
-            swal('Señor Ciudadano su Nro de trámite  es : ' + datosForm, " NOTA: Tiene 7 días para aproximarse a la plataforma DNA terminal con su respectiva documentación, caso contrario su registro será dado de baja, NO SE REQUIERE FOTOCOPIAS.");
+            //swal('Señor Ciudadano su Nro de trámite  es : ' + datosForm, " NOTA: Tiene 7 días para aproximarse a la plataforma DNA terminal con su respectiva documentación, caso contrario su registro será dado de baja, NO SE REQUIERE FOTOCOPIAS.");
+			swal('Señor Ciudadano su Nro de trámite  es : ' + datosForm, " NOTA: Tiene 7 días para aproximarse a los puntos de atención con su respectiva documentación original y en fotocopia, caso contrario su registro será dado de baja, SE REQUIERE QUE TODOS LOS ADULTOS REGISTRADOS EN EL FORMULARIO ESTEN PRESENTES.");			
             $scope.tramitesCiudadano();
         });
     };

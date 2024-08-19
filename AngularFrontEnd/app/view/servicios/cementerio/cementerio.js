@@ -10,8 +10,9 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
   $scope.idBucarDatosFallecido = false;
   $scope.idBucarDatosUbicacion = false;
   $scope.idLlamarCaptcha = false;
+  
   $scope.idbotonBus = 0;
-
+  urlRespuestaPagoBackEnd = CONFIG.CONEXION_PAGO_CEMENTERIO;
   $scope.mostrarCaptcha = function (id) {
     //$scope.idbotonBus = id;
     $scope.idInformacion = false;
@@ -136,6 +137,22 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
     $scope.idTarjetaDebito = false;
   }
 
+//SECTORMAUSOLEO
+ $scope.bsqSectorMausoleo = function () {
+    var cUr = new bsqSectMau();
+    cUr.cargarSectores1(function (resultado) {
+      console.log('sectoresCargados',JSON.parse(resultado));
+        var tam = JSON.parse(resultado).length;
+        console.log ('tam',tam);
+        var resultado2 = JSON.parse(resultado);
+        for(var i=0; i<tam; i++){
+          var ssector = resultado2[i].xcmt_sector;
+          console.log ('ssector',ssector);
+          document.getElementById("sectores").innerHTML += '<option value='+ssector+'>'+ssector+'</option';
+          document.getElementById("mausoleos").length=1;
+        }
+    });
+  }
   $scope.principioI = function () {
     $scope.idInformacion = true;
     $scope.idventanabusqueda = false;
@@ -228,6 +245,8 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
   var servicioNicId = 0;
   var servicioUrnSarc = '';
   var servicioUrnSarcId = 0;
+var servicioTemp = '';
+  var servicioTempId = 0;
   var arrItemsClv = [];
   var arrItems = [];
   $scope.itemsClvCaronte = function (s1, s2, tipoN) {
@@ -259,7 +278,7 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
         arrItems.push(data[1].descripcionitem);
         servicioTipo = servicioUrnSarc;
         servicioTipoId = servicioUrnSarcId;
-      }
+	}
       arrItemsClv = arrItems;
       $scope.precioItem = arrItemsClv[1];
     });
@@ -302,36 +321,68 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
     var cp = new bsqUbiFalls();
     cp.codigo = ubi;
 
-    cp.ubiCmtFalls(function (resultado) {
-      if (resultado == '[]') {
-        $.unblockUI();
-        swal("Alerta!", "El codigo es incorrecto...", "warning");
-        //$scope.mostrarBusqueda();
-        $("#busca1").val("");
-      } else {
-        $.unblockUI();
-        $scope.datosEncontrados();
-        var data = JSON.parse(resultado);
-        dataFallEnc = data;
-        ubicacionIdEnc = data[0].xcmt_ubicacion_id;
-        tipoNichoEnc = JSON.parse(data[0].xcmt_ubicacion_data).TipoNicho;
-        var s1 = 'J';
-        var s2 = 'J';
-        $scope.itemsClvCaronte(s1, s2, tipoNichoEnc);
-        $scope.datosClvIdUbicacion(ubicacionIdEnc);
-        for (var i = 0; i < data.length; i++) {
-          var dataf = data[i].xcmt_fallecido_data;
-          if (dataf != null) {
-            var nombresf = JSON.parse(data[i].xcmt_fallecido_data).nombre;
-            var paternof = JSON.parse(data[i].xcmt_fallecido_data).paterno;
-            var maternof = JSON.parse(data[i].xcmt_fallecido_data).materno;
-            var casadaf = JSON.parse(data[i].xcmt_fallecido_data).casada;
-            var cif = JSON.parse(data[i].xcmt_fallecido_data).ci;
-            var datos = '{"cif":"' + cif + '","idf":"' + data[i].xcmt_fallecido_id + '","nombre":"' + nombresf + '","paterno":"' + paternof + '","materno":"' + maternof + '","casada":"' + casadaf + '"}';
-            var datos2 = JSON.parse(datos);
-            arrFll.push(datos2);
+    var regex = /^[A-Za-z0-9\s-]+$/;
+
+    if (!regex.test(ubi)) {
+      swal("Alerta!", "El código no corresponde posee caracteres especiales excepto guiones...", "warning");
+      $.unblockUI();
+      $("#busca1").val("");
+    } else {
+      var cp = new bsqUbiFalls();
+      cp.codigo = ubi;
+      cp.ubiCmtFalls(function (resultado) {
+        console.log('data fall bsqUbiFalls', resultado);
+        if (resultado == '[]') {
+          $.unblockUI();
+          swal("Alerta!", "El codigo es incorrecto...", "warning");
+          //$scope.mostrarBusqueda();
+          $("#busca1").val("");
+        } else {
+          $.unblockUI();
+          $scope.datosEncontrados();
+          var data = JSON.parse(resultado);
+          console.log('fallecido por cod ubi', data);
+          dataFallEnc = data;
+          ubicacionIdEnc = data[0].xcmt_ubicacion_id;
+
+          tipoNichoEnc = JSON.parse(data[0].xcmt_ubicacion_data).TipoNicho;
+          var s1 = 'J';
+          var s2 = 'J';
+          $scope.itemsClvCaronte(s1, s2, tipoNichoEnc);
+          console.log('clvs por ubi tipo ----------');
+          // Ejemplo de uso
+          /*var fechaInicio = "2020-07-15";
+          var fechaFin = "2023-05-20";
+          var listaFechas = $scope.rangoFechas(fechaInicio, fechaFin);
+          console.log(listaFechas);*/
+          if (tipoNichoEnc == 'NIC' || tipoNichoEnc == 'URN' || tipoNichoEnc == 'SAR') {
+            //var fecha_ent = '0';
+            //$scope.datosClvIdUbicacion(ubicacionIdEnc, fecha_ent, tipoNichoEnc);
+            var fecha_venc = '0';
+            $scope.datosClvIdUbicacion(ubicacionIdEnc, fecha_venc, tipoNichoEnc);
           } else {
-            var obj = { 'nombre': 'NO EXISTEN REGISTROS!!!' };
+            for (var j = 0; j < data.length; j++) {
+              var estadoInh = data[j].xcmt_inhumaciones_estado;
+              console.log('estadoInh en temporales', estadoInh);
+              if (estadoInh == 'finalizado') {
+                console.log('estadoInh en temporales SOLO FINALIZADO', estadoInh);
+                var dataInh = data[j].xcmt_inhumaciones_data;
+                console.log('data INH', dataInh);
+                if (dataInh != null) {
+                  //var fecha_ent = JSON.parse(data[j].xcmt_inhumaciones_data).fecha_registro;
+                  var fecha_venc = JSON.parse(data[j].xcmt_inhumaciones_data).fecha_limite_inhumacion;
+                  console.log('fecha INH vencimiento', fecha_venc);
+                  /*var fecha_venc = JSON.parse(data[j].xcmt_inhumaciones_data).fecha_limite_inhumacion;
+                  console.log('fecha INH vencimiento', fecha_venc);
+                  var listaFechas = $scope.rangoFechas(fecha_ent, fecha_venc);
+                  console.log(listaFechas);*/
+                  //$scope.datosClvIdUbicacion(ubicacionIdEnc, fecha_ent, tipoNichoEnc);
+                  $scope.datosClvIdUbicacion(ubicacionIdEnc, fecha_venc, tipoNichoEnc);
+                } else {
+                }
+              } else {
+              }
+            }
           }
         }
         $scope.dFall = arrFll;
@@ -365,15 +416,16 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
           }
         }
         $scope.dTit = arrTit;
-      }
     });
+  }
   };
 
   var arrGest = [];
   var arrGest2 = [];
   $scope.dClvs = Object();
   var arrClvs = [];
-  $scope.datosClvIdUbicacion = function (idUbi) {
+  //$scope.datosClvIdUbicacion = function (idUbi, fecha_inh, tipoUbi) {
+  $scope.datosClvIdUbicacion = function (idUbi, fecha_venc, tipoUbi) {
     var ubiId = idUbi;
     var cq = new bsqUbiClvs();
     cq.id_ubi = ubiId;
@@ -396,12 +448,15 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
         arrGest.push(gest);
       }
       $scope.dClvs = arrClvs;
-      $scope.buscarGestiones(arrGest);
+
+      $scope.buscarGestiones(arrGest, fecha_venc, tipoUbi);
+
     });
   };
 
   $scope.reimpFact = function (i) {
     var urlff = JSON.parse(arrPagosClv);
+    console.log('urlff',urlff);
     var urlTopdf = JSON.parse(JSON.parse(urlff[i].xcmt_pago_factura));
     var urlf = urlTopdf.urlpdf;
     window.open(urlf);
@@ -413,6 +468,7 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
     cfc.rfuec(function (resultado) {
       var fuecG = resultado[0].sp_obtener_grupo_fuec_igob2;
       var urlPdf = CONFIG.CONEXION_API_CEMENTERIO + 'generarProforma?datos=' + fuecG;
+      console.log('urlPdf',urlPdf);
       urlPdf = urlPdf.replace('d1', fuecG);
       window.open(urlPdf);
       //window.open(urlPdf,"mywindow","location=1,status=1,scrollbars=1,width=1000,height=1000");
@@ -422,10 +478,38 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
   var tamDeudas = 0;
   $scope.dDeudas = Object();
   var arrClvsDeuda = [];
-  $scope.buscarGestiones = function (arrGest) {
+  //$scope.buscarGestiones = function (arrGest, fecha_inh, tipoUbi) {
+  $scope.buscarGestiones = function (arrGest, fecha_venc, tipoUbi) {
+    console.log('fecha_venc', fecha_venc);
     arrClvsDeuda = [];
+    var fecha = new Date(fecha_venc);
+    var año = fecha.getFullYear() - 2;
+    console.log('año reducido en 1', año);
     if (arrGest[0] == undefined) {
-      var max = 2017;
+      if (tipoUbi == 'NIC' || tipoUbi == 'URN' || tipoUbi == 'SAR') {
+        var max = 2017;
+      } else {
+        //fecha de inicio de cobro segun resolucion
+        var date2 = '2023-04-28';
+        console.log('fecha cobroooo', date2);
+        //fecha de entierro
+      const dateObj1 = new Date(fecha_venc);
+      const dateObj2 = new Date(date2);
+      // Comparar los objetos Date
+      if (dateObj1 > dateObj2) {
+        console.log('fecha entierro mayor a fecha de cobro -cobrar-');
+        var max = año;
+        console.log('fecha max', max);
+      } else if (dateObj1 < dateObj2) {
+        console.log('fecha entierro menor a fecha de cobro');
+        var hoy = new Date();
+        var max = hoy.getFullYear() - 1;
+      } else {
+        console.log('fecha entierro mayor a fecha de cobro -cobrar-');
+        var max = año;
+        console.log('fecha max', max);
+      }
+      }
     } else {
       arrGest2 = arrGest.map(x => parseInt(x));
       var max = MyMax(arrGest2);
@@ -672,6 +756,7 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
 
   $scope.iniciarPago = function () {
     setTimeout(function () {
+      console.log('inicio pago');
       var datosCiudadano1 = new rcNatural();
       datosCiudadano1.oid = sessionService.get('IDSOLICITANTE');
       var d = datosSolIgob[0];
@@ -708,6 +793,7 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
       cedpel.EnviarDatosPagos(function (resultado) {
         var urlResp = JSON.parse(resultado);
         var urlResp1 = JSON.parse(urlResp).formulario;
+        urlRespuestaPagoBackEnd = CONFIG.CONEXION_PAGO_CEMENTERIO;
         var rutaREspuestaBackendPago = urlRespuestaPagoBackEnd + "/"+ urlResp1;
         window.setTimeout(function () {
           $('#divPopupIFramePo').modal({ show: true });
@@ -904,13 +990,14 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
     $scope.dFallecido = aFallecido;
     var fid1 = $('#idIdfF').val();
     if (fid1 == '' || fid1 == "") { var fid = '0'; } else { var fid = fid1; }
-    var fnom1 = ($('#idNomFall').val()).toUpperCase();
+    //var fnom1 = ($('#idNomFall').val()).toUpperCase();
+    var fnom1 = ($('#idNomFall').val());
     if (fnom1 == '' || fnom1 == "") { var fnom = 'NULO'; } else { var fnom = fnom1; }
-    var fpat1 = ($('#idApPatF').val()).toUpperCase();
+    var fpat1 = ($('#idApPatF').val());
     if (fpat1 == '' || fpat1 == "") { var fpat = 'NULO'; } else { var fpat = fpat1; }
-    var fmat1 = ($('#idApMatF').val()).toUpperCase();
+    var fmat1 = ($('#idApMatF').val());
     if (fmat1 == '' || fmat1 == "") { var fmat = 'NULO'; } else { var fmat = fmat1; }
-    var fcas1 = ($('#idApCasF').val()).toUpperCase();
+    var fcas1 = ($('#idApCasF').val());
     if (fcas1 == '' || fcas1 == "") { var fcas = 'NULO'; } else { var fcas = fcas1; }
     var fci1 = $('#idCif').val();
     if (fci1 == '' || fci1 == "") { var fci = 'NULO'; } else { var fci = fci1; }
@@ -1178,18 +1265,18 @@ function cementerioController($scope, $q, $rootScope, $routeParams, $location, $
   $scope.bloqBuscarIdf = function () {
     var idfcap = document.getElementById('idIdfF').value;
     if (idfcap != '' || idfcap != "") {
-      document.getElementById('idNomFall').disabled = true;
+      /*document.getElementById('idNomFall').disabled = true;
       document.getElementById('idApPatF').disabled = true;
       document.getElementById('idApMatF').disabled = true;
       document.getElementById('idApCasF').disabled = true;
-      document.getElementById('idCif').disabled = true;
+      document.getElementById('idCif').disabled = true;*/
       document.getElementById('buscarFall').disabled = false;
     } else {
-      document.getElementById('idNomFall').disabled = false;
+      /*document.getElementById('idNomFall').disabled = false;
       document.getElementById('idApPatF').disabled = false;
       document.getElementById('idApMatF').disabled = false;
       document.getElementById('idApCasF').disabled = false;
-      document.getElementById('idCif').disabled = false;
+      document.getElementById('idCif').disabled = false;*/
       document.getElementById('buscarFall').disabled = true;
     }
   }

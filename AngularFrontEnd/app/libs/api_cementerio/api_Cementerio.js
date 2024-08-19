@@ -81,10 +81,10 @@ var dataRespPagosOl;
 
 if (jsonURLS) {
   try {
-    urlFeel = jsonURLS.CONEXION_FACTURA_CEMENTERIO + "/factura/dataCliente/"; 
-    urlCementerio = jsonURLS.CONEXION_CARONTE + "/wsCmt/carIgob/";
-    urlBackEndPagosOL = jsonURLS.CONEXION_PAGO_CEMENTERIO + "/api/registrarTrx";
-    urlRespuestaPagoBackEnd = jsonURLS.CONEXION_PAGO_CEMENTERIO;
+    urlFeel = jsonURLS.CONEXION_API_FEEL + "api/factura/dataCliente/";
+    urlCementerio = jsonURLS.CONEXION_API_CEMENTERIO + "api/wsCmt/carIgob/";
+    urlBackEndPagosOL = jsonURLS.CONEXION_API_BACKPAGOS + "api/registrarTrx";
+    urlRespuestaPagoBackEnd = jsonURLS.CONEXION_API_BACKPAGOS;
     key = jsonURLS.KEY;
   } catch (e) {
     console.log("Warning:", e);
@@ -181,6 +181,7 @@ function ejecutarAjaxCemUbi(vUrlComp, vTypeCall, vDataCall, vFunctionResp) {
       'Authorization': 'Bearer ' + stokenCem
     },
     success: function (response) {
+      console.log('data ubi encontrada 2024', response);
       dataRespCemUbi = JSON.stringify(response);
       vFunctionResp(dataRespCemUbi);
     },
@@ -523,6 +524,7 @@ function ejecutarAjaxCemUndRec(vUrlComp, vTypeCall, vDataCall, vFunctionResp9) {
       'Authorization': 'Bearer ' + stokenCem
     },
     success: function (response) {
+      
       dataRespUndRec = JSON.stringify(response);
       vFunctionResp9(dataRespUndRec);
     },
@@ -533,6 +535,7 @@ function ejecutarAjaxCemUndRec(vUrlComp, vTypeCall, vDataCall, vFunctionResp9) {
   });
   return dataRespUndRec;
 };
+
 
 //TIPO DE SERVICIOS
 function obtTipoServ() {

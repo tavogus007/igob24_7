@@ -1126,6 +1126,7 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
 
     //Paso 1.5 funciones (Seleccion de predio)
     $scope.setPredioSeleccionado = function (objPredio) {
+        var mensaje = "";
         let text = objPredio.CodigoCatastral;
         let result = text.slice(11,15);
         if(result == '0000'){
@@ -1134,114 +1135,141 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
             function(resultado){
                 var resApi = JSON.parse(resultado);
                 if(resApi.success.dataSql[0].sw == 0){
+                    /////////////////////////////////////
                     var sit = new dataSIT();
-                    sit.tramitesEnCurso(objPredio.CodigoCatastral, function(resultado){
+                    sit.prediosRestringidos(objPredio.CodigoCatastral, function(resultado){
                         var resApi = JSON.parse(resultado);
-                        if(resApi.success.dataSql.length>0){
-                            swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
-                        }
-                        else{
-                            var solicitud2 = new dataSITOL();
-                            solicitud2.pcv2GetIdPCSolicitud(objPredio.CodigoCatastral,
-                            function(resultado){
+                        if(resApi.success.dataSql[0].sw == 0){
+                            /////////////////////////////////////////////////////
+                            sit.tramitesEnCurso(objPredio.CodigoCatastral, function(resultado){
                                 var resApi = JSON.parse(resultado);
-                                if(resApi.success.dataSql.length > 0)
-                                {
-                                    $scope.idPCv2SolicitudAUX = resApi.success.dataSql[0].idPCv2Solicitud;
-                                    var solicitud3 = new dataSITOL();
-                                    solicitud3.pcv2VerifcaSolicitudEnCurso(resApi.success.dataSql[0].idPCv2Solicitud,
-                                    function(resultado){
-                                        var resApi = JSON.parse(resultado);
-                                        if(resApi.success.dataSql[0].idInsFlujo != null)
-                                        {
-                                            //swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
-                                            $scope.predioSeleccionado = objPredio;
-                                            $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
-                                        }
-                                        else{
-                                            var solicitud4 = new dataSITOL();
-                                            solicitud4.pcv2GetIdEncript($scope.idPCv2SolicitudAUX,
-                                            function(resultado){
-                                                var resApi = JSON.parse(resultado);
-                                                swal({   
-                                                    title: "¿Desea enviar el correo al Arquitecto?",   
-                                                    //text: "¿Desea enviar el correo al Arquitecto?",   
-                                                    type: "warning",   
-                                                    showCancelButton: true,   
-                                                    confirmButtonColor: "#23c6c8",   
-                                                    confirmButtonText: "SI, ENVIAR",
-                                                    cancelButtonText: "CANCELAR", 
-                                                    closeOnConfirm: false 
-                                                },function(isConfirm){
-                                                    if (isConfirm) {
-                                                        $scope.sendCorreoDelegado2(resApi.success.dataSql[0].pisol, resApi.success.dataSql[0].arquitectoNombre);
-                                                    }
-                                                });
-                                            });
-                                        }    
+                                if(resApi.success.dataSql.length>0){
+                                    resApi.success.dataSql.forEach(element => {
+                                        mensaje = mensaje + "\n - "+ element.descripcion+" (Nro. "+element.idInsFlujo+")";
                                     });
+                                    setTimeout(function(){ swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene trámite(s) vigente(s) en: '+mensaje, 'error');},500);
                                 }
                                 else{
-                                    $scope.predioSeleccionado = objPredio;
-                                    $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
-                                }   
+                                    var solicitud2 = new dataSITOL();
+                                    solicitud2.pcv2GetIdPCSolicitud(objPredio.CodigoCatastral,
+                                    function(resultado){
+                                        var resApi = JSON.parse(resultado);
+                                        if(resApi.success.dataSql.length > 0)
+                                        {
+                                            $scope.idPCv2SolicitudAUX = resApi.success.dataSql[0].idPCv2Solicitud;
+                                            var solicitud3 = new dataSITOL();
+                                            solicitud3.pcv2VerifcaSolicitudEnCurso(resApi.success.dataSql[0].idPCv2Solicitud,
+                                            function(resultado){
+                                                var resApi = JSON.parse(resultado);
+                                                if(resApi.success.dataSql[0].idInsFlujo != null)
+                                                {
+                                                    //swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
+                                                    $scope.predioSeleccionado = objPredio;
+                                                    $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                                                }
+                                                else{
+                                                    var solicitud4 = new dataSITOL();
+                                                    solicitud4.pcv2GetIdEncript($scope.idPCv2SolicitudAUX,
+                                                    function(resultado){
+                                                        var resApi = JSON.parse(resultado);
+                                                        swal({   
+                                                            title: "¿Desea enviar el correo al Arquitecto?",   
+                                                            //text: "¿Desea enviar el correo al Arquitecto?",   
+                                                            type: "warning",   
+                                                            showCancelButton: true,   
+                                                            confirmButtonColor: "#23c6c8",   
+                                                            confirmButtonText: "SI, ENVIAR",
+                                                            cancelButtonText: "CANCELAR", 
+                                                            closeOnConfirm: false 
+                                                        },function(isConfirm){
+                                                            if (isConfirm) {
+                                                                $scope.sendCorreoDelegado2(resApi.success.dataSql[0].pisol, resApi.success.dataSql[0].arquitectoNombre);
+                                                            }
+                                                        });
+                                                    });
+                                                }    
+                                            });
+                                        }
+                                        else{
+                                            $scope.predioSeleccionado = objPredio;
+                                            $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                                        }   
+                                    });
+                                }
                             });
+                            /////////////////////////////////////////////////////
+                        }
+                        else{
+                            swal('', 'El predio esta restringido.', 'error');
                         }
                     });
+                    /////////////////////////////////////
                 }
                 else{
                     var sit = new dataSIT();
-                    sit.tramitesEnCurso(objPredio.CodigoCatastral, function(resultado){
+                    sit.prediosRestringidos(objPredio.CodigoCatastral, function(resultado){
                         var resApi = JSON.parse(resultado);
-                        if(resApi.success.dataSql.length>0){
-                            swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
-                        }
-                        else{
-                            var solicitud2 = new dataSITOL();
-                            solicitud2.pcv2GetIdPCSolicitud(objPredio.CodigoCatastral,
-                            function(resultado){
+                        if(resApi.success.dataSql[0].sw == 0){
+                            var sit = new dataSIT();
+                            sit.tramitesEnCurso(objPredio.CodigoCatastral, function(resultado){
                                 var resApi = JSON.parse(resultado);
-                                if(resApi.success.dataSql.length > 0)
-                                {
-                                    $scope.idPCv2SolicitudAUX = resApi.success.dataSql[0].idPCv2Solicitud;
-                                    var solicitud3 = new dataSITOL();
-                                    solicitud3.pcv2VerifcaSolicitudEnCurso(resApi.success.dataSql[0].idPCv2Solicitud,
-                                    function(resultado){
-                                        var resApi = JSON.parse(resultado);
-                                        if(resApi.success.dataSql[0].idInsFlujo != null)
-                                        {
-                                            //swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
-                                            $scope.predioSeleccionado = objPredio;
-                                            $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
-                                        }
-                                        else{
-                                            var solicitud4 = new dataSITOL();
-                                            solicitud4.pcv2GetIdEncript($scope.idPCv2SolicitudAUX,
-                                                function(resultado){
-                                                    var resApi = JSON.parse(resultado);
-                                                    swal({   
-                                                        title: "¿Desea enviar el correo al Arquitecto?",   
-                                                        //text: "¿Desea enviar el correo al Arquitecto?",   
-                                                        type: "warning",   
-                                                        showCancelButton: true,   
-                                                        confirmButtonColor: "#23c6c8",   
-                                                        confirmButtonText: "SI, ENVIAR",
-                                                        cancelButtonText: "CANCELAR", 
-                                                        closeOnConfirm: false 
-                                                    },function(isConfirm){
-                                                        if (isConfirm) {
-                                                            $scope.sendCorreoDelegado2(resApi.success.dataSql[0].pisol, resApi.success.dataSql[0].arquitectoNombre);
-                                                        }
-                                                    });
-                                            });
-                                        }    
+                                if(resApi.success.dataSql.length>0){
+                                    resApi.success.dataSql.forEach(element => {
+                                        mensaje = mensaje + "\n - "+ element.descripcion+"(Nro. "+element.idInsFlujo+")";
                                     });
+                                    setTimeout(function(){ swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene trámite(s) vigente(s) en: '+mensaje, 'error');},500);
                                 }
                                 else{
-                                    $scope.predioSeleccionado = objPredio;
-                                    $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
-                                }   
+                                    var solicitud2 = new dataSITOL();
+                                    solicitud2.pcv2GetIdPCSolicitud(objPredio.CodigoCatastral,
+                                    function(resultado){
+                                        var resApi = JSON.parse(resultado);
+                                        if(resApi.success.dataSql.length > 0)
+                                        {
+                                            $scope.idPCv2SolicitudAUX = resApi.success.dataSql[0].idPCv2Solicitud;
+                                            var solicitud3 = new dataSITOL();
+                                            solicitud3.pcv2VerifcaSolicitudEnCurso(resApi.success.dataSql[0].idPCv2Solicitud,
+                                            function(resultado){
+                                                var resApi = JSON.parse(resultado);
+                                                if(resApi.success.dataSql[0].idInsFlujo != null)
+                                                {
+                                                    //swal('', 'El predio seleccionado ('+  objPredio.CodigoCatastral +') ya tiene un trámite vigente', 'error');
+                                                    $scope.predioSeleccionado = objPredio;
+                                                    $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                                                }
+                                                else{
+                                                    var solicitud4 = new dataSITOL();
+                                                    solicitud4.pcv2GetIdEncript($scope.idPCv2SolicitudAUX,
+                                                        function(resultado){
+                                                            var resApi = JSON.parse(resultado);
+                                                            swal({   
+                                                                title: "¿Desea enviar el correo al Arquitecto?",   
+                                                                //text: "¿Desea enviar el correo al Arquitecto?",   
+                                                                type: "warning",   
+                                                                showCancelButton: true,   
+                                                                confirmButtonColor: "#23c6c8",   
+                                                                confirmButtonText: "SI, ENVIAR",
+                                                                cancelButtonText: "CANCELAR", 
+                                                                closeOnConfirm: false 
+                                                            },function(isConfirm){
+                                                                if (isConfirm) {
+                                                                    $scope.sendCorreoDelegado2(resApi.success.dataSql[0].pisol, resApi.success.dataSql[0].arquitectoNombre);
+                                                                }
+                                                            });
+                                                    });
+                                                }    
+                                            });
+                                        }
+                                        else{
+                                            $scope.predioSeleccionado = objPredio;
+                                            $scope.getPredio($scope.predioSeleccionado.CodigoCatastral);
+                                        }   
+                                    });
+                                }
                             });
+                        }
+                        else{
+                            swal('', 'El predio esta restringido.', 'error');
                         }
                     });
                 }
@@ -1410,6 +1438,14 @@ function PCv2Controller($scope, $rootScope, $routeParams, $location, $http, Data
             if(resApi.success)
             {
                 $scope.predioSeleccionadoPropietarios = resApi.success.dataSql;
+                $scope.predioSeleccionadoPropietarios.forEach(element => {
+                    if(element.NumeroDoc == $scope.solicitud.numeroDocumentoSol){
+                        $scope.solicitud.nombreSolicitante  = element.Nombres;
+                        $scope.solicitud.paternoSolicitante = element.Paterno;
+                        $scope.solicitud.maternoSolicitante = element.Materno;
+                        console.log("Solicitante actualizado",element.Nombres+" "+element.Paterno+" "+element.Materno);
+                    }
+                });
                 $.unblockUI();
             }
             else

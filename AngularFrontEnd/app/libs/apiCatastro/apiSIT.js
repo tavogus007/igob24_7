@@ -257,7 +257,19 @@ dataSIT.prototype.tramitesEnCurso = function (codigoCatastral,functionResp)
     wsMethodSIT = "/tramitesEnCurso";
     typeCall = "post";
     dataParams = {
-        "codigoCatastral":  codigoCatastral
+        "codigoCatastral":  codigoCatastral,
+        "accion": "C2"
+    };
+    ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
+};
+
+dataSIT.prototype.prediosRestringidos = function (codigoCatastral,functionResp)
+{
+    wsMethodSIT = "/prediosRestringidos";
+    typeCall = "post";
+    dataParams = {
+        "codigoCatastral": codigoCatastral,
+        "accion": "C1"
     };
     ejecutarAjaxSIT(wsMethodSIT, typeCall, dataParams, functionResp);
 };

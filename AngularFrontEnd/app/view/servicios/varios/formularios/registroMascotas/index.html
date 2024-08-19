@@ -237,7 +237,14 @@
     $('.custom-upload input[type=file]').change(function () {
         if ($(this).val() != '' || $(this).val() != "") {
             $(this).next().find('input').val($(this).val());
-            angular.element(this).scope().cambiarFile(this, $(this).val());
+
+            if ($(this)[0].name == "IMAGEN_MASCOTA") {
+                angular.element(this).scope().cambiarFile(this, $(this).val());
+
+            } else {
+                angular.element(this).scope().cambiarPdf(this, $(this).val());
+
+            }
         }
     });
 
@@ -408,7 +415,8 @@
                                                                                 <center>
                                                                                     <input ng-model="datos.eutanasia"
                                                                                         value="eutanasia" type="radio"
-                                                                                        name="eliminacion_mascota">
+                                                                                        name="eliminacion_mascota"
+                                                                                        id="eliminacion_eutanasia">
                                                                                     EUTANASIA
                                                                                 </center>
                                                                             </h3>
@@ -420,7 +428,8 @@
                                                                                 <center>
                                                                                     <input ng-model="datos.fallecido"
                                                                                         value="fallecimiento" type="radio"
-                                                                                        name="eliminacion_mascota">
+                                                                                        name="eliminacion_mascota"
+                                                                                        id="eliminacion_fallecimiento">
                                                                                     FALLECIMIENTO
                                                                                 </center>
                                                                             </h3>
@@ -430,7 +439,7 @@
                                                                 <div class="modal-footer">
                                                                     <button id="btncerrarmodal" type="button"
                                                                         class="btn btn-default"
-                                                                        data-dismiss="modal">Cancelar</button>
+                                                                        data-dismiss="modal" ng-click="limpiarEli()">Cancelar</button>
                                                                     <button id="btnElimMas" type="button"
                                                                         class="btn btn-default" data-dismiss="modal"
                                                                         ng-click="eliminarMascota(tramite.xmascota_id,datos.eutanasia,datos.fallecido)">Eliminar</button>
@@ -859,6 +868,95 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!--  nuevo hermi-->
+                                        <div class="row">
+                                            <div class="col-md-6" ng-show="autorizacionCrianza">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url">AUTORIZACIÓN DE CRIANZA</label>
+                                                        <div class="controls">
+                                                            <div class="form-group custom-upload">
+                                                                <input type="file" id="AUTORIZACION_CRIANZA"
+                                                                    name="AUTORIZACION_CRIANZA"
+                                                                    ng-model="AUTORIZACION_CRIANZA" accept="pdf/*"
+                                                                    style="display: none;">
+                                                                <div class="input-group">
+                                                                    <input id="txt_AUTORIZACION_CRIANZA"
+                                                                        name="txt_AUTORIZACION_CRIANZA"
+                                                                        ng-model="datos.AUTORIZACION_CRIANZA"
+                                                                        type="hidden" ng-disabled="true"
+                                                                        class="form-control input-lg required">
+                                                                    <span class="input-group-btn">
+                                                                        <a id="href_AUTORIZACION_CRIANZA"
+                                                                            ng-show="btnverCrianza"
+                                                                            href="{{datos.AUTORIZACION_CRIANZA}}"
+                                                                            target="_blank">
+                                                                            <button id="btn_AUTORIZACION_CRIANZA"
+                                                                                class="browse btn btn-primary input-lg"
+                                                                                type="button"><i
+                                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                                        </a>
+                                                                        <button id="btn_AUTORIZACION_CRIANZA"
+                                                                            class="btnupload browse btn btn-primary input-lg"
+                                                                            type="button"
+                                                                            ng-click="ejecutarFile('AUTORIZACION_CRIANZA');"
+                                                                            ng-disabled="xdeshabilitado"><i
+                                                                                class="glyphicon glyphicon-upload"></i>
+                                                                            Subir</button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" ng-show="responsabilidadCivil">
+                                                <div class="col-md-12" align="left">
+                                                    <div class="form-group">
+                                                        <font color="#FF0000"> * </font>
+                                                        <label for="url">SEGURO DE RESPONSABILIDAD CIVIL</label>
+                                                        <div class="controls">
+                                                            <div class="form-group custom-upload">
+                                                                <input type="file" id="SEGURO_RESP_CIVIL"
+                                                                    name="SEGURO_RESP_CIVIL"
+                                                                    ng-model="SEGURO_RESP_CIVIL" accept="pdf/*"
+                                                                    style="display: none;">
+                                                                <div class="input-group">
+                                                                    <input id="txt_SEGURO_RESP_CIVIL"
+                                                                        name="txt_SEGURO_RESP_CIVIL"
+                                                                        ng-model="datos.SEGURO_RESP_CIVIL" type="hidden"
+                                                                        ng-disabled="true"
+                                                                        class="form-control input-lg required">
+                                                                    <span class="input-group-btn">
+                                                                        <a id="href_SEGURO_RESP_CIVIL"
+                                                                            ng-show="btnVerCivil"
+                                                                            href="{{datos.SEGURO_RESP_CIVIL}}"
+                                                                            target="_blank">
+                                                                            <button id="btn_SEGURO_RESP_CIVIL"
+                                                                                class="browse btn btn-primary input-lg"
+                                                                                type="button"><i
+                                                                                    class="glyphicon glyphicon-eye-open"></i></button>
+                                                                        </a>
+                                                                        <button id="btn_SEGURO_RESP_CIVIL"
+                                                                            class="btnupload browse btn btn-primary input-lg"
+                                                                            type="button"
+                                                                            ng-click="ejecutarFile('SEGURO_RESP_CIVIL');"
+                                                                            ng-disabled="xdeshabilitado"><i
+                                                                                class="glyphicon glyphicon-upload"></i>
+                                                                            Subir</button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                        <!--  nuevo hermi-->
+
+
                                         <div class="row" ng-show="desparasitacion">
                                             <div class="alert alert-danger fade in">
                                                 <label>
@@ -1181,7 +1279,7 @@
                                     <div class="modal-footer">
 
                                         <button id="btncerrarmodal" type="button" class="btn btn-default"
-                                            data-dismiss="modal" ng-click="noValidaCondicionUso()">No Acepto</button>
+                                            data-dismiss="modal" ng-click="noValidaCondicionUsoN()">No Acepto</button>
                                         <button id="btnRegistro" type="button" class="btn btn-default"
                                             data-dismiss="modal" ng-click="adicionarMascota(datos)">Acepto</button>
                                     </div>
@@ -1403,13 +1501,13 @@
                         </p>
                         <button id="miFormModificar" ng-show="botonMod" ng-click="validarMEP(datos);" type="button"
                             class="btn btn-default ng-binding" name="miFormModificar"
-                            ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || !swimagen || signupForm.modalidad.$invalid"><i
+                            ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_edad.$invalid  || signupForm.reg_edad_des.$invalid || !swimagen || signupForm.modalidad.$invalid || aut_cri || seg_res"><i
                                 class="fa fa-edit" style="color:white"></i>
                             <font color="white"> Modificar</font>
                         </button>
                         <button id="miFormGuardar" name="formEnviar" ng-show="botonCrea" type="button"
                             class="btn btn-default ng-binding" ng-click="validarEP();"
-                            ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid || !swimagen || signupForm.modalidad.$invalid"
+                            ng-disabled="signupForm.mascota_nombre.$invalid || signupForm.reg_especie.$invalid || signupForm.xmascota_raza_id.$invalid || signupForm.reg_color.$invalid || signupForm.reg_tamanio.$invalid || signupForm.reg_esterilizacion.$invalid || signupForm.desparasitacion.$invalid || !swimagen || signupForm.modalidad.$invalid || aut_cri || seg_res"
                             tooltip="Guardar Datos" ng-disabled="desabilitado"><i class="fa fa-save"
                                 style="color:white"></i>
                             <font color="white"> Guardar</font>

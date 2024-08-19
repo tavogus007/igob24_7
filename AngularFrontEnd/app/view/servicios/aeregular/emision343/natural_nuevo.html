@@ -907,7 +907,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <font color="#FF0000" size="4px"></font>
+                                    <font color="#FF0000" size="4px"></font>
                                     <label for="url" >{{translateTitulos.lbl_12_43}}:</label>
                                     <div class="controls">
                                         <input ng-model="datos.f01_bloque_act" id="f01_bloque_act" name="f01_bloque_act" class="form-control" style="text-transform:uppercase;" width="30%" height="30" ng-disabled="desabilitado"/>
@@ -1162,7 +1162,29 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="ibox-content" ng-show="(datos.f01_tipo_lic == 18 && (datos.f01_categoria_agrupada == 3419 || datos.f01_categoria_agrupada == 3420 || datos.f01_categoria_agrupada == 3421 || datos.f01_categoria_agrupada == 3422)) || datos.mostrarPersonal == true">
+                            <div class="form-group" ng-show="(datos.f01_tipo_lic == 18 && (datos.f01_categoria_agrupada == 3419 || datos.f01_categoria_agrupada == 3420 || datos.f01_categoria_agrupada == 3421 || datos.f01_categoria_agrupada == 3422)) || datos.mostrarPersonal == true">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <label id="lbl_f01_carnet_manipulacion">Adjuntar lista de personal que cuenta con carnet de manipulación vigente</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group custom-upload">
+                                            <input type="file" id="f01_carnet_manipulacion" name="f01_carnet_manipulacion"   style="display: none;">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+                                                <input id="txt_carnet_manipulacion" name="txt_carnet_manipulacion"  ng-model="datos.f01_nombre_carnet_manipulacion"  type="text" placeholder="Carnets de manipulacion vigente " class="form-control input-lg" disabled required>
+                                                <span class="input-group-btn">
+                                                    <a id="href_f01_carnet_manipulacion"  ng-show="datos.f01_carnet_manipulacion" href="{{datos.f01_upload_carnet_manipulacion}}" target="_blank">
+                                                        <button id="btn_f01_carnet_manipulacion" class="browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                                    </a>
+                                                    <button id="btn_f01_carnet_manipulacion" ng-disabled="desabilitado" ng-click="ejecutarFile('f01_carnet_manipulacion')" class="btnupload browse btn btn-primary input-lg" type="button"><i class="glyphicon glyphicon-upload"></i> Subir</button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--div class="ibox-content" ng-show="(datos.f01_tipo_lic == 18 && (datos.f01_categoria_agrupada == 3419 || datos.f01_categoria_agrupada == 3420 || datos.f01_categoria_agrupada == 3421 || datos.f01_categoria_agrupada == 3422)) || datos.mostrarPersonal == true">
                                 <div class="row">                                
                                     <div class="col-md-12">
                                         <legend>Lista del personal que cuenta con carnet de manipulación vigente.</legend>
@@ -1224,7 +1246,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div-->
                         </div>
                             <!-- PAGO ANTICIPADO -->
                         </br>

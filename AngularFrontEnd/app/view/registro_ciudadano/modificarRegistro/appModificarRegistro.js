@@ -3608,6 +3608,49 @@ $scope.vias_v2= function(zona,tipo)
         },1000);
         }
     };
+	
+    $scope.validarDocumento = function (sidtext,stipodoc) {
+        console.log("DATA :", sessionService.get("CICIUDADANO"));
+        if(sessionService.get("CICIUDADANO") == '4781780' || sessionService.get("CICIUDADANO") == '5970947' || sessionService.get("CICIUDADANO") == '8332409' || sessionService.get("CICIUDADANO") == '5085711' ){
+            try{
+            var sdocumento = "";
+            if(stipodoc == 'ci_a'){
+                //sdocumento = "https://gamlpmotores.lapaz.bo/dream/files/RC_CLI/5ff36034c1dc3b0000000120/CI_anverso_20240711_1049.jpeg?app_name=todoangular";            
+                sdocumento = $scope.archivoCI;
+            }
+            else if(stipodoc == 'ci_r'){
+                //sdocumento = "https://gamlpmotores.lapaz.bo/dream/files/RC_CLI/5ff36034c1dc3b0000000120/CI_anverso_20240711_1049.jpeg?app_name=todoangular";            
+                sdocumento = $scope.archivoCIR;
+            }
+            if(true){
+                $.blockUI();  
+                //console.log("ANVERSO 1 :",  document.getElementById('txt_FILE_FOTOCOPIA_CI').value);
+                //console.log("ANVERSO 2 :",  $scope.archivoCI );
+                //console.log("ANVERSO 3 :",  $scope.archivoCIR );
+                //$scope.archivoCI = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_FOTOCOPIA_CI + "?app_name=todoangular";
+                //$scope.archivoCIR = CONFIG.APIURL + "/files/RC_CLI/" + sessionService.get('IDSOLICITANTE') +"/" + $scope.registro.FILE_FOTOCOPIA_CI_R + "?app_name=todoangular";
+                var parametros = new validarDocumentosIA();
+                //parametros.url = $scope.archivoCI;
+                //parametros.url = "https://gamlpmotores.lapaz.bo/dream/files/RC_CLI/5ff36034c1dc3b0000000120/CI_anverso_20240711_1049.jpeg?app_name=todoangular";            
+                parametros.url = sdocumento;            
+                parametros.validardocumentos_ia(function(resultado){                
+                    var dataResp = JSON.parse(resultado);
+                    console.log("RESULTADO DATA GAMLP 2:", dataResp.statusCode);
+                    //validar_documento
+                    //document.getElementById("#validar_documento").innerHTML = 'documento valido';
+                    if(dataResp.statusCode == 500){
+                        swal('Advertencia', 'Cedula de indentidad invalido, favor volver a subir su documento de identidad !!', 'error');
+                    }else if(dataResp.statusCode == 200){
+                        document.getElementById(sidtext).innerHTML = dataResp.message;
+                    }
+                    setTimeout(function(){ $.unblockUI(); }, 1000);
+                });
+            }
+            }catch(e){}
+        }
+    }
+	
+	
     ///////////////////////////////////////////////// QUITAR TODOS MODAL /////////////////////////////////////////////////
     try{ 
         $('body').removeClass('modal-open');

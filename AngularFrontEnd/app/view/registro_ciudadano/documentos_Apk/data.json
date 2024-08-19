@@ -25,33 +25,7 @@
     "descarga_ios": "../registro_ciudadano/documentos_Apk/apk/igob.ipa",
     "descripcion_corta": "Plataforma tecnológica de Gobierno Electrónico Innovador - iGob 24/7 del GAMLP",
     "descripcion_larga": "El Gobierno Autónomo Municipal de La Paz, pensando en el valioso tiempo del ciudadano crea la primera Plataforma Tecnológica de Gobierno Electrónico Innovador iGob 24/7 de la región, creada para satisfacer las necesidades de la ciudadanía, modernizando e innovando la gestión pública, en cuanto a optimización de servicios, acceso a información e interacción ciudadana, las 24 horas del día, los 7 días de la semana y desde cualquier lugar, generando comodidad, prontitud, seguridad y confianza. El iGob 24/7, también disponible en Android, te permite realizar los siguientes servicios desde la comodidad de tu celular:<ul style=”text-align: left;”><li>● Salud: Reserva anticipada de Cita Médica</li><li>● Bandeja de entrada de notificaciones: donde recibirá notificaciones del estado del trámite iniciado en la plataforma web iGob 24/7.</li><li>● Seguimiento de Trámites: Permite el seguimiento de todo tipo de trámites y correspondencia ingresada al GAMLP.</li><li>● Espera en Línea: Seguimiento en tiempo real del avance de fichas de atención recabadas en nuestras Plataformas Integrales de Atención</li></ul>Ciudadana (mientras espera tomando café el sistema le informará cuando sea su turno de atención).<ul><li>● Comunidad Ciudadana: Activa alertas para la protección entre los ciudadanos que estén en la misma comunidad o grupo ciudadano. Para poder activar su comunidad debe crear una comunidad en el lugar donde necesite ayuda, luego puede invitar verbalmente a sus amigos para que se unan a su comunidad utilizando la opción buscar en el chat comunidad, asimismo puede enviar alertas de auxilios a su comunidad. </li><li>● Alarmas Vecinales y Botón de Pánico: Permite alertar a la comunidad para auxiliar a l@s ciudadan@s una vez creado la Comunidad Ciudadana.</li><li>● Se Ha Estido: Puede realizar reclamos y quejas de Baches, Luminarias y Semáforos las mismas serán transferidos a un operador para su atención, para todas las solicitudes se crea un numero de trámite que le permitirá realizar el seguimiento reclamo o queja. Para acceder a todos los servicios en línea de la plataforma iGob debe:</li><li>● Apersonarse por ÚNICA VEZ a una de nuestras Plataformas de Atención Ciudadana de la plaza Camacho, Calacoto, Sopocachi, Miraflores u oficina virtual del Palacio Consistorial llevando los siguientes documentos: Carnet de identidad y factura de algún servicio básico (luz, agua, teléfono o gas)</li><li>● Aceptar las condiciones de uso del sistema.</li><li>● Memorizar el usuario y contraseña asignados</li></ul>."
-  },
-  {
-    "idApp": 2,
-    "titulo": "Moviéndonos por La Paz",
-    "imagen0": "../registro_ciudadano/documentos_Apk/imagenes/sigueTuRuta/sigueTuRuta0.png",
-    "imagen1": "../registro_ciudadano/documentos_Apk/imagenes/sigueTuRuta/sigueTuRuta1.png",
-    "imagen2": "../registro_ciudadano/documentos_Apk/imagenes/sigueTuRuta/sigueTuRuta2.png",
-    "imagen3": "../registro_ciudadano/documentos_Apk/imagenes/sigueTuRuta/sigueTuRuta3.png",
-    "imagen4": "../registro_ciudadano/documentos_Apk/imagenes/sigueTuRuta/sigueTuRuta4.png",
-    "imagen5": "../registro_ciudadano/documentos_Apk/imagenes/sigueTuRuta/sigueTuRuta5.png",
-    "entidad": "GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ",
-    "direccion": "America Dirección Av. Las Americas Nº 1100 Teléfono(s) 70653268",
-    "informacion": [{
-      "actualizado": "24 de Agosto de 2021",
-      "tamanio": "33 MBs",
-      "version": "1.1",
-      "clasificacion": "Para todos",
-      "ofrecido": "Gobierno Autónomo Municipal de La Paz",
-      "informe": "Varía según el dispositivo",
-      "desarrollado": "G.A.M.L.P."
-    }],
-    "fecha": "Publicación : 21 de Julio 2018",
-    "url": "Sin URL",
-    "descarga": "../registro_ciudadano/documentos_Apk/apk/Moviéndonos por La Paz.apk",
-    "descripcion_corta": "Rutas permite a los ciudadanos ver las rutas y recorridos.",
-    "descripcion_larga": "Rutas permite a los ciudadanos ver las rutas y recorridos de las diferentes lineas de la ciudad de La Paz permitiendo ver con exactitud los lugares por donde se debe recorrer en las artereas paceñas."
-  },
+  }, 
   {
     "idApp": 3,
     "titulo": "Conductor Confiable",

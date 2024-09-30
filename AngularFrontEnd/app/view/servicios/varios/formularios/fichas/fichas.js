@@ -1,485 +1,389 @@
-function NavCtrlfichas($timeout ,$route, $interval, $scope, $rootScope, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, sweet,registroLog, $filter, ngTableParams) {
-    "use strict";
-    $scope.frmConsulta = "mostrar";
-    var msjError  = 'error';
-    var idservicios = 100;
-    var idagencia = '';    
-    var promise;
+function fichasController($scope, $rootScope,$filter, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, sweet,registroLog,ngTableParams,FileUploader,fileUpload, fileUpload1, $sce, $q) {
 
-    $scope.start = function() 
-    {
-      //promise = $interval(callAtInterval, 10000); 
-      promise = $interval(function()
-                { 
-                    $scope.callAtInterval();
+    $scope.macrodistritos = [];
+    $scope.servicios = [];
+    $scope.horarios=[];
 
-                }, 30000);
+    $scope.obtPlataformas = function () {
+        console.log("Iniciando la obtención de plataformas...");
+        $scope.getPlataforma().then(function (data) {
+            // Asegurarte de que el resultado sea un array
+            $scope.macrodistritos = JSON.parse(data || []);  // Si data es undefined o null, asigna un array vacío
+            console.log("Datos obtenidos:", $scope.macrodistritos);
+        });
     };
+    
+    $scope.getPlataforma = function () {
+        var def = $q.defer();
+        var macrodistritos_ = new plataforma();
+        
+        macrodistritos_.plataformas(function (resultado) {
+            def.resolve(resultado);  // Resolviendo la promesa con el resultado
+        });
+        
+        return def.promise;
+    };
+
+    //horarios API
+
+
+   $scope.ObtHorarios= function(idPlataforma){
+    $scope.getHorarios(idPlataforma).then(function (data) {
+        console.log(data);
+        var hour = JSON.parse(data);
+        console.log(hour);
+
+        // Asegurarte de que el resultado sea un array
+        $scope.horarios = hour.disponibles;
+          // Si data es undefined o null, asigna un array vacío
+        console.log("horas obtenidos:", $scope.horarios, "OID",$scope.OIDCIUDADANO);
+        
+    });
+   }
+
+
+
+    $scope.getHorarios = function (idPlataforma) {
+        var def = $q.defer();  // Crear una promesa para manejar la llamada asíncrona
+        var horariosApi = new horarioA(); 
+        horariosApi.idPlataforma=idPlataforma; 
+    
+        horariosApi.horarios_(idPlataforma, function (resultado) {
+            def.resolve(resultado);
+        });
+    
+        return def.promise;  // Retornar la promesa
+    };
+    
+   
 
     
-    $scope.stop = function() 
-    {
-      $interval.cancel(promise);
+
+
+
+    
+    // Función para obtner el id 
+    $scope.obtenerPlataforma = function(plataforma) {
+        console.log("Plataforma seleccionada:", plataforma);
+        $scope.plataformaId=plataforma;
+        $scope.obtServicio(plataforma);
+        $scope.ObtHorarios(plataforma);
     };
 
-    $scope.callAtInterval = function () 
-    {
-        $scope.refrescarR();
+    $scope.obtServicio = function (idPlataforma) {
+        console.log("Iniciando la obtención de servicios para ID de Plataforma:", idPlataforma);
+    
+        $scope.getServicio(idPlataforma).then(function (data) {
+            try {
+                console.log("DATA recibida de la Plataforma:", data);
+                var servicios = JSON.parse(data);
+                $scope.servicios = servicios.asignados; 
+    
+                console.log("Servicios obtenidos de la Plataforma:", $scope.servicios);
+    
+                // Verificar si hay servicios disponibles para esta plataforma
+                if ($scope.servicios.length === 0) {
+                    $scope.mostrarHorarios = false;  
+                    $scope.mensajeError = "No hay servicios disponibles para esta plataforma."; // Mostrar mensaje de error
+                } else {
+                    // Si hay servicios, resetear los mensajes para permitir la selección de servicio
+                    $scope.mostrarHorarios = false; 
+                    $scope.mensajeError = ""; 
+                }
+    
+                
+            } catch (e) {
+                console.error("Error al procesar los datos de la Plataforma:", e);
+                $scope.servicios = [];  // Si hay un error, se usa un array vacío
+                $scope.mostrarHorarios = false;  // Ocultar horarios
+                $scope.mensajeError = "ESCOJA LA PLATAFORMA Y EL SERVICIO "; // Mostrar mensaje de error
+            }
+    
+            
+        }).catch(function (error) {
+            console.error("Error al obtener los servicios de la Plataforma:", error);
+            $scope.mostrarHorarios = false;
+            $scope.mensajeError = "Error al obtener los servicios de la plataforma."; // Mostrar mensaje de error
+        });
+    };
+    
+    // Controlador para la Selección de Servicio
+    $scope.seleccionarServicio = function (idServicio) {
+        console.log("Servicio seleccionado con ID:", idServicio);
+    
+        if (!idServicio) {
+            $scope.mostrarHorarios = false;
+            $scope.mensajeError = "Por favor, selecciona un servicio.";  
+            return;
+        }
+    
+        $scope.getServicio(idServicio).then(function (data) {
+            try {
+                console.log("Datos del Servicio:", data);
+                var servicioData = JSON.parse(data);
+                $scope.horarios = servicioData.horarios; 
+    
+                // Verificar si hay horarios disponibles para el servicio seleccionado
+                if ($scope.horarios.length === 0) {
+                    $scope.mostrarHorarios = false;
+                    $scope.mensajeError = "No hay horarios disponibles para este servicio."; // Mensaje si no hay horarios
+                } else {
+                    $scope.mostrarHorarios = true;  // Mostrar los horarios si hay
+                    $scope.mensajeError = "";  // Limpiar el mensaje de error
+                }
+    
+                console.log("Horarios obtenidos del Servicio:", $scope.horarios);
+            } catch (e) {
+                console.error("Error al manejar los datos del Servicio:", e);
+                $scope.horarios = [];  // Si hay un error, se vacía el array de horarios
+                $scope.mostrarHorarios = false;
+                $scope.mensajeError = "Error al cargar los horarios."; // Mostrar mensaje de error
+            }
+        }).catch(function (error) {
+            console.error("Error al obtener los horarios del servicio:", error);
+            $scope.mostrarHorarios = false;
+            $scope.mensajeError = "Error al obtener los horarios."; // Mostrar mensaje de error
+        });
+    };
+    
+    
+    
+    
+    // Al seleccionar un servicio
+    $scope.seleccionarServicio = function(servicio) {
+        if (servicio) {
+            $scope.mostrarHorarios = true; // Mostrar horarios si se selecciona un servicio
+            // Aquí podrías llamar a la función que carga los horarios
+        } else {
+            $scope.mostrarHorarios = false; // Ocultar horarios si no hay servicio seleccionado
+        }
+    };
+    
+    
+    
+    
+    $scope.getServicio = function (idPlataforma) {
+        var def = $q.defer();  // Crear una promesa    
+        var servicioInstancia = new servicio();  // Crear instancia de la clase servicio
+        
+        // Llamar al método servicios con el ID de la plataforma
+        servicioInstancia.servicios(idPlataforma, function (resultado) {
+            def.resolve(resultado);  // Resolviendo la promesa con el resultado
+        });
+    
+        return def.promise;  // Devolver la promesa para manejar el resultado de forma asincrónica
     };
 
-    $scope.$on('$destroy', function()
-    {
-        $interval.cancel(promise);
+
+function generarHoras() {
+    var horas = [];
+    var horaInicio = 8;
+    var minutoInicio = 0;
+
+    // Obtener la hora y los minutos actuales
+    var fechaActual = new Date();
+    var horaActual = fechaActual.getHours();
+    var minutosActual = fechaActual.getMinutes();
+
+    while (horaInicio < 17) {
+        var horaFormateada = horaInicio.toString().padStart(2, '0') + ':' + minutoInicio.toString().padStart(2, '0');
+
+        // Revisar si la hora generada es posterior a la hora y minutos actuales
+        var horaCompleta = horaInicio * 60 + minutoInicio; // Convertir a minutos para comparación
+        var horaActualCompleta = horaActual * 60 + minutosActual;
+
+        if (horaCompleta >= horaActualCompleta) {
+            horas.push(horaFormateada); // Agregar solo las horas disponibles
+        }
+
+        // Avanzar a la siguiente media hora
+        minutoInicio += 30;
+        if (minutoInicio === 60) {
+            minutoInicio = 0;
+            horaInicio++;
+        }
+    }
+
+    return horas;
+
+
+    }
+    
+    
+    $scope.btnCelda = function(semana, hora) {
+        // Verificar si ya hay una hora seleccionada
+        if (semana.horaSeleccionada) {
+            var confirmacion = confirm('Ya has seleccionado la hora ' + semana.horaSeleccionada + ' para el día ' + semana.dia + '. ¿Deseas cambiar a la hora ' + hora + '?');
+            if (!confirmacion) {
+                return; 
+            }
+            
+            // Cambiar el estado de la hora previamente seleccionada a 'disponible'
+            semana.estado = 'disponible'; 
+            console.log('La hora ' + semana.horaSeleccionada + ' ha vuelto a estar disponible.');
+        }
+        
+        // Establecer la nueva hora seleccionada y cambiar su estado
+        semana.horaSeleccionada = hora; 
+        semana.estado = 'ocupado'; 
+    
+        // Log para depuración
+        console.log('Hora seleccionada: ', hora);  
+        console.log('Semana: ', semana);
+        
+        // Mostrar el botón de guardar ficha
+        $scope.hola[0].horaSeleccionada = hora; // Esto asegura que el modelo de la vista se actualiza
+    };
+    
+    
+    
+    
+    
+    $scope.seleccionar = function(semana, hora) {
+        
+        semana.horaSeleccionada = hora;
+        semana.estado = 'ocupado'; 
+        alert('Se ha marcado la celda del día ' + semana.dia + ' y hora ' + hora + ' como ocupada.');
+    };
+    
+    $scope.hola = []; 
+    
+    var diasSemana = [
+        { id: 1, dia: 'Lunes', horaSeleccionada: null },
+        { id: 2, dia: 'Martes', horaSeleccionada: null },
+        { id: 3, dia: 'Miércoles', horaSeleccionada: null },
+        { id: 4, dia: 'Jueves', horaSeleccionada: null },
+        { id: 5, dia: 'Viernes', horaSeleccionada: null },
+        { id: 6, dia: 'Sábado', horaSeleccionada: null },
+        { id: 7, dia: 'Domingo', horaSeleccionada: null }
+    ];
+    
+    var fechaActual = new Date();
+    var diaActual = fechaActual.getDay(); 
+    diaActual = (diaActual === 0) ? 7 : diaActual; 
+    var horasAtencion = generarHoras();
+    
+    for (var i = 0; i < diasSemana.length; i++) {
+        if (diasSemana[i].id === diaActual) {
+            $scope.hola.push({
+                id: diasSemana[i].id,
+                dia: diasSemana[i].dia,
+                horas: horasAtencion,
+                diaAnterior: false, 
+                estado: 'disponible',
+                horaSeleccionada: null
+            });
+        }
+    }
+    
+    $scope.cambiarDia = function() {
+        diaActual = diaActual === 7 ? 1 : diaActual + 1;
+    
+        $scope.hola = [];
+    
+        for (var i = 0; i < diasSemana.length; i++) {
+            if (diasSemana[i].id === diaActual) {
+                $scope.hola.push({
+                    id: diasSemana[i].id,
+                    dia: diasSemana[i].dia,
+                    horas: horasAtencion, 
+                    diaAnterior: false, 
+                    estado: 'disponible',
+                    horaSeleccionada: null
+                });
+            }
+        }
+    };
+
+    // GUARDAR DATOS DE LAS FICHAS
+    $scope.OIDCIUDADANO =sessionStorage.IDSOLICITANTE
+
+    $scope.misFichas = []; // Inicializar el array de fichas
+
+    $scope.guardarFicha = function() {
+        // Crear el objeto que se enviará a la API
+        const fichaData = {
+            fpro_codigo_ficha_programada: "PRUEBA ", // Aquí podrías incluir un contador si es necesario
+            fpro_oid_solicitante: $scope.OIDCIUDADANO,
+            fpro_serv_id: parseInt($scope.servc),
+            fpro_plat_id: parseInt($scope.plataf),
+            fpro_usr_registrador_id: 0,
+            fpro_nro_fichas_programadas: 0,
+            fpro_nro_fichas_reservadas: 0,
+            fpro_hora_seleccionada: $scope.hola[0].horaSeleccionada
+        };
+    
+        console.log("Los datos a enviar:", fichaData);
+    
+        // Hacer la llamada POST a la API
+        $http.post('http://172.18.2.207:3095/ficha-programada/', fichaData)
+        .then(function(response) {
+            console.log('Ficha guardada correctamente:', response.data);
+            
+            // Agregar la ficha guardada al array misFichas
+            $scope.misFichas.push({
+                hora: $scope.hola[0].horaSeleccionada,
+                nombrePlataforma: $scope.plataf,
+                nombreServicio: $scope.servc, // Cambia esto si necesitas el nombre del servicio
+                fecha: new Date().toLocaleDateString() // Cambia esto si necesitas otra fecha
+               // Se guarda la fecha actual como objeto Date
+
+            });
+            alert('¡Guardado con éxito!');
+
+          //  $location.path();
+        })
+
+    };
+    
+
+
+    
+    
+
+    //fecha en formato dd/mm/yy
+    $scope.fechaFormateada = fechaActual.toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
     });
 
+// cambiar vista 
 
-    $scope.volverLimpiar = function(datos)
-    {
-        $scope.registro.tramite = "";
-        $scope.registro.contrasenia = "";
-        $scope.frmConsulta = "mostrar";
-        $scope.grillaHistorialAE = null;
-        $scope.grillaHistorialSITRAM = null;
+    $scope.mostrarReservarFicha = true; //  por defecto a
+    $scope.mostrarMisReservas = false; // Ocultar la vista
+
+    $scope.btnTabReservarFicha = function() {
+    $scope.mostrarReservarFicha = true; 
+    $scope.mostrarMisReservas = false; 
+    };
+
+    $scope.btnTabMisReservas = function() {
+    $scope.mostrarReservarFicha = false; 
+    $scope.mostrarMisReservas = true; 
+    };
+
+
+
+
+
+
+    $scope.obtenerServicio= function(servc){
+        console.log("servc", servc);
+        $scope.idserve=servc;
     }
-    $scope.getAgencia = function () 
-    {
-        /*$.blockUI();
-        setTimeout(function()
-        {*/
-            try{            
-                var agencias = new agencia();
-                agencias.listaAgencia(function(respuesta)
-                {
-                    var datosage =  JSON.parse(respuesta);                
-                    $scope.datosagencia = datosage.success.data;
-
-                    var w = $.getJSON( "../../view/servicios/varios/formularios/fichas/data.json", function(data) 
-                    {
-                        $scope.dat = data;
-                        //console.log("OBJ_DATA", $scope.datosagencia = datosage.success.data);
-                        var d = $scope.datosagencia;
-                        var i = "";
-                        var f = "";
-                        var a = "";
-                        var c = "";
-                        var valueFicha = {
-                            accounting: []
-                        };
 
 
+    $scope.$on('api:ready',function(){
 
-                        angular.forEach(d, function(value, key) 
-                        {
-                            $scope.agccodigo_agencia= value['agccodigo_agencia'];
-                            $scope.agcid            = value['agcid'];
-                            var ca = $scope.agccodigo_agencia;
-                            i = $scope.agcid;
-                            if(ca =='PIACV' || ca =='SERI' || ca =='SERII' || ca =='SERIII' || ca =='TER')
-                            {                              
-                                try{
-                                    var atencionPue = new atencionPuestoGen();
-                                    atencionPue.sagenciaid = i;
-                                    atencionPue.listaAtencionPuestoGen(function(respuesta)
-                                    {
-                                        var atendido = JSON.parse(respuesta);                
-                                        var response = atendido.success.data;
-                                        if(response.length > 0)
-                                        {
-                                            $scope.atencionP   =response[0].vcantidadf;
-                                            $scope.ultimaFechaP=response[0].vultimaficha;
-                                            f = $scope.ultimaFechaP; 
-                                            a = $scope.atencionP;
-                                            $scope.dataAtemdidos= response;
-                                        }
-                                        else
-                                        {   
-                                            $scope.dataAtemdidos="";
-                                            f="0"
-                                            a="0";
-                                        }
+    });
 
-                                        try{
-                                            var fichasEsp = new fichasEsperaGen();
-                                            fichasEsp.sagenciaid = i;
-                                            fichasEsp.listaFichasEsperaGen(function(respuesta)
-                                            {
-
-                                                var espera =  JSON.parse(respuesta);                
-                                                var response = espera.success.data;
-                                                if(response.length > 0)
-                                                {    
-                                                    $scope.dataesperas= response;     
-                                                    $scope.esperaP=response[0].vcantidadf;
-                                                    c =  $scope.esperaP;
-                                                } 
-                                                else 
-                                                {
-                                                    $scope.dataesperas= "";     
-                                                    //$scope.espera=0;
-                                                    c="0";
-                                                }       
-                                            });
-                                        }
-                                        catch(e)
-                                        {
-                                            console.log(e);
-                                            swal('Autoconsulta', msjError, 'error');
-                                            $.unblockUI();
-                                        }
-                                     });
-                                }
-                                catch(e)
-                                {
-                                    console.log(e);
-                                    swal('Autoconsulta', msjError, 'error');
-                                    $.unblockUI();
-                                }
-
-                                valueFicha.accounting.push({ 
-                                    "id"      : i,
-                                    "cola"    : c,
-                                    "atencion": a,
-                                    "ficha"   : f
-                                });
-                            }
-                        });
-                        
-                        //console.log("valueFicha", valueFicha.accounting);
-                        $scope.valueFicha = valueFicha.accounting;
-                        $scope.$apply();
-                        $.unblockUI();
-                    });
-                });
-            }
-            catch(e)
-            {
-                console.log("error", e);
-                swal('Autoconsulta', msjError, 'error');
-                $.unblockUI();
-            }
-        //},300);       
-    };
-
-
-
-
-    $scope.listarServicios= function(idagencias)
-    {
-        $scope.stop();
-        $.blockUI(); 
-        setTimeout(function()
-        {
-            idagencia = idagencias;
-            $scope.idagencia=idagencias;
-            try{
-                var serviciosAgen = new servicioAgencia();
-                serviciosAgen.sidagencia = idagencias;
-                serviciosAgen.listaServiciosAgencia(function(response)
-                {
-                    if(response.length > 0){
-                        var servicioage =  JSON.parse(response);                
-                        $scope.dataservicios = servicioage.success.data;
-                        var dato = [];
-                        dato = new Object();
-                        dato.vsrv_servicio = "TODOS";
-                        dato.vsrv_id =100;
-                        $scope.dataservicios[$scope.dataservicios.length]  = dato;
-                        $scope.grillaServicios='mostrar';
-                        $scope.frmConsulta= null;
-                        $scope.getAtendidoT($scope.idagencia);
-                        $scope.$apply();
-                    }              
-                });
-            }
-            catch(e)
-            {
-                swal('Autoconsulta', msjError, 'error');
-                console.log(e);
-                //$.unblockUI();
-            }
-
-        },300);
-    };
-
-    $scope.MenuListarServicios = function(idagencias)
-    {
-        //setTimeout(function()
-        //{
-            $.blockUI();
-        //}, 50);
-        setTimeout(function()
-        {
-            $scope.listarServicios(idagencias); 
-        }, 200);
-
-        /*$.blockUI(); 
-        setTimeout(function()
-        {
-            try{
-                $scope.listarServicios(idagencias);
-            }
-            catch(e)
-            {
-                console.log("error", e);
-                swal('Error', msjError, 'error');
-                $.unblockUI();
-            }
-        },1000);*/
-    };
-
-    $scope.volverHospital = function(){
-        $scope.grillaServicios=null;
-        $scope.frmConsulta= 'mostrar';
-        $scope.grillaGrafica=null;
-        var sw=0;
-    };
-
-    $scope.getReportes= function (sidservicios) {
-
-         idservicios = sidservicios;
-        $scope.idservi=sidservicios;
-        if(sidservicios==100){
-            $scope.getAtendidoT($scope.idagencia);
-        }else{
-            $scope.getAtendido(sidservicios,$scope.idagencia);
-        }
-    };
-    /*
-     * Informacion de servicio de atencion
-     */
-    $scope.getAtendidoT = function(sidagecnias)
-    {
-        try{
-            var atencionPue = new atencionPuestoGen();
-            atencionPue.sagenciaid = sidagecnias;
-            atencionPue.listaAtencionPuestoGen(function(respuesta)
-            {
-                var atendido =  JSON.parse(respuesta);                
-                var response = atendido.success.data;
-                if(response.length > 0)
-                {      
-                    $scope.atencion=response[0].vcantidadf;
-                    $scope.ultimaFecha=response[0].vultimaficha;
-                    $scope.dataAtemdidos= response;
-
-                    //console.log("Value", $scope.atencion=response[0].vcantidadf);
-                    //console.log("Value", $scope.ultimaFecha=response[0].vultimaficha);
-                }
-                else
-                {
-                    $scope.dataAtemdidos="";
-                    $scope.atencion=0;
-                    $scope.ultimaFecha=0;
-                }
-                $scope.getEsperaT(sidagecnias);
-             });
-        }
-        catch(e)
-        {
-            console.log(e);
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }
-    };
-
-    $scope.getEsperaT = function(sidagecnias){
-        try{
-            var fichasEsp = new fichasEsperaGen();
-            fichasEsp.sagenciaid = sidagecnias;
-            fichasEsp.listaFichasEsperaGen(function(respuesta){
-
-                var espera =  JSON.parse(respuesta);                
-                var response = espera.success.data;
-                if(response.length > 0){    
-                    $scope.dataesperas= response;     
-                    $scope.espera=response[0].vcantidadf;
-                    //console.log("espera", $scope.espera=response[0].vcantidadf);                   
-                } else {
-                    $scope.dataesperas= "";     
-                    $scope.espera=0;
-                }       
-               $scope.getDocumentoT(sidagecnias); 
-            });
-        }
-        catch(e)
-        {
-            console.log(e);
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }
-    };
-
-    $scope.getDocumentoT = function(sidagecnias){
-        try{
-            var finalizado = new servFinalizadoAgenciaGeneral();
-            finalizado.agenciaid = sidagecnias;
-            finalizado.listaServFinalizadoAgenciaGeneral(function(response){
-                var documento =  JSON.parse(response);       
-                $scope.obtDatos = documento.success.data;  
-                $scope.getcolaenEspera();          
-                  
-            });
-        }
-        catch(e)
-        {
-            console.log(e);
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }
-    };
-
-
-    
-    $scope.getcolaenEspera = function(){
-        try{
-            var colaCli = new colaClientes();
-            colaCli.agenciaid = $scope.idagencia;
-            colaCli.listaColaClientes(function(response){
-                var cola =  JSON.parse(response);                
-                $scope.obtColaDatos = cola.success.data;
-                setTimeout(function(){$.unblockUI();}, 1000);
-            });
-        }
-        catch(e)
-        {
-            console.log(e);
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }    
-    };
-
-    $scope.getAtendido = function(sidserviio,sidagecnias)
-    {
+    $scope.inicioFichas = function () {
+        console.log("hola mundo"); 
+        $scope.obtPlataformas();
         
-        try{
-            var atencion = new atencionPuestos();
-            atencion.sagenciaid = sidagecnias;
-            atencion.sidservicio = sidserviio;
-            atencion.listaAtencionPuestos(function(respuesta){
-                var atend =  JSON.parse(respuesta);                
-                var response = atend.success.data;
-                if(response.length > 0){      
-                    $scope.atencion=response[0].vcantidadf;
-                    $scope.ultimaFecha=response[0].vultimaficha;
-                    $scope.dataAtemdidos= response;
-                }else{
-                    $scope.dataAtemdidos="";
-                    $scope.atencion=0;
-                    $scope.ultimaFecha=0;
-                }
-               $scope.getEspera(sidserviio,sidagecnias);         
-            });
-        }
-        catch(e)
-        {
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }     
-    };
-
-    $scope.getEspera = function(sidserviio,sidagecnias){
-        
-        try{
-            var fichasEsp = new fichasEspera();
-            fichasEsp.sagenciaid = sidagecnias;
-            fichasEsp.sidservicio = sidserviio;
-            fichasEsp.listaFichasEspera(function(respuesta){
-                var esp =  JSON.parse(respuesta);                
-                var response = esp.success.data;
-                if(response.length > 0){    
-                    $scope.dataesperas= response;     
-                    $scope.espera=response[0].vcantidadf;
-                } else {
-                  $scope.dataesperas= "";     
-                  $scope.espera=0;
-                }  
-                $scope.getDocumento(sidserviio,sidagecnias);      
-            });
-        }
-        catch(e)
-        {
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }     
-    };
-
-    $scope.getDocumento = function(sidserviio,sidagecnias){
-        try{
-            var servicioFin = new servicioFinalizadoAgencia();
-            servicioFin.agenciaid = sidagecnias;
-            servicioFin.servicioid = sidserviio;
-            servicioFin.listaServicioFinalizadoAgencia(function(response){
-                var doc =  JSON.parse(response);                
-                $scope.obtDatos = doc.success.data;            
-                $scope.getcolaenEsperaT(sidserviio,sidagecnias);      
-            });
-        }
-        catch(e)
-        {
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }          
-    };
-
-     $scope.getcolaenEsperaT = function(sidserviio,sidagecnias){
-        try{
-            var colaClientes = new colaClientesEspecificos();
-            colaClientes.agenciaid = sidagecnias;
-            colaClientes.servicioid = sidserviio;
-            colaClientes.listaColaClientesEspecificos(function(response){
-                var colaEsp =  JSON.parse(response);                
-                $scope.obtColaDatos = colaEsp.success.data;
-                setTimeout(function(){$.unblockUI();}, 1000);
-             });
-        }
-        catch(e)
-        {
-            swal('Autoconsulta', msjError, 'error');
-            $.unblockUI();
-        }               
-    };
-    
-    $scope.inicioHospitales = function () {
-        $scope.getAgencia();
-        $scope.start();
-    };
-
-    $scope.refrescar = function(){
-        setTimeout(function(){
-            $.blockUI();
-        }, 100);
-        $scope.getReportes(idservicios);
-    };
-
-    $scope.refrescarReplay = function(){
-        $.blockUI();
-        setTimeout(function()
-        {
-            $scope.getAgencia(idservicios);
-            $scope.start();
-        }, 200);
-    };
-
-    $scope.refrescarR = function(){
-        /*setTimeout(function(){
-            $.blockUI();
-        }, 100);*/
-        $.blockUI();
-        setTimeout(function()
-        {
-            $scope.getAgencia(); 
-        }, 200);
-
-
     };
 
 
-
-    $scope.obtenerReporte = function(idservicios){
-        setTimeout(function(){
-            $.blockUI();
-        }, 100);
-        $scope.getReportes(idservicios);
-    };
 
 }

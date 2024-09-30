@@ -1,891 +1,163 @@
 
-<!DOCTYPE html>
-<html lang="en" ng-app="myApp">
-  <head>
-    <meta charset="utf-8">
-    <meta content="IE=edge" http-equiv="X-UA-Compatible"></meta>
-    <meta content="width=device-width, initial-scale=1" name="viewport"></meta>
-    <meta name="google-site-verification" content="HzPGGgF8KeL5yskO8ybpvzTi8A5uoZclfkxdl_mebcA" />
-    <title>..:: AUTOCONSULTA ::.. </title>
-    <style type="text/css">#free-flash-intro a,#free-flash-intro a:hover {color:#615d5d;}#free-flash-intro a:hover {text-decoration:none}</style>
-    <style> 
-    .text-center{
-        background: #898686;
-        color: white;
-    }
-    #menu {
-        float: left;
-        width: 100%;
-        margin: 0px 0px 15px 0px;
-        padding: 0px;
-        background-color: #ffbf01;
-    }
-    .logogamlp {
-        padding-left: 0%;
-        margin-top: 2px;
-        float: left;
-        width: 50px;
-    }
-    #footer {
-        position: relative;
-        top: 15px;
-        left: 5px;
-        position:absolute;
-        bottom:0;
-        width:90%;
-        height:60px;
-    }
-    .logo_fichas{
-        padding-left: 0%;
-        margin-top: 2px;
-        float: left;
-        width: 120px;
-        position: absolute;
-        left: 80%;
-        top: 5px;
-    }
-    /* Styles for Pricing Tables */
-    .tiny {
-        float: left;
-        margin:20px 0;
-        /*background:url(
-    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAIfP378zwjjgzj8/PyMYAEYB8RmROaABAAVMg/XkcvroQAAAABJRU5ErkJggg==   ) repeat;*/
-        -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        border:1px solid #14937a;
-        border-bottom:10px solid #14937a;
-    }
-    .small {
-        float: left;
-        margin:20px 0;
-        /*background:url(
-    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAIfP378zwjjgzj8/PyMYAEYB8RmROaABAAVMg/XkcvroQAAAABJRU5ErkJggg==   ) repeat;*/
-        -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        border:1px solid #cd8109;
-        border-bottom:10px solid #cd8109;
-    }
-    .medium {
-        float: left;
-        margin:20px 0;
-        /*background:url(
-    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAIfP378zwjjgzj8/PyMYAEYB8RmROaABAAVMg/XkcvroQAAAABJRU5ErkJggg==   ) repeat;*/
-        -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        border:1px solid #a12f23;
-        border-bottom:10px solid #a12f23;
-    }
-    .pro {
-        float: left;
-        margin:20px 0;
-        /*background:url(
-    data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAIfP378zwjjgzj8/PyMYAEYB8RmROaABAAVMg/XkcvroQAAAABJRU5ErkJggg==   ) repeat;*/
-        -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        box-shadow: 0 2px 5px 0 rgba(0,0,0,.2);
-        border:1px solid #1d6391;
-        border-bottom:10px solid #1d6391;
-    }
-    .pricing-table strong { font-weight: 700; color: #3d3d3d; }
-    .pricing-table-header-tiny {
-        padding: 5px 0 5px 0;
-        background: #16a085;
-        border-bottom:10px solid #14937a;
-    }
-    .pricing-table-header-small {
-        padding: 5px 0 5px 0;
-        background: #f39c12;
-        border-bottom:10px solid #cd8109;
-    }
-    .pricing-table-header-medium {
-        padding: 5px 0 5px 0;
-        background: #c0392b;
-        border-bottom:10px solid #a12f23;
-    }
-    .pricing-table-header-pro {
-        padding: 5px 0 5px 0;
-        background: #2980b9;
-        border-bottom:10px solid #1d6391;
-    }
-    .pricing-table-header-tiny h2, .pricing-table-header-small h2, .pricing-table-header-medium h2, .pricing-table-header-pro h2 {  font-weight: 700; color:#FFF; }
-    .pricing-table-header-tiny h3, .pricing-table-header-small h3, .pricing-table-header-medium h3, .pricing-table-header-pro h3 { font-weight: 500; color:#FFF;  }
-    .pricing-table-text {
-        margin: 15px 30px 0 30px;
-        padding: 0 10px 15px 10px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-        line-height: 30px;
-        font-size: 16px;
-        color: #888;
-    }
-    .pricing-table-features {
-        margin: 15px 10px 0 10px;
-        padding: 0 10px 15px 10px;
-        border-bottom: 1px dashed #888;
-        text-align: center;
-        line-height: 20px;
-        font-size: 14px;
-        color: #888;
-    }
-    .pricing-table-signup-tiny {
-        margin-top: 25px;
-        padding-bottom: 10px;
-    }
-    .pricing-table-signup-tiny a {
-        display: inline-block;
-        width:50%;
-        height: 50px;
-        background: #16a085;
-        line-height: 50px;
-        color: #fff;
-        text-decoration: none;
-        text-transform: uppercase;
-    }
-    .pricing-table-signup-tiny a:hover {
-        text-decoration: none;
-        background: #14937a;
-        color: #fff;
-    }
-    .pricing-table-signup-tiny a:active {
-        background: #14937a;
-        color: #fff;
-    }
-    .pricing-table-signup-small {
-        margin-top: 25px;
-        padding-bottom: 10px;
-    }
-    .pricing-table-signup-small a {
-        display: inline-block;
-        width:50%;
-        height: 50px;
-        background: #f39c12;
-        line-height: 50px;
-        color: #fff;
-        text-decoration: none;
-        text-transform: uppercase;
-    }
-    .pricing-table-signup-small a:hover {
-        text-decoration: none;
-        background-color:#cd8109;
-        color: #fff;
-    }
-    .pricing-table-signup-small a:active {
-        background-color:#cd8109;
-        color: #fff;
-    }
-    .pricing-table-signup-medium {
-        margin-top: 25px;
-        padding-bottom: 10px;
-    }
-    .pricing-table-signup-medium a {
-        display: inline-block;
-        width:50%;
-        height: 50px;
-        background: #c0392b;
-        line-height: 50px;
-        color: #fff;
-        text-decoration: none;
-        text-transform: uppercase;
-    }
-    .pricing-table-signup-medium a:hover {
-        text-decoration: none;
-        background-color:#a12f23;
-        color:#FFF;
-    }
-    .pricing-table-signup-medium a:active {
-        background-color:#a12f23;
-        color: #fff;
-    }
-    .pricing-table-signup-pro {
-        margin-top: 25px;
-        padding-bottom: 10px;
-    }
-    .pricing-table-signup-pro a {
-        display: inline-block;
-        width:50%;
-        height: 50px;
-        background: #2980b9;
-        line-height: 50px;
-        color: #fff;
-        text-decoration: none;
-        text-transform: uppercase;
-    }
-    .pricing-table-signup-pro a:hover {
-        text-decoration: none;
-        background-color:#1d6391;
-        color: #fff;
-        }
-    .pricing-table-signup-pro a:active {
-        background-color:#1d6391;
-        color: #fff;
-    }
-    .row-fluid {
-      width: 100%;
-      *zoom: 1;
-    }
-    .row-fluid:before,
-    .row-fluid:after {
-      display: table;
-      line-height: 0;
-      content: "";
-    }
-    .row-fluid:after {
-      clear: both;
-    }
-    .row-fluid [class*="span"] {
-      display: block;
-      float: left;
-      width: 100%;
-      min-height: 30px;
-      margin-left: 2.127659574468085%;
-      *margin-left: 2.074468085106383%;
-      -webkit-box-sizing: border-box;
-         -moz-box-sizing: border-box;
-              box-sizing: border-box;
-    }
-    .row-fluid [class*="span"]:first-child {
-      margin-left: 0;
-    }
-    .row-fluid .controls-row [class*="span"] + [class*="span"] {
-      margin-left: 2.127659574468085%;
-    }
-    .row-fluid .span3 {
-      width: 23.404255319148934%;
-      *width: 23.351063829787233%;
-    }
-    .row-fluid .offset3 {
-      margin-left: 27.659574468085104%;
-      *margin-left: 27.5531914893617%;
-    }
-    .row-fluid .offset3:first-child {
-      margin-left: 25.53191489361702%;
-      *margin-left: 25.425531914893618%;
-    }
-    [class*="span"].hide,
-    .row-fluid [class*="span"].hide {
-      display: none;
-    }
-    [class*="span"].pull-right,
-    .row-fluid [class*="span"].pull-right {
-      float: right;
-    }
-    .container-fluid {
-      padding-right: 20px;
-      padding-left: 20px;
-      *zoom: 1;
-    }
-    .container-fluid:before,
-    .container-fluid:after {
-      display: table;
-      line-height: 0;
-      content: "";
-    }
-    .container-fluid:after {
-      clear: both;
-    }
-    .row-fluid input[class*="span"],
-    .row-fluid select[class*="span"],
-    .row-fluid textarea[class*="span"],
-    .row-fluid .uneditable-input[class*="span"] {
-      float: none;
-      margin-left: 0;
-    }
-    .row-fluid input[class*="span"],
-    .row-fluid select[class*="span"],
-    .row-fluid textarea[class*="span"],
-    .row-fluid .uneditable-input[class*="span"],
-    .row-fluid .input-prepend [class*="span"],
-    .row-fluid .input-append [class*="span"] {
-      display: inline-block;
-    }
-    input.span3,
-    textarea.span3,
-    .uneditable-input.span3 {
-      width: 206px;
-    }
-    @media (min-width: 1200px) {
-      .row {
-        margin-left: -30px;
-        *zoom: 1;
-      }
-      .row:before,
-      .row:after {
-        display: table;
-        line-height: 0;
-        content: "";
-      }
-      .row:after {
-        clear: both;
-      }
-      [class*="span"] {
-        float: left;
-        min-height: 1px;
-        margin-left: 30px;
-      }
-      .container,
-      .navbar-static-top .container,
-      .navbar-fixed-top .container,
-      .navbar-fixed-bottom .container {
-        width: 1240px;
-      }
-      .span3 {
-        width: 270px;
-      }
-      .offset3 {
-        margin-left: 330px;
-      }
-      .row-fluid .span3 {
-        width: 23.076923076923077%;
-        *width: 23.023731587561375%;
-      }
-      .row-fluid .offset3 {
-        margin-left: 28.205128205128204%;
-        *margin-left: 28.0987452264048%;
-      }
-      input.span3,
-      textarea.span3,
-      .uneditable-input.span3 {
-        width: 256px;
-      }
+<script type="text/javascript" src="../../view/servicios/varios/formularios/fichas/fichas.js"></script>
+<script src="../../libs/apiFichas/api_fichas.js"></script>
+<style>
 
-
-
-
-
-
-      .caja {
-        float: left; 
-        border-radius: 10px 10px 10px 10px black;
-        background: #fff none repeat scroll 0 0;
-        border: 1px solid #959595;
-        box-shadow: 0 0 20px;
-        transition: 0.3s color;
-
-        }
+    .celda-tabla-bloc {
+        background-color: lightgray;
     }
-    </style>
 
-
-    <style type="text/css">
-.foro_textos{
-    background: white;
-    border-top: solid 5px #A2B0B9;
-    padding: 15px;
-}
-.foro_titulo{
-    font-weight: bold;
-    font-size: 16px;
-    padding: 15px 0px;
-}
-.foro_descripcion{
-    font-size: 14px;
-    padding: 15px 0px;
-}
-.volver_foro_t{
-    font-size: 30px;
-    position: relative;
-    top: 0px;
-    left: 15px;
-    float: left;
-    width: 100%;
-}
-.volver_foro_t a{
-    float: left;
-}
-.imagen_foro_list{
-    padding: 15px;
-}
-.titulo_f_list{
-    font-size: 16px;
-    font-weight: bold;
-    padding: 5px;
-    color: #222831;
-}
-.por_f_list{
-    font-size: 12px;
-    font-weight: normal;
-    padding: 5px;
-    color: #535E65;
-}
-.descripcion_f_list{
-    font-size: 14px;
-    padding: 5px;
-}
-.calificacion{
-    position: relative;
-   top: 25px;
-   text-align: center;
-}
-.btn_participa{
-    position: relative;
-   top: 35px;
-   left: 0px;
-   text-align: center;
-}
-
-input:required:invalid {
-    border: 1px solid red;
-}
-input:required:valid {
-    border: 1px solid green;
-}
-select:required:invalid {
-    border: 1px solid red;
-}
-select:required:valid {
-    border: 1px solid green;
-}
-.form-group {
-    padding-left: 8px;
-}
-.box2{
-    display: inline-block;
-    width: 190px;
-    margin: 2px;
-}
-
-.ng-table th {
-    text-align: left!important;
-}
-
-
-.img_hsp{
-    float: left;
-    margin-top:8px;
-    margin-bottom:5px;
-    margin-left:5px;
-    margin-right:5px;
-}
-.img_esp{
-    float: left;
-    margin-top:8px;
-    margin-bottom:5px;
-    margin-left:5px;
-    margin-right:5px;
-    width: 53px;
-}
-.img_dr{
-    float: left;
-    margin:14px;
-    width: 100px;
-}
-.img_dr_ficha{
-    float: left;
-    margin:5px;
-    width: 50px;
-}
-.boton-div{
-    background: white;
-}
-.boton-div:hover{
-    background: #ddd9d9;
-    /*cursor: pointer;
-    cursor: hand;*/
-}
-.boton-div-fic{
-    background: white;
-    border-left:solid 6px #00ADB5;
-    border-bottom:solid 4px #00ADB5;
-    border-right:solid 2px #00ADB5;
-    border-radius: 10px;
-}
-.boton-div-fic:hover{
-    background: #ddd9d9;
-    cursor: pointer;
-    cursor: hand;
-}
-@media only screen and (max-width: 1130px) {
-    .img_esp{        
-        display: none;
-    }
-}
-@media only screen and (max-width: 990px) {
-    .img_esp{        
-        width: 53px;
-        display: inline;
-    }
-}
-@media only screen and (max-width: 910px) {
-    .img_hsp{
-        display: none;
-    }
-}
-@media only screen and (max-width: 650px) {
-    .img_dr{
-        display: none;
-    }
-    .volver_foro_t a{
-        float: none;
-    }
-    .img_dr_ficha{
-        display: none;
-    }
-}
-@media only screen and (max-width: 500px) {
-    .img_esp{        
-        display: none;
-    }
-}
-/*@media (min-width: 992px)
-{
-    .col-md-4 {
-    width: 49.333333%;
-    }
-}*/
 </style>
+<div class="col-md-12 row" ng-controller="fichasController" ng-init="inicioFichas()">
+    <div class="col-12">
+        <div class="ibox-content" id="caja">
+            <div class="row">
+                <div class="row" align="center">
+                    <h3> Reserva en línea de Fichas </h3>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a data-toggle="tab" ng-click="btnTabReservarFicha()" data-target="#tab-reservar">RESERVAR FICHA</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" ng-click="btnTabMisReservas()" data-target="#tab-mis-reservas">MIS FICHAS</a>
+                    </li>
+                </ul>
 
-
-
-
-    <script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
-    <script type="text/javascript" src="../../view/servicios/varios/formularios/fichas/fichas.js"></script>
-    <script src="../../libs/apiFichas/api_fichas.js"></script>
-
-    </head>
-    <div ng-controller="NavCtrlfichas" ng-init="inicioHospitales()">
-
-        <div class="col-md-12" ng-show="frmConsulta != null">
-            <div class="col-md-12">
-                <h5 style="font-size: 16px !important; color: #222831 !important;">ESPERA EN LINEA  <button type="button" class="close" style="color: #222831; opacity: 1 !important"  data-dismiss="modal" ng-click="refrescarR();">
-                            <span class="fa fa-refresh fa-spin"></span><!--cambios-->
-                        </button></h5><hr style="margin-top: 7px; border: 1px solid #eee;">
-            </div>
-            <div class="col-md-12">
-                <p align=justify style="margin-top: -8px;">
-                    El GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ, con el objetivo de brindar un mejor servicio a la ciudadania pone a su disposición el servicio de atención ciudadana.
-                </p>
-            </div>
-            <br>
-            <!--<div class="col-md-12">
-                    <div class="form-group">
-                        <div class="col-sm-11">
-                            <div style="background: #c9a990;padding: 1px 10px 1px 1px;">
-                                <h5 style="color: white"><strong>SELECCIONE LA PLATAFORMA</strong></h5>
+                <!-- Sección para Reservar Ficha -->
+                <div ng-show="mostrarReservarFicha" id="tab-reservar">
+                    <h2>Reservar Ficha</h2>
+                    <div class="row" style="padding-left: 15px; padding-top: 10px;">
+                        <div class="col-md-4">
+                            <br>
+                            <div class="form-group">
+                                <label class="control-label">PLATAFORMA:</label>
+                                <select class="form-control" id="plataf" name="plataf" ng-model="plataf" ng-change="obtenerPlataforma(plataf)">
+                                    <option value="" selected>-- Seleccione --</option>
+                                    <option ng-repeat="plataform in macrodistritos" value="{{plataform.plt_id}}">
+                                        {{ plataform.plt_sigla_plataforma }}
+                                    </option>
+                                </select>
                             </div>
-                            <div>
-                       
-                                    <table class="table table-striped" >
-                                        <tr ng-repeat="agencia in datosagencia | filter:query" >
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='PIACV' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='SERI' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='SERII' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='SERIII' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='TER' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                        
+                            <div class="form-group">
+                                <label class="control-label">Servicio:</label>
+                                <select class="form-control" id="servc" name="servc" ng-model="servc" ng-change="seleccionarServicio(servc)">
+                                    <option value="" selected>-- Seleccione --</option>
+                                    <option ng-repeat="servici in servicios" value="{{servici.serv_id}}">
+                                        {{ servici.serv_nom_servicio }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
-                    </div> 
-                value="getAtendidoTT(agencia.agcid)"
-                </div>-->
 
+                        <div class="col-md-7" ng-if="!mensajeError"> 
+                            <br>
+                            <div class="row"> 
+                                <div class="col-md-8">
+                                    <h4 style="margin: auto;">CALENDARIO DE RESERVAS</h4>
+                                    <p style="font-weight: bold;">{{ fechaFormateada }}</p> <!-- Aquí se muestra la fecha formateada -->
+                                </div>
+                            </div>
 
-            <div class="col-md-4" ng-repeat="agencia in datosagencia | filter:query | orderBy:'+agcid'" ng-show="agencia.agccodigo_agencia =='PIACV' && obtFichas.pderivacionid != '' || agencia.agccodigo_agencia =='SERI' && obtFichas.pderivacionid != '' || agencia.agccodigo_agencia =='SERII' && obtFichas.pderivacionid != '' || agencia.agccodigo_agencia =='SERIII' && obtFichas.pderivacionid != '' || agencia.agccodigo_agencia =='TER' && obtFichas.pderivacionid != ''">
-                <div ng-repeat="data in dat">
-                    <div ng-if="agencia.agcid == data.id">
-                        <!--<div ng-click="MenuListarServicios(agencia.agcid)">-->
-                        <div ng-click="listarServicios(agencia.agcid)">
-                            <div class="boton-div" style="margin-bottom: 20px; border-left:solid 6px #00ADB5;border-bottom:solid 4px #00ADB5;border-right:solid 2px #00ADB5; border-radius: 10px;">
-                               <img class="img_dr" src="{{data.image}}">
-                                
-                                <div class="por_f_list"></div>
-                                <div class="titulo_f_list" align="left">{{agencia.agcagencia}} <!--- {{agencia.agcid}}--></div>
-                                <!--<div class="por_f_list">{{agencia.agcdireccion}}.    
-                                </div>-->
-                                <div class="por_f_list">{{data.description}}. 
-                                    <br><div ng-repeat="df in valueFicha">
-                                        <div ng-show="agencia.agcid==df.id">
-                                            <table>
+                            <div ng-if="isLoaderTable" class="loader-table-overlay">
+                                <img style="width: 30px; height: 30px;"
+                                     src="../../view/servicios/varios/formularios/transparencia/moustache/tinymce/skins/lightgray/img/loader.gif"
+                                     alt="">
+                                Espere..
+                            </div>
+
+                            <div ng-if="mostrarHorarios">
+                                <div ng-if="hola.length > 0">
+                                    <div>
+                                        <table class="table table-bordered">
+                                            <thead>
                                                 <tr>
-                                                    <td class="enCola" align="center">EN COLA </td>
-                                                    <td class="enAtencion" align="center">EN ATENCIÓN</td>
-                                                    <td class="ultimaFicha" align="center">ULTIMA FICHA EMITIDA</td>
+                                                    <th>Horarios</th>
+                                                    <th>
+                                                        <div style="width: 80%; text-align: center;">
+                                                            {{hola[0].dia}}
+                                                            <br>
+                                                            <div style="border-radius: 50%; margin: auto; align-items: center; display: flex; justify-content: center; width: 20px; height: 20px; border: solid 1px #00ADB5;">
+                                                                {{fechaActual | date:'dd/MM/yyyy'}}
+                                                            </div>
+                                                        </div>
+                                                    </th>
                                                 </tr>
-                                                 <tr>
-                                                    <!--<td class="enCola" align="center" style="visibility: hidden;">{{df.id}}</td>--> 
-                                                    <td class="enCola" align="center">{{df.cola}}</td>
-                                                    <td class="enAtencion" align="center">{{df.atencion}}</td>        
-                                                    <td class="ultimaFicha" align="center">{{df.ficha}}</td>
-                                                </tr> 
-                                            </table>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="hora in horarios">
+                                                    <th>{{hora}}</th>
+                                                    <th>
+                                                        <div 
+                                                            id="{{hola[0].id}}{{hora}}"
+                                                            ng-class="{
+                                                                'celda-tabla-bloc': hola[0].estado === 'disponible',
+                                                                'celda-reservado-bloc': hola[0].estado === 'ocupado',
+                                                                'celda-seleccionada': hola[0].horaSeleccionada === hora
+                                                            }"
+                                                        >
+                                                            <span >
+                                                                {{hola[0].horaSeleccionada === hora ? 'Hora seleccionada' : ''}}
+                                                            </span>
+                                                            <button ng-click="btnCelda(hola[0], hora)" 
+                                                                    type="button" 
+                                                                    class="btn btn-success btn-pagar fa"
+                                                                    ng-hide="hola[0].horaSeleccionada === hora">
+                                                                ESCOGE TU FICHA
+                                                            </button>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6" ng-if="hola[0].horaSeleccionada"> 
+                                        <div style="text-align: end;">
+                                            <button type="button" class="btn btn-success btn-pagar fa" ng-click="guardarFicha()" align="center">Guardar Ficha</button>    
                                         </div>
-                                    </div>   
+                                    </div>
                                 </div>
-                                <div class="por_f_list">&nbsp;
-                                </div>      
-                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!--<div class="col-md-12" class="row" ng-show="frmConsulta != null">
-            <form name="signupForm" class="form-horizontal" role="form" novalidate>
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <div>
-                            <h5><strong> ESPERA EN LINEA</strong></h5>
-                        </div>
-                        <div style="background-color: white;">
-                            <p align="justify">
-                                El GOBIERNO AUTÓNOMO MUNICIPAL DE LA PAZ, con el objetivo de brindar un mejor servicio a la ciudadania pone a su disposición el servicio de atención ciudadana.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!--<div class="col-md-12">
-                    <div class="form-group">
-                        <div class="col-sm-11">
-                            <div style="background: #c9a990;padding: 1px 10px 1px 1px;">
-                                <h5 style="color: white"><strong>SELECCIONE LA PLATAFORMA</strong></h5>
-                            </div>
-                            <div>
-                       
-                                    <table class="table table-striped" >
-                                        <tr ng-repeat="agencia in datosagencia | filter:query" >
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='PIACV' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='SERI' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='SERII' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='SERIII' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                            <td ng-click="MenuListarServicios(agencia.agcid)" data-title="'SERVICIOS'" ng-if="agencia.agccodigo_agencia =='TER' && obtFichas.pderivacionid != ''" >
-                                                <div >
-                                                    <i class="fa fa-hand-o-right"></i>
-                                                    <a>&nbsp;{{agencia.agcdireccion}}</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                        
-                            </div>
-                        </div>
-                    </div> 
-                </div>-->
-                <!--<div class="col-md-12">
-                    <div class="col-md-4" ng-repeat="agencia in datosagencia | filter:query | orderBy:'+agcid'" ng-show="agencia.agccodigo_agencia =='PIACV' && obtFichas.pderivacionid != '' || agencia.agccodigo_agencia =='SERI' && obtFichas.pderivacionid != '' || agencia.agccodigo_agencia =='SERII' && obtFichas.pderivacionid != '' || agencia.agccodigo_agencia =='SERIII' && obtFichas.pderivacionid != '' || agencia.agccodigo_agencia =='TER' && obtFichas.pderivacionid != ''" >
-                        <div ng-repeat="data in dat">
-                            <div ng-if="agencia.agcid == data.id">
-                                <div ng-click="MenuListarServicios(agencia.agcid)">
-                                    <div class="boton-div" style="margin-bottom: 20px; border-left:solid 6px #00ADB5;border-bottom:solid 4px #00ADB5;border-right:solid 2px #00ADB5; border-radius: 10px;">
-                                       <img class="img_dr" src="{{data.image}}">
-                                        
-                                        <div class="por_f_list" ></div>
-                                        <div class="titulo_f_list" align="left">{{agencia.agcdireccion}}</div>
-                                        <div class="por_f_list">{{data.description}}.
-                                        </div>
-                                        <div class="por_f_list">&nbsp;&nbsp;
-                                        </div>
-                                     </div>
+                                <div ng-if="mensajeError" style="color: red; margin-top: 15px;">
+                                    {{mensajeError}}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>-->
-        <div ng-show="grillaServicios != null" class="col-md-12" class="row" align="center">
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <table align="left">
-                        <tr>
-                            <td>
-                                <h4>
-                                    <button type="button" class="btn btn-redondo" ng-click="volverHospital(); refrescarReplay();"><i class="fa fa-mail-reply blanco"></i></button>     
-                                    SERVICIOS DE ATENCIÓN</h4>
-                                <br>
-                            </td>
-                        </tr>   
-                    </table>
-                    <div >
-                       <button type="button" class="close" style="color: #222831; opacity: 1 !important"  data-dismiss="modal" ng-click="refrescar();">
-                            <span class="fa fa-refresh fa-spin"></span><!--cambios-->
-                        </button>
-                        <div class="form-group">
-                            <table  show-filter="true"  class="table table-striped">
-                              <tr >
-                                <td class="enCola" align="center">EN COLA</td>
-                                <td class="enAtencion" align="center">EN ATENCIÓN</td>
-                                <td class="ultimaFicha" align="center">ULTIMA FICHA EMITIDA</td>
-                              </tr> 
-                              <tr>
-                                <td class="enCola" align="center">{{espera}}</td>
-                                <td class="enAtencion" align="center">{{atencion}}</td>        
-                                <td class="ultimaFicha" align="center">{{ultimaFecha}}</td>
-                            </tr> 
-                            </table>
-                        </div>
-                        <table align="left">
-                            <tr>
-                                <td>
-                                    <h4>SUB SERVICIO</h4>
-                                </td>
-                            </tr>   
-                        </table>
-                        <div>
-                            <select id="ejeId" name="ejeId" ng-model="servicio.vsrv_id" class="form-control" 
-                            ng-options="servicio.vsrv_id as servicio.vsrv_servicio for servicio in dataservicios" 
-                            ng-change="obtenerReporte(servicio.vsrv_id)">
-                                  <option style="display:none" value="">-- Seleccione Sub-Servicio --</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <table align="left">
-                                <tr>
-                                    <td>
-                                        <h4>CLIENTES EN ATENCION</h4>
-                                    </td>
-                                </tr>   
-                            </table>
-                            <table show-filter="true" class="table table-striped">
-                                <thead>
-                                    <th class="text-center">#&nbsp;</th>                                  
-                                    <th class="text-center">CLIENTE&nbsp;</th>
-                                    <th class="text-center">FICHA&nbsp;</th>
-                                    <th class="text-center">CAJERO&nbsp;</th>
-                                    <th class="text-center">CAJA&nbsp;</th>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="dataAtemdido in dataAtemdidos" >
-                                        <td align="center">&nbsp; {{$index+1}}</td>
-                                        <td align="center" ng-style= "dataAtemdido.vtcl_tipo_cliente=='DISCAPACITADO' && {'background-color':'#B3C3F9','font-color':'#B3C3F9'} || dataAtemdido.vtcl_tipo_cliente=='EMBARAZADA' && {'background-color':'#F7F5A3','font-color':'#F7F5A3'} || dataAtemdido.vtcl_tipo_cliente=='TERCERA EDAD' && {'background-color':'#A4F28A','font-color':'#A4F28A'}"><span style="font-size: 14px;">&nbsp; {{dataAtemdido.vtcl_tipo_cliente}} </span></td>
-                                        <td align="center">&nbsp; {{dataAtemdido.vcfi_ficha}}</td> 
-                                        <td align="center">&nbsp; {{dataAtemdido.vusr_usuario}}</td> 
-                                        <td align="center">&nbsp; {{dataAtemdido.vpst_puesto}}</td> 
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <table align="left">
-                            <tr>
-                                <td>
-                                    <h4>CLIENTES EN ESPERA</h4>
-                                </td>
-                            </tr>   
-                        </table>
 
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="span3 {{obtFichas.vsrvcolor}}"  ng-repeat="obtFichas in obtColaDatos">
-                                    <div class="pricing-table-header-{{obtFichas.vsrvcolor}}">
-                                        <h2>{{$index+1}}</h2>
-                                        <h3>{{obtFichas.pcfificha}}</h3>
-                                    </div>
-                                    <div class="pricing-table-features">
-                                        <p><strong>Cliente</strong> {{obtFichas.ptipocliente}}</p>
-                                        <p><strong>Servicio</strong></p>
-                                        <p>{{obtFichas.pservicio}}</p>
-                                        <p><strong>Hora del ticket</strong> {{obtFichas.phoratencion}}</p>
-                                    </div>
-                                    <div class="pricing-table-signup-{{obtFichas.vsrvcolor}}">
-                                      <p><a href="">{{obtFichas.pcfimovimiento}} <br> {{obtFichas.ypstcodigopuesto}}</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> 
-                    </div>
-                </div>
-            </div> 
-        </div>
-        <div ng-show="grillaGrafica != null" class="col-md-12" class="row" align="center">
-            <div width="20%" align="right"  class="col-md-6">
-                <div  class="col-md-6">
-                    <table  show-filter="true" class="table table-striped table-bordered ">
-                      <tr style="font-weight: bold">
-                        <td class="text-center enCola">EN COLA</td>
-                        <td class="text-center enAtencion" >EN ATENCIÓN</td>
-                        <td class="text-center ultimaFicha">ULTIMA FICHA EMITIDA</td>
-                      </tr> 
-                      <tr  style="font-weight: bold">
-                        <td class="text-center enCola">{{espera}}</td>
-                        <td class="text-center enAtencion">{{atencion}}</td>        
-                        <td class="text-center ultimaFicha">{{ultimaFecha}}</td>
-                      </tr> 
-                    </table>
-                </div>
-                <div  class="col-md-6">
-                    <button type="button" class="btn btn-redondo" ng-click="volverHospital();"><i class="fa fa-mail-reply blanco"></i></button>'
-                </div>
-            </div>
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><B> CLIENTES EN ATENCIÓN </B></div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table show-filter="true" class="table table-striped table-bordered ">
-                                <thead>
-                                    <th class="text-center">#&nbsp;</th>                                  
-                                    <th class="text-center">CLIENTE&nbsp;</th>                                  
-                                    <th class="text-center">FICHA&nbsp;</th>
-                                    <th class="text-center">CAJERO&nbsp;</th>
-                                    <th class="text-center">Nro. CAJERO&nbsp;</th>
-                                </thead>
-                                <tbody>
-                                    <tr class="column" ng-repeat="dataAtemdido in dataAtemdidos" >                                    
-                                        <td>&nbsp; {{$index+1}}</td>                                      
-                                        <td ng-style= "dataAtemdido.vtcl_tipo_cliente=='DISCAPACITADO' && {'background-color':'#B3C3F9','font-color':'#B3C3F9'} || dataAtemdido.vtcl_tipo_cliente=='EMBARAZADA' && {'background-color':'#F7F5A3','font-color':'#F7F5A3'} || dataAtemdido.vtcl_tipo_cliente=='TERCERA EDAD' && {'background-color':'#A4F28A','font-color':'#A4F28A'}"><span style="font-size: 14px;">&nbsp; {{dataAtemdido.vtcl_tipo_cliente}} </span></td>
-                                        <td>&nbsp; {{dataAtemdido.vcfi_ficha}}</td> 
-                                        <td>&nbsp; {{dataAtemdido.vusr_usuario}}</td> 
-                                        <td>&nbsp; {{dataAtemdido.vpst_puesto}}</td> 
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                      
-                </div>
+                <!-- Sección para Mis Fichas -->
+            <!-- Sección para Mis Fichas -->
+<div ng-show="mostrarMisReservas" id="tab-mis-reservas">
+    <h2>Aquí podrás ver tus fichas reservadas</h2>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Hora</th>
+                    <th>Servicio</th>
+                    <th>Plataforma</th>
+                    <th>Fecha</th>
+                    <th>Mis fichas</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ficha in misFichas | orderBy:'-fecha'"> 
+                    <td>{{ficha.hora}}</td>
+                    <td>{{ficha.nombreServicio}}</td>
+                    <td>{{ficha.nombrePlataforma}}</td>
+                    <td>{{ficha.fecha | date:'dd/MM/yyyy'}}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" ng-click="verPDF(ficha)">Ver PDF</button>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
             </div>
         </div>
     </div>
-</html>
+</div>

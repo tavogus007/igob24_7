@@ -422,7 +422,8 @@
 								  
                                   <!-- desactibado temporal Salud 31012023-->
 								  
-                                  <li ng-show="stiporol == '4' || stiporol == '5'"><a  href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/fichas/fichas.html'">{{translateTitulos.lbl_04_11}}</a></li>
+                                   <!--<li ng-show="stiporol == '4' || stiporol == '5'"><a  href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/fichas/fichas.html'">{{translateTitulos.lbl_04_11}}</a></li>-->
+                                  <li ng-show="stiporol == '4' || stiporol == '5' && sservicios  == 'SI'"><a  href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/fichas/fichas.html'">fichas c</a></li>
                                   <li ng-show="stiporol == '4' || stiporol == '5'"><a ng-click = "" href="#servicios|varios|index.html?url='app/view/servicios/varios/formularios/sigueTuTramite/sigueTuTramite.html'">{{translateTitulos.lbl_04_12}}</a></li>
                                   <!-- RODOLFO opcion para la  visualizacion de antenas><-->
                                   <li ng-show="mostrarMenuMascota == 'SI'">

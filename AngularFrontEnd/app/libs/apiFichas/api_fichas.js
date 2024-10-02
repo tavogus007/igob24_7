@@ -262,5 +262,19 @@ fichas_save.prototype.guardar_= function(functionResp){
       ejecutarAjaxIFichas(urlComp, typeCall, dataParams, functionResp);
     };
   
+
+
+    function obtOID(){
+    }
+      obtOID.prototype.obtOID_= function(idCiudadano,functionResp){
+        urlComp= 'ficha-programada/oid/'+ idCiudadano;
+        typeCall = "get";  
+        dataParams = {};   // Parámetros si son necesarios, en este caso vacío
+        
+        ejecutarAjaxIFichas(urlComp, typeCall, dataParams, functionResp);
+      };
+    
+
+
   
   

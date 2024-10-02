@@ -5,11 +5,10 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
     $scope.horarios=[];
 
     $scope.obtPlataformas = function () {
-        console.log("Iniciando la obtención de plataformas...");
         $scope.getPlataforma().then(function (data) {
             // Asegurarte de que el resultado sea un array
             $scope.macrodistritos = JSON.parse(data || []);  // Si data es undefined o null, asigna un array vacío
-            console.log("Datos obtenidos:", $scope.macrodistritos);
+           
         });
     };
     
@@ -23,20 +22,19 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
         
         return def.promise;
     };
+    
 
     //horarios API
 
 
    $scope.ObtHorarios= function(idPlataforma){
     $scope.getHorarios(idPlataforma).then(function (data) {
-        console.log(data);
         var hour = JSON.parse(data);
-        console.log(hour);
 
         // Asegurarte de que el resultado sea un array
         $scope.horarios = hour.disponibles;
           // Si data es undefined o null, asigna un array vacío
-        console.log("horas obtenidos:", $scope.horarios, "OID",$scope.OIDCIUDADANO);
+      
         
     });
    }
@@ -62,24 +60,53 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
 
 
     
-    // Función para obtner el id 
-    $scope.obtenerPlataforma = function(plataforma) {
-        console.log("Plataforma seleccionada:", plataforma);
-        $scope.plataformaId=plataforma;
-        $scope.obtServicio(plataforma);
-        $scope.ObtHorarios(plataforma);
+    $scope.verificarFichaDia = function(idCiudadano, idPlataforma) {
+       
+        return $scope.getOID(idCiudadano).then(function(data) {
+            var fichasUsuario = JSON.parse(data);  // Convertir el JSON en un array de objetos
+
+            var tieneFichaHoy = fichasUsuario.some(function(ficha) {
+                return ficha.id_plataforma === parseInt(idPlataforma); // Verifica solo la plataforma
+            });
+    
+            
+            return tieneFichaHoy;  // Devolver el resultado de la verificación
+        })
     };
+    
+    $scope.obtenerPlataforma = function(plataforma) {
+        $scope.plataformaId = plataforma;
+        $scope.obtServicio(plataforma);
+        $scope.cambiarUbicacionPorID(plataforma);
+        $scope.verificarFichaDia($scope.OIDCIUDADANO, plataforma).then(function(tieneFicha) {
+            if (tieneFicha) {
+               
+                $scope.horarios = []; // O cualquier lógica para no mostrar horarios
+                $('#noPuedeSacarFichaModal').modal('show'); // Muestra el modal
+
+            } else {
+                $scope.ObtHorarios(plataforma); 
+            }
+        });
+    
+        if ($scope.hola.length > 0) {
+            $scope.hola[0].horaSeleccionada = null;
+        }
+    };
+    
+    
+
+
+
+
 
     $scope.obtServicio = function (idPlataforma) {
-        console.log("Iniciando la obtención de servicios para ID de Plataforma:", idPlataforma);
     
         $scope.getServicio(idPlataforma).then(function (data) {
             try {
-                console.log("DATA recibida de la Plataforma:", data);
                 var servicios = JSON.parse(data);
                 $scope.servicios = servicios.asignados; 
     
-                console.log("Servicios obtenidos de la Plataforma:", $scope.servicios);
     
                 // Verificar si hay servicios disponibles para esta plataforma
                 if ($scope.servicios.length === 0) {
@@ -109,7 +136,6 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
     
     // Controlador para la Selección de Servicio
     $scope.seleccionarServicio = function (idServicio) {
-        console.log("Servicio seleccionado con ID:", idServicio);
     
         if (!idServicio) {
             $scope.mostrarHorarios = false;
@@ -119,7 +145,6 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
     
         $scope.getServicio(idServicio).then(function (data) {
             try {
-                console.log("Datos del Servicio:", data);
                 var servicioData = JSON.parse(data);
                 $scope.horarios = servicioData.horarios; 
     
@@ -132,7 +157,6 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
                     $scope.mensajeError = "";  // Limpiar el mensaje de error
                 }
     
-                console.log("Horarios obtenidos del Servicio:", $scope.horarios);
             } catch (e) {
                 console.error("Error al manejar los datos del Servicio:", e);
                 $scope.horarios = [];  // Si hay un error, se vacía el array de horarios
@@ -220,17 +244,12 @@ function generarHoras() {
             
             // Cambiar el estado de la hora previamente seleccionada a 'disponible'
             semana.estado = 'disponible'; 
-            console.log('La hora ' + semana.horaSeleccionada + ' ha vuelto a estar disponible.');
         }
         
         // Establecer la nueva hora seleccionada y cambiar su estado
         semana.horaSeleccionada = hora; 
         semana.estado = 'ocupado'; 
     
-        // Log para depuración
-        console.log('Hora seleccionada: ', hora);  
-        console.log('Semana: ', semana);
-        
         // Mostrar el botón de guardar ficha
         $scope.hola[0].horaSeleccionada = hora; // Esto asegura que el modelo de la vista se actualiza
     };
@@ -296,47 +315,248 @@ function generarHoras() {
     };
 
     // GUARDAR DATOS DE LAS FICHAS
+
+    
     $scope.OIDCIUDADANO =sessionStorage.IDSOLICITANTE
 
-    $scope.misFichas = []; // Inicializar el array de fichas
+    $scope.misFichas = []; 
 
-    $scope.guardarFicha = function() {
-        // Crear el objeto que se enviará a la API
-        const fichaData = {
-            fpro_codigo_ficha_programada: "PRUEBA ", // Aquí podrías incluir un contador si es necesario
-            fpro_oid_solicitante: $scope.OIDCIUDADANO,
-            fpro_serv_id: parseInt($scope.servc),
-            fpro_plat_id: parseInt($scope.plataf),
-            fpro_usr_registrador_id: 0,
-            fpro_nro_fichas_programadas: 0,
-            fpro_nro_fichas_reservadas: 0,
-            fpro_hora_seleccionada: $scope.hola[0].horaSeleccionada
-        };
-    
-        console.log("Los datos a enviar:", fichaData);
-    
-        // Hacer la llamada POST a la API
-        $http.post('http://172.18.2.207:3095/ficha-programada/', fichaData)
+
+
+$scope.mostrarModalConfirmacion = function() {
+
+};
+
+// Función para confirmar y guardar la ficha cuando se presione el botón de Confirmar en el modal
+$scope.confirmarGuardarFicha = function() {
+    $scope.fichaData = {
+        fpro_codigo_ficha_programada: "PRUEBAs",
+        fpro_oid_solicitante: $scope.OIDCIUDADANO,
+        fpro_serv_id: parseInt($scope.servc),
+        fpro_plat_id: parseInt($scope.plataf),
+        fpro_usr_registrador_id: 0,
+        fpro_nro_fichas_programadas: 0,
+        fpro_nro_fichas_reservadas: 0,
+        fpro_hora_seleccionada: $scope.hola[0].horaSeleccionada
+    };
+
+    if (!$scope.fichaData) {
+        console.error("No hay datos de ficha para guardar. Asegúrate de preparar los datos antes de confirmar.");
+        return;
+    }
+
+    // Llamada POST a la API para guardar la ficha
+    $http.post('http://172.18.2.207:3095/ficha-programada/', $scope.fichaData)
+    .then(function(response) {
+
+        $scope.misFichas.push({
+            hora: $scope.fichaData.fpro_hora_seleccionada,
+            nombrePlataforma: parseInt($scope.fichaData.fpro_plat_id),
+            nombreServicio: parseInt($scope.fichaData.fpro_serv_id),
+            fecha: new Date().toLocaleDateString() // Fecha actual
+        });
+
+        // Cerrar el modal después de guardar correctamente usando jQuery
+        $('#declaracion').modal('hide');
+        $scope.horarios = [];
+        $scope.hola[0].horaSeleccionada = null; 
+        
+        //$scope.refreshHorario();
+        $scope.oidUsuario($scope.OIDCIUDADANO);
+    })
+
+};
+
+ 
+
+//LISTAR FICHAS MEDIANTE EL OID
+
+$scope.init = function() {
+    // Recuperar el OID del usuario desde el sessionStorage
+    $scope.OIDCIUDADANO = sessionStorage.IDSOLICITANTE;
+
+    // Verificar si el OID se ha asignado correctamente
+    if ($scope.OIDCIUDADANO) {
+        $scope.obtenerFichasPorOID();
+    } else {
+        console.error("No se pudo recuperar el OID del usuario desde sessionStorage.");
+    }
+};
+
+$scope.obtenerFichasPorOID = function() {
+    const oidUsuario = $scope.OIDCIUDADANO;
+
+    $http.get(`http://172.18.2.207:3095/ficha-programada/oid/${oidUsuario}`)
         .then(function(response) {
-            console.log('Ficha guardada correctamente:', response.data);
-            
-            // Agregar la ficha guardada al array misFichas
-            $scope.misFichas.push({
-                hora: $scope.hola[0].horaSeleccionada,
-                nombrePlataforma: $scope.plataf,
-                nombreServicio: $scope.servc, // Cambia esto si necesitas el nombre del servicio
-                fecha: new Date().toLocaleDateString() // Cambia esto si necesitas otra fecha
-               // Se guarda la fecha actual como objeto Date
+           
 
+            // Actualizar el array misFichas con los datos obtenidos
+            $scope.misFichas = response.data.map(function(ficha) {
+                return {
+                    hora: ficha._fpro_hora_seleccionada,
+                    nombreServicio: ficha.sigla_plataforma, 
+                    nombrePlataforma: ficha.nombre_servicio, 
+                    fecha: new Date() 
+                    
+                };
             });
-            alert('¡Guardado con éxito!');
-
-          //  $location.path();
         })
+        .catch(function(error) {
+            console.error("Error al obtener las fichas del usuario:", error);
+        });
+};
+$scope.init();
 
+
+
+
+
+
+
+
+
+//// OID USUARIO 
+
+$scope.oidUsuario= function(idCiudadano){
+    $scope.getOID(idCiudadano).then(function (data) {
+        var person = JSON.parse(data);
+
+        // Asegurarte de que el resultado sea un array
+        //$scope.personas = person.disponibles;
+          // Si data es undefined o null, asigna un array vacío
+        
+    });
+   }
+
+
+
+    $scope.getOID = function (idCiudadano) {
+        var def = $q.defer();  // Crear una promesa para manejar la llamada asíncrona
+        var oidapi = new obtOID(); 
+        oidapi.idCiudadano=idCiudadano; 
+    
+        oidapi.obtOID_(idCiudadano, function (resultado) {
+            def.resolve(resultado);
+        });
+    
+        return def.promise;  // Retornar la promesa
     };
     
 
+/////////MAPA///////////////
+
+// Definir un objeto con las plataformas y sus ubicaciones según el ID de la plataforma
+$scope.plataformas = {
+    1: {
+      name: "plataforma de prueba",
+      coords: [-68.1193, -16.5110]  
+    },
+    2: {
+      name: "Plataforma A",
+      coords: [-68.1351, -16.4964]  // Coordenadas de otra plataforma (Lon, Lat)
+    },
+    9: {
+      name: "Plataforma B",
+      coords: [-68.0852, -16.5436]  // Otra ubicación simulada (Lon, Lat)
+    }
+  };
+  
+  // Función para actualizar la ubicación según el ID de la plataforma seleccionada
+  $scope.cambiarUbicacionPorID = function (idPlataforma) {
+    var ubicacion = $scope.plataformas[idPlataforma];
+  
+    if (ubicacion) {
+      // Actualizar el centro del mapa a la ubicación seleccionada
+      $scope.setCenterPositionMarker(ubicacion.coords, 15);  // Zoom más cercano para la ubicación
+      $scope.drawMarkerGPS(ubicacion.coords);  // Mostrar marcador en la ubicación
+    } else {
+      console.error("Plataforma no encontrada para el ID: " + idPlataforma);
+    }
+  };
+  
+  // Definir el centro y zoom inicial del mapa
+  $scope.obtMapCenter = {
+    center: [-68.095184, -16.525105],  // LonLat inicial de La Paz, Bolivia
+    zoom: 12
+  };
+  
+  // Función para inicializar el mapa
+  $scope.iniciarMapa = function () {
+    if (!ol) {
+      console.error('OpenLayers no está disponible.');
+      return;
+    }
+  
+    if (!$scope.obtMapCenter || !$scope.obtMapCenter.center || !$scope.obtMapCenter.zoom) {
+      console.error('El centro del mapa o el zoom no están definidos correctamente.');
+      return;
+    }
+  
+    if (!$scope.obtMap) {
+      $scope.obtMap = new ol.Map({
+        target: 'map',  // ID del div donde se mostrará el mapa
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()  // Utiliza OpenStreetMap como capa base
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat($scope.obtMapCenter.center),  // Convierte las coordenadas LonLat a la proyección del mapa
+          zoom: $scope.obtMapCenter.zoom  // Establece el nivel de zoom inicial
+        })
+      });
+  
+      console.log("Mapa inicializado correctamente.");
+    }
+  
+    setTimeout(function () {
+      $scope.obtMap.updateSize();
+    }, 200);
+  };
+  
+  // Función para centrar el mapa en una posición específica y cambiar el nivel de zoom
+  $scope.setCenterPositionMarker = function (latLon, zoom) {
+    var view = $scope.obtMap.getView();
+    view.setCenter(ol.proj.fromLonLat(latLon));  // Convertir la posición a la proyección correcta
+    view.setZoom(zoom);
+  };
+  
+  // Función para dibujar un marcador en la posición seleccionada con un diseño de pin
+  $scope.drawMarkerGPS = function (latLon) {
+    if ($scope.markerGPS) {
+      $scope.obtMap.removeOverlay($scope.markerGPS);  // Eliminar marcador previo, si existe
+    }
+  
+    // Crear un elemento de marcador con estilo de pin
+    var elementMarkerGPS = document.createElement('div');
+    elementMarkerGPS.style.width = '50px';
+    elementMarkerGPS.style.height = '50px';
+    elementMarkerGPS.style.backgroundImage = 'url("https://maps.google.com/mapfiles/ms/icons/red-dot.png")';  // Pin rojo de Google Maps
+    //elementMarkerGPS.innerHTML = '<div class="pin"></div><div class="pulse"></div>';
+    elementMarkerGPS.style.backgroundSize = 'contain';
+    elementMarkerGPS.style.backgroundRepeat = 'no-repeat';
+    elementMarkerGPS.style.position = 'absolute';
+    elementMarkerGPS.style.transform = 'translate(-50%, -50%)';  // Centrar el marcador
+  
+    // Crear el overlay del marcador en el mapa
+    $scope.markerGPS = new ol.Overlay({
+      position: ol.proj.fromLonLat(latLon),  // Convertir la posición a la proyección correcta
+      positioning: 'center-center',
+      element: elementMarkerGPS,
+      stopEvent: false
+    });
+  
+    // Añadir el marcador al mapa
+    $scope.obtMap.addOverlay($scope.markerGPS);
+  };
+  
+  // Inicializar el mapa
+  $scope.iniciarMapa();
+  
+  // Simulación de selección de plataforma por ID (puedes cambiarlo por la selección real en tu interfaz)
+  $scope.cambiarUbicacionPorID(1);  // Cambiar por el ID de la plataforma seleccionada, por ejemplo 1 para "Radio Éxito"
+  
+  
 
     
     
@@ -363,13 +583,25 @@ function generarHoras() {
     $scope.mostrarMisReservas = true; 
     };
 
+//cambiar vista modal
 
+$scope.mostrarModal = false; 
+
+// Función que se activa al hacer clic en "Guardar Ficha"
+$scope.mostrarModalConfirmacion = function() {
+    $scope.mostrarModal = true; 
+};
+
+// Cerrar el modal
+$scope.cerrarModal = function() {
+    $scope.mostrarModal = false; // Ocultar el modal
+};
 
 
 
 
     $scope.obtenerServicio= function(servc){
-        console.log("servc", servc);
+      
         $scope.idserve=servc;
     }
 
@@ -379,7 +611,7 @@ function generarHoras() {
     });
 
     $scope.inicioFichas = function () {
-        console.log("hola mundo"); 
+        
         $scope.obtPlataformas();
         
     };

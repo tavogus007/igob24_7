@@ -1,13 +1,22 @@
 
 <script type="text/javascript" src="../../view/servicios/varios/formularios/fichas/fichas.js"></script>
 <script src="../../libs/apiFichas/api_fichas.js"></script>
+
+<!--   biblioteca de OpenLayers en el HTML -->
+<script src="https://cdn.jsdelivr.net/npm/ol@6.14.1/dist/ol.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@6.14.1/ol.css" type="text/css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+
 <style>
 
-    .celda-tabla-bloc {
-        background-color: lightgray;
-    }
-
+      .map {
+    height: 410px;
+    width: 100%;
+  }
 </style>
+   
 <div class="col-md-12 row" ng-controller="fichasController" ng-init="inicioFichas()">
     <div class="col-12">
         <div class="ibox-content" id="caja">
@@ -38,6 +47,7 @@
                                         {{ plataform.plt_sigla_plataforma }}
                                     </option>
                                 </select>
+                                
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Servicio:</label>
@@ -48,6 +58,11 @@
                                     </option>
                                 </select>
                             </div>
+
+                            <div id="map" class="map" style="height: 400px; width: 100%;"></div>
+
+                    
+                                
                         </div>
 
                         <div class="col-md-7" ng-if="!mensajeError"> 
@@ -91,12 +106,12 @@
                                                         <div 
                                                             id="{{hola[0].id}}{{hora}}"
                                                             ng-class="{
-                                                                'celda-tabla-bloc': hola[0].estado === 'disponible',
-                                                                'celda-reservado-bloc': hola[0].estado === 'ocupado',
+                                                                'celda-tabla-bloc': horariosDisponibles[hora] === 'disponible',
+                                                                'celda-reservado-bloc': horariosDisponibles[hora] === 'ocupado',
                                                                 'celda-seleccionada': hola[0].horaSeleccionada === hora
                                                             }"
                                                         >
-                                                            <span >
+                                                            <span>
                                                                 {{hola[0].horaSeleccionada === hora ? 'Hora seleccionada' : ''}}
                                                             </span>
                                                             <button ng-click="btnCelda(hola[0], hora)" 
@@ -108,13 +123,15 @@
                                                         </div>
                                                     </th>
                                                 </tr>
+                                                
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="col-md-6" ng-if="hola[0].horaSeleccionada"> 
                                         <div style="text-align: end;">
-                                            <button type="button" class="btn btn-success btn-pagar fa" ng-click="guardarFicha()" align="center">Guardar Ficha</button>    
+                                            <button type="button" data-toggle="modal" data-target="#declaracion" class="btn btn-primary" ng-click="mostrarModalConfirmacion()">Guardar Ficha</button>
                                         </div>
+                                        
                                     </div>
                                 </div>
                                 <div ng-if="mensajeError" style="color: red; margin-top: 15px;">
@@ -124,6 +141,67 @@
                         </div>
                     </div>
                 </div>
+
+               <!-- Modal de Confirmación de Ficha -->
+<div class="modal fade" id="declaracion" role="dialog" tabindex="-1">
+    <div class="modal-dialog" style="width:1200px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <center>
+                    <h4 class="modal-title">.:: CONFIRMACIÓN DE FICHA EN LÍNEA ::.</h4>
+                </center>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 align="justify">
+                            "Estimado ciudadano, ¿confirma que desea proceder con la reserva de su ficha? Verifique la información ingresada antes de confirmar."
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <!-- Botón para confirmar la reserva desde el modal -->
+                        <button type="button" class="btn btn-success" ng-click="confirmarGuardarFicha()">Confirmar Reserva</button>
+                        <!-- Botón para cancelar la operación (cerrar el modal) -->
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="noPuedeSacarFichaModal" tabindex="-1" role="dialog" aria-labelledby="noPuedeSacarFichaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="noPuedeSacarFichaModalLabel">ALERTA</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               <h2> ESTIMADO  USUARIO </h2> 
+               <h3>Usted no puede sacar más fichas para esta plataforma.</h3>
+               <h3> Escoja otra PLATAFORMA</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeModal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+                
+                
 
                 <!-- Sección para Mis Fichas -->
             <!-- Sección para Mis Fichas -->
@@ -138,7 +216,6 @@
                     <th>Plataforma</th>
                     <th>Fecha</th>
                     <th>Mis fichas</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -151,13 +228,17 @@
                         <button type="button" class="btn btn-primary" ng-click="verPDF(ficha)">Ver PDF</button>
                     </td>
                 </tr>
-                
             </tbody>
         </table>
     </div>
+    
+
 </div>
 
             </div>
         </div>
     </div>
 </div>
+
+
+

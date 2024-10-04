@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@6.14.1/ol.css" type="text/css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Incluye jQuery y Bootstrap -->
+
+
 
 
 <style>
@@ -175,6 +178,22 @@
 
 
 
+<div class="modal" id="modalExito" style="display:none;">
+    <div style="width: 400px; margin: auto; background-color: #1cc212; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <div style="text-align: center;">
+            <h2>Éxito</h2>
+            
+        </div>
+        <div>
+            <h3>Ficha reservada con éxito.</h3>
+        </div>
+    </div>
+</div>
+
+  
+
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="noPuedeSacarFichaModal" tabindex="-1" role="dialog" aria-labelledby="noPuedeSacarFichaModalLabel" aria-hidden="true">
@@ -211,11 +230,11 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Hora</th>
-                    <th>Servicio</th>
-                    <th>Plataforma</th>
-                    <th>Fecha</th>
-                    <th>Mis fichas</th>
+                    <th>HORA</th>
+                    <th>PLATAFORMA</th>
+                    <th>SERVICIO</th>
+                    <th>FECHA</th>
+                    <th>MIS FICHAS</th>
                 </tr>
             </thead>
             <tbody>
@@ -225,13 +244,15 @@
                     <td>{{ficha.nombrePlataforma}}</td>
                     <td>{{ficha.fecha | date:'dd/MM/yyyy'}}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" ng-click="verPDF(ficha)">Ver PDF</button>
+                        <button type="button"  class="btn btn-primary"  ng-click="impirmir(ficha)">ver ficha</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
     
+ 
 
 </div>
 

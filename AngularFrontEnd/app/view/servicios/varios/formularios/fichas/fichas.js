@@ -74,23 +74,25 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
         })
     };
     
+    
     $scope.obtenerPlataforma = function(plataforma) {
         $scope.plataformaId = plataforma;
+
         $scope.obtServicio(plataforma);
         $scope.cambiarUbicacionPorID(plataforma);
         $scope.verificarFichaDia($scope.OIDCIUDADANO, plataforma).then(function(tieneFicha) {
             if (tieneFicha) {
                
-                $scope.horarios = []; // O cualquier lógica para no mostrar horarios
-                $('#noPuedeSacarFichaModal').modal('show'); // Muestra el modal
+               $scope.horarios = []; // O cualquier lógica para no mostrar horarios
+               $('#noPuedeSacarFichaModal').modal('show'); // Muestra el modal
 
-            } else {
+          } else {
                 $scope.ObtHorarios(plataforma); 
-            }
-        });
+          }
+         });
     
         if ($scope.hola.length > 0) {
-            $scope.hola[0].horaSeleccionada = null;
+           $scope.hola[0].horaSeleccionada = null;
         }
     };
     
@@ -348,24 +350,45 @@ $scope.confirmarGuardarFicha = function() {
     // Llamada POST a la API para guardar la ficha
     $http.post('http://172.18.2.207:3095/ficha-programada/', $scope.fichaData)
     .then(function(response) {
-
+        // Realizar las llamadas para obtener los nombres de la plataforma y el servicio
+        return $q.all([
+            $http.get(`http://172.18.2.207:3095/plataforma/${$scope.fichaData.fpro_plat_id}`),
+            $http.get(`http://172.18.2.207:3095/servicio/${$scope.fichaData.fpro_serv_id}`)
+        ]);
+    })
+    .then(function([plataformaResponse, servicioResponse]) {
+        // Actualizar "Mis Fichas" con los nombres obtenidos
         $scope.misFichas.push({
             hora: $scope.fichaData.fpro_hora_seleccionada,
-            nombrePlataforma: parseInt($scope.fichaData.fpro_plat_id),
-            nombreServicio: parseInt($scope.fichaData.fpro_serv_id),
+            nombrePlataforma: plataformaResponse.data.plt_sigla_plataforma, // Asignar el nombre de la plataforma
+            nombreServicio: servicioResponse.data.serv_nom_servicio, // Asignar el nombre del servicio
             fecha: new Date().toLocaleDateString() // Fecha actual
         });
 
-        // Cerrar el modal después de guardar correctamente usando jQuery
+        // Mostrar el modal de éxito
+        document.getElementById('modalExito').style.display = 'block';
+
+        // Ocultar el modal de éxito después de 2 segundos
+        setTimeout(function() {
+            document.getElementById('modalExito').style.display = 'none';
+        }, 3000);
+
+        // Cerrar el modal de declaración
         $('#declaracion').modal('hide');
+        
+        // Limpiar las variables necesarias
         $scope.horarios = [];
         $scope.hola[0].horaSeleccionada = null; 
         
-        //$scope.refreshHorario();
+        // Actualizar datos del usuario si es necesario
         $scope.oidUsuario($scope.OIDCIUDADANO);
     })
-
+    .catch(function(error) {
+        console.error("Error al guardar la ficha:", error);
+        // Manejo de errores (opcional)
+    });
 };
+
 
  
 
@@ -378,9 +401,7 @@ $scope.init = function() {
     // Verificar si el OID se ha asignado correctamente
     if ($scope.OIDCIUDADANO) {
         $scope.obtenerFichasPorOID();
-    } else {
-        console.error("No se pudo recuperar el OID del usuario desde sessionStorage.");
-    }
+    } 
 };
 
 $scope.obtenerFichasPorOID = function() {
@@ -445,33 +466,33 @@ $scope.oidUsuario= function(idCiudadano){
 
 /////////MAPA///////////////
 
-// Definir un objeto con las plataformas y sus ubicaciones según el ID de la plataforma
-$scope.plataformas = {
-    1: {
-      name: "plataforma de prueba",
-      coords: [-68.1193, -16.5110]  
-    },
-    2: {
-      name: "Plataforma A",
-      coords: [-68.1351, -16.4964]  // Coordenadas de otra plataforma (Lon, Lat)
-    },
-    9: {
-      name: "Plataforma B",
-      coords: [-68.0852, -16.5436]  // Otra ubicación simulada (Lon, Lat)
+// Función para cambiar la ubicación según el ID de la plataforma
+$scope.cambiarUbicacionPorID = function (idPlataforma) {
+    if (!idPlataforma) {
+      console.error("ID de la plataforma no proporcionado.");
+      return;
     }
-  };
   
-  // Función para actualizar la ubicación según el ID de la plataforma seleccionada
-  $scope.cambiarUbicacionPorID = function (idPlataforma) {
-    var ubicacion = $scope.plataformas[idPlataforma];
+    // Realizar una llamada HTTP para obtener los datos de la plataforma según el ID
+    $http.get(`http://172.18.2.207:3095/plataforma/${idPlataforma}`)
+      .then(function(response) {
+        var plataforma = response.data;
   
-    if (ubicacion) {
-      // Actualizar el centro del mapa a la ubicación seleccionada
-      $scope.setCenterPositionMarker(ubicacion.coords, 15);  // Zoom más cercano para la ubicación
-      $scope.drawMarkerGPS(ubicacion.coords);  // Mostrar marcador en la ubicación
-    } else {
-      console.error("Plataforma no encontrada para el ID: " + idPlataforma);
-    }
+        if (plataforma && plataforma.latitud && plataforma.longitud) {
+          // Obtener las coordenadas desde la API
+          var latLon = [parseFloat(plataforma.longitud), parseFloat(plataforma.latitud)];
+  
+          // Actualizar el centro del mapa a la ubicación seleccionada
+          $scope.setCenterPositionMarker(latLon, 15);  // Zoom más cercano para la ubicación
+          $scope.drawMarkerGPS(latLon);  // Mostrar marcador en la ubicación
+          console.log(`Marcador actualizado a la plataforma ${plataforma.nombre} en [${latLon}]`);
+        } else {
+          console.error("No se encontraron coordenadas para la plataforma seleccionada.");
+        }
+      })
+      .catch(function(error) {
+        console.error("Error al obtener la ubicación de la plataforma desde la API:", error);
+      });
   };
   
   // Definir el centro y zoom inicial del mapa
@@ -482,7 +503,7 @@ $scope.plataformas = {
   
   // Función para inicializar el mapa
   $scope.iniciarMapa = function () {
-    if (!ol) {
+    if (!window.ol) {
       console.error('OpenLayers no está disponible.');
       return;
     }
@@ -509,6 +530,7 @@ $scope.plataformas = {
       console.log("Mapa inicializado correctamente.");
     }
   
+    // Asegurarse de que el mapa se renderice correctamente
     setTimeout(function () {
       $scope.obtMap.updateSize();
     }, 200);
@@ -532,7 +554,6 @@ $scope.plataformas = {
     elementMarkerGPS.style.width = '50px';
     elementMarkerGPS.style.height = '50px';
     elementMarkerGPS.style.backgroundImage = 'url("https://maps.google.com/mapfiles/ms/icons/red-dot.png")';  // Pin rojo de Google Maps
-    //elementMarkerGPS.innerHTML = '<div class="pin"></div><div class="pulse"></div>';
     elementMarkerGPS.style.backgroundSize = 'contain';
     elementMarkerGPS.style.backgroundRepeat = 'no-repeat';
     elementMarkerGPS.style.position = 'absolute';
@@ -550,16 +571,59 @@ $scope.plataformas = {
     $scope.obtMap.addOverlay($scope.markerGPS);
   };
   
-  // Inicializar el mapa
+  // Inicializar el mapa al cargar la vista
   $scope.iniciarMapa();
   
-  // Simulación de selección de plataforma por ID (puedes cambiarlo por la selección real en tu interfaz)
-  $scope.cambiarUbicacionPorID(1);  // Cambiar por el ID de la plataforma seleccionada, por ejemplo 1 para "Radio Éxito"
+  // Llamada inicial para simular la selección de una plataforma por ID (puedes cambiarlo por la selección real en tu interfaz)
+  $scope.cambiarUbicacionPorID(1);  // Puedes reemplazar `1` con el ID real de la plataforma a mostrar
   
   
 
     
+    ///// pdf 
+    $scope.impirmir = function(ficha) {
+        console.log(ficha);
+        if (!ficha) {
+            console.error("No se recibió una ficha válida.");
+            return;
+        }
     
+        // Crear el contenido del PDF usando los datos de la ficha seleccionada
+        var printContents =
+            "<span style='font-family: Lucida Console;'><center>" +
+            "<strong style='font-size: 12px;'>FICHA DE ATENCIÓN EN LÍNEA</strong><br><br>" +
+            "<strong style='font-size: 12px;'>--------------------------------------------------</strong><br>" +
+            "<strong style='font-size: 20px;'>DETALLES DEL SERVICIO</strong><br><br>" +
+            "<table>" +
+            "<tr><td align='right'><strong style='font-size: 12px;'>PLATAFORMA : </strong></td><td align='left'><strong style='font-size: 12px;'>" +
+            ficha.nombrePlataforma + "</strong></td></tr>" +
+            "<tr><td align='right'><strong style='font-size: 12px;'> SERVICIO: </strong></td><td align='left'><strong style='font-size: 12px;'>" +
+            ficha.nombreServicio + "</strong></td></tr>" +
+            "<tr><td align='right'><strong style='font-size: 12px;'>Hora: </strong></td><td align='left'><strong style='font-size: 12px;'>" +
+            ficha.hora + "</strong></td></tr>" +
+            "<tr><td align='right'><strong style='font-size: 12px;'>Fecha: </strong></td><td align='left'><strong style='font-size: 12px;'>" +
+            $filter('date')(ficha.fecha, 'dd/MM/yyyy') + "</strong></td></tr>" +
+            "</table>" +
+            "<strong style='font-size: 12px;'>--------------------------------------------------</strong><br>" +
+            "<strong style='font-size: 12px;'>Se recomienda que todo usuario esté presente como mínimo 15 minutos antes de la hora reservada.</strong><br>" +
+            "<strong style='font-size: 12px;'>Para más información, ingrese a www.lapaz.bo</strong><br>" +
+            "</center></span>" +
+            "<center><span><strong style='font-size: 12px;'>" + "GRACIAS" + "</strong></span></center>";
+    
+        // Crear una nueva ventana emergente y mostrar el contenido
+        var popupWin = window.open("", "_blank", "width=400,height=400");
+        if (popupWin) {
+            popupWin.document.open();
+            popupWin.document.write('<html><head><title>Ficha de Atención</title></head><body onload="window.print()">' + printContents + "<br><br></body></html>");
+            //popupWin.document.close();
+        } else {
+            console.error("No se pudo abrir la ventana emergente. Asegúrate de que el navegador no esté bloqueando los pop-ups.");
+        }
+    };
+    
+
+
+
 
     //fecha en formato dd/mm/yy
     $scope.fechaFormateada = fechaActual.toLocaleDateString('es-ES', {

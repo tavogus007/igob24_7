@@ -3,6 +3,10 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
     $scope.macrodistritos = [];
     $scope.servicios = [];
     $scope.horarios=[];
+    if(jsonURLS){
+        var urlFichas = CONFIG.CONEXION_IFICHAS;
+
+      }
 
     $scope.obtPlataformas = function () {
         $scope.getPlataforma().then(function (data) {
@@ -348,12 +352,12 @@ $scope.confirmarGuardarFicha = function() {
     }
 
     // Llamada POST a la API para guardar la ficha
-    $http.post('http://172.18.2.207:3095/ficha-programada/', $scope.fichaData)
+    $http.post(urlFichas+'ficha-programada/', $scope.fichaData)
     .then(function(response) {
         // Realizar las llamadas para obtener los nombres de la plataforma y el servicio
         return $q.all([
-            $http.get(`http://172.18.2.207:3095/plataforma/${$scope.fichaData.fpro_plat_id}`),
-            $http.get(`http://172.18.2.207:3095/servicio/${$scope.fichaData.fpro_serv_id}`)
+            $http.get(urlFichas+`plataforma/${$scope.fichaData.fpro_plat_id}`),
+            $http.get(urlFichas+`servicio/${$scope.fichaData.fpro_serv_id}`)
         ]);
     })
     .then(function([plataformaResponse, servicioResponse]) {
@@ -407,7 +411,7 @@ $scope.init = function() {
 $scope.obtenerFichasPorOID = function() {
     const oidUsuario = $scope.OIDCIUDADANO;
 
-    $http.get(`http://172.18.2.207:3095/ficha-programada/oid/${oidUsuario}`)
+    $http.get(urlFichas+`ficha-programada/oid/${oidUsuario}`)
         .then(function(response) {
            
 
@@ -474,7 +478,7 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
     }
   
     // Realizar una llamada HTTP para obtener los datos de la plataforma según el ID
-    $http.get(`http://172.18.2.207:3095/plataforma/${idPlataforma}`)
+    $http.get(urlFichas+`plataforma/${idPlataforma}`)
       .then(function(response) {
         var plataforma = response.data;
   
@@ -575,7 +579,7 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
   $scope.iniciarMapa();
   
   // Llamada inicial para simular la selección de una plataforma por ID (puedes cambiarlo por la selección real en tu interfaz)
-  $scope.cambiarUbicacionPorID(1);  // Puedes reemplazar `1` con el ID real de la plataforma a mostrar
+  $scope.cambiarUbicacionPorID(1); 
   
   
 

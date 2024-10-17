@@ -1,32 +1,47 @@
-function fichasController($scope, $rootScope,$filter, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, sweet,registroLog,ngTableParams,FileUploader,fileUpload, fileUpload1, $sce, $q) {
+function fichasController($scope, $rootScope, $filter, $routeParams, $location, $http, Data, sessionService, CONFIG, LogGuardarInfo, sweet, registroLog, ngTableParams, FileUploader, fileUpload, fileUpload1, $sce, $q) {
 
     $scope.macrodistritos = [];
     $scope.servicios = [];
-    $scope.horarios=[];
-    if(jsonURLS){
-        var urlFichas = CONFIG.CONEXION_IFICHAS;
+    $scope.horarios = [];
+    $scope.listaFichasAtencion = []; // Lista para almacenar las fichas de atención
+    $scope.plataformaSeleccionadaMisFichas = null; // Variable local para "Mis Fichas"
 
-      }
+    $scope.OIDCIUDADANO = sessionStorage.IDSOLICITANTE; // Obtener el OID del ciudadano
 
-    $scope.obtPlataformas = function () {
-        $scope.getPlataforma().then(function (data) {
-            // Asegurarte de que el resultado sea un array
-            $scope.macrodistritos = JSON.parse(data || []);  // Si data es undefined o null, asigna un array vacío
-           
-        });
+
+    const urlFichas = CONFIG.CONEXION_IFICHAS; // URL de la API
+
+
+
+    $scope.cargarMisFichas = function() {
+        // Lógica para cargar las fichas del usuario
     };
     
+    // Llama a la función para cargar las fichas al inicializar
+    $scope.initMisFichas = function() {
+        $scope.cargarMisFichas();
+    };
+    
+    $scope.initMisFichas();
+
+    
+    // Obtener plataformas
+    $scope.obtPlataformas = function () {
+        $scope.getPlataforma().then(function (data) {
+            $scope.macrodistritos = JSON.parse(data || []); // Asignar plataformas
+        });
+    };
+
     $scope.getPlataforma = function () {
         var def = $q.defer();
         var macrodistritos_ = new plataforma();
-        
+
         macrodistritos_.plataformas(function (resultado) {
-            def.resolve(resultado);  // Resolviendo la promesa con el resultado
+            def.resolve(resultado); // Resolviendo la promesa con el resultado
         });
-        
+
         return def.promise;
     };
-    
 
     //horarios API
 
@@ -98,6 +113,15 @@ function fichasController($scope, $rootScope,$filter, $routeParams, $location, $
         if ($scope.hola.length > 0) {
            $scope.hola[0].horaSeleccionada = null;
         }
+
+        $http.get(urlFichas + `plataforma/${plataforma}`)
+        .then(function(response) {
+            const plataformaData = response.data;
+            $scope.direccionPlataforma = plataformaData.plt_direccion_plataforma;
+        })
+        .catch(function(error) {
+            console.error("Error al obtener la dirección de la plataforma:", error);
+        });
     };
     
     
@@ -365,7 +389,9 @@ $scope.confirmarGuardarFicha = function() {
         $scope.misFichas.push({
             hora: $scope.fichaData.fpro_hora_seleccionada,
             nombrePlataforma: plataformaResponse.data.plt_sigla_plataforma, // Asignar el nombre de la plataforma
-            nombreServicio: servicioResponse.data.serv_nom_servicio, // Asignar el nombre del servicio
+            nombreServicio: servicioResponse.data.serv_nom_servicio, // Asignar el nombre del servicioz
+            siglaServicio: servicioResponse.data.serv_sigla_servicio, // Asignar la sigla del servicio
+
             fecha: new Date().toLocaleDateString() // Fecha actual
         });
 
@@ -419,9 +445,11 @@ $scope.obtenerFichasPorOID = function() {
             $scope.misFichas = response.data.map(function(ficha) {
                 return {
                     hora: ficha._fpro_hora_seleccionada,
-                    nombreServicio: ficha.sigla_plataforma, 
-                    nombrePlataforma: ficha.nombre_servicio, 
-                    fecha: new Date() 
+                    nombreServicio: ficha.nombre_servicio, 
+                    nombrePlataforma: ficha.sigla_plataforma, 
+                    siglaServicio: ficha._sigla_servicio,
+                    fecha: new Date(),
+                     id_plataforma: ficha.id_plataforma
                     
                 };
             });
@@ -490,9 +518,7 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
           $scope.setCenterPositionMarker(latLon, 15);  // Zoom más cercano para la ubicación
           $scope.drawMarkerGPS(latLon);  // Mostrar marcador en la ubicación
           console.log(`Marcador actualizado a la plataforma ${plataforma.nombre} en [${latLon}]`);
-        } else {
-          console.error("No se encontraron coordenadas para la plataforma seleccionada.");
-        }
+        } 
       })
       .catch(function(error) {
         console.error("Error al obtener la ubicación de la plataforma desde la API:", error);
@@ -580,28 +606,34 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
   
   // Llamada inicial para simular la selección de una plataforma por ID (puedes cambiarlo por la selección real en tu interfaz)
   $scope.cambiarUbicacionPorID(1); 
+
+
+
+ 
+  
   
   
 
     
     ///// pdf 
     $scope.impirmir = function(ficha) {
-        console.log(ficha);
+      
+    
         if (!ficha) {
             console.error("No se recibió una ficha válida.");
             return;
         }
     
-        // Crear el contenido del PDF usando los datos de la ficha seleccionada
-        var printContents =
+        const printContents =
             "<span style='font-family: Lucida Console;'><center>" +
             "<strong style='font-size: 12px;'>FICHA DE ATENCIÓN EN LÍNEA</strong><br><br>" +
             "<strong style='font-size: 12px;'>--------------------------------------------------</strong><br>" +
             "<strong style='font-size: 20px;'>DETALLES DEL SERVICIO</strong><br><br>" +
+            "<strong style='font-size: 18px; color: #333;'>" + ficha.siglaServicio + "(W)"+ "</strong><br><br>" +  // Mostrar la sigla más grande
             "<table>" +
             "<tr><td align='right'><strong style='font-size: 12px;'>PLATAFORMA : </strong></td><td align='left'><strong style='font-size: 12px;'>" +
             ficha.nombrePlataforma + "</strong></td></tr>" +
-            "<tr><td align='right'><strong style='font-size: 12px;'> SERVICIO: </strong></td><td align='left'><strong style='font-size: 12px;'>" +
+            "<tr><td align='right'><strong style='font-size: 12px;'>SERVICIO: </strong></td><td align='left'><strong style='font-size: 12px;'>" +
             ficha.nombreServicio + "</strong></td></tr>" +
             "<tr><td align='right'><strong style='font-size: 12px;'>Hora: </strong></td><td align='left'><strong style='font-size: 12px;'>" +
             ficha.hora + "</strong></td></tr>" +
@@ -612,21 +644,17 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
             "<strong style='font-size: 12px;'>Se recomienda que todo usuario esté presente como mínimo 15 minutos antes de la hora reservada.</strong><br>" +
             "<strong style='font-size: 12px;'>Para más información, ingrese a www.lapaz.bo</strong><br>" +
             "</center></span>" +
-            "<center><span><strong style='font-size: 12px;'>" + "GRACIAS" + "</strong></span></center>";
+            "<center><span><strong style='font-size: 12px;'>GRACIAS</strong></span></center>";
     
-        // Crear una nueva ventana emergente y mostrar el contenido
-        var popupWin = window.open("", "_blank", "width=400,height=400");
+        const popupWin = window.open("", "_blank", "width=400,height=400");
         if (popupWin) {
             popupWin.document.open();
             popupWin.document.write('<html><head><title>Ficha de Atención</title></head><body onload="window.print()">' + printContents + "<br><br></body></html>");
-            //popupWin.document.close();
         } else {
             console.error("No se pudo abrir la ventana emergente. Asegúrate de que el navegador no esté bloqueando los pop-ups.");
         }
     };
     
-
-
 
 
     //fecha en formato dd/mm/yy
@@ -636,20 +664,131 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
     year: 'numeric'
     });
 
+  /////MONITOR//////
+
+const INTERVALO_ACTUALIZACION = 5000; // 5000 ms = 5 segundos
+let intervaloActualizacion;
+
+// Obtener lista de fichas en tiempo real para el monitor
+$scope.obtenerListaAtencion = function(idPlataforma) {
+    if (!idPlataforma) {
+        console.error("ID de la plataforma no proporcionado.");
+        return;
+    }
+
+    const url = urlFichas + `ficha/plataforma/${idPlataforma}/hoy/punto_atencion/atender/pendiente/en_atencion`;
+
+    $http.get(url)
+        .then(function(response) {
+            // Asumir que response.data es un array de fichas
+            $scope.listaFichasAtencion = response.data.map(ficha => {
+                // Marcar la ficha del usuario
+                ficha.esMiFicha = (ficha._oidUsuario === $scope.OIDCIUDADANO);
+                return ficha;
+            });
+        })
+        .catch(function(error) {
+        });
+};
+
+// Función para iniciar la actualización automática del monitor de fichas
+$scope.iniciarActualizacionAutomatica = function(idPlataforma) {
+    // Detener cualquier intervalo anterior
+    if (intervaloActualizacion) {
+        clearInterval(intervaloActualizacion);
+    }
+
+    // Llama a la función de actualización inmediatamente
+    $scope.obtenerListaAtencion(idPlataforma);
+
+    // Configura el intervalo de actualización automática
+    intervaloActualizacion = setInterval(function() {
+        $scope.obtenerListaAtencion(idPlataforma);
+        $scope.$apply(); // Asegura que los cambios se reflejen en la vista
+    }, INTERVALO_ACTUALIZACION);
+};
+
+// Detener la actualización automática cuando se salga de la vista
+$scope.detenerActualizacionAutomatica = function() {
+    if (intervaloActualizacion) {
+        clearInterval(intervaloActualizacion);
+        intervaloActualizacion = null;
+    }
+};
+
+// Actualizar el monitor
+$scope.actualizarMonitor = function(idPlataforma) {
+    if (!idPlataforma) {
+        console.error("ID de la plataforma no proporcionado.");
+        return;
+    }
+    $scope.iniciarActualizacionAutomatica(idPlataforma);
+};
+
+// Limpiar al destruir la vista
+$scope.$on('$destroy', function() {
+    $scope.detenerActualizacionAutomatica();
+});
+
+// Inicializar plataformas al cargar el controlador
+$scope.obtPlataformas();
+
+
+// mi turno
+$scope.obtenerListaAtencionConMiTurno = function(fichaSeleccionada) {
+    const idPlataforma = fichaSeleccionada.id_plataforma; // Asegúrate de que este campo exista en fichaSeleccionada
+
+    if (!idPlataforma) {
+        console.error("ID de la plataforma no está disponible.");
+        alert("No se ha registrado ninguna ficha aún.");
+        return;
+    }
+
+    const url = urlFichas + `ficha/plataforma/${idPlataforma}/hoy/punto_atencion/atender/pendiente/en_atencion`;
+
+    $http.get(url)
+        .then(function(response) {
+            // Almacenar la lista de fichas para mostrarla
+            $scope.listaFichasAtencion = response.data.map(ficha => {
+                // Marcar la ficha del usuario
+                ficha.esMiFicha = (ficha._oidUsuario === $scope.OIDCIUDADANO);
+                return ficha;
+            });
+        })
+        .catch(function(error) {
+            console.error("Error al obtener la lista de atención de fichas desde la API:", error);
+        });
+};
+
+
+
+
 // cambiar vista 
 
     $scope.mostrarReservarFicha = true; //  por defecto a
-    $scope.mostrarMisReservas = false; // Ocultar la vista
+    $scope.mostrarMisReservas = false;
+    $scope.mostrarMonitorFicha = false; // Ocultar la vista
 
     $scope.btnTabReservarFicha = function() {
-    $scope.mostrarReservarFicha = true; 
-    $scope.mostrarMisReservas = false; 
+        $scope.mostrarReservarFicha = true; 
+        $scope.mostrarMisReservas = false; 
+        $scope.mostrarMonitorFicha = false;  
     };
-
+    
     $scope.btnTabMisReservas = function() {
-    $scope.mostrarReservarFicha = false; 
-    $scope.mostrarMisReservas = true; 
+        $scope.mostrarReservarFicha = false; 
+        $scope.mostrarMisReservas = true; 
+        $scope.mostrarMonitorFicha = false;  
     };
+    
+    $scope.btnTabMiMonitor = function() {
+        $scope.mostrarReservarFicha = false;
+        $scope.mostrarMisReservas = false;
+        $scope.mostrarMonitorFicha = true; 
+    };
+    
+
+
 
 //cambiar vista modal
 

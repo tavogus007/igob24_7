@@ -210,7 +210,6 @@ plataforma.prototype.plataformas = function (functionResp) {
 
 function servicio() {}
 
-// Este método ahora aceptará el parámetro dinámico y gestionará la respuesta.
 servicio.prototype.servicios = function (idPlataforma, functionResp) {
     // Aquí idPlataforma es el parámetro que se pasará a la URL.
     urlComp = "plataforma-servicios/listar/" + idPlataforma;  
@@ -274,15 +273,28 @@ fichas_save.prototype.guardar_= function(functionResp){
         ejecutarAjaxIFichas(urlComp, typeCall, dataParams, functionResp);
       };
     
-    function obtOID(){
-    }
-      obtOID.prototype.obtOID_= function(idCiudadano,functionResp){
-        urlComp= 'ficha-programada/oid/'+ idCiudadano;
-        typeCall = "get";  
-        dataParams = {};   // Parámetros si son necesarios, en este caso vacío
-        
-        ejecutarAjaxIFichas(urlComp, typeCall, dataParams, functionResp);
+
+      // Método para obtener las fichas en atención o pendientes
+      function FichasMonitor() {}
+
+      FichasMonitor.prototype.obtenerFichasEstado = function(idPlataforma, functionResp) {
+          // Construir la URL dinámica con el ID de la plataforma
+          var urlComp = `ficha/plataforma/${idPlataforma}/hoy/punto_atencion/atender/pendiende`;
+          var typeCall = "get";
+          var dataParams = {}; // No hay parámetros adicionales que enviar
+      
+          ejecutarAjaxIFichas(urlComp, typeCall, dataParams, functionResp);
       };
+      
+   // function obtOID(){
+    //}
+   //  obtOID.prototype.obtOID_= function(idCiudadano,functionResp){
+   //    urlComp= 'ficha-programada/oid/'+ idCiudadano;
+   //    typeCall = "get";  
+   //    dataParams = {};   // Parámetros si son necesarios, en este caso vacío
+   //    
+   //    ejecutarAjaxIFichas(urlComp, typeCall, dataParams, functionResp);
+   //  };
     
 
 

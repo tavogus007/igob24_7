@@ -119,8 +119,8 @@ var jsonURLS    =   {
 	CONEXION_ARCHIVOS : "http://gmlppc08901:3035/archivocsv/",
     SERVICIOS_GEO_EDMCLP: "http://172.19.100.179:1234/",
     CONEXION_DEPORTES_SIERRA :"http://192.168.8.5/",
-    //CONEXION_IFICHAS : "http://192.168.6.156:3096/",
-    CONEXION_IFICHAS : "http://172.18.2.207:3095/",
+    CONEXION_IFICHAS : "http://192.168.6.156:3096/",
+    //CONEXION_IFICHAS : "http://172.18.2.207:3095/",
 
 	
 };

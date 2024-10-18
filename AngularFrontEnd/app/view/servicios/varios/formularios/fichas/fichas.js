@@ -735,30 +735,7 @@ $scope.obtPlataformas();
 
 
 // mi turno
-$scope.obtenerListaAtencionConMiTurno = function(fichaSeleccionada) {
-    const idPlataforma = fichaSeleccionada.id_plataforma; // Asegúrate de que este campo exista en fichaSeleccionada
 
-    if (!idPlataforma) {
-        console.error("ID de la plataforma no está disponible.");
-        alert("No se ha registrado ninguna ficha aún.");
-        return;
-    }
-
-    const url = urlFichas + `ficha/plataforma/${idPlataforma}/hoy/punto_atencion/atender/pendiente/en_atencion`;
-
-    $http.get(url)
-        .then(function(response) {
-            // Almacenar la lista de fichas para mostrarla
-            $scope.listaFichasAtencion = response.data.map(ficha => {
-                // Marcar la ficha del usuario
-                ficha.esMiFicha = (ficha._oidUsuario === $scope.OIDCIUDADANO);
-                return ficha;
-            });
-        })
-        .catch(function(error) {
-            console.error("Error al obtener la lista de atención de fichas desde la API:", error);
-        });
-};
 
 
 

@@ -360,7 +360,6 @@ $scope.mostrarModalConfirmacion = function() {
 // Función para confirmar y guardar la ficha cuando se presione el botón de Confirmar en el modal
 $scope.confirmarGuardarFicha = function() {
     $scope.fichaData = {
-        fpro_codigo_ficha_programada: "PRUEBAs",
         fpro_oid_solicitante: $scope.OIDCIUDADANO,
         fpro_serv_id: parseInt($scope.servc),
         fpro_plat_id: parseInt($scope.plataf),
@@ -376,25 +375,12 @@ $scope.confirmarGuardarFicha = function() {
     }
 
     // Llamada POST a la API para guardar la ficha
-    $http.post(urlFichas+'ficha-programada/', $scope.fichaData)
+    $http.post(urlFichas + 'ficha-programada/', $scope.fichaData)
     .then(function(response) {
-        // Realizar las llamadas para obtener los nombres de la plataforma y el servicio
-        return $q.all([
-            $http.get(urlFichas+`plataforma/${$scope.fichaData.fpro_plat_id}`),
-            $http.get(urlFichas+`servicio/${$scope.fichaData.fpro_serv_id}`)
-        ]);
+        // Llamar a la función para actualizar "Mis Fichas" después de guardar
+        return $scope.obtenerFichasPorOID(); // Asegúrate de tener esta función definida
     })
-    .then(function([plataformaResponse, servicioResponse]) {
-        // Actualizar "Mis Fichas" con los nombres obtenidos
-        $scope.misFichas.push({
-            hora: $scope.fichaData.fpro_hora_seleccionada,
-            nombrePlataforma: plataformaResponse.data.plt_sigla_plataforma, // Asignar el nombre de la plataforma
-            nombreServicio: servicioResponse.data.serv_nom_servicio, // Asignar el nombre del servicioz
-            siglaServicio: servicioResponse.data.serv_sigla_servicio, // Asignar la sigla del servicio
-
-            fecha: new Date().toLocaleDateString() // Fecha actual
-        });
-
+    .then(function() {
         // Mostrar el modal de éxito
         document.getElementById('modalExito').style.display = 'block';
 
@@ -409,15 +395,36 @@ $scope.confirmarGuardarFicha = function() {
         // Limpiar las variables necesarias
         $scope.horarios = [];
         $scope.hola[0].horaSeleccionada = null; 
-        
-        // Actualizar datos del usuario si es necesario
-        $scope.oidUsuario($scope.OIDCIUDADANO);
     })
     .catch(function(error) {
         console.error("Error al guardar la ficha:", error);
         // Manejo de errores (opcional)
     });
 };
+
+
+// Función para obtener las fichas del usuario
+$scope.obtenerFichasPorOID = function() {
+    const oidUsuario = $scope.OIDCIUDADANO;
+
+    $http.get(urlFichas + `ficha-programada/oid/${oidUsuario}`)
+        .then(function(response) {
+            // Actualizar el array misFichas con los datos obtenidos
+            $scope.misFichas = response.data.map(function(ficha) {
+                return {
+                    hora: ficha._fpro_hora_seleccionada,
+                    nombrePlataforma: ficha.sigla_plataforma, 
+                    nombreServicio: ficha.nombre_servicio, 
+                    siglaServicio: ficha._sigla_servicio,
+                    fecha: new Date().toLocaleDateString() // Asegúrate de formatear correctamente la fecha
+                };
+            });
+        })
+        .catch(function(error) {
+            console.error("Error al obtener las fichas del usuario:", error);
+        });
+};
+
 
 
  
@@ -448,8 +455,9 @@ $scope.obtenerFichasPorOID = function() {
                     nombreServicio: ficha.nombre_servicio, 
                     nombrePlataforma: ficha.sigla_plataforma, 
                     siglaServicio: ficha._sigla_servicio,
+                    mificha:ficha._fpro_codigo_ficha_programada,
                     fecha: new Date(),
-                     id_plataforma: ficha.id_plataforma
+                     
                     
                 };
             });
@@ -517,7 +525,6 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
           // Actualizar el centro del mapa a la ubicación seleccionada
           $scope.setCenterPositionMarker(latLon, 15);  // Zoom más cercano para la ubicación
           $scope.drawMarkerGPS(latLon);  // Mostrar marcador en la ubicación
-          console.log(`Marcador actualizado a la plataforma ${plataforma.nombre} en [${latLon}]`);
         } 
       })
       .catch(function(error) {
@@ -557,7 +564,6 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
         })
       });
   
-      console.log("Mapa inicializado correctamente.");
     }
   
     // Asegurarse de que el mapa se renderice correctamente
@@ -629,7 +635,7 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
             "<strong style='font-size: 12px;'>FICHA DE ATENCIÓN EN LÍNEA</strong><br><br>" +
             "<strong style='font-size: 12px;'>--------------------------------------------------</strong><br>" +
             "<strong style='font-size: 20px;'>DETALLES DEL SERVICIO</strong><br><br>" +
-            "<strong style='font-size: 18px; color: #333;'>" + ficha.siglaServicio + "(W)"+ "</strong><br><br>" +  // Mostrar la sigla más grande
+            "<strong style='font-size: 18px; color: #333;'>" + ficha.mificha+ "</strong><br><br>" +  // Mostrar la sigla más grande
             "<table>" +
             "<tr><td align='right'><strong style='font-size: 12px;'>PLATAFORMA : </strong></td><td align='left'><strong style='font-size: 12px;'>" +
             ficha.nombrePlataforma + "</strong></td></tr>" +
@@ -664,9 +670,9 @@ $scope.cambiarUbicacionPorID = function (idPlataforma) {
     year: 'numeric'
     });
 
-  /////MONITOR//////
+ /////MONITOR//////
 
-const INTERVALO_ACTUALIZACION = 5000; // 5000 ms = 5 segundos
+const INTERVALO_ACTUALIZACION = 5000; // 5 segundos
 let intervaloActualizacion;
 
 // Obtener lista de fichas en tiempo real para el monitor
@@ -688,6 +694,7 @@ $scope.obtenerListaAtencion = function(idPlataforma) {
             });
         })
         .catch(function(error) {
+            console.error("Error al obtener la lista de atención de fichas desde la API:", error);
         });
 };
 
@@ -732,6 +739,7 @@ $scope.$on('$destroy', function() {
 
 // Inicializar plataformas al cargar el controlador
 $scope.obtPlataformas();
+
 
 
 // mi turno

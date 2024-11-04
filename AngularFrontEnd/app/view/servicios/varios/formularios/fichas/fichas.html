@@ -175,23 +175,23 @@
         <div class="ibox-content" id="caja">
             <div class="row">
                 <div class="row" align="center">
-                    <h3> Reserva en línea de Fichas </h3>
+                    <h3> Reserva en línea de TICKETS </h3>
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="active">
-                        <a data-toggle="tab" ng-click="btnTabReservarFicha()" data-target="#tab-reservar">RESERVAR FICHA</a>
+                        <a data-toggle="tab" ng-click="btnTabReservarFicha()" data-target="#tab-reservar">RESERVAR TICKETS</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" ng-click="btnTabMisReservas()" data-target="#tab-mis-reservas">MIS FICHAS</a>
+                        <a data-toggle="tab" ng-click="btnTabMisReservas()" data-target="#tab-mis-reservas">MIS TICKETS</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" ng-click="btnTabMiMonitor()" data-target="#tab-mi-monitor">MONITOR DE FICHAS</a>
+                        <a data-toggle="tab" ng-click="btnTabMiMonitor()" data-target="#tab-mi-monitor">MONITOR DE TICKETS</a>
                     </li>
                 </ul>
 
                 <!-- Sección para Reservar Ficha -->
 <div ng-show="mostrarReservarFicha" id="tab-reservar" class="seccion-reservar-ficha">
-    <h2>Reservar Ficha</h2>
+    <h2>Reservar Ticket</h2>
     <div class="row" style="padding-left: 15px; padding-top: 10px;">
 
         <!-- Selección de Plataforma y Servicio -->
@@ -303,7 +303,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <center>
-                    <h4 class="modal-title">.:: CONFIRMACIÓN DE FICHA EN LÍNEA ::.</h4>
+                    <h4 class="modal-title">.:: CONFIRMACIÓN DE TICKET EN LÍNEA ::.</h4>
                 </center>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
@@ -311,7 +311,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h4 align="justify">
-                            "Estimado ciudadano, ¿confirma que desea proceder con la reserva de su ficha? Verifique la información ingresada antes de confirmar."
+                            "Estimado ciudadano, ¿confirma que desea proceder con la reserva de su Ticket? Verifique la información ingresada antes de confirmar."
                         </h4>
                     </div>
                 </div>
@@ -337,7 +337,7 @@
             
         </div>
         <div>
-            <h3>Ficha reservada con éxito.</h3>
+            <h3>Ticket reservada con éxito.</h3>
         </div>
     </div>
 </div>
@@ -359,7 +359,7 @@
             </div>
             <div class="modal-body">
                <h2> ESTIMADO  USUARIO </h2> 
-               <h3>Usted no puede sacar más fichas para esta plataforma.</h3>
+               <h3>Usted no puede sacar más Tickets para esta plataforma.</h3>
                <h3> Escoja otra PLATAFORMA</h3>
             </div>
             <div class="modal-footer">
@@ -376,7 +376,7 @@
 
 <!-- Mi Monitor -->
 <div ng-show="mostrarMonitorFicha" id="tab-mi-monitor">
-    <h2>Monitor de Fichas en Tiempo Real</h2>
+    <h2>Monitor de Tickets en Tiempo Real</h2>
 
     <!-- Selección de Plataforma -->
     <div class="col-md-4">
@@ -398,7 +398,7 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Ficha Código</th>
+                    <th>Código Ticket </th>
                     <th>Estado</th>
                     <th>Servicio</th>
                     <th>Fecha</th>
@@ -414,7 +414,7 @@
                     <td>{{ ficha._hora_registro }}</td>
                 </tr>
                 <tr ng-if="!listaFichasAtencion || listaFichasAtencion.length === 0">
-                    <td colspan="5" class="text-center">No hay fichas de atención pendientes.</td>
+                    <td colspan="5" class="text-center">No hay Tickets de atención pendientes.</td>
                 </tr>
             </tbody>
         </table>
@@ -423,8 +423,8 @@
 
 <!-- Listado de Fichas en Mis Reservas -->
 <div ng-show="mostrarMisReservas" id="tab-mis-reservas">
-    <h2>Aquí podrás ver tus fichas reservadas</h2>
-    <h3>Estimado ciudadano, le recordamos que debe presentarse 15 minutos antes de la hora programada para su ficha.</h3>
+    <h2>Aquí podrás ver tus Tickets reservados</h2>
+    <h3>Estimado ciudadano, le recordamos que debe presentarse 15 minutos antes de la hora programada de su ticket.</h3>
     <div>
         <table class="table table-bordered">
             <thead>
@@ -444,7 +444,7 @@
                     <td>{{ ficha.hora }}</td>
                     <td>
                         <button type="button" class="btn btn-primary" ng-click="impirmir(ficha)">
-                            Ver Ficha
+                            Ver Ticket
                         </button>
                         <button type="button" class="btn btn-primary" ng-click="obtenerAtencionPorPlataformaFichas(ficha.plat_id)">
                             Ver Atención
@@ -455,11 +455,11 @@
         </table>
     </div>
     <div ng-show="listaMisFichasAtencion && listaMisFichasAtencion.length > 0">
-        <h3>Listado de mis Fichas</h3>
+        <h3>Listado de mis Tickets</h3>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>FICHA</th>
+                    <th>TICKET</th>
                     <th>PLATAFORMA</th>
                     <th>SERVICIO</th>
                     <th>FECHA</th>
@@ -475,7 +475,7 @@
                     <td>{{ ficha._hora_registro }}</td>
                 </tr>
                 <tr ng-if="!listaMisFichasAtencion || listaMisFichasAtencion.length === 0">
-                    <td colspan="5" class="text-center">No hay fichas de atención pendientes.</td>
+                    <td colspan="5" class="text-center">No hay Tickets de atención pendientes.</td>
                 </tr>
             </tbody>
         </table>

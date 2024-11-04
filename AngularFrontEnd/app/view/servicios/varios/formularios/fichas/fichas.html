@@ -190,112 +190,111 @@
                 </ul>
 
                 <!-- Sección para Reservar Ficha -->
-                <div ng-show="mostrarReservarFicha" id="tab-reservar" class="seccion-reservar-ficha">
-                    <h2>Reservar Ficha</h2>
-                    <div class="row" style="padding-left: 15px; padding-top: 10px;">
-                
-                        <!-- Selección de Plataforma y Servicio -->
-                        <div class="col-md-4">
-                            <div class="seccion-seleccion">
-                                <div class="form-group">
-                                    <label class="control-label">PLATAFORMA:</label>
-                                    <select class="form-control" id="plataf" name="plataf" ng-model="plataf" ng-change="obtenerPlataforma(plataf)">
-                                        <option value="" selected>-- Seleccione --</option>
-                                        <option ng-repeat="plataform in macrodistritos" value="{{plataform.plt_id}}">
-                                            {{ plataform.plt_sigla_plataforma }}
-                                        </option>
-                                    </select>
-                                </div>
+<div ng-show="mostrarReservarFicha" id="tab-reservar" class="seccion-reservar-ficha">
+    <h2>Reservar Ficha</h2>
+    <div class="row" style="padding-left: 15px; padding-top: 10px;">
 
-                                <div class="form-group" ng-if="direccionPlataforma">
-                                    <label class="control-label">Dirección:</label>
-                                    <p>{{ direccionPlataforma }}</p>
-                                </div>
+        <!-- Selección de Plataforma y Servicio -->
+        <div class="col-md-4">
+            <div class="seccion-seleccion">
+                <div class="form-group">
+                    <label class="control-label">PLATAFORMA:</label>
+                    <select class="form-control" id="plataf" name="plataf" ng-model="plataf" ng-change="obtenerPlataforma(plataf)">
+                        <option value="" selected>-- Seleccione --</option>
+                        <option ng-repeat="plataform in macrodistritos" value="{{plataform.plt_id}}">
+                            {{ plataform.plt_sigla_plataforma }}
+                        </option>
+                    </select>
+                </div>
 
+                <div class="form-group" ng-if="direccionPlataforma">
+                    <label class="control-label">Dirección:</label>
+                    <p>{{ direccionPlataforma }}</p>
+                </div>
 
-                                <div class="form-group">
-                                    <label class="control-label">SERVICIO:</label>
-                                    <select class="form-control" id="servc" name="servc" ng-model="servc" ng-change="seleccionarServicio(servc)">
-                                        <option value="" selected>-- Seleccione --</option>
-                                        <option ng-repeat="servici in servicios" value="{{servici.serv_id}}">
-                                            {{ servici.serv_nom_servicio }}
-                                        </option>
-                                    </select>
+                <div class="form-group">
+                    <label class="control-label">SERVICIO:</label>
+                    <select class="form-control" id="servc" name="servc" ng-model="servc" ng-change="seleccionarServicio(servc)">
+                        <option value="" selected>-- Seleccione --</option>
+                        <option ng-repeat="servici in servicios" value="{{servici.serv_id}}">
+                            {{ servici.serv_nom_servicio }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div id="map" class="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
+        </div>
+
+        <!-- Calendario de Reservas -->
+        <div class="col-md-7" ng-if="!mensajeError">
+            <div class="row">
+                <div class="col-md-8" style="margin-top: -40px;"> <!-- Ajuste del margen superior aquí -->
+                    <h4 style="margin: 0;">CALENDARIO DE RESERVAS</h4>
+                    <p style="font-weight: bold; margin: 0;">{{ fechaFormateada }}</p> 
+                </div>
+            </div>
+
+            <div ng-if="isLoaderTable" class="loader-table-overlay">
+                <img style="width: 30px; height: 30px;"
+                     src="../../view/servicios/varios/formularios/transparencia/moustache/tinymce/skins/lightgray/img/loader.gif"
+                     alt="">
+                Espere..
+            </div>
+
+            <!-- Tabla de Horarios -->
+            <div ng-if="mostrarHorarios">
+                <table class="table table-horarios">
+                    <thead>
+                        <tr>
+                            <th>Horarios</th>
+                            <th>{{ hola[0].dia }} - {{ fechaActual | date:'dd/MM/yyyy' }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="hora in horarios">
+                            <td>{{hora}}</td>
+                            <td>
+                                <div 
+                                    id="{{hola[0].id}}{{hora}}"
+                                    ng-class="{
+                                        'celda-tabla-bloc': horariosDisponibles[hora] === 'disponible',
+                                        'celda-reservado-bloc': horariosDisponibles[hora] === 'ocupado',
+                                        'celda-seleccionada': hola[0].horaSeleccionada === hora
+                                    }"
+                                >
+                                    <span>
+                                        {{hola[0].horaSeleccionada === hora ? 'Hora seleccionada' : ''}}
+                                    </span>
+                                    <button ng-click="btnCelda(hola[0], hora)" 
+                                            type="button" 
+                                            class="btn-guardar-ficha"
+                                            ng-hide="hola[0].horaSeleccionada === hora">
+                                        ESCOGE TU FICHA
+                                    </button>
                                 </div>
-                            </div>
-                            <div id="map" class="map" style="height: 400px; width: 100%; margin-top: 15px;"></div>
-                        </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 
-                        <!-- Calendario de Reservas -->
-                        <div class="col-md-7" ng-if="!mensajeError">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <h4 style="margin: auto;">CALENDARIO DE RESERVAS</h4>
-                                    <p style="font-weight: bold;">{{ fechaFormateada }}</p> <!-- Aquí se muestra la fecha formateada -->
-                                </div>
-                            </div>
-                
-                            <div ng-if="isLoaderTable" class="loader-table-overlay">
-                                <img style="width: 30px; height: 30px;"
-                                     src="../../view/servicios/varios/formularios/transparencia/moustache/tinymce/skins/lightgray/img/loader.gif"
-                                     alt="">
-                                Espere..
-                            </div>
-                
-                            <!-- Tabla de Horarios -->
-                            <div ng-if="mostrarHorarios">
-                                <table class="table table-horarios">
-                                    <thead>
-                                        <tr>
-                                            <th>Horarios</th>
-                                            <th>{{ hola[0].dia }} - {{ fechaActual | date:'dd/MM/yyyy' }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="hora in horarios">
-                                            <td>{{hora}}</td>
-                                            <td>
-                                                <div 
-                                                    id="{{hola[0].id}}{{hora}}"
-                                                    ng-class="{
-                                                        'celda-tabla-bloc': horariosDisponibles[hora] === 'disponible',
-                                                        'celda-reservado-bloc': horariosDisponibles[hora] === 'ocupado',
-                                                        'celda-seleccionada': hola[0].horaSeleccionada === hora
-                                                    }"
-                                                >
-                                                    <span>
-                                                        {{hola[0].horaSeleccionada === hora ? 'Hora seleccionada' : ''}}
-                                                    </span>
-                                                    <button ng-click="btnCelda(hola[0], hora)" 
-                                                            type="button" 
-                                                            class="btn-guardar-ficha"
-                                                            ng-hide="hola[0].horaSeleccionada === hora">
-                                                        ESCOGE TU FICHA
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                
-                                <!-- Botón para guardar la ficha seleccionada -->
-                                <div class="col-md-6" ng-if="hola[0].horaSeleccionada">
-                                    <div style="text-align: end; margin-top: 20px;">
-                                        <button type="button" data-toggle="modal" data-target="#declaracion" 
-                                                class="btn-guardar-ficha" ng-click="mostrarModalConfirmacion()">
-                                            Guardar Ficha
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                
-                            <!-- Mensaje de error si no hay horarios disponibles -->
-                            <div ng-if="mensajeError" style="color: red; margin-top: 15px;">
-                                {{mensajeError}}
-                            </div>
-                        </div>
+                <!-- Botón para guardar la ficha seleccionada -->
+                <div class="col-md-6" ng-if="hola[0].horaSeleccionada">
+                    <div style="text-align: end; margin-top: 20px;">
+                        <button type="button" data-toggle="modal" data-target="#declaracion" 
+                                class="btn-guardar-ficha" ng-click="mostrarModalConfirmacion()">
+                            Guardar Ficha
+                        </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Mensaje de error si no hay horarios disponibles -->
+            <div ng-if="mensajeError" style="color: red; margin-top: 15px;">
+                {{mensajeError}}
+            </div>
+        </div>
+    </div>
+</div>
 
 
                <!-- Modal de Confirmación de Ficha -->
@@ -425,6 +424,7 @@
 <!-- Listado de Fichas en Mis Reservas -->
 <div ng-show="mostrarMisReservas" id="tab-mis-reservas">
     <h2>Aquí podrás ver tus fichas reservadas</h2>
+    <h3>Estimado ciudadano, le recordamos que debe presentarse 15 minutos antes de la hora programada para su ficha.</h3>
     <div>
         <table class="table table-bordered">
             <thead>
@@ -446,15 +446,65 @@
                         <button type="button" class="btn btn-primary" ng-click="impirmir(ficha)">
                             Ver Ficha
                         </button>
-                       
+                        <button type="button" class="btn btn-primary" ng-click="obtenerAtencionPorPlataformaFichas(ficha.plat_id)">
+                            Ver Atención
+                        </button>
                     </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-show="listaMisFichasAtencion && listaMisFichasAtencion.length > 0">
+        <h3>Listado de mis Fichas</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>FICHA</th>
+                    <th>PLATAFORMA</th>
+                    <th>SERVICIO</th>
+                    <th>FECHA</th>
+                    <th>HORA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ficha in listaMisFichasAtencion">
+                    <td>{{ ficha._ficha_codigo }}</td>
+                    <td>{{ ficha._nombre_plataforma }}</td>
+                    <td>{{ ficha._nombre_servicio }}</td>
+                    <td>{{ ficha._fecha_registro | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ ficha._hora_registro }}</td>
+                </tr>
+                <tr ng-if="!listaMisFichasAtencion || listaMisFichasAtencion.length === 0">
+                    <td colspan="5" class="text-center">No hay fichas de atención pendientes.</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </div>
 
+    
+
+<!-- Modal de Confirmación para Cambiar Horario -->
+<div class="modal fade" id="modalConfirmacionCambio" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionCambioLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalConfirmacionCambioLabel">Confirmación de Cambio</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>¿Estás seguro de que deseas cambiar la hora seleccionada a {{ nuevaHoraSeleccionada }}?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button> <!-- Botón Cancelar en rojo -->
+                <button type="button" class="btn btn-success" ng-click="confirmarCambioHora()">Confirmar</button> <!-- Botón Confirmar en verde -->
+            </div>
     </div>
+</div>
+
+
 </div>
 
 

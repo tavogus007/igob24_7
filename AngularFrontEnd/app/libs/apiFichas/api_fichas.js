@@ -207,6 +207,12 @@ plataforma.prototype.plataformas = function (functionResp) {
   ejecutarAjaxIFichas(urlComp, typeCall, dataParams, functionResp);
 };
 
+plataforma.prototype.obtenerPlataformaPorId = function (idPlataforma, functionResp) {
+  var urlComp = `plataforma/${idPlataforma}`;  // URL para obtener la plataforma específica
+  var typeCall = "get";
+  var dataParams = {};
+  ejecutarAjaxIFichas(urlComp, typeCall, dataParams, functionResp);
+};
 
 function servicio() {}
 

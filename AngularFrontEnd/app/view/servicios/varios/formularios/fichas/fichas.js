@@ -4,7 +4,12 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
     $scope.servicios = [];
     $scope.horarios = [];
     $scope.listaFichasAtencion = []; // Lista para almacenar las fichas de atención
-    $scope.plataformaSeleccionadaMisFichas = null; // Variable local para "Mis Fichas"
+    $scope.plataformaSeleccionadaReservar = null;
+
+    $scope.plataformaIdMonitor = null; // Para el monitor
+    $scope.plataformaIdMisFichas = null; // Para "Mis Fichas"
+    
+
 
     $scope.OIDCIUDADANO = sessionStorage.IDSOLICITANTE; // Obtener el OID del ciudadano
 
@@ -12,6 +17,10 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
     const urlFichas = CONFIG.CONEXION_IFICHAS; // URL de la API
 
 
+
+
+
+    
 
     $scope.cargarMisFichas = function() {
         // Lógica para cargar las fichas del usuario
@@ -96,6 +105,7 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
     
     $scope.obtenerPlataforma = function(plataforma) {
         $scope.plataformaId = plataforma;
+        
 
         $scope.obtServicio(plataforma);
         $scope.cambiarUbicacionPorID(plataforma);
@@ -118,7 +128,11 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
         .then(function(response) {
             const plataformaData = response.data;
             $scope.direccionPlataforma = plataformaData.plt_direccion_plataforma;
+
+
+       
         })
+        
         .catch(function(error) {
             console.error("Error al obtener la dirección de la plataforma:", error);
         });
@@ -200,6 +214,7 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
         });
     };
     
+
     
     
     
@@ -267,22 +282,40 @@ function generarHoras() {
     $scope.btnCelda = function(semana, hora) {
         // Verificar si ya hay una hora seleccionada
         if (semana.horaSeleccionada) {
-            var confirmacion = confirm('Ya has seleccionado la hora ' + semana.horaSeleccionada + ' para el día ' + semana.dia + '. ¿Deseas cambiar a la hora ' + hora + '?');
-            if (!confirmacion) {
-                return; 
-            }
+            // Almacenar la nueva hora seleccionada en una variable temporal
+            $scope.nuevaHoraSeleccionada = hora; // Variable para guardar la nueva hora
+    
+            // Mostrar el modal de confirmación
+            $('#modalConfirmacionCambio').modal('show');
             
-            // Cambiar el estado de la hora previamente seleccionada a 'disponible'
-            semana.estado = 'disponible'; 
+            // Guardar la referencia a la semana para actualizar después
+            $scope.semanaActual = semana;
+        } else {
+            // Si no hay hora seleccionada, simplemente establecer la nueva hora
+            semana.horaSeleccionada = hora; 
+            semana.estado = 'ocupado'; 
+            
+            // Mostrar el botón de guardar ficha
+            $scope.hola[0].horaSeleccionada = hora; // Esto asegura que el modelo de la vista se actualiza
         }
+    };
+
+    $scope.confirmarCambioHora = function() {
+        // Cambiar el estado de la hora previamente seleccionada a 'disponible'
+        $scope.semanaActual.estado = 'disponible'; 
         
-        // Establecer la nueva hora seleccionada y cambiar su estado
-        semana.horaSeleccionada = hora; 
-        semana.estado = 'ocupado'; 
+        // Establecer la nueva hora seleccionada
+        $scope.semanaActual.horaSeleccionada = $scope.nuevaHoraSeleccionada; 
+        $scope.semanaActual.estado = 'ocupado'; 
     
         // Mostrar el botón de guardar ficha
-        $scope.hola[0].horaSeleccionada = hora; // Esto asegura que el modelo de la vista se actualiza
+        $scope.hola[0].horaSeleccionada = $scope.nuevaHoraSeleccionada; // Esto asegura que el modelo de la vista se actualiza
+    
+        // Cerrar el modal
+        $('#modalConfirmacionCambio').modal('hide');
     };
+    
+    
     
     
     
@@ -404,26 +437,27 @@ $scope.confirmarGuardarFicha = function() {
 
 
 // Función para obtener las fichas del usuario
-$scope.obtenerFichasPorOID = function() {
-    const oidUsuario = $scope.OIDCIUDADANO;
-
-    $http.get(urlFichas + `ficha-programada/oid/${oidUsuario}`)
-        .then(function(response) {
-            // Actualizar el array misFichas con los datos obtenidos
-            $scope.misFichas = response.data.map(function(ficha) {
-                return {
-                    hora: ficha._fpro_hora_seleccionada,
-                    nombrePlataforma: ficha.sigla_plataforma, 
-                    nombreServicio: ficha.nombre_servicio, 
-                    siglaServicio: ficha._sigla_servicio,
-                    fecha: new Date().toLocaleDateString() // Asegúrate de formatear correctamente la fecha
-                };
-            });
-        })
-        .catch(function(error) {
-            console.error("Error al obtener las fichas del usuario:", error);
-        });
-};
+//$scope.obtenerFichasPorOID = function() {
+  //  const oidUsuario = $scope.OIDCIUDADANO;
+//
+  //  $http.get(urlFichas + `ficha-programada/oid/${oidUsuario}`)
+    //    .then(function(response) {
+      //      // Actualizar el array misFichas con los datos obtenidos
+        //    $scope.misFichas = response.data.map(function(ficha) {
+          //      return {
+            //        hora: ficha._fpro_hora_seleccionada,
+              //      nombrePlataforma: ficha.sigla_plataforma, 
+                //    nombreServicio: ficha.nombre_servicio, 
+                  //  siglaServicio: ficha._sigla_servicio,
+                    //plat_id: ficha._id_plataforma, 
+                    //fecha: new Date().toLocaleDateString() // Asegúrate de formatear correctamente la fecha
+                //};
+            //});
+        //})
+        //.catch(function(error) {
+          //  console.error("Error al obtener las fichas del usuario:", error);
+        //});
+//};
 
 
 
@@ -456,6 +490,8 @@ $scope.obtenerFichasPorOID = function() {
                     nombrePlataforma: ficha.sigla_plataforma, 
                     siglaServicio: ficha._sigla_servicio,
                     mificha:ficha._fpro_codigo_ficha_programada,
+                    plat_id: ficha.id_plataforma, 
+
                     fecha: new Date(),
                      
                     
@@ -743,6 +779,26 @@ $scope.obtPlataformas();
 
 
 // mi turno
+$scope.listaMisFichasAtencion = []; // Nueva variable para "Mis Fichas"
+
+// Cambia la función para obtener la atención de la plataforma seleccionada
+$scope.obtenerAtencionPorPlataformaFichas = function(plataformaId) {
+    console.log("ID de la plataforma:", plataformaId);
+    if (!plataformaId) {
+        console.error("ID de la plataforma no proporcionado para 'Ver Atención'.");
+        return;
+    }
+
+    const url = urlFichas + `ficha/plataforma/${plataformaId}/hoy/punto_atencion/atender/pendiente/en_atencion`;
+    $http.get(url)
+        .then(function(response) {
+            // Asigna la respuesta a la nueva variable
+            $scope.listaMisFichasAtencion = response.data; 
+        })
+        .catch(function(error) {
+            console.error("Error al obtener la lista de atención de la plataforma:", error);
+        });
+};
 
 
 
@@ -771,6 +827,9 @@ $scope.obtPlataformas();
         $scope.mostrarMisReservas = false;
         $scope.mostrarMonitorFicha = true; 
     };
+    
+
+
     
 
 

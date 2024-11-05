@@ -23,10 +23,8 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
     
 
     $scope.cargarMisFichas = function() {
-        // Lógica para cargar las fichas del usuario
     };
     
-    // Llama a la función para cargar las fichas al inicializar
     $scope.initMisFichas = function() {
         $scope.cargarMisFichas();
     };
@@ -34,7 +32,6 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
     $scope.initMisFichas();
 
     
-    // Obtener plataformas
     $scope.obtPlataformas = function () {
         $scope.getPlataforma().then(function (data) {
             $scope.macrodistritos = JSON.parse(data || []); // Asignar plataformas

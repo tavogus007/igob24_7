@@ -3,15 +3,19 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
     $scope.macrodistritos = [];
     $scope.servicios = [];
     $scope.horarios = [];
-    $scope.listaFichasAtencion = []; // Lista para almacenar las fichas de atención
+    $scope.listaFichasAtencion = []; 
     $scope.plataformaSeleccionadaReservar = null;
 
-    $scope.plataformaIdMonitor = null; // Para el monitor
-    $scope.plataformaIdMisFichas = null; // Para "Mis Fichas"
+    $scope.plataformaIdMonitor = null;
+    $scope.plataformaIdMisFichas = null; 
     
 
 
-    $scope.OIDCIUDADANO = sessionStorage.IDSOLICITANTE; // Obtener el OID del ciudadano
+    $scope.OIDCIUDADANO = sessionStorage.IDSOLICITANTE; 
+    $scope.nombreCiudadano = sessionStorage.US_NOMBRE; 
+    $scope.primerNombre = $scope.nombreCiudadano.split(' ')[0];
+    $scope.apellidoPaternoCiudadano = sessionStorage.US_PATERNO; 
+
 
 
     const urlFichas = CONFIG.CONEXION_IFICHAS; // URL de la API
@@ -106,27 +110,18 @@ function fichasController($scope, $rootScope, $filter, $routeParams, $location, 
 
         $scope.obtServicio(plataforma);
         $scope.cambiarUbicacionPorID(plataforma);
-        $scope.verificarFichaDia($scope.OIDCIUDADANO, plataforma).then(function(tieneFicha) {
-            if (tieneFicha) {
-               
-               $scope.horarios = []; // O cualquier lógica para no mostrar horarios
-               $('#noPuedeSacarFichaModal').modal('show'); // Muestra el modal
-
-          } else {
-                $scope.ObtHorarios(plataforma); 
-          }
-         });
-    
-        if ($scope.hola.length > 0) {
-           $scope.hola[0].horaSeleccionada = null;
-        }
+        $scope.ObtHorarios(plataforma); 
+   
 
         $http.get(urlFichas + `plataforma/${plataforma}`)
         .then(function(response) {
             const plataformaData = response.data;
             $scope.direccionPlataforma = plataformaData.plt_direccion_plataforma;
 
+            //$scope.cantidadPendientes = plataformaData.cantidadPendientes; // Asegúrate de que esto existe en la respuesta
 
+            // Concatenar el nombre de la plataforma con la cantidad de pendientes
+            //$scope.nombrePlataformaConPendientes = `${plataformaData.nombre_plataforma} (${plataformaData.cantidadPendientes} Pendientes)`;
        
         })
         
@@ -396,41 +391,54 @@ $scope.confirmarGuardarFicha = function() {
         fpro_usr_registrador_id: 0,
         fpro_nro_fichas_programadas: 0,
         fpro_nro_fichas_reservadas: 0,
+        fpro_data_ciudadano: {
+            nombre: $scope.primerNombre,
+            apellidoPaterno: $scope.apellidoPaternoCiudadano
+        },
         fpro_hora_seleccionada: $scope.hola[0].horaSeleccionada
     };
-
-    if (!$scope.fichaData) {
-        console.error("No hay datos de ficha para guardar. Asegúrate de preparar los datos antes de confirmar.");
-        return;
-    }
 
     // Llamada POST a la API para guardar la ficha
     $http.post(urlFichas + 'ficha-programada/', $scope.fichaData)
     .then(function(response) {
         // Llamar a la función para actualizar "Mis Fichas" después de guardar
-        return $scope.obtenerFichasPorOID(); // Asegúrate de tener esta función definida
+        return $scope.obtenerFichasPorOID();
     })
     .then(function() {
         // Mostrar el modal de éxito
-        document.getElementById('modalExito').style.display = 'block';
+        $('#modalExito').modal('show');
 
         // Ocultar el modal de éxito después de 2 segundos
         setTimeout(function() {
-            document.getElementById('modalExito').style.display = 'none';
+            $('#modalExito').modal('hide');
         }, 3000);
 
         // Cerrar el modal de declaración
         $('#declaracion').modal('hide');
         
         // Limpiar las variables necesarias
-        $scope.horarios = [];
+       // $scope.horarios = [];
         $scope.hola[0].horaSeleccionada = null; 
     })
     .catch(function(error) {
         console.error("Error al guardar la ficha:", error);
-        // Manejo de errores (opcional)
+        $('#declaracion').modal('hide'); // Cierra el modal de confirmación
+    
+        if (error.status === 500) {
+            console.log("Mostrando modal de error");
+            $('#modalError').modal('show'); // Asegúrate de que esta línea esté presente
+        } else {
+            alert("Ocurrió un error inesperado. Por favor, intenta nuevamente.");
+        }
     });
+    
+    
+    
+    
 };
+
+
+
 
 
 // Función para obtener las fichas del usuario
@@ -486,8 +494,11 @@ $scope.obtenerFichasPorOID = function() {
                     nombreServicio: ficha.nombre_servicio, 
                     nombrePlataforma: ficha.sigla_plataforma, 
                     siglaServicio: ficha._sigla_servicio,
-                    mificha:ficha._fpro_codigo_ficha_programada,
+                    
                     plat_id: ficha.id_plataforma, 
+                    mificha: ficha.servicio_impresion_plataforma
+                        ? ficha._fpro_codigo_ficha_programada
+                        : `${ficha.pat_nombre_ciudadano.nombre} ${ficha.pat_nombre_ciudadano.apellidoPaterno}`,
 
                     fecha: new Date(),
                      
@@ -499,6 +510,8 @@ $scope.obtenerFichasPorOID = function() {
             console.error("Error al obtener las fichas del usuario:", error);
         });
 };
+
+
 $scope.init();
 
 

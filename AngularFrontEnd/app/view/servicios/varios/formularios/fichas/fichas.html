@@ -199,8 +199,7 @@
                     <select class="form-control" id="plataf" name="plataf" ng-model="plataf" ng-change="obtenerPlataforma(plataf)">
                         <option value="" selected>-- Seleccione --</option>
                         <option ng-repeat="plataform in macrodistritos" value="{{plataform.plt_id}}">
-                            {{ plataform.plt_sigla_plataforma }}
-                        </option>
+                            {{ plataform.plt_sigla_plataforma }} ({{ plataform.cantidadPendientes }} Pendientes)                        </option>
                     </select>
                 </div>
 
@@ -418,6 +417,26 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="modalErrorLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalErrorLabel">Error</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>No puedes sacar una ficha del servicio seleccionado porque ya sacaste previamente una ficha con ese servicio.</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button> <!-- Botón para cerrar en gris -->
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Listado de Fichas en Mis Reservas -->
 <div ng-show="mostrarMisReservas" id="tab-mis-reservas">
     <h2>Aquí podrás ver tus Tickets reservados</h2>
@@ -499,6 +518,25 @@
                 <button type="button" class="btn btn-success" ng-click="confirmarCambioHora()">Confirmar</button> <!-- Botón Confirmar en verde -->
             </div>
     </div>
+</div>
+
+<!-- Modal de Error -->
+
+
+
+
+
+
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button> <!-- Botón para cerrar en gris -->
+
+
+
+
+
+
+
+
+
 </div>
 
 

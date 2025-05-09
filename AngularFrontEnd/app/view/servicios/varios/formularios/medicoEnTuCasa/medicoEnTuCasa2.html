@@ -1,0 +1,1577 @@
+<style>
+  /* FAB */
+  .mec-ayuda-flotante {
+  /* Posición */
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  z-index: 1050; /* Valor alto para asegurar visibilidad */
+  
+  /* Dimensiones */
+  width: 65px;
+  height: 65px;
+  
+  /* Estilos visuales */
+  background: linear-gradient(135deg, #d42230 0%, #a51b26 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 3px 10px rgba(181, 26, 38, 0.4);
+  
+  /* Texto */
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+  
+  /* Interacción */
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Efectos al interactuar */
+.mec-ayuda-flotante:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(181, 26, 38, 0.6);
+}
+
+.mec-ayuda-flotante:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* Efecto de pulso opcional */
+@keyframes mec-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(143, 62, 69, 0.7); }
+  70% { box-shadow: 0 0 0 12px rgba(212, 34, 48, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(212, 34, 48, 0); }
+}
+
+.mec-ayuda-flotante.pulse {
+  animation: mec-pulse 1.5s infinite;
+}
+
+  /*Para el FAB*/
+
+  /* Modal */
+  .FABmodal {
+    z-index: 2000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .FABmodal.active {
+    display: flex;
+  }
+
+  .FABmodal-content {
+  background: linear-gradient(to right, #e173eb, #5aa6e4);;
+  padding: 25px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  height: auto;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+}
+
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .FABmodal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 10px;
+  }
+
+  .FABmodal-title {
+  font-size: 24px;
+  margin: 0;
+  color: #000 !important; /* Fuerza color de texto negro */
+  background: none !important; /* Elimina cualquier fondo */
+  padding: 0;
+  text-shadow: none !important;
+}
+
+  .FABmodal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #000;
+    transition: color 0.2s;
+  }
+
+  .FABmodal-close:hover {
+    color: #f12c36;
+  }
+
+  /* Estilos generales */
+  .FABbody {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* background-color: #; */
+  }
+
+  .FABmodal-FABbody {
+    line-height: 1.6;
+    color: #333;
+  }
+
+  .FABmodal-FABbody ul {
+    padding-left: 20px;
+  }
+
+  .FABmodal-FABbody li {
+    margin-bottom: 8px;
+  }
+
+  .headerMec {
+    background: linear-gradient(to right, #8a2be2, #00d4ff);
+    padding: 15px;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Estilos para el estado */
+  .estado-box {
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    margin: 20px auto;
+    width: 40%;
+    font-size: 18px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60px; /* Asegura una altura mínima */
+  }
+
+  .estado-box p {
+    margin: 0; /* Elimina los márgenes por defecto del párrafo */
+    padding: 5px 0; /* Añade un pequeño padding si es necesario */
+  }
+
+  .estado-true {
+    background-color: #4caf50;
+  }
+  .estado-false {
+    background-color: #ff6666;
+  }
+
+  /* Loading */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+  }
+
+  /* Textos informativos */
+  .info {
+    font-size: 14px;
+    color: gray;
+    margin: 20px;
+    text-align: center;
+  }
+
+  .info-tipo2 {
+    font-size: 14px;
+    color: #000000;
+    margin: 20px;
+    text-align: center;
+  }
+
+  /* Botones principales */
+  .btn {
+    background-color: #00d4ff;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border-radius: 15px;
+    display: block;
+    margin: 10px auto;
+    width: 40%;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+
+  /* Formularios */
+  .form-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    width: 95%;
+  }
+
+  .form-title {
+    color: #8a2be2;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 22px;
+  }
+
+  .form-group {
+    margin-bottom: 25px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #555;
+    font-size: 16px;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+  }
+
+  .form-input:focus {
+    border-color: #8a2be2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
+  }
+
+  textarea.form-input {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .btn-continuar {
+    background-color: #8a2be2;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: block;
+    margin: 40px auto 0;
+    width: 200px;
+    text-align: center;
+    transition: all 0.3s;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .btn-continuar:hover {
+    background-color: #6a5acd;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Carrusel */
+  .carrusel {
+    position: relative;
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    border-radius: 15px;
+    background-color: #f5f5f5;  
+  }
+
+  .carrusel-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    height: 100%;
+  }
+
+  .carrusel-img {
+    width: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 15px;
+    height: 100%;
+    display: block;
+  }
+
+  .carrusel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(188, 46, 201, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s;
+  }
+
+  .carrusel-btn:hover {
+    background-color: rgba(209, 41, 209, 0.9);
+  }
+
+  .carrusel-btn.prev {
+    left: 10px;
+  }
+
+  .carrusel-btn.next {
+    right: 10px;
+  }
+
+  .puntos-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .punto {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ccc;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .punto.active {
+    background-color: #9822e6;
+    transform: scale(1.2);
+  }
+
+  /* Mapa */
+  .map-container {
+    width: 100%;
+    height: 400px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+  }
+  .zonas-control {
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .loading-overlay.active {
+    display: flex;
+  }
+
+  .loading-spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #00d4ff;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Estilos para lista de doctores */
+  .subtitle {
+    padding: 0 15px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+  }
+
+  /* Estilos para selección de doctor */
+  .doctores-container {
+    margin-bottom: 20px;
+  }
+
+  .doctor-card {
+    position: relative;
+    display: flex;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .doctor-card:hover {
+    border-color: #3498db;
+    background-color: #f8fafc;
+  }
+
+  .doctor-selected {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #27ae60;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+
+  .doctor-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    margin-right: 15px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .doctor-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .doctor-info {
+    flex-grow: 1;
+  }
+
+  .doctor-name {
+    margin: 0 0 5px 0;
+    color: #3498db;
+    font-size: 18px;
+  }
+
+  .doctor-specialty,
+  .doctor-phone,
+  .doctor-zone {
+    margin: 3px 0;
+    font-size: 14px;
+    color: #555;
+  }
+
+  /* Estilos para método de pago */
+  .pago-container {
+    margin-bottom: 20px;
+  }
+
+  .importe-box {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .importe-box label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #555;
+  }
+
+  .importe {
+    font-size: 28px;
+    font-weight: bold;
+    color: #27ae60;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: inline-block;
+    min-width: 150px;
+  }
+
+  .metodo-pago-group {
+    margin-bottom: 20px;
+  }
+
+  .metodo-pago-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #555;
+  }
+
+  .confirmar-box {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+  }
+
+  .confirmar-box p {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  /* Estilos para confirmación exitosa */
+  .confirmacion-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 150px);
+    padding: 20px;
+  }
+
+  .confirmacion-box {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  .confirmacion-icon {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background-color: #e8f5e9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .confirmacion-icon img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .confirmacion-title {
+    color: #27ae60;
+    font-size: 24px;
+    margin-bottom: 25px;
+    font-weight: bold;
+  }
+
+  .confirmacion-details {
+    text-align: left;
+    margin-bottom: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+  }
+
+  .detail-row {
+    margin-bottom: 12px;
+    display: flex;
+  }
+
+  .detail-label {
+    font-weight: bold;
+    color: #555;
+    width: 120px;
+    flex-shrink: 0;
+  }
+
+  .detail-value {
+    color: #333;
+    flex-grow: 1;
+  }
+
+  .btn-volver-inicio {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .btn-volver-inicio:hover {
+    background-color: #219653;
+  }
+
+  .back-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 16px;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 8px 12px;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+
+.back-button:hover {
+  background: rgba(0, 0, 0, 0.5);
+  transform: translateX(-3px);
+}
+
+  /* Estilos para vistas */
+
+  .view[ng-show="true"] {
+    opacity: 1;
+    visibility: visible;
+  }
+  .error-text {
+    color: red;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 5px;
+    animation: fadeIn 0.5s ease;
+  }
+  .error-border {
+    border: 1px solid red !important;
+  }
+  /* Estilo para el control de capas */
+  .leaflet-control-layers {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .leaflet-control-layers label {
+    display: block;
+    margin: 5px 0;
+  }
+
+  .leaflet-control-layers-selector {
+    margin-right: 5px;
+  }
+  /* Estilo para los títulos de sección */
+  .confirmacion-details h3 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+    margin-top: 20px;
+  }
+
+  /* Estilo para hacer más legibles los detalles */
+  .detail-row {
+    margin-bottom: 10px;
+    padding: 5px 0;
+    border-bottom: 1px dashed #f0f0f0;
+  }
+
+  .detail-row:last-child {
+    border-bottom: none;
+  }
+
+  .required-field::after {
+    content: " *";
+    color: red;
+    font-size: 16px;
+  }
+  /* Estilo para el diálogo de confirmación personalizado (opcional) */
+  .swal2-popup {
+    font-family: Arial, sans-serif;
+    border-radius: 10px !important;
+  }
+
+  .swal2-title {
+    color: #d42230 !important;
+    font-size: 20px !important;
+  }
+  /* Estilos para el carrusel de ayuda */
+  .ayuda-slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+}
+  .ayuda-carrusel {
+  display: flex;
+  width: 100%; /* 3 slides * 100% de ancho cada uno */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Animación suave con curva personalizada */
+  height: 100%;
+  will-change: transform; /* Optimización de rendimiento */
+  backface-visibility: hidden; /* Evita problemas de renderizado */
+}
+
+  .ayuda-carrusel-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  min-height: 280px; /* Altura mínima ajustable */
+  margin-bottom: 20px;
+}
+
+
+
+.ayuda-imagen-container {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: #f5f5f5; /* Fondo por si la imagen no carga */
+}
+
+  .ayuda-btn:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+
+  .ayuda-imagen {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: opacity 0.3s ease;
+}
+
+  /* Efecto hover para los botones */
+  .ayuda-btn:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+  }
+
+  .ayuda-texto {
+  padding: 0 10px;
+  width: 100%;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.ayuda-texto h3 {
+  color: #8a2be2;
+  margin-bottom: 8px;
+  font-size: 1.5em;
+}
+
+.ayuda-texto p {
+  color: #ffffff;
+  font-size: 1.2em;
+  line-height: 1.4;
+}
+
+  /* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  .ayuda-controles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.ayuda-btn {
+  background: #8a2be2;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.ayuda-btn:hover:not(:disabled) {
+  background: #6a1fc1;
+  transform: scale(1.1);
+}
+
+  .ayuda-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ayuda-puntos {
+    display: flex;
+    gap: 10px;
+  }
+
+  .ayuda-punto {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ddd;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ayuda-punto.active {
+  background: #8a2be2;
+  transform: scale(1.2);
+}
+
+/* Efecto al llegar a los extremos */
+.ayuda-carrusel.at-boundary {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* Estilos para el QR */
+.qr-container {
+  text-align: right;
+  margin: 15px 0;
+}
+
+.btn-ver-qr {
+  background-color: #8a2be2;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-ver-qr:hover {
+  background-color: #6a1fc1;
+}
+
+.metodo-seleccionado {
+  font-size: 14px;
+  color: #555;
+  margin-top: 5px;
+}
+
+/* Modal QR */
+.modal-qr {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-qr-content {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.3s;
+}
+
+.qr-image {
+  width: 200px;
+  height: 200px;
+  margin: 15px 0;
+}
+
+.close-qr {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #555;
+}
+
+.close-qr:hover {
+  color: #d42230;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+::placeholder {
+  font-style: italic;
+  opacity: 0.6;
+}
+</style>
+
+<script
+  type="text/javascript"
+  src="../../view/servicios/varios/formularios/medicoEnTuCasa/medicoEnTuCasa2.js"
+></script>
+<script src="../../libs/loading/loadingoverlay.js"></script>
+<script src="../../libs/apiSalud/apiSalud.js"></script>
+<link href="../../libs/css/sweetalert.css" rel="stylesheet" />
+<script type="text/javascript" src="../../libs/js/sweetalert.min.js"></script>
+<script type="text/javascript" src="../../libs/js/ngSweetAlert.js"></script>
+<script src="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.js"></script>
+<link
+  rel="stylesheet"
+  href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.core.css"
+/>
+<link
+  rel="stylesheet"
+  href="../../../app/view/servicios/varios/formularios/solicitudLotus/moustache/alertify/alertify.default.css"
+  id="toggleCSS"
+/>
+
+<link href="../../libs/css/select2.min.css" rel="stylesheet" async />
+<script src="../../libs/js/select2.min.js" async></script>
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script type="text/javascript">
+  $("#file-input").change(function (e) {
+    var id = 0;
+    angular.element(this).scope().addImage(e, id);
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".js-example-basic-single").select2();
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.7.5/proj4.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reqwest/2.0.5/reqwest.min.js"></script>
+
+<div id="outerSalud" class="col-md-12 row" ng-controller="mecController">
+  <div>
+    <p class="headerMec">Médico en tu Casa</p>
+    <div class="col-md-12" ng-cloak>
+      <!-- Contenedor principal de vistas -->
+      <div class="view-container">
+        <!-- Vista principal -->
+        <div ng-show="vistaActual === 'inicio'">
+          <!-- Estado del usuario -->
+          <div class="estado-box" ng-class="{'estado-true': variableEstadoFicha, 'estado-false': !variableEstadoFicha}">
+            <p>
+                <b>Estado:</b> 
+                <span ng-if="variableEstadoFicha">Tiene Ficha Activa</span>
+                <span ng-if="!variableEstadoFicha">No Tiene Ficha</span>
+            </p>
+        </div>
+        
+          <!-- Carrusel -->
+          <div class="carrusel">
+            <div class="carrusel-container" ng-style="{'transform': 'translateX(-' + (currentIndex * 100) + '%)'}">
+              <img ng-repeat="imagen in imagenes" ng-src="{{imagen}}" class="carrusel-img" />
+            </div>
+            <button class="carrusel-btn prev" ng-click="prevImage()">‹</button>
+            <button class="carrusel-btn next" ng-click="nextImage()">›</button>
+            <div class="puntos-container">
+              <div ng-repeat="imagen in imagenes track by $index" class="punto" 
+                   ng-class="{'active': $index === currentIndex}" 
+                   ng-click="goToImage($index)"></div>
+            </div>
+          </div>
+        
+          <!-- Información descriptiva -->
+          <p class="info">Nuevo aplicativo web y móvil</p>
+          <p class="info-tipo2">
+            El superservicio <b>Médico en tu casa</b> tiene por objetivo facilitar
+            la atención de salud a la población en su domicilio, especialmente a aquellos que tienen dificultades para desplazarse o se encuentran
+            incapacitados.
+          </p>
+        
+          <!-- Botón condicional -->
+          <div ng-if="!variableEstadoFicha ">
+            <button class="btn" ng-click="cambiarVista('datosPersonales')">
+              Solicitar Atención Médica
+            </button>
+          </div>
+        
+          <!-- Mensaje cuando ya tiene ficha -->
+          <div ng-if="variableEstadoFicha" class="info-tipo2" style="margin-top: 20px; color: #4caf50;">
+            <i class="fa fa-check-circle"></i> <b>Usted ya tiene una ficha médica registrada.</b>
+          </div>
+        
+        </div>
+
+        <!-- Vista de datos personales -->
+
+        <div ng-show="vistaActual === 'datosPersonales'">
+          <!-- <div class="header">Médico En Tu Casa</div> -->
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+
+          <div class="form-container">
+            <h2 class="form-title">MOTIVO DE LA CONSULTA</h2>
+
+            <div class="form-group">
+              <label class="required-field"
+                >DESCRIBA AQUI EL MOTIVO DE LA CONSULTA:</label
+              >
+              <textarea
+                class="form-input"
+                ng-model="formData.motivoConsulta"
+                placeholder="Dolor en la zona lumbar"
+                rows="4"
+                required
+                ng-class="{'error-border': showErrors && !formData.motivoConsulta}"
+              ></textarea>
+              <div
+                class="error-message"
+                ng-show="showErrors && !formData.motivoConsulta"
+              >
+                * Este campo es obligatorio
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="required-field"
+                >INGRESE UN NÚMERO DE REFERENCIA:</label
+              >
+              <input
+                type="text"
+                class="form-input"
+                ng-model="formData.numeroReferencia"
+                placeholder="77881234"
+                required
+                ng-pattern="/^[0-9]*$/"
+                ng-class="{'error-border': showErrors && (!formData.numeroReferencia || !isValidReference(formData.numeroReferencia))}"
+              />
+              <div
+                class="error-message"
+                ng-show="showErrors && !formData.numeroReferencia"
+              >
+                * Este campo es obligatorio
+              </div>
+              <div
+                class="error-message"
+                ng-show="showErrors && formData.numeroReferencia && !isValidReference(formData.numeroReferencia)"
+              >
+                * Debe ser un número de 8 dígitos
+              </div>
+            </div>
+
+            <button
+              class="btn-continuar"
+              ng-click="guardarDatosPersonales()"
+              ng-disabled="cargando"
+            >
+              Continuar
+            </button>
+          </div>
+
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+        </div>
+
+        <!-- Vista de ubicación -->
+        <div ng-show="vistaActual === 'ubicacion'">
+          <!-- <div class="header">Médico En Tu Casa</div> -->
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+
+          <div class="form-container">
+            <h2 class="form-title">CONFIRMACIÓN DE LA UBICACIÓN</h2>
+
+            <div class="form-group">
+              <label class="required-field">DIRECCIÓN:</label>
+              <p>Marque en el mapa para llenar este campo automaticamente</p>
+              <input
+                type="text"
+                class="form-input"
+                ng-model="ubicacion.direccion"
+                placeholder="Ingrese su dirección completa"
+                required
+                ng-class="{'error-border': showErrors && !ubicacion.direccion}"
+              />
+              <div
+                class="error-message"
+                ng-show="showErrors && !ubicacion.direccion"
+              >
+                * Este campo es obligatorio
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div id="map" class="map-container"></div>
+              
+              <div
+                class="error-message"
+                ng-show="showErrors && !ubicacion.coordenadas"
+              >
+                * Por favor seleccione una ubicación en el mapa
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="required-field"
+                >REFERENCIA ADICIONAL (opcional):</label
+              >
+              <textarea
+                class="form-input"
+                ng-model="ubicacion.referencia"
+                placeholder="Ej: Portón azul, tercer piso, Nro. de puerta 1234, etc."
+                rows="3"
+              ></textarea>
+            </div>
+
+            <button
+              class="btn-continuar"
+              ng-click="guardarUbicacion()"
+              ng-disabled="cargando"
+            >
+              Continuar
+            </button>
+          </div>
+
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+        </div>
+
+        <!-- Vista de lista de doctores -->
+        <div ng-show="vistaActual === 'listaDoctores'">
+          <!-- <div class="header">Médico en Tu Casa</div> -->
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+
+          <div class="form-container">
+            <h2 class="form-title">SELECCIONE UN DOCTOR</h2>
+
+            <!-- Mensaje de carga -->
+            <div ng-if="cargando" class="info">
+              Cargando doctores disponibles...
+            </div>
+
+            <!-- Lista de doctores -->
+            <div class="doctores-container">
+              <div
+                class="doctor-card"
+                ng-repeat="doctor in doctores"
+                ng-click="seleccionarDoctor(doctor)"
+              >
+                <div class="doctor-image">
+                  <!-- CAMBIAR LA RUTA DE LA IMAGEN SEGUN TU ESTRUCTURA -->
+                  <img
+                    ng-src="{{doctor.imagen || 'img/doctor-placeholder.png'}}"
+                    alt="Foto del doctor"
+                    onerror="this.src='img/doctor-placeholder.png'"
+                  />
+                </div>
+
+                <div class="doctor-info">
+                  <h3 class="doctor-name">Dr. {{doctor.nombre}}</h3>
+                  <p class="doctor-specialty">
+                    <strong>Especialidad:</strong> {{doctor.especialidad}}
+                  </p>
+                  <p class="doctor-phone">
+                    <strong>Celular:</strong> {{doctor.celular}}
+                  </p>
+                </div>
+
+                <div
+                  class="doctor-selected"
+                  ng-show="doctorSeleccionado && doctorSeleccionado.id === doctor.id"
+                >
+                  ✓ Seleccionado
+                </div>
+              </div>
+
+              <div ng-if="doctores.length === 0 && !cargando" class="info">
+                No se encontraron doctores disponibles
+              </div>
+            </div>
+
+            <div class="error-message" ng-show="showDoctorError" style="text-align: center;">
+              * Debe seleccionar un doctor para continuar
+            </div>
+
+            <button
+              class="btn-continuar"
+              ng-click="confirmarDoctor()">
+              Confirmar Doctor
+            </button>
+          </div>
+
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+        </div>
+
+        <!-- Vista de método de pago -->
+        <div ng-show="vistaActual === 'metodoPago'">
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+          <div class="form-container">
+            <h2 class="form-title">MÉTODO DE PAGO</h2>
+        
+            <div class="pago-container">
+              <div class="importe-box">
+                <label>Importe a pagar:</label>
+                <div class="importe">Bs 30.00</div>
+              </div>
+        
+              <div class="metodo-pago-group">
+                <label class="required-field">MÉTODO DE PAGO:</label>
+                <select class="form-input" ng-model="metodoPago" ng-change="showPageError = false" required>
+                  <option value="">Seleccione un método</option>
+                  <option value="efectivo">Efectivo (pago en el domicilio)</option>
+                  <option value="qr">Pago por QR</option>
+                </select>
+              </div>
+        
+              <!-- Contenedor del QR (nuevo) -->
+              <div class="qr-container" ng-show="metodoPago === 'qr'">
+                <button class="btn-ver-qr" ng-click="mostrarQR()">Ver QR</button>
+                <p class="metodo-seleccionado">Método seleccionado: Pago por QR</p>
+              </div>
+        
+              <div class="confirmar-box" ng-show="metodoPago">
+                <p>
+                  Método seleccionado: 
+                  <strong>{{getMetodoPagoText(metodoPago)}}</strong>
+                </p>
+              </div>
+            </div>
+
+            <div class="error-message" ng-show="showPagoError && !metodoPago">
+              * Debe seleccionar un método de pago para continuar
+            </div>
+        
+            <button class="btn-continuar" 
+                    ng-click="guardarMetodoPago()">
+              Continuar
+            </button>
+          </div>
+        
+          <!-- Modal del QR (nuevo) -->
+          <div class="modal-qr" ng-show="mostrarModalQR">
+            <div class="modal-qr-content">
+              <span class="close-qr" ng-click="cerrarQR()">&times;</span>
+              <img src="/app/view/autenticacion/imgs/qr.png" alt="Código QR para pago" class="qr-image">
+              <p>Escanea este código para completar el pago</p>
+            </div>
+          </div>
+        
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+        </div>
+        
+        <!-- Vista de confirmación exitosa -->
+        <div ng-show="vistaActual === 'confirmacionExitosa'">
+          <!-- <div class="header">Médico en Tu Casa</div> -->
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+
+          <div class="confirmacion-container">
+            <div class="confirmacion-box">
+              <h2 class="confirmacion-title">RESUMEN DE RESERVA</h2>
+
+              <!-- Sección Datos del Paciente -->
+              <div class="confirmacion-details">
+                <h3>Datos del Paciente</h3>
+
+                <div class="detail-row">
+                  <span class="detail-label">Nombre completo:</span>
+                  <span class="detail-value">
+                    {{nombrePersona}} {{appaternoPersona}} {{apmaternoPersona ||
+                    ''}}
+                  </span>
+                </div>
+
+                <div class="detail-row" ng-if="email">
+                  <span class="detail-label">Correo electrónico:</span>
+                  <span class="detail-value">{{email}}</span>
+                </div>
+              </div>
+
+              <!-- Sección Detalles de la Consulta -->
+              <div class="confirmacion-details">
+                <h3>Detalles de la Consulta</h3>
+
+                <div class="detail-row">
+                  <span class="detail-label">Motivo de consulta:</span>
+                  <span class="detail-value"
+                    >{{datosConsulta.formData.motivoConsulta}}</span
+                  >
+                </div>
+
+                <div class="detail-row">
+                  <span class="detail-label">Número de referencia:</span>
+                  <span class="detail-value"
+                    >{{datosConsulta.formData.numeroReferencia}}</span
+                  >
+                </div>
+
+                <div class="detail-row">
+                  <span class="detail-label">Doctor:</span>
+                  <span class="detail-value"
+                    >Dr. {{datosConsulta.doctor.nombre}}</span
+                  >
+                </div>
+
+                <div class="detail-row">
+                  <span class="detail-label">Especialidad:</span>
+                  <span class="detail-value"
+                    >{{datosConsulta.doctor.especialidad}}</span
+                  >
+                </div>
+
+                <div class="detail-row">
+                  <span class="detail-label">Método de pago:</span>
+                  <span class="detail-value"
+                    >{{getMetodoPagoText(datosConsulta.metodoPago.tipo)}}</span
+                  >
+                </div>
+
+                <div class="detail-row">
+                  <span class="detail-label">Importe:</span>
+                  <span class="detail-value"
+                    >Bs {{datosConsulta.metodoPago.importe.toFixed(2)}}</span
+                  >
+                </div>
+
+                <div class="detail-row">
+                  <span class="detail-label">Dirección:</span>
+                  <span class="detail-value"
+                    >{{datosConsulta.ubicacion.direccion}}</span
+                  >
+                </div>
+
+                <div
+                  class="detail-row"
+                  ng-if="datosConsulta.ubicacion.referencia"
+                >
+                  <span class="detail-label">Referencia adicional:</span>
+                  <span class="detail-value"
+                    >{{datosConsulta.ubicacion.referencia}}</span
+                  >
+                </div>
+              </div>
+
+              <button
+                class="btn-volver-inicio"
+                ng-click="confirmarSolicitud()"
+                ng-disabled="cargando"
+              >
+                {{ cargando ? 'Enviando...' : 'Aceptar' }}
+              </button>
+            </div>
+          </div>
+
+          <div class="back-button" ng-click="irAPaginaAnterior()">← Volver</div>
+        </div>
+      </div>
+
+      <!-- Elementos compartidos -->
+      <button class="mec-ayuda-flotante" ng-click="toggleAyuda()">Ayuda <br />?</button>
+
+      <!-- Modal de ayuda (actualizado) -->
+      <!-- Modal de ayuda - Versión completa con transiciones -->
+      <div class="FABmodal" ng-class="{'active': mostrarModal}">
+        <div class="FABmodal-content">
+          <div class="FABmodal-header">
+            <h2 class="FABmodal-title" style="background: none !important;"><p>Guía de Reserva</p></h2>
+            <button class="FABmodal-close" ng-click="toggleAyuda()">×</button>
+          </div>
+
+          <div class="FABbody">
+            <!-- Contenedor principal del carrusel -->
+            <div class="ayuda-carrusel-container">
+              <!-- Carrusel con slides -->
+              <div
+                class="ayuda-carrusel"
+                ng-style="{'transform': 'translateX(-' + (ayudaSlideActual * 100) + '%)'}"
+              >
+                <!-- Slide 1 -->
+                <div class="ayuda-slide">
+                  <div class="ayuda-imagen-container">
+                    <img
+                      src="imgs/ayudaN1.png"
+                      class="ayuda-imagen"
+                      alt="Paso 1: Inicio"
+                    />
+                  </div>
+                  <div class="ayuda-texto">
+                    <h3>Paso 1</h3>
+                    <p>
+                      Una vez iniciada la sesión, busque en el menu la opción <b>Médico en tu casa</b>, a continuación solicite una atención médica.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="ayuda-slide">
+                  <div class="ayuda-imagen-container">
+                    <img
+                      src="imgs/ayudaN2.png"
+                      class="ayuda-imagen"
+                      alt="Paso 2: Motivo de consulta"
+                    />
+                  </div>
+                  <div class="ayuda-texto">
+                    <h3>Paso 2</h3>
+                    <p>
+                      Introduzca el motivo de la consulta e ingrese un número de referencia.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="ayuda-slide">
+                  <div class="ayuda-imagen-container">
+                    <img
+                      src="imgs/ayudaN3.png"
+                      class="ayuda-imagen"
+                      alt="Paso 3: Ubicacion del domicilio"
+                    />
+                  </div>
+                  <div class="ayuda-texto">
+                    <h3>Paso 3</h3>
+                    <p>
+                      Ingrese la ubicación de su domicilio manualmente (o simplemente seleccione su ubicación en el mapa). De manera opcional puede dar mas detalles de su vivienda como el color de su fachada, el Nro de timbre, etc.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Slide 4 -->
+                <div class="ayuda-slide">
+                  <div class="ayuda-imagen-container">
+                    <img
+                      src="imgs/ayudaN4.png"
+                      class="ayuda-imagen"
+                      alt="Paso 4: Selección de médico"
+                    />
+                  </div>
+                  <div class="ayuda-texto">
+                    <h3>Paso 4</h3>
+                    <p>
+                      Seleccione el doctor disponible (de acuerdo a la zona en la que se encuentra).
+                    </p>
+                  </div>
+                </div>
+
+
+                <!-- Slide 5 -->
+                <div class="ayuda-slide">
+                  <div class="ayuda-imagen-container">
+                    <img
+                      src="imgs/ayudaN5.png"
+                      class="ayuda-imagen"
+                      alt="Paso 5: Selección un método de pago"
+                    />
+                  </div>
+                  <div class="ayuda-texto">
+                    <h3>Paso 5</h3>
+                    <p>
+                      Seleccione uno de los dos métodos de pago, En efectivo o por QR.
+                    </p>
+                  </div>
+                </div>
+
+
+
+                <!-- Slide 6 -->
+                <div class="ayuda-slide">
+                  <div class="ayuda-imagen-container">
+                    <img
+                      src="imgs/ayudaN6.png"
+                      class="ayuda-imagen"
+                      alt="Paso 6: Resumen"
+                    />
+                  </div>
+                  <div class="ayuda-texto">
+                    <h3>Paso 6</h3>
+                    <p>
+                      Revise los datos introducidos y presione en Aceptar para finalizar.
+                    </p>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+
+            <!-- Controles de navegación -->
+            <div class="ayuda-controles">
+              <button
+                class="ayuda-btn ayuda-btn-prev"
+                ng-click="prevAyudaSlide()"
+              >
+                ‹
+              </button>
+
+              <div class="ayuda-puntos">
+                <span
+                  ng-repeat="slide in [0,1,2,3,4,5]"
+                  class="ayuda-punto"
+                  ng-class="{'active': ayudaSlideActual === $index}"
+                  ng-click="cambiarAyudaSlide($index)"
+                >
+                </span>
+              </div>
+
+              <button
+                class="ayuda-btn ayuda-btn-next"
+                ng-click="nextAyudaSlide()"
+              >
+                ›
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="loading-overlay" ng-class="{'active': cargando}">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </div>
+</div>

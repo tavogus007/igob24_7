@@ -161,7 +161,6 @@
   /* Estilos para el estado */
   .estado-box {
     padding: 10px;
-    border-radius: 10px;
     color: white;
     margin: 20px auto;
     width: 40%;
@@ -202,14 +201,15 @@
 
   /* Textos informativos */
   .info {
-    font-size: 14px;
     color: gray;
     margin: 20px;
     text-align: center;
+    font-size: 16px;
+    font-weight: bold;
   }
 
   .info-tipo2 {
-    font-size: 14px;
+    font-size: 16px;
     color: #000000;
     margin: 20px;
     text-align: center;
@@ -1039,7 +1039,7 @@
         
           <!-- Botón condicional -->
           <div ng-if="!variableEstadoFicha ">
-            <button class="btn" ng-click="cambiarVista('datosPersonales')">
+            <button class="btn-continuar" ng-click="cambiarVista('datosPersonales')">
               Solicitar Atención Médica
             </button>
           </div>

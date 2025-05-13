@@ -358,7 +358,7 @@ function cargarConExpiracion() {
 
   // Función para cargar hospitales desde el endpoint
 function cargarHospitales() {
-  $http.get('http://localhost:3000/hospital-municipal')
+  $http.get('http://172.18.2.144:3000/hospital-municipal')
     .then(function(response) {
       if (response.data && Array.isArray(response.data)) {
         response.data.forEach(function(hospital) {

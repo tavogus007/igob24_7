@@ -161,6 +161,7 @@
   /* Estilos para el estado */
   .estado-box {
     padding: 10px;
+    border-radius: 10px;
     color: white;
     margin: 20px auto;
     width: 40%;
@@ -201,10 +202,10 @@
 
   /* Textos informativos */
   .info {
+    font-size: 16px;
     color: gray;
     margin: 20px;
     text-align: center;
-    font-size: 16px;
     font-weight: bold;
   }
 
@@ -213,6 +214,7 @@
     color: #000000;
     margin: 20px;
     text-align: center;
+    font-weight: normal;
   }
 
   /* Botones principales */
@@ -710,6 +712,12 @@
     border-bottom: none;
   }
 
+  .field_opcional {
+    font-size: 16px;
+    color: #000000;
+    margin-top: 5px;
+  }
+
   .required-field::after {
     content: " *";
     color: red;
@@ -953,6 +961,63 @@
   font-style: italic;
   opacity: 0.6;
 }
+
+.loading-estado {
+  text-align: center;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+}
+
+.loading-estado .spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Estado container */
+.estado-container {
+  position: relative;
+  min-height: 60px;
+  margin: 20px auto;
+}
+
+/* Loading */
+.estado-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.estado-loading .spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #d42230; /* Color principal de tu tema */
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 </style>
 
 <script
@@ -1006,15 +1071,27 @@
       <div class="view-container">
         <!-- Vista principal -->
         <div ng-show="vistaActual === 'inicio'">
-          <!-- Estado del usuario -->
-          <div class="estado-box" ng-class="{'estado-true': variableEstadoFicha, 'estado-false': !variableEstadoFicha}">
-            <p>
-                <b>Estado:</b> 
-                <span ng-if="variableEstadoFicha">Tiene Ficha Activa</span>
-                <span ng-if="!variableEstadoFicha">No Tiene Ficha</span>
-            </p>
-        </div>
-        
+  <!-- Estado del usuario - Versión mejorada -->
+  <div class="estado-container">
+    <!-- Spinner de carga (se muestra solo mientras verifica) -->
+    <div class="estado-loading" ng-if="cargandoEstado">
+      <div class="spinner"></div>
+    </div>
+    
+    <!-- Estado real (se muestra cuando termina de cargar) -->
+    <div ng-if="!cargandoEstado">
+      <div class="estado-box" 
+           ng-class="{'estado-true': variableEstadoFicha, 'estado-false': !variableEstadoFicha}"
+           ng-click="variableEstadoFicha && mostrarDetallesReserva()"
+           ng-style="{ 'cursor': variableEstadoFicha ? 'pointer' : 'default' }">
+         <p>
+          <b>Estado:</b> 
+          <span>{{ variableEstadoFicha ? 'Tiene Ficha Activa' : 'No Tiene Ficha' }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+          
           <!-- Carrusel -->
           <div class="carrusel">
             <div class="carrusel-container" ng-style="{'transform': 'translateX(-' + (currentIndex * 100) + '%)'}">
@@ -1090,6 +1167,7 @@
                 ng-model="formData.numeroReferencia"
                 placeholder="77881234"
                 required
+                maxlength="8"
                 ng-pattern="/^[0-9]*$/"
                 ng-class="{'error-border': showErrors && (!formData.numeroReferencia || !isValidReference(formData.numeroReferencia))}"
               />
@@ -1158,7 +1236,7 @@
             </div>
 
             <div class="form-group">
-              <label class="required-field"
+              <label class="field_opcional"
                 >REFERENCIA ADICIONAL (opcional):</label
               >
               <textarea
@@ -1568,6 +1646,47 @@
           </div>
         </div>
       </div>
+
+      <div class="modal-reserva" ng-class="{'active': mostrarDetalleReservaModal}">
+    <div class="modal-reserva-content">
+        <div class="modal-reserva-header">
+            <h2>Detalles de tu Reserva Activa</h2>
+            <button class="modal-reserva-close" ng-click="mostrarDetalleReservaModal = false">×</button>
+        </div>
+        
+        <div class="modal-reserva-body">
+            <!-- Motivo de Consulta -->
+            <div class="detail-row" ng-if="datosReservaActiva.formData">
+                <span class="detail-label">Motivo:</span>
+                <span class="detail-value">{{datosReservaActiva.formData.motivoConsulta}}</span>
+            </div>
+            
+            <!-- Número de Referencia -->
+            <div class="detail-row" ng-if="datosReservaActiva.formData">
+                <span class="detail-label">Referencia:</span>
+                <span class="detail-value">{{datosReservaActiva.formData.numeroReferencia}}</span>
+            </div>
+            
+            <!-- Doctor -->
+            <div class="detail-row" ng-if="datosReservaActiva.doctor">
+                <span class="detail-label">Doctor:</span>
+                <span class="detail-value">Dr. {{datosReservaActiva.doctor.nombre}}</span>
+            </div>
+            
+            <!-- Método de Pago -->
+            <div class="detail-row" ng-if="datosReservaActiva.metodoPago">
+                <span class="detail-label">Pago:</span>
+                <span class="detail-value">{{datosReservaActiva.metodoPago.tipo | uppercase}} - Bs {{datosReservaActiva.metodoPago.importe}}</span>
+            </div>
+            
+            <!-- Dirección -->
+            <div class="detail-row" ng-if="datosReservaActiva.ubicacion">
+                <span class="detail-label">Dirección:</span>
+                <span class="detail-value">{{datosReservaActiva.ubicacion.direccion}}</span>
+            </div>
+        </div>
+    </div>
+</div>
 
       <div class="loading-overlay" ng-class="{'active': cargando}">
         <div class="loading-spinner"></div>

@@ -1,5 +1,6 @@
 function mecController(
   $scope,
+  $anchorScroll,
   $rootScope,
   $filter,
   $routeParams,
@@ -113,8 +114,59 @@ function mecController(
 
 
 
+
+  // Llamar al verificar estado al iniciar
+  verificarEstadoFicha();
 // Variable para el estado de la ficha
 $scope.variableEstadoFicha = false; // Valor por defecto
+  $scope.tieneFichaActiva = false;
+  $scope.cargandoEstado = true;
+  $scope.datosReservaActiva = {};
+
+
+  function verificarEstadoFicha(forceUpdate = false) {
+    $scope.cargandoEstado = true;
+    
+    // Consulta directa al endpoint de reservas
+    const url = `http://172.18.2.144:3000/form-amd?idCiudadano=${$scope.idCiudadano}&_sort=createdAt:desc&_limit=1`;
+    
+    $http.get(url)
+        .then(response => {
+            const reserva = response.data?.[0];
+            $scope.variableEstadoFicha = !!reserva;
+            
+            if (reserva) {
+                $scope.datosReservaActiva = {
+                    formData: {
+                        motivoConsulta: reserva.formAmdMotivoConsulta,
+                        numeroReferencia: reserva.formAmdNumReferencia
+                    },
+                    ubicacion: {
+                        direccion: reserva.formAmdDireccion,
+                        referencia: reserva.formAmdRefAdicional,
+                        coordenadas: {
+                            latitud: reserva.formAmdLatitud,
+                            longitud: reserva.formAmdLongitud
+                        }
+                    },
+                    metodoPago: {
+                        tipo: reserva.formAmdMetodoPago,
+                        importe: reserva.formAmdImporte
+                    },
+                    doctor: $scope.datosReservaActiva.doctor // Preserva datos locales
+                };
+            }
+        })
+        .catch(error => {
+            console.error("Error al verificar estado:", error);
+            $scope.variableEstadoFicha = false;
+        })
+        .finally(() => {
+            $scope.cargandoEstado = false;
+            if (!$scope.$$phase) $scope.$apply();
+        });
+}
+
 
   // Función para obtener los id_ciudadano desde la tabla form_amd
   function obtenerIdCiudadanos() {
@@ -267,6 +319,9 @@ $scope.$on('$destroy', function() {
     console.log("cambiando a vista: ", vista);
 
     $scope.vistaActual = vista;
+
+ 
+    $anchorScroll();
 
     if (vista === "ubicacion") {
       $timeout(function () {
@@ -587,8 +642,8 @@ cargarHospitales();
               marcadorSeleccion = L.marker(latlng, {
                   draggable: true,
                   icon: L.icon({
-                      iconUrl: '/marc1.png',
-                      iconSize: [32, 32],
+                      iconUrl: '/app/view/autenticacion/imgs/marc1.png',
+                      iconSize: [40, 40],
                       iconAnchor: [16, 32]
                   })
               }).addTo(map);
@@ -761,12 +816,19 @@ cargarHospitales();
                         $scope.ubicacion.hospitalAsignado = hospitalAsignado;
                     });
                 }
+
+                const hospitalAsignado = calcularHospitalSegunRed(nombreRed, e.latlng);
+
+                const popupContent = `
+                    <b>${nombre}</b><br>
+                    <b>HOSPITAL DESIGNADO:</b> ${hospitalAsignado || 'No hay hospital asignado para la red en la que se encuentra'}
+                `;
+
+                
                   // Mostrar resultados
                   L.popup({ offset: [0, -20] })
                       .setLatLng(e.latlng)
-                      .setContent(`
-                        <b>${nombre}</b>
-                    `)
+                      .setContent(popupContent)
                       .openOn(map);
                       
                   // Actualizar modelo AngularJS
@@ -1012,17 +1074,32 @@ cargarHospitales();
 
     $http
       .post(backendUrl + "/form-amd", payload)
-      .then((response) => {
-        alert("¡Solicitud registrada con éxito!");
-        // Limpiar todos los datos después del envío exitoso
-        $scope.limpiarDatosTemporales();
-        
-        $timeout(function() {
-          mostrarIdCiudadano();
-      }, 100);
-      $scope.cambiarVista("inicio");
-        // $scope.mostrarIdCiudadano();
-    })
+      .then(response => {
+            const reservaData = {
+                    formData: angular.copy($scope.datosConsulta.formData),
+                    ubicacion: angular.copy($scope.datosConsulta.ubicacion),
+                    doctor: angular.copy($scope.datosConsulta.doctor),
+                    metodoPago: angular.copy($scope.datosConsulta.metodoPago),
+                    timestamp: new Date().getTime()
+                };
+
+            // 2. Guardar en localStorage y en el scope
+            localStorage.setItem('reservaActiva', JSON.stringify(reservaData));
+          
+          
+            // Actualización inmediata
+            $scope.variableEstadoFicha = true;
+            $scope.datosReservaActiva = angular.copy($scope.datosConsulta);
+            
+            // Guardar en localStorage
+            guardarConExpiracion($scope.datosConsulta);
+            
+            // Forzar actualización del servidor después de 1s
+            $timeout(() => verificarEstadoFicha(true), 1000);
+            
+            alert("¡Solicitud exitosa!");
+            $scope.cambiarVista('inicio');
+        })
       .catch((error) => {
         console.error("Error detallado:", error);
         alert(
@@ -1031,13 +1108,18 @@ cargarHospitales();
           }`
         );
       })
-      .finally(() => ($scope.cargando = false));
+      .finally(function() {
+      $scope.cargando = false;
+    });
   };
 
-
-
-
-
+  // Función para mostrar detalles
+$scope.mostrarDetallesReserva = function() {
+    if ($scope.variableEstadoFicha) {
+        console.log("Datos actuales de reserva:", $scope.datosReservaActiva);
+        $scope.mostrarDetalleReservaModal = true;
+    }
+};
 $scope.volverAlInicio = function () {
   sweet.show({
       title: "Confirmar acción",

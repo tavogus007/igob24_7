@@ -115,6 +115,8 @@ function mecController(
 
 
 
+
+
   // Llamar al verificar estado al iniciar
   verificarEstadoFicha();
 // Variable para el estado de la ficha
@@ -124,48 +126,76 @@ $scope.variableEstadoFicha = false; // Valor por defecto
   $scope.datosReservaActiva = {};
 
 
-  function verificarEstadoFicha(forceUpdate = false) {
+  function verificarEstadoFicha() {
     $scope.cargandoEstado = true;
     
-    // Consulta directa al endpoint de reservas
-    const url = `http://172.18.2.144:3000/form-amd?idCiudadano=${$scope.idCiudadano}&_sort=createdAt:desc&_limit=1`;
+    // 1. Quitamos los parámetros de filtro de la URL (ya que el backend no los aplica)
+    const url = `http://172.18.2.144:3000/form-amd`; 
     
     $http.get(url)
-        .then(response => {
-            const reserva = response.data?.[0];
-            $scope.variableEstadoFicha = !!reserva;
-            
-            if (reserva) {
-                $scope.datosReservaActiva = {
-                    formData: {
-                        motivoConsulta: reserva.formAmdMotivoConsulta,
-                        numeroReferencia: reserva.formAmdNumReferencia
-                    },
-                    ubicacion: {
-                        direccion: reserva.formAmdDireccion,
-                        referencia: reserva.formAmdRefAdicional,
-                        coordenadas: {
-                            latitud: reserva.formAmdLatitud,
-                            longitud: reserva.formAmdLongitud
-                        }
-                    },
-                    metodoPago: {
-                        tipo: reserva.formAmdMetodoPago,
-                        importe: reserva.formAmdImporte
-                    },
-                    doctor: $scope.datosReservaActiva.doctor // Preserva datos locales
-                };
-            }
-        })
-        .catch(error => {
-            console.error("Error al verificar estado:", error);
-            $scope.variableEstadoFicha = false;
-        })
-        .finally(() => {
-            $scope.cargandoEstado = false;
-            if (!$scope.$$phase) $scope.$apply();
+    .then(response => {
+        console.log("Datos crudos:", response.data);
+        console.log("ID a comparar:", $scope.idCiudadano);
+
+        // 2. Filtramos manualmente
+        const reservasFiltradas = response.data.filter(item => {
+            const match = item.formAmdIdCiudadano === $scope.idCiudadano;
+            console.log(`Item ID: ${item.formAmdIdCiudadano} | Coincide? ${match}`);
+            return match;
         });
+
+        // 3. Ordenamos por fecha descendente
+        reservasFiltradas.sort((a, b) => 
+            new Date(b.formAmdRegistrado) - new Date(a.formAmdRegistrado)
+        );
+
+        // 4. Tomamos la más reciente
+        const reserva = reservasFiltradas[0];
+        
+        if (reserva) {
+            const doctorStorage = JSON.parse(localStorage.getItem('doctorSeleccionado'));
+
+             const nombreDoctor = doctorStorage ? doctorStorage.nombre : 'Doctor no asignado';
+
+            if (doctorStorage && doctorStorage.idCiudadano === $scope.idCiudadano) {
+                $scope.datosReservaActiva.doctor = {
+                    nombre: doctorStorage.nombre,
+                    especialidad: doctorStorage.especialidad
+                };
+            } else {
+                console.warn("Doctor no vinculado al usuario actual");
+            }
+            console.log("Registro válido encontrado:", reserva);
+            $scope.datosReservaActiva = {
+                formData: {
+                    motivoConsulta: reserva.formAmdMotivoConsulta,
+                    numeroReferencia: reserva.formAmdNumReferencia
+                },
+                medico:{
+                    medico: reserva.formAmdMedico,
+                },
+                ubicacion: {
+                    direccion: reserva.formAmdDireccion
+                },
+                metodoPago: {
+                    tipo: reserva.formAmdMetodoPago,
+                    importe: reserva.formAmdImporte
+                }
+            };
+        } else {
+            console.warn("Ningún registro coincide con el ID:", $scope.idCiudadano);
+            $scope.datosReservaActiva = null;
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    })
+    .finally(() => {
+        $scope.cargandoEstado = false;
+        $scope.$applyAsync();
+    });
 }
+
 
 
   // Función para obtener los id_ciudadano desde la tabla form_amd
@@ -994,7 +1024,14 @@ cargarHospitales();
       especialidad: doctor.especialidad,
       celular: doctor.celular,
     };
+    localStorage.setItem('doctorSeleccionado', JSON.stringify({
+        id: doctor.id,
+        nombre: doctor.nombre,
+        especialidad: doctor.especialidad,
+        timestamp: new Date().getTime() // Para expiración opcional
+    }));
     guardarConExpiracion($scope.datosConsulta)
+    $scope.doctorSeleccionado = doctor;
   };
 
   $scope.confirmarDoctor = function() {
@@ -1042,7 +1079,8 @@ cargarHospitales();
       metodoPago: {
         tipo: $scope.metodoPago,
         importe: 30.00
-      }
+      },
+      nombre_paciente: angular.copy($scope.nombrePersona),
     };
     
     guardarConExpiracion($scope.datosConsulta);
@@ -1052,10 +1090,17 @@ cargarHospitales();
   $scope.confirmarSolicitud = function () {   
     $scope.cargando = true;
 
+    const nombreCompleto2 = [
+      $scope.nombrePersona,
+      $scope.appaternoPersona,
+      $scope.apmaternoPersona
+    ].filter(Boolean).join(" ");
+
     const payload = {
       formAmdMotivoConsulta: $scope.datosConsulta.formData.motivoConsulta,
       formAmdNumReferencia:
         $scope.datosConsulta.formData.numeroReferencia || null,
+        formAmdMedico: $scope.datosConsulta.doctor.nombre,
       formAmdDireccion: $scope.datosConsulta.ubicacion.direccion,
       formAmdLatitud: $scope.datosConsulta.ubicacion.coordenadas.latitud,
       formAmdLongitud: $scope.datosConsulta.ubicacion.coordenadas.longitud,
@@ -1067,9 +1112,9 @@ cargarHospitales();
       formAmdTipoCiudadano: $scope.tipoCiudadano,
       formAmdIdCiudadano: $scope.idCiudadano,
       formAmdEmail: $scope.email,
+      formAmdNombrePaciente: nombreCompleto2,
     };
 
-    // Reemplaza "192.168.x.x" con la IP de tu computadora en la red local
     const backendUrl = "http://172.18.2.144:3000";
 
     $http
@@ -1215,6 +1260,7 @@ $scope.volverAlInicio = function () {
   };
 
 $scope.limpiarDatosTemporales();
+localStorage.removeItem('doctorSeleccionado'); 
 
 
 

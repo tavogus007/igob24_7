@@ -621,6 +621,14 @@
     flex-grow: 1;
   }
 
+  .detail-value-vers2 {
+    color: #01a11c;
+    flex-grow: 1;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
   .btn-volver-inicio {
     background-color: #27ae60;
     color: white;
@@ -1018,6 +1026,54 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.FICmodal-reserva {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.FICmodal-reserva.active {
+  display: flex;
+}
+
+.FICmodal-content {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  animation: fadeIn 0.3s;
+}
+
+.FICmodal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.FICmodal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.FICmodal-close:hover {
+  color: #d42230;
+}
 </style>
 
 <script
@@ -1113,6 +1169,8 @@
             la atención de salud a la población en su domicilio, especialmente a aquellos que tienen dificultades para desplazarse o se encuentran
             incapacitados.
           </p>
+          <p class="info-tipo2">El servicio está disponible en el horario de <b>8:00 a.m. hasta 13:00 p.m.</b></p>
+          <p></p>
         
           <!-- Botón condicional -->
           <div ng-if="!variableEstadoFicha ">
@@ -1405,7 +1463,13 @@
 
                 <div class="detail-row" ng-if="email">
                   <span class="detail-label">Correo electrónico:</span>
-                  <span class="detail-value">{{email}}</span>
+                  <!-- En tu vista donde muestras el email -->
+                  <span ng-if="email">
+                      {{ email.split('@')[0] }}@
+                      <span ng-style="{ 'display': (window.innerWidth < 400) ? 'block' : 'inline' }">
+                          {{ email.split('@')[1] }}
+                      </span>
+                  </span>
                 </div>
               </div>
 
@@ -1647,42 +1711,56 @@
         </div>
       </div>
 
-      <div class="modal-reserva" ng-class="{'active': mostrarDetalleReservaModal}">
-    <div class="modal-reserva-content">
-        <div class="modal-reserva-header">
-            <h2>Detalles de tu Reserva Activa</h2>
-            <button class="modal-reserva-close" ng-click="mostrarDetalleReservaModal = false">×</button>
+      <div class="FICmodal-reserva" ng-class="{'active': mostrarDetalleReservaModal}">
+    <div class="FICmodal-content">
+        <div class="FICmodal-header">
+            <h2>Detalles de tu Reserva</h2>
+            <button class="FICmodal-close" ng-click="mostrarDetalleReservaModal = false">×</button>
         </div>
         
         <div class="modal-reserva-body">
+            <!-- Mensaje general -->
+            <div class="detail-row">
+                <span class="detail-value-vers2">El doctor se pondrá en contacto dentro de las próximas <b>24 horas</b>. <br><br>
+                La fecha y hora de atencion dependen de diversos factores, como el <b>MOTIVO DE LA CONSULTA</b>, y la <b>DIRECCION DEL DOMICILIO</b>.</span> 
+            </div>
+
             <!-- Motivo de Consulta -->
-            <div class="detail-row" ng-if="datosReservaActiva.formData">
-                <span class="detail-label">Motivo:</span>
+            <div class="detail-row" ng-if="datosReservaActiva.formData.motivoConsulta">
+                <span class="detail-label">MOTIVO:</span>
                 <span class="detail-value">{{datosReservaActiva.formData.motivoConsulta}}</span>
             </div>
             
             <!-- Número de Referencia -->
-            <div class="detail-row" ng-if="datosReservaActiva.formData">
-                <span class="detail-label">Referencia:</span>
+            <div class="detail-row" ng-if="datosReservaActiva.formData.numeroReferencia">
+                <span class="detail-label">TELEFONO DE REFERENCIA:</span>
                 <span class="detail-value">{{datosReservaActiva.formData.numeroReferencia}}</span>
             </div>
-            
-            <!-- Doctor -->
-            <div class="detail-row" ng-if="datosReservaActiva.doctor">
-                <span class="detail-label">Doctor:</span>
-                <span class="detail-value">Dr. {{datosReservaActiva.doctor.nombre}}</span>
+
+            <!-- DOCTOR -->
+            <div class="detail-row" ng-if="datosReservaActiva.formData.numeroReferencia">
+                <span class="detail-label">DOCTOR ASIGNADO:</span>
+                <span class="detail-value">Dr. {{datosReservaActiva.medico.medico}} {{datosReservaActiva.doctor.especialidad}}</span>
             </div>
             
             <!-- Método de Pago -->
             <div class="detail-row" ng-if="datosReservaActiva.metodoPago">
-                <span class="detail-label">Pago:</span>
-                <span class="detail-value">{{datosReservaActiva.metodoPago.tipo | uppercase}} - Bs {{datosReservaActiva.metodoPago.importe}}</span>
+                <span class="detail-label">PAGO:</span>
+                <span class="detail-value">
+                    {{datosReservaActiva.metodoPago.tipo | uppercase}} - 
+                    Bs {{datosReservaActiva.metodoPago.importe | number:2}}
+                </span>
             </div>
             
             <!-- Dirección -->
-            <div class="detail-row" ng-if="datosReservaActiva.ubicacion">
-                <span class="detail-label">Dirección:</span>
+            <div class="detail-row" ng-if="datosReservaActiva.ubicacion.direccion">
+                <span class="detail-label">DIRECCIÓN:</span>
                 <span class="detail-value">{{datosReservaActiva.ubicacion.direccion}}</span>
+            </div>
+
+            <!-- Mensaje si no hay datos -->
+            <div ng-if="!datosReservaActiva" class="info-tipo2">
+                No se encontraron datos de reserva activa
             </div>
         </div>
     </div>

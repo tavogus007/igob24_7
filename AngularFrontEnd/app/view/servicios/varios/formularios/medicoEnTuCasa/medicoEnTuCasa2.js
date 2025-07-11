@@ -112,8 +112,7 @@ function mecController(
   let zonasLayer;
   let redesLayer;
 
-
-
+  const IP_dir = "192.168.8.10";
 
 
 
@@ -130,7 +129,7 @@ $scope.variableEstadoFicha = false; // Valor por defecto
     $scope.cargandoEstado = true;
     
     // 1. Quitamos los parámetros de filtro de la URL (ya que el backend no los aplica)
-    const url = `http://172.18.2.144:3000/form-amd`; 
+    const url = `http://${IP_dir}:3000/form-amd`; 
     
     $http.get(url)
     .then(response => {
@@ -200,7 +199,7 @@ $scope.variableEstadoFicha = false; // Valor por defecto
 
   // Función para obtener los id_ciudadano desde la tabla form_amd
   function obtenerIdCiudadanos() {
-    return $http.get('http://172.18.2.144:3000/form-amd')
+    return $http.get(`http://${IP_dir}:3000/form-amd`)
       .then(function (response) {
         if (response.data && Array.isArray(response.data)) {
           return response.data.map(item => item.formAmdIdCiudadano);
@@ -443,7 +442,7 @@ function cargarConExpiracion() {
 
   // Función para cargar hospitales desde el endpoint
 function cargarHospitales() {
-  $http.get('http://172.18.2.144:3000/hospital-municipal')
+  $http.get(`http://${IP_dir}:3000/hospital-municipal`)
     .then(function(response) {
       if (response.data && Array.isArray(response.data)) {
         response.data.forEach(function(hospital) {
@@ -959,7 +958,7 @@ cargarHospitales();
   $scope.cargarDoctores = function () {
     $scope.cargando = true;
 
-    const backendUrl = "http://172.18.2.144:3000/doctor";
+    const backendUrl = `http://${IP_dir}:3000/doctor`;
 
     $http
       .get(backendUrl)
@@ -1115,7 +1114,7 @@ cargarHospitales();
       formAmdNombrePaciente: nombreCompleto2,
     };
 
-    const backendUrl = "http://172.18.2.144:3000";
+    
 
     $http
       .post(backendUrl + "/form-amd", payload)
